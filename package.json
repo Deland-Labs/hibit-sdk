@@ -1,0 +1,31 @@
+{
+  "name": "@delandlabs/hibit-sdk",
+  "private": true,
+  "scripts": {
+    "test:sdk": "turbo run @delandlabs/hibit-sdk#test",
+    "dev:sdk": "turbo run dev --filter=@delandlabs/hibit-sdk",
+    "build:sdk": "turbo run @delandlabs/hibit-sdk#build",
+    "build:all": "turbo run build",
+    "test:all": "turbo run test",
+    "prepare": "husky",
+    "openapi-ts": "openapi-ts"
+  },
+  "workspaces": [
+    "packages/*"
+  ],
+  "devDependencies": {
+    "@hey-api/openapi-ts": "^0.64.4",
+    "dotenv": "^16.4.5",
+    "husky": "^9.0.0",
+    "lint-staged": "^15.2.2",
+    "prettier": "^3.2.5",
+    "turbo": "^2.4.2",
+    "typescript": "^5.4.5",
+    "vite": "^6.1.0",
+    "vite-bundle-analyzer": "^0.15.0",
+    "vite-plugin-node-polyfills": "^0.23.0",
+    "vitest": "^2.1.8"
+  },
+  "version": "1.0.0",
+  "packageManager": "yarn@1.22.22"
+}
