@@ -1,4 +1,4 @@
-import { expect, test } from 'vitest';
+import { test } from 'vitest';
 import { hibitApi } from '../src/hibitApi';
 import BigNumber from 'bignumber.js';
 import { OrderCategory, OrderSide } from '../src';
@@ -6,8 +6,7 @@ import { OrderCategory, OrderSide } from '../src';
 hibitApi.setOptions({
   baseUrl: 'https://alphaopenapi.ex3.one',
   walletId: BigNumber(10000),
-  privateKey:
-    'fa3e933f1788d7d56a20e078370f4c3b713ee0bcdb44392e4cfeaf524716d06a',
+  privateKey: 'fa3e933f1788d7d56a20e078370f4c3b713ee0bcdb44392e4cfeaf524716d06a'
 });
 
 test('get nonce', async () => {

@@ -66,12 +66,8 @@ test('null data', () => {
 test('encode with byte[]', () => {
   const tx = new TrasnsferTx();
   tx.assetId = BigNumber('10000');
-  tx.items = [
-    new TrasnsferTxItem(BigNumber('9999'), new BigNumber(1234))
-  ];
+  tx.items = [new TrasnsferTxItem(BigNumber('9999'), new BigNumber(1234))];
   tx.memo = new Uint8Array([255, 0, 255]);
   let result = CborDataFactory.Encode(tx);
-  expect(result.toString('hex')).toEqual(
-    '83c24227108182c242270fc24204d243ff00ff'
-  );
+  expect(result.toString('hex')).toEqual('83c24227108182c242270fc24204d243ff00ff');
 });

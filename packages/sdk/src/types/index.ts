@@ -1,5 +1,20 @@
 import BigNumber from 'bignumber.js';
-import { cborBigInt, cborIndex } from './cbor.metadata';
+import { cborBigInt, cborIndex } from '../cbor.metadata';
+export type { ChainInfo } from './chain';
+export type { AssetInfo, SubAssetInfo, GetAssetsInput } from './asset';
+
+export type HibitApiResponse = { code?: number; message?: string | null };
+/**
+ * Represents a paginated response.
+ *
+ * @template T - The type of the items in the response.
+ * @property {T[]} items - The list of items.
+ * @property {number} totalCount - The total number of items.
+ */
+export type PageResponse<T> = {
+  items: T[];
+  totalCount: number;
+};
 
 export class Chain {
   value: BigNumber;
@@ -172,25 +187,17 @@ export class TransactionType {
   static SubmitMemeOrder = new TransactionType(BigNumber(1100));
   static CancelMemeOrder = new TransactionType(BigNumber(1101));
   static RegisterMemeMarket = new TransactionType(BigNumber(1200));
-  static UpdateMemeMarketInitialTradingSettings = new TransactionType(
-    BigNumber(1201)
-  );
-  static UpdateMemeMarketTradingSettings = new TransactionType(
-    BigNumber(1202)
-  );
-  static UpdateMemeMarketInitialFeeTo = new TransactionType(
-    BigNumber(1203)
-  );
+  static UpdateMemeMarketInitialTradingSettings = new TransactionType(BigNumber(1201));
+  static UpdateMemeMarketTradingSettings = new TransactionType(BigNumber(1202));
+  static UpdateMemeMarketInitialFeeTo = new TransactionType(BigNumber(1203));
   static UpdateMemeMarketFeeTo = new TransactionType(BigNumber(1204));
-  static UpdateMemeMarketInitialTradingFee = new TransactionType(
-    BigNumber(1205)
-  );
+  static UpdateMemeMarketInitialTradingFee = new TransactionType(BigNumber(1205));
   static UpdateMemeMarketTradingFee = new TransactionType(BigNumber(1206));
   static ClaimMemeMarketTradingFee = new TransactionType(BigNumber(1207));
 
   static fromString(value: string): TransactionType {
     if (!value) {
-      return null;
+      throw new Error('Invalid transaction type');
     }
     return new TransactionType(BigNumber(value));
   }

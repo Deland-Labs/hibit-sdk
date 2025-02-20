@@ -2,25 +2,14 @@
   "$schema": "https://turbo.build/schema.json",
   "tasks": {
     "@delandlabs/hibit-sdk#build": {
-      "env": [
-        "VITE_*"
-      ],
-      "dependsOn": [
-      ],
-      "outputs": [
-        "dist/**"
-      ]
+      "env": ["VITE_*"],
+      "dependsOn": [],
+      "outputs": ["dist/**"]
     },
     "@delandlabs/hibit-sdk#test": {
-      "env": [
-        "VITE_*"
-      ],
-      "dependsOn": [
-        "@delandlabs/hibit-sdk#build"
-      ],
-      "outputs": [
-        "dist/**"
-      ],
+      "env": ["VITE_*"],
+      "dependsOn": ["@delandlabs/hibit-sdk#build"],
+      "outputs": ["dist/**"],
       "persistent": true
     },
     "lint": {},

@@ -1,0 +1,422 @@
+import {
+  Ex3ExchangeOpenApiAppServicesMarketInfoItem,
+  GetV1MarketsData,
+  GetV1MarketsTickerData,
+  Options,
+  Ex3ExchangeOpenApiAppServicesMarket24HrTickerItem,
+  Ex3ExchangeOpenApiAppServicesKlineItem,
+  Ex3ExchangeOpenApiAppServicesMarketTradingHistoryItem,
+  Ex3ExchangeOpenApiAppServicesGetSwapOutputItem,
+  Ex3CacheDepthManagerSpotMarketDepthDataDto,
+  GetV1MarketKlineData,
+  GetV1MarketTradeData,
+  GetV1MarketDepthData
+} from '../client';
+import { DepthIndex, OrderSide, TickSpace } from './enums';
+
+export type GetMarketsInput = {
+  /**
+   * chain ids to filter the markets list.
+   */
+  chainIds?: Array<string>;
+  /**
+   * chain asset types to filter the markets list.
+   */
+  chainAssetTypes?: Array<string>;
+  /**
+   * maximum number of items to return. maximum value is 500.
+   */
+  limit?: number;
+  /**
+   * number of items to skip before starting to collect the result set.
+   */
+  offset?: number;
+  /**
+   * the sorting parameters for the list.
+   *
+   * see https://learn.microsoft.com/en-us/azure/search/search-query-odata-orderby#examples for the format of the OrderBy string.
+   *
+   *  supported sorting parameters are: "MarketId".
+   *
+   * default sorting is by " MarketId desc".
+   */
+  orderBy?: string;
+};
+
+export type Market = {
+  /**
+   * market id
+   */
+  marketId: bigint;
+  /**
+   * market symbol
+   */
+  marketSymbol: string;
+  /**
+   * base token id
+   */
+  baseTokenId: bigint;
+  /**
+   * quote token id
+   */
+  quoteTokenId: bigint;
+  /**
+   * values of the depth levels
+   */
+  depthLevels: Array<number>;
+};
+
+export type MarketTicker = {
+  /**
+   * The market id.
+   */
+  id: bigint;
+  /**
+   * The open price of the trading pair in the last 24 hours.
+   */
+  open: number;
+  /**
+   * The highest price of the trading pair in the last 24 hours.
+   */
+  high: number;
+  /**
+   * The lowest price of the trading pair in the last 24 hours.
+   */
+  low: number;
+  /**
+   * The close price of the trading pair in the last 24 hours.
+   */
+  close: number;
+  /**
+   * The volume of the trading pair in the last 24 hours.
+   */
+  volume: number;
+  /**
+   * The amount of the trading pair in the last 24 hours.
+   */
+  amount: number;
+  /**
+   * time of the ticker update.
+   */
+  timestamp: number;
+};
+
+export type GetMarketKlineInput = {
+  /**
+   * The market id.
+   */
+  marketId: bigint;
+  /**
+   * The tick space for the kline.
+   */
+  tickSpace: TickSpace;
+  /**
+   * Maximum number of items to return. Maximum value is 500.
+   */
+  limit?: number;
+  /**
+   * Number of items to skip before starting to collect the result set.
+   */
+  offset?: number;
+  /**
+   * The sorting parameters for the list.
+   *
+   * See https://learn.microsoft.com/en-us/azure/search/search-query-odata-orderby#examples for the format of the OrderBy string.
+   *
+   * Supported sorting parameters are: "Timestamp".
+   *
+   * Default sorting is by "Timestamp desc".
+   */
+  orderBy?: string;
+};
+
+export type MarketKlineItem = {
+  /**
+   * The open price of the trading pair in the last 24 hours.
+   */
+  open: number;
+  /**
+   * The highest price of the trading pair in the last 24 hours.
+   */
+  high: number;
+  /**
+   * The lowest price of the trading pair in the last 24 hours.
+   */
+  low: number;
+  /**
+   * The close price of the trading pair in the last 24 hours.
+   */
+  close: number;
+  /**
+   * The volume of the trading pair in the last 24 hours.
+   */
+  volume: number;
+  /**
+   * The amount of the trading pair in the last 24 hours.
+   */
+  amount: number;
+  /**
+   * timestamp of kline
+   */
+  timestamp: number;
+};
+
+/**
+ * Represents the input parameters for retrieving a list of market trades.
+ */
+export type GetMarketTradeInput = {
+  /**
+   * The market id for which the trade list is requested.
+   */
+  marketId: bigint;
+  /**
+   * The start date and time for the trade list.
+   */
+  tradedAtStart?: number;
+  /**
+   * The end date and time for the trade list.
+   */
+  tradedAtEnd?: number;
+  /**
+   * maximum number of items to return. maximum value is 500.
+   */
+  limit?: number;
+  /**
+   * number of items to skip before starting to collect the result set.
+   */
+  offset?: number;
+  /**
+   * the sorting parameters for the list.
+   *
+   * see https://learn.microsoft.com/en-us/azure/search/search-query-odata-orderby#examples for the format of the OrderBy string.
+   *
+   *  supported sorting parameters are: "TradedAt".
+   *
+   * default sorting is by " TradedAt desc".
+   */
+  orderBy?: string;
+};
+
+export type Trade = {
+  /**
+   * The wallet address of the maker user. if null, means the maker is swap pool.
+   */
+  maker?: string | null;
+  /**
+   * The wallet address of the taker user.
+   */
+  taker?: string;
+  takerSide: OrderSide;
+  /**
+   * The price at which the trade occurred.
+   */
+  price: number;
+  /**
+   * The volume of the trade.
+   */
+  volume: number;
+  /**
+   * The total amount of the trade.
+   */
+  amount: number;
+  /**
+   * The time at which the trade occurred in Unix time milliseconds.
+   */
+  timestamp: number;
+};
+
+export type MarketSwapInfo = {
+  /**
+   * The market id for which the liquidity information is provided.
+   */
+  marketId: bigint;
+  /**
+   * The total amount of liquidity in the pool.
+   */
+  poolAmount: number;
+  /**
+   * The total volume of liquidity in the pool.
+   */
+  poolVolume: number;
+
+  /**
+   * The total liquidity in the pool.
+   */
+  poolLiquidity: bigint;
+};
+
+export type GetMarketDepthInput = {
+  /**
+   * The index of the depth.
+   * for example, if depth levels of market is 0.01, 0.1, 1, 10, 50, 100.
+   * then the index of 0.01 is 1, 0.1 is 2, 1 is 3, 10 is 4, 50 is 5, 100 is 6.
+   */
+  index: DepthIndex;
+  /**
+   * The market id.
+   */
+  marketId: bigint;
+  /**
+   * limit of the depth.
+   * range from 1 to 100.
+   */
+  limit: number;
+};
+
+export type MarketDepthItem = {
+  /**
+   * The price of the depth item.
+   */
+  price: number;
+  /**
+   * The volume of the depth item.
+   * Note: the volume is the merge result of orderbook order and swap pool liquidity.
+   */
+  volume: number;
+};
+
+/**
+ * Represents the market depth, including the asks and bids.
+ */
+export type MarketDepth = {
+  asks: Array<MarketDepthItem>;
+  bids: Array<MarketDepthItem>;
+};
+
+/**
+ * Maps the input parameters for the GetMarkets API call to the required options format.
+ *
+ * @param input - The input parameters for the GetMarkets API call.
+ * @returns An object containing the query parameters for the GetMarkets API call.
+ */
+export function mapGetMarketsInput(input: GetMarketsInput): Options<GetV1MarketsData, boolean> {
+  return {
+    query: {
+      ChainIds: input.chainIds,
+      ChainAssetTypes: input.chainAssetTypes,
+      Limit: input.limit,
+      Offset: input.offset,
+      OrderBy: input.orderBy
+    }
+  };
+}
+
+export function mapMarketInfo(market: Ex3ExchangeOpenApiAppServicesMarketInfoItem): Market {
+  return {
+    marketId: BigInt(market.marketId),
+    marketSymbol: market.marketSymbol,
+    baseTokenId: BigInt(market.baseTokenId),
+    quoteTokenId: BigInt(market.quoteTokenId),
+    depthLevels: market.depthLevels!
+  };
+}
+
+export function mapGetMarketsTickerInput(marketId: bigint | undefined): Options<GetV1MarketsTickerData, boolean> {
+  return {
+    query: {
+      MarketId: marketId ? String(marketId) : undefined
+    }
+  };
+}
+
+export function mapMarketTickerInfo(data: Ex3ExchangeOpenApiAppServicesMarket24HrTickerItem): MarketTicker {
+  return {
+    id: BigInt(data.id!),
+    open: Number(data.o),
+    high: Number(data.h),
+    low: Number(data.l),
+    close: Number(data.c),
+    volume: Number(data.v),
+    amount: Number(data.a),
+    timestamp: Number(data.t)
+  };
+}
+
+export function mapGetMarketKlineInput(input: GetMarketKlineInput): Options<GetV1MarketKlineData, boolean> {
+  return {
+    query: {
+      MarketId: String(input.marketId),
+      TickSpace: input.tickSpace,
+      Limit: input.limit,
+      Offset: input.offset,
+      OrderBy: input.orderBy
+    }
+  };
+}
+
+export function mapMarketKlineInfo(data: Ex3ExchangeOpenApiAppServicesKlineItem): MarketKlineItem {
+  return {
+    open: Number(data.o),
+    high: Number(data.h),
+    low: Number(data.l),
+    close: Number(data.c),
+    volume: Number(data.v),
+    amount: Number(data.a),
+    timestamp: Number(data.t)
+  };
+}
+
+export function mapGetMarketTradeInput(input: GetMarketTradeInput): Options<GetV1MarketTradeData, boolean> {
+  return {
+    query: {
+      MarketId: String(input.marketId),
+      TradedAtStart: input.tradedAtStart,
+      TradedAtEnd: input.tradedAtEnd,
+      Limit: input.limit,
+      Offset: input.offset,
+      OrderBy: input.orderBy
+    }
+  };
+}
+
+export function mapMarketTradeInfo(data: Ex3ExchangeOpenApiAppServicesMarketTradingHistoryItem): Trade {
+  return {
+    maker: data.maker || null,
+    taker: data.taker,
+    takerSide: data.takerSide as OrderSide,
+    price: Number(data.p),
+    volume: Number(data.v),
+    amount: Number(data.a),
+    timestamp: Number(data.t)
+  };
+}
+
+export function mapGetMarketsSwapInfoInput(marketId?: bigint): Options<GetV1MarketTradeData, boolean> {
+  return {
+    query: {
+      MarketId: String(marketId)
+    }
+  };
+}
+
+export function mapMarketSwapInfo(data: Ex3ExchangeOpenApiAppServicesGetSwapOutputItem): MarketSwapInfo {
+  return {
+    marketId: BigInt(data.marketId!),
+    poolAmount: Number(data.poolAmount),
+    poolVolume: Number(data.poolVolume),
+    poolLiquidity: BigInt(data.poolLiquidity)
+  };
+}
+
+export function mapGetMarketDepthInput(input: GetMarketDepthInput): Options<GetV1MarketDepthData, boolean> {
+  return {
+    query: {
+      Index: input.index,
+      MarketId: String(input.marketId),
+      Limit: input.limit
+    }
+  };
+}
+
+export function mapMarketDepth(data: Ex3CacheDepthManagerSpotMarketDepthDataDto): MarketDepth {
+  return {
+    asks: data.asks!.map((item) => ({
+      price: Number(item[0]),
+      volume: Number(item[1])
+    })),
+    bids: data.bids!.map((item) => ({
+      price: Number(item[0]),
+      volume: Number(item[1])
+    }))
+  };
+}

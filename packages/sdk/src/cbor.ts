@@ -89,29 +89,18 @@ export interface UserKeyPair {
 }
 
 export class ClientRequestFactory {
-  static async createEx3L2HeaderToken(
-    userKeyPair: UserKeyPair
-  ): Promise<string> {
+  static async createEx3L2HeaderToken(userKeyPair: UserKeyPair): Promise<string> {
     const msg = `Ex3L2:${new Date().getTime()}`;
     const hash = await secp.utils.sha256(Buffer.from(msg, 'utf-8'));
-    let [signature, recId] = await secp.sign(
-      hash,
-      Buffer.from(userKeyPair.privateKey, 'hex'),
-      {
-        recovered: true
-      }
-    );
+    let [signature, recId] = await secp.sign(hash, Buffer.from(userKeyPair.privateKey, 'hex'), {
+      recovered: true
+    });
     const s = Signature.fromDER(Buffer.from(signature).toString('hex'));
 
     // concat recId to signature
-    const recoverableSignature = Buffer.concat([
-      s.toCompactRawBytes(),
-      Buffer.from([recId])
-    ]);
+    const recoverableSignature = Buffer.concat([s.toCompactRawBytes(), Buffer.from([recId])]);
     // hasHex.messageHex:signatureHex
-    return `${Buffer.from(msg).toString('hex')}.${Buffer.from(
-      recoverableSignature
-    ).toString('hex')}`;
+    return `${Buffer.from(msg).toString('hex')}.${Buffer.from(recoverableSignature).toString('hex')}`;
   }
 
   static async createRequest<T>(
@@ -127,20 +116,13 @@ export class ClientRequestFactory {
     const txBytes = cbor.encode(txData);
 
     let hash = await secp.utils.sha256(txBytes);
-    let [signature, recId] = await secp.sign(
-      hash,
-      Buffer.from(userKeyPair.privateKey, 'hex'),
-      {
-        recovered: true
-      }
-    );
+    let [signature, recId] = await secp.sign(hash, Buffer.from(userKeyPair.privateKey, 'hex'), {
+      recovered: true
+    });
     const s = Signature.fromDER(Buffer.from(signature).toString('hex'));
 
     // concat recId to signature
-    const recoverableSignature = Buffer.concat([
-      s.toCompactRawBytes(),
-      Buffer.from([recId])
-    ]);
+    const recoverableSignature = Buffer.concat([s.toCompactRawBytes(), Buffer.from([recId])]);
     return {
       type: txType,
       version,
