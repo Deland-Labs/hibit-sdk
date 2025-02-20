@@ -29,10 +29,7 @@ export default defineConfig({
           rootDir: resolve(__dirname, 'src'),
           declaration: true,
           declarationDir: resolve(__dirname, 'dist'),
-          exclude: [
-            resolve(__dirname, 'node_modules/**'),
-            resolve(__dirname, 'test/**')
-          ],
+          exclude: [resolve(__dirname, 'node_modules/**'), resolve(__dirname, 'test/**')],
           tsconfig: resolve(__dirname, 'tsconfig.json'),
           allowSyntheticDefaultImports: true
         })
