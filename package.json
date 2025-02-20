@@ -7,7 +7,7 @@
     "build:sdk": "turbo run @delandlabs/hibit-sdk#build",
     "build:all": "turbo run build",
     "test:all": "turbo run test",
-    "prepare": "husky",
+    "prepare": "husky install",
     "openapi-ts": "openapi-ts",
     "format": "prettier --write ."
   },

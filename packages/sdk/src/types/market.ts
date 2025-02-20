@@ -43,7 +43,7 @@ export type GetMarketsInput = {
   orderBy?: string;
 };
 
-export type Market = {
+export type MarketInfo = {
   /**
    * market id
    */
@@ -66,7 +66,7 @@ export type Market = {
   depthLevels: Array<number>;
 };
 
-export type MarketTicker = {
+export type MarketTickerInfo = {
   /**
    * The market id.
    */
@@ -301,7 +301,7 @@ export function mapGetMarketsInput(input: GetMarketsInput): Options<GetV1Markets
   };
 }
 
-export function mapMarketInfo(market: Ex3ExchangeOpenApiAppServicesMarketInfoItem): Market {
+export function mapMarketInfo(market: Ex3ExchangeOpenApiAppServicesMarketInfoItem): MarketInfo {
   return {
     marketId: BigInt(market.marketId),
     marketSymbol: market.marketSymbol,
@@ -319,7 +319,7 @@ export function mapGetMarketsTickerInput(marketId: bigint | undefined): Options<
   };
 }
 
-export function mapMarketTickerInfo(data: Ex3ExchangeOpenApiAppServicesMarket24HrTickerItem): MarketTicker {
+export function mapMarketTickerInfo(data: Ex3ExchangeOpenApiAppServicesMarket24HrTickerItem): MarketTickerInfo {
   return {
     id: BigInt(data.id!),
     open: Number(data.o),
@@ -394,7 +394,7 @@ export function mapMarketSwapInfo(data: Ex3ExchangeOpenApiAppServicesGetSwapOutp
     marketId: BigInt(data.marketId!),
     poolAmount: Number(data.poolAmount),
     poolVolume: Number(data.poolVolume),
-    poolLiquidity: BigInt(data.poolLiquidity)
+    poolLiquidity: BigInt(data.poolLiquidity!)
   };
 }
 

@@ -1,0 +1,7 @@
+echo "🔍 Running pre-commit hooks..."
+
+# Run formatting
+yarn format
+
+# Add any changed files back to staging
+git add .

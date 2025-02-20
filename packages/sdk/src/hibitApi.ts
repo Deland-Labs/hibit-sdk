@@ -3,10 +3,10 @@ import { ClientRequestFactory } from './cbor';
 import {
   AssetInfo,
   ChainInfo,
-  CreateSpotOrderInput,
   GetAssetsInput,
   HibitApiResponse,
   PageResponse,
+  SubmitSpotOrderInput,
   TransactionType
 } from './types';
 import {
@@ -20,38 +20,24 @@ import {
   postV1TxSubmitSpotOrder,
   type PostV1TxSubmitSpotOrderData,
   getV1MarketsTicker,
-  getV1MarketKline,
-  getV1MarketTrade,
-  getV1MarketsSwap,
-  getV1MarketDepth
+  getV1MarketKline
 } from './client';
 import { Options } from '@hey-api/client-fetch';
 import { client } from './client/client.gen';
 import { mapChainInfo } from './types/chain';
 import { mapAssetInfo, mapGetAssetsInput } from './types/asset';
 import {
-  GetMarketsInput,
   GetMarketKlineInput,
-  GetMarketTradeInput,
-  Market,
-  MarketKlineItem,
-  MarketSwapInfo,
-  MarketTicker,
-  Trade,
+  GetMarketsInput,
+  mapGetMarketKlineInput,
   mapGetMarketsInput,
-  mapGetMarketsSwapInfoInput,
   mapGetMarketsTickerInput,
-  mapGetMarketTradeInput,
   mapMarketInfo,
   mapMarketKlineInfo,
-  mapMarketSwapInfo,
   mapMarketTickerInfo,
-  mapMarketTradeInfo,
-  mapGetMarketKlineInput,
-  MarketDepth,
-  mapMarketDepth,
-  mapGetMarketDepthInput,
-  GetMarketDepthInput
+  MarketInfo,
+  MarketKlineItem,
+  MarketTickerInfo
 } from './types/market';
 
 /**
@@ -91,57 +77,33 @@ export interface IHibitApi {
    * Get the list of markets.
    *
    * @param {GetMarketsInput} input - The input parameters for getting markets.
-   * @returns {Promise<PageResponse<Market>>} A promise that resolves to the list of markets.
+   * @returns {Promise<PageResponse<MarketInfo>>} A promise that resolves to the list of markets.
    */
-  getMarkets(input: GetMarketsInput): Promise<PageResponse<Market>>;
+  getMarkets(input: GetMarketsInput): Promise<PageResponse<MarketInfo>>;
 
   /**
    * Get the ticker information for markets.
    *
-   * @param {bigint} marketId - The market id to get the ticker information for. If not provided, all market tickers are returned.
-   * @returns {Promise<PageResponse<MarketTicker>>} A promise that resolves to the list of market tickers.
+   * @param {string | bigint} marketId - The market id to get the ticker information for. If not provided, all market tickers are returned.
+   * @returns {Promise<PageResponse<MarketTickerInfo>>} A promise that resolves to the list of market tickers.
    */
-  getMarketsTicker(marketId?: bigint): Promise<Array<MarketTicker>>;
+  getMarketsTicker(marketId?: string | bigint): Promise<Array<MarketTickerInfo>>;
 
   /**
-   * Get the swap information for markets.
-   *
-   * @param {bigint} marketId - The market id to get the swap information for. If not provided, all market swap information is returned.
-   * @returns {Promise<Array<MarketSwapInfo>>} A promise that resolves to the list of market swap information.
-   */
-  getMarketsSwapInfo(marketId?: bigint): Promise<Array<MarketSwapInfo>>;
-
-  /**
-   * Get the market depth.
-   *
-   * @param {GetMarketDepthInput} input - The input parameters for getting market depth.
-   * @returns {Promise<MarketDepth>} A promise that resolves to the market depth.
-   */
-  getMarketDepth(input: GetMarketDepthInput): Promise<MarketDepth>;
-
-  /**
-   * Get the kline data for market.
+   * Get the kline data for markets.
    *
    * @param {GetMarketKlineInput} input - The input parameters for getting market klines.
    * @returns {Promise<PageResponse<MarketKlineItem>>} A promise that resolves to the list of market klines.
    */
-  getMarketKline(input: GetMarketKlineInput): Promise<PageResponse<MarketKlineItem>>;
-
-  /**
-   * Get the recent trades for markets.
-   *
-   * @param {GetMarketTradeInput} input - The input parameters for getting market trades.
-   * @returns {Promise<Array<Trade>>} A promise that resolves to the list of market trades.
-   */
-  getMarketTrade(input?: GetMarketTradeInput): Promise<PageResponse<Trade>>;
+  getMarketsKline(input: GetMarketKlineInput): Promise<PageResponse<MarketKlineItem>>;
 
   /**
    * Create a spot order.
    *
-   * @param {CreateSpotOrderInput} input - The input parameters for creating a spot order.
+   * @param {SubmitSpotOrderInput} input - The input parameters for creating a spot order.
    * @returns {Promise<void>} A promise that resolves when the spot order is created.
    */
-  createSpotOrder(input: CreateSpotOrderInput): Promise<void>;
+  submitSpotOrder(input: SubmitSpotOrderInput): Promise<void>;
 
   /**
    * Get the wallet balance.
@@ -197,7 +159,7 @@ export class HibitApi implements IHibitApi {
 
   /*-------------market start-------------*/
 
-  async getMarkets(input: GetMarketsInput): Promise<PageResponse<Market>> {
+  async getMarkets(input: GetMarketsInput): Promise<PageResponse<MarketInfo>> {
     const apiName = 'getMarkets';
     const response = await getV1Markets(mapGetMarketsInput(input));
 
@@ -206,10 +168,10 @@ export class HibitApi implements IHibitApi {
     return {
       items: response.data!.data!.items!.map((market) => mapMarketInfo(market)),
       totalCount: response.data!.data!.totalCount
-    } as PageResponse<Market>;
+    } as PageResponse<MarketInfo>;
   }
 
-  async getMarketsTicker(marketId?: bigint): Promise<Array<MarketTicker>> {
+  async getMarketsTicker(marketId?: bigint): Promise<Array<MarketTickerInfo>> {
     const apiName = 'getMarketsTicker';
     const response = await getV1MarketsTicker(mapGetMarketsTickerInput(marketId));
 
@@ -218,43 +180,14 @@ export class HibitApi implements IHibitApi {
     return response.data!.data!.items!.map((ticker) => mapMarketTickerInfo(ticker));
   }
 
-  async getMarketsSwapInfo(marketId?: bigint): Promise<Array<MarketSwapInfo>> {
-    const apiName = 'getMarketsSwapInfo';
-    const response = await getV1MarketsSwap(mapGetMarketsSwapInfoInput(marketId));
-
-    this.ensureSuccess(apiName, response.data);
-
-    return response.data!.data!.items!.map((swap) => mapMarketSwapInfo(swap));
-  }
-
-  async getMarketDepth(input: GetMarketDepthInput): Promise<MarketDepth> {
-    const apiName = 'getMarketDepth';
-    const response = await getV1MarketDepth(mapGetMarketDepthInput(input));
-
-    this.ensureSuccess(apiName, response.data);
-
-    return mapMarketDepth(response.data!.data!);
-  }
-
-  async getMarketKline(input: GetMarketKlineInput): Promise<PageResponse<MarketKlineItem>> {
-    const apiName = 'getMarketKline';
+  async getMarketsKline(input: GetMarketKlineInput): Promise<PageResponse<MarketKlineItem>> {
+    const apiName = 'getMarketsKline';
     const response = await getV1MarketKline(mapGetMarketKlineInput(input));
 
     this.ensureSuccess(apiName, response.data);
 
     return {
       items: response.data!.data!.items!.map((kline) => mapMarketKlineInfo(kline)),
-      totalCount: response.data!.data!.totalCount!
-    };
-  }
-
-  async getMarketTrade(input: GetMarketTradeInput): Promise<PageResponse<Trade>> {
-    const apiName = 'getMarketTrade';
-    const response = await getV1MarketTrade(mapGetMarketTradeInput(input));
-
-    this.ensureSuccess(apiName, response.data);
-    return {
-      items: response.data!.data!.items!.map((trade) => mapMarketTradeInfo(trade)),
       totalCount: response.data!.data!.totalCount!
     };
   }
@@ -283,18 +216,16 @@ export class HibitApi implements IHibitApi {
       return result;
     }
 
-    throw new Error('Get user balance failed');
+    throw new Error('Get user assets failed');
   }
 
-  async createSpotOrder(input: CreateSpotOrderInput): Promise<void> {
+  async submitSpotOrder(input: SubmitSpotOrderInput): Promise<void> {
     const options: Options<PostV1TxSubmitSpotOrderData, boolean> = {};
+
     await this.configTxRequest(TransactionType.CreateSpotOrder, input, options);
     const resp = await postV1TxSubmitSpotOrder(options);
-    if (resp.data?.code == 200) {
-      return;
-    }
 
-    throw new Error('Submit order failed');
+    this.ensureSuccess('submitSpotOrder', resp.data);
   }
 
   async getNonce(): Promise<BigNumber> {
