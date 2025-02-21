@@ -20,7 +20,7 @@ test('get balance', async () => {
 });
 
 test('submit order', async () => {
-  await hibitApi.createSpotOrder({
+  await hibitApi.submitSpotOrder({
     orderCategory: OrderCategory.LimitOrder,
     marketId: BigNumber(10000),
     limitOrderDetails: {

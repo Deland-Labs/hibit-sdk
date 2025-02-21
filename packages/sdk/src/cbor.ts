@@ -15,6 +15,8 @@ function getCborIndex(target: any, propertyKey: string) {
 }
 
 function getCborBigInt(target: any, propertyKey: string) {
+  // if the property is a bigint, then return true
+
   return Reflect.getMetadata(cborBigUintKey, target, propertyKey);
 }
 
@@ -53,7 +55,7 @@ export class CborDataFactory {
           } else if (value instanceof Object) {
             cborData[index] = this.createCborArray(value);
           } else {
-            if (isBigUint) {
+            if (isBigUint || typeof value === 'bigint' || typeof value === 'number') {
               if (value == null) {
                 cborData[index] = null;
               } else {
