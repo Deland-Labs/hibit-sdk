@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js';
-import { ClientRequestFactory } from './cbor';
+import { ClientRequestFactory } from './serialize/serializer.ts';
 import {
   AssetInfo,
   ChainInfo,

@@ -1,9 +1,14 @@
 import BigNumber from 'bignumber.js';
-import { cborBigInt, cborIndex } from '../cbor.metadata';
+import { cborBigUint, cborIndex } from '../serialize/decorator.ts';
+
+export type HexString = string;
 export type { ChainInfo } from './chain';
 export type { AssetInfo, SubAssetInfo, GetAssetsInput } from './asset';
-
+export type { Transaction } from './tx';
 export type HibitApiResponse = { code?: number; message?: string | null };
+export interface UserKeyPair {
+  privateKey: string;
+}
 /**
  * Represents a paginated response.
  *
@@ -228,9 +233,11 @@ export enum OrderCategory {
 
 export class CreateSpotOrderInput {
   @cborIndex(0)
-  @cborBigInt()
+  @cborBigUint()
+  //@ts-ignore
   public orderCategory: OrderCategory;
   @cborIndex(1)
+  //@ts-ignore
   public marketId: BigNumber;
   @cborIndex(2)
   public limitOrderDetails?: LimitOrderDetails;
@@ -244,11 +251,14 @@ export class CreateSpotOrderInput {
 
 export class LimitOrderDetails {
   @cborIndex(0)
-  @cborBigInt()
+  @cborBigUint()
+  //@ts-ignore
   public orderSide: OrderSide;
   @cborIndex(1)
+  //@ts-ignore
   public price: BigNumber;
   @cborIndex(2)
+  //@ts-ignore
   public volume: BigNumber;
 
   public constructor(init?: Partial<LimitOrderDetails>) {
@@ -263,12 +273,15 @@ export enum SwapV2ExactTokensType {
 
 export class SwapV2OrderDetails {
   @cborIndex(0)
+  //@ts-ignore
   public exactTokens: BigNumber;
   @cborIndex(1)
-  @cborBigInt()
+  @cborBigUint()
+  //@ts-ignore
   public exactTokensType: SwapV2ExactTokensType;
   @cborIndex(2)
-  @cborBigInt()
+  @cborBigUint()
+  //@ts-ignore
   public orderSide: OrderSide;
   @cborIndex(3)
   public minOut?: BigNumber;
@@ -282,11 +295,12 @@ export class SwapV2OrderDetails {
 
 export class CancelOrdersInput {
   @cborIndex(0)
+  //@ts-ignore
   public marketId: BigNumber;
   @cborIndex(1)
   public orderId?: string;
   @cborIndex(2)
-  @cborBigInt()
+  @cborBigUint()
   public orderSide?: OrderSide;
   @cborIndex(3)
   public isCancelAll: boolean;
