@@ -230,7 +230,7 @@ export class HibitApi implements IHibitApi {
   }
 
   async getMarketKline(input: GetMarketKlineInput): Promise<PageResponse<MarketKlineItem>> {
-    const apiName = 'getMarketsKline';
+    const apiName = 'getMarketKline';
     const response = await getV1MarketKline(mapGetMarketKlineInput(input));
 
     this.ensureSuccess(apiName, response.data);
@@ -254,6 +254,7 @@ export class HibitApi implements IHibitApi {
 
   /*-------------market end---------------*/
 
+  /*-------------order start--------------*/
   async submitSpotOrder(input: SubmitSpotOrderInput): Promise<void> {
     const options: Options<PostV1TxSubmitSpotOrderData, boolean> = {};
 
@@ -262,6 +263,8 @@ export class HibitApi implements IHibitApi {
 
     this.ensureSuccess('submitSpotOrder', resp.data);
   }
+
+  /*-------------order end----------------*/
 
   // @ts-ignore
   private options: HibitApiOptions;
