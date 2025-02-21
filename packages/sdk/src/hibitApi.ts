@@ -1,5 +1,4 @@
 import BigNumber from 'bignumber.js';
-import { ClientRequestFactory } from './cbor';
 import { AssetInfo, ChainInfo, GetAssetsInput, HibitApiResponse, PageResponse, TransactionType } from './types';
 import {
   getV1Assets,
@@ -46,6 +45,7 @@ import {
   Trade
 } from './types/market';
 import { SubmitSpotOrderInput } from './types/order';
+import { ClientRequestFactory } from './TransactionManager.ts';
 
 /**
  * Interface representing the Hibit API.
