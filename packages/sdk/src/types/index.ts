@@ -1,8 +1,11 @@
 import BigNumber from 'bignumber.js';
-import { cborBigUint, cborIndex } from '../serialize/decorator.ts';
 
 export type HexString = string;
 export type { ChainInfo } from './chain';
+export type * from './asset';
+export type * from './enums';
+export type * from './market';
+export type * from './order';
 export type { AssetInfo, SubAssetInfo, GetAssetsInput } from './asset';
 export type { Transaction } from './tx';
 export type HibitApiResponse = { code?: number; message?: string | null };
@@ -217,119 +220,4 @@ export class TransactionType {
     }
     return this.value.isEqualTo(other.value);
   }
-}
-
-/**
- * ex3 key signature schema
- */
-export enum SignaturesSchema {
-  Secp256k1
-}
-
-export enum OrderCategory {
-  LimitOrder,
-  SwapOrder
-}
-
-export class CreateSpotOrderInput {
-  @cborIndex(0)
-  @cborBigUint()
-  //@ts-ignore
-  public orderCategory: OrderCategory;
-  @cborIndex(1)
-  //@ts-ignore
-  public marketId: BigNumber;
-  @cborIndex(2)
-  public limitOrderDetails?: LimitOrderDetails;
-  @cborIndex(3)
-  public swapV2OrderDetails?: SwapV2OrderDetails;
-
-  public constructor(init?: Partial<CreateSpotOrderInput>) {
-    Object.assign(this, init);
-  }
-}
-
-export class LimitOrderDetails {
-  @cborIndex(0)
-  @cborBigUint()
-  //@ts-ignore
-  public orderSide: OrderSide;
-  @cborIndex(1)
-  //@ts-ignore
-  public price: BigNumber;
-  @cborIndex(2)
-  //@ts-ignore
-  public volume: BigNumber;
-
-  public constructor(init?: Partial<LimitOrderDetails>) {
-    Object.assign(this, init);
-  }
-}
-
-export enum SwapV2ExactTokensType {
-  Source,
-  Target
-}
-
-export class SwapV2OrderDetails {
-  @cborIndex(0)
-  //@ts-ignore
-  public exactTokens: BigNumber;
-  @cborIndex(1)
-  @cborBigUint()
-  //@ts-ignore
-  public exactTokensType: SwapV2ExactTokensType;
-  @cborIndex(2)
-  @cborBigUint()
-  //@ts-ignore
-  public orderSide: OrderSide;
-  @cborIndex(3)
-  public minOut?: BigNumber;
-  @cborIndex(4)
-  public maxIn?: BigNumber;
-
-  public constructor(init?: Partial<SwapV2OrderDetails>) {
-    Object.assign(this, init);
-  }
-}
-
-export class CancelOrdersInput {
-  @cborIndex(0)
-  //@ts-ignore
-  public marketId: BigNumber;
-  @cborIndex(1)
-  public orderId?: string;
-  @cborIndex(2)
-  @cborBigUint()
-  public orderSide?: OrderSide;
-  @cborIndex(3)
-  public isCancelAll: boolean;
-
-  public constructor(init?: Partial<CancelOrdersInput>) {
-    this.isCancelAll = false;
-    Object.assign(this, init);
-  }
-}
-
-export enum OrderSide {
-  Ask = 1,
-  Bid = 2
-}
-
-export enum TickSpaceIndex {
-  OneMinute = 1,
-  FiveMinutes = 2,
-  FifteenMinutes = 3,
-  ThirtyMinutes = 4,
-  OneHour = 5,
-  FourHours = 6,
-  OneDay = 7,
-  OneWeek = 8,
-  OneMonth = 9
-}
-
-export enum OrderStatus {
-  Created = 0,
-  Fulfilled = 1,
-  Cancelled = 2
 }

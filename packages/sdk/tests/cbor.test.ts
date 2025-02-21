@@ -1,12 +1,30 @@
 import BigNumber from 'bignumber.js';
+import { test, expect, it } from 'vitest';
 import { cborIndex } from '../src/serialize/decorator';
 import { HibitChainSerializer } from '../src/serialize/serializer';
-import { test, expect } from 'vitest';
 
 class TestCborData {
   @cborIndex(0)
   //@ts-ignore
   public value1: BigNumber;
+  @cborIndex(1)
+  //@ts-ignore
+  public value2: string;
+}
+
+class TestCborDataWithBigInt {
+  @cborIndex(0)
+  //@ts-ignore
+  public value1: bigint;
+  @cborIndex(1)
+  //@ts-ignore
+  public value2: string;
+}
+
+class TestCborDataWithNumber {
+  @cborIndex(0)
+  //@ts-ignore
+  public value1: number;
   @cborIndex(1)
   //@ts-ignore
   public value2: string;
@@ -41,7 +59,7 @@ class TrasnsferTxItem {
   public value: BigNumber;
 }
 
-class TrasnsferTx {
+class TransferTx {
   @cborIndex(0)
   //@ts-ignore
   public assetId: BigNumber;
@@ -64,6 +82,26 @@ test('ParentCborData', () => {
   expect(result).toEqual([[new BigNumber(10026), '100.26'], 'value2']);
 });
 
+it('Test number & bigint & big number', () => {
+  const testCborDataWithBigInt = new TestCborDataWithBigInt();
+  testCborDataWithBigInt.value2 = 'value2';
+  testCborDataWithBigInt.value1 = BigInt(10026);
+  const resultOfBigInt = HibitChainSerializer.Encode(testCborDataWithBigInt);
+
+  const testCborDataWithNumber = new TestCborDataWithNumber();
+  testCborDataWithNumber.value2 = 'value2';
+  testCborDataWithNumber.value1 = 10026;
+  const resultOfNumber = HibitChainSerializer.Encode(testCborDataWithNumber);
+
+  const testCborDataWithBigNumber = new TestCborData();
+  testCborDataWithBigNumber.value1 = new BigNumber(10026);
+  testCborDataWithBigNumber.value2 = 'value2';
+  let resultOfBigNumber = HibitChainSerializer.Encode(testCborDataWithBigNumber);
+
+  expect(resultOfBigInt).deep.equals(resultOfNumber);
+  expect(resultOfBigInt).deep.equals(resultOfBigNumber);
+});
+
 test('null data', () => {
   const parentData = new ParentCborData2();
   parentData.value2 = 'value2';
@@ -72,7 +110,7 @@ test('null data', () => {
 });
 
 test('encode with byte[]', () => {
-  const tx = new TrasnsferTx();
+  const tx = new TransferTx();
   tx.assetId = BigNumber('10000');
   tx.items = [new TrasnsferTxItem(BigNumber('9999'), new BigNumber(1234))];
   tx.memo = new Uint8Array([255, 0, 255]);

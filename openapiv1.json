@@ -524,7 +524,7 @@
           {
             "name": "Limit",
             "in": "query",
-            "description": "limit of the depth.",
+            "description": "limit of the depth.\r\n<remarks> Range from 1 to 100. </remarks>",
             "schema": {
               "maximum": 100,
               "minimum": 1,
@@ -2619,6 +2619,7 @@
                 "type": "string"
               }
             },
+            "description": "Asks are sorted in ascending order by price.\r\n<remarks>\r\nIn each list, the first element is the price and the second element is the volume.\r\n</remarks>",
             "nullable": true
           },
           "bids": {
@@ -2629,6 +2630,7 @@
                 "type": "string"
               }
             },
+            "description": "Bids are sorted in descending order by price.\r\n<remarks>\r\nIn each list, the first element is the price and the second element is the volume.\r\n</remarks>",
             "nullable": true
           }
         },
@@ -2711,7 +2713,9 @@
             "description": "The total volume of liquidity in the pool."
           },
           "poolLiquidity": {
-            "$ref": "#/components/schemas/Ex3.Models.SwapV2Liquidity"
+            "type": "string",
+            "description": "The liquidity information of the pool.",
+            "format": "string"
           }
         },
         "additionalProperties": false,
@@ -3380,19 +3384,6 @@
         "x-enum-varnames": ["Ask", "Bid"],
         "x-enumDescriptions": [null, "Ask", "Bid"]
       },
-      "Ex3.Models.SwapV2Liquidity": {
-        "type": "object",
-        "properties": {
-          "value": {
-            "$ref": "#/components/schemas/System.Numerics.BigInteger"
-          },
-          "isZero": {
-            "type": "boolean",
-            "readOnly": true
-          }
-        },
-        "additionalProperties": false
-      },
       "Ex3.Repository.History.Entities.OrderStatus": {
         "enum": [0, 1, 2],
         "type": "integer",
@@ -3421,33 +3412,6 @@
           },
           "signature": {
             "type": "string"
-          }
-        },
-        "additionalProperties": false
-      },
-      "System.Numerics.BigInteger": {
-        "type": "object",
-        "properties": {
-          "isPowerOfTwo": {
-            "type": "boolean",
-            "readOnly": true
-          },
-          "isZero": {
-            "type": "boolean",
-            "readOnly": true
-          },
-          "isOne": {
-            "type": "boolean",
-            "readOnly": true
-          },
-          "isEven": {
-            "type": "boolean",
-            "readOnly": true
-          },
-          "sign": {
-            "type": "integer",
-            "format": "int32",
-            "readOnly": true
           }
         },
         "additionalProperties": false

@@ -1,8 +1,9 @@
+// @ts-ignore
+import cbor from 'borc';
 import { Transaction, TransactionType, UserKeyPair } from './types';
 import * as secp from '@noble/secp256k1';
 import { Buffer } from 'buffer';
 import { Signature } from '@noble/secp256k1';
-import BigNumber from 'bignumber.js';
 import { HibitChainSerializer } from './serialize/serializer.ts';
 
 export class ClientRequestFactory {
@@ -23,8 +24,8 @@ export class ClientRequestFactory {
   static async createRequest<T>(
     txType: TransactionType,
     version: number,
-    userId: BigNumber,
-    nonce: BigNumber,
+    userId: bigint,
+    nonce: bigint,
     data: T,
     userKeyPair: UserKeyPair
   ): Promise<Transaction> {

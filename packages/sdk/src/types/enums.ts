@@ -102,3 +102,72 @@ export enum DepthIndex {
   L5 = 5,
   L6 = 6
 }
+
+/**
+ * Enum representing the status of an order.
+ *
+ * @enum {number}
+ * @property {number} Created - The order has been created.
+ * @property {number} Fulfilled - The order has been fulfilled.
+ * @property {number} Cancelled - The order has been cancelled.
+ */
+export enum OrderStatus {
+  Created = 0,
+  Fulfilled = 1,
+  Cancelled = 2
+}
+
+/**
+ * Enum representing the different categories of orders.
+ *
+ * @enum {number}
+ * @property {number} LimitOrder - A limit order.
+ * @property {number} SwapOrder - A swap order.
+ */
+export enum OrderCategory {
+  LimitOrder,
+  SwapOrder
+}
+
+/**
+ * Enum representing signature schema types for ex3 key signatures.
+ * Used for cryptographic operations in the trading system.
+ *
+ * @enum {number}
+ * @property {number} Secp256k1 - The secp256k1 elliptic curve signature schema
+ */
+export enum SignaturesSchema {
+  /**
+   * The secp256k1 elliptic curve signature schema.
+   * Used for Bitcoin-style public key cryptography.
+   */
+  Secp256k1
+}
+
+/**
+ * Enum representing the token type specification for V2 swaps.
+ * Determines whether the exact amount specified is for input or output tokens.
+ *
+ * @enum {number}
+ * @property {number} Source - Exact amount specified is input tokens
+ * @property {number} Target - Exact amount specified is output tokens
+ *
+ * @example
+ * ```typescript
+ * // For exact input amount
+ * const swapType = SwapV2ExactTokensType.Source;
+ *
+ * // For exact output amount
+ * const swapType = SwapV2ExactTokensType.Target;
+ * ```
+ */
+export enum SwapV2ExactTokensType {
+  /**
+   * Indicates the exact amount specified is for source/input tokens
+   */
+  Source,
+  /**
+   * Indicates the exact amount specified is for target/output tokens
+   */
+  Target
+}

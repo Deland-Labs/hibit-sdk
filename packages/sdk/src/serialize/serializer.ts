@@ -52,7 +52,7 @@ export class HibitChainSerializer {
   private static processPrimitive(value: any, data: any, name: string): any {
     const isBigUint = ReflectHelper.isCborBigUint(data, name);
 
-    if (isBigUint) {
+    if (isBigUint || typeof value === 'bigint' || typeof value === 'number') {
       return value == null ? null : BigNumber(value.toString());
     } else {
       return value;
