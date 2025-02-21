@@ -1,6 +1,4 @@
 import BigNumber from 'bignumber.js';
-import { cborBigInt, cborIndex } from '../cbor.metadata';
-import { OrderSide } from './enums';
 export type { ChainInfo } from './chain';
 export type * from './asset';
 export type * from './enums';
@@ -116,7 +114,6 @@ export class ChainNetwork {
     return this.value.isEqualTo(other.value);
   }
 }
-
 export class ChainAssetType {
   value: BigNumber;
 
@@ -154,7 +151,6 @@ export class ChainAssetType {
     return this.value.isEqualTo(other.value);
   }
 }
-
 export class TransactionType {
   value: BigNumber;
 
@@ -215,23 +211,5 @@ export class TransactionType {
       return false;
     }
     return this.value.isEqualTo(other.value);
-  }
-}
-
-export class CancelOrdersInput {
-  @cborIndex(0)
-  // @ts-ignore
-  public marketId: BigNumber;
-  @cborIndex(1)
-  public orderId?: string;
-  @cborIndex(2)
-  @cborBigInt()
-  public orderSide?: OrderSide;
-  @cborIndex(3)
-  public isCancelAll: boolean;
-
-  public constructor(init?: Partial<CancelOrdersInput>) {
-    this.isCancelAll = false;
-    Object.assign(this, init);
   }
 }

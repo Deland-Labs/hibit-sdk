@@ -1,14 +1,6 @@
 import BigNumber from 'bignumber.js';
 import { ClientRequestFactory } from './cbor';
-import {
-  AssetInfo,
-  ChainInfo,
-  GetAssetsInput,
-  HibitApiResponse,
-  PageResponse,
-  SubmitSpotOrderInput,
-  TransactionType
-} from './types';
+import { AssetInfo, ChainInfo, GetAssetsInput, HibitApiResponse, PageResponse, TransactionType } from './types';
 import {
   getV1Assets,
   getV1Chains,
@@ -20,25 +12,40 @@ import {
   postV1TxSubmitSpotOrder,
   type PostV1TxSubmitSpotOrderData,
   getV1MarketsTicker,
-  getV1MarketKline
+  getV1MarketKline,
+  getV1MarketDepth,
+  getV1MarketsSwap,
+  getV1MarketTrade
 } from './client';
 import { Options } from '@hey-api/client-fetch';
 import { client } from './client/client.gen';
 import { mapChainInfo } from './types/chain';
 import { mapAssetInfo, mapGetAssetsInput } from './types/asset';
 import {
+  GetMarketDepthInput,
   GetMarketKlineInput,
   GetMarketsInput,
+  GetMarketTradeInput,
+  mapGetMarketDepthInput,
   mapGetMarketKlineInput,
   mapGetMarketsInput,
+  mapGetMarketsSwapInfoInput,
   mapGetMarketsTickerInput,
+  mapGetMarketTradeInput,
+  mapMarketDepth,
   mapMarketInfo,
   mapMarketKlineInfo,
+  mapMarketSwapInfo,
   mapMarketTickerInfo,
+  mapMarketTradeInfo,
+  MarketDepth,
   MarketInfo,
   MarketKlineItem,
-  MarketTickerInfo
+  MarketSwapInfo,
+  MarketTickerInfo,
+  Trade
 } from './types/market';
+import { SubmitSpotOrderInput } from './types/order';
 
 /**
  * Interface representing the Hibit API.
@@ -84,18 +91,42 @@ export interface IHibitApi {
   /**
    * Get the ticker information for markets.
    *
-   * @param {string | bigint} marketId - The market id to get the ticker information for. If not provided, all market tickers are returned.
+   * @param { bigint} marketId - The market id to get the ticker information for. If not provided, all market tickers are returned.
    * @returns {Promise<PageResponse<MarketTickerInfo>>} A promise that resolves to the list of market tickers.
    */
-  getMarketsTicker(marketId?: string | bigint): Promise<Array<MarketTickerInfo>>;
+  getMarketsTicker(marketId?: bigint): Promise<Array<MarketTickerInfo>>;
 
   /**
-   * Get the kline data for markets.
+   * Get the swap information for markets.
+   *
+   * @param {bigint} marketId - The market id to get the swap information for. If not provided, all market swap information is returned.
+   * @returns {Promise<Array<MarketSwapInfo>>} A promise that resolves to the list of market swap information.
+   */
+  getMarketsSwapInfo(marketId?: bigint): Promise<Array<MarketSwapInfo>>;
+
+  /**
+   * Get the market depth.
+   *
+   * @param {GetMarketDepthInput} input - The input parameters for getting market depth.
+   * @returns {Promise<MarketDepth>} A promise that resolves to the market depth.
+   */
+  getMarketDepth(input: GetMarketDepthInput): Promise<MarketDepth>;
+
+  /**
+   * Get the kline data for market.
    *
    * @param {GetMarketKlineInput} input - The input parameters for getting market klines.
    * @returns {Promise<PageResponse<MarketKlineItem>>} A promise that resolves to the list of market klines.
    */
-  getMarketsKline(input: GetMarketKlineInput): Promise<PageResponse<MarketKlineItem>>;
+  getMarketKline(input: GetMarketKlineInput): Promise<PageResponse<MarketKlineItem>>;
+
+  /**
+   * Get the recent trades for markets.
+   *
+   * @param {GetMarketTradeInput} input - The input parameters for getting market trades.
+   * @returns {Promise<Array<Trade>>} A promise that resolves to the list of market trades.
+   */
+  getMarketTrade(input?: GetMarketTradeInput): Promise<PageResponse<Trade>>;
 
   /**
    * Create a spot order.
@@ -180,7 +211,25 @@ export class HibitApi implements IHibitApi {
     return response.data!.data!.items!.map((ticker) => mapMarketTickerInfo(ticker));
   }
 
-  async getMarketsKline(input: GetMarketKlineInput): Promise<PageResponse<MarketKlineItem>> {
+  async getMarketsSwapInfo(marketId?: bigint): Promise<Array<MarketSwapInfo>> {
+    const apiName = 'getMarketsSwapInfo';
+    const response = await getV1MarketsSwap(mapGetMarketsSwapInfoInput(marketId));
+
+    this.ensureSuccess(apiName, response.data);
+
+    return response.data!.data!.items!.map((swap) => mapMarketSwapInfo(swap));
+  }
+
+  async getMarketDepth(input: GetMarketDepthInput): Promise<MarketDepth> {
+    const apiName = 'getMarketDepth';
+    const response = await getV1MarketDepth(mapGetMarketDepthInput(input));
+
+    this.ensureSuccess(apiName, response.data);
+
+    return mapMarketDepth(response.data!.data!);
+  }
+
+  async getMarketKline(input: GetMarketKlineInput): Promise<PageResponse<MarketKlineItem>> {
     const apiName = 'getMarketsKline';
     const response = await getV1MarketKline(mapGetMarketKlineInput(input));
 
@@ -192,7 +241,27 @@ export class HibitApi implements IHibitApi {
     };
   }
 
+  async getMarketTrade(input: GetMarketTradeInput): Promise<PageResponse<Trade>> {
+    const apiName = 'getMarketTrade';
+    const response = await getV1MarketTrade(mapGetMarketTradeInput(input));
+
+    this.ensureSuccess(apiName, response.data);
+    return {
+      items: response.data!.data!.items!.map((trade) => mapMarketTradeInfo(trade)),
+      totalCount: response.data!.data!.totalCount!
+    };
+  }
+
   /*-------------market end---------------*/
+
+  async submitSpotOrder(input: SubmitSpotOrderInput): Promise<void> {
+    const options: Options<PostV1TxSubmitSpotOrderData, boolean> = {};
+
+    await this.configTxRequest(TransactionType.CreateSpotOrder, input, options);
+    const resp = await postV1TxSubmitSpotOrder(options);
+
+    this.ensureSuccess('submitSpotOrder', resp.data);
+  }
 
   // @ts-ignore
   private options: HibitApiOptions;
@@ -217,15 +286,6 @@ export class HibitApi implements IHibitApi {
     }
 
     throw new Error('Get user assets failed');
-  }
-
-  async submitSpotOrder(input: SubmitSpotOrderInput): Promise<void> {
-    const options: Options<PostV1TxSubmitSpotOrderData, boolean> = {};
-
-    await this.configTxRequest(TransactionType.CreateSpotOrder, input, options);
-    const resp = await postV1TxSubmitSpotOrder(options);
-
-    this.ensureSuccess('submitSpotOrder', resp.data);
   }
 
   async getNonce(): Promise<BigNumber> {

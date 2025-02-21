@@ -4,10 +4,8 @@ import {
   Ex3ExchangeOpenApiAppServicesWalletOrderTradeListItem,
   GetV1OrdersData,
   GetV1OrdersTradesData
-} from '../client';
-import { OrderCategory, OrderSide, OrderStatus } from './enums';
-import { cborIndex, cborBigInt } from '../cbor.metadata';
-import BigNumber from 'bignumber.js';
+} from '../../client';
+import { OrderCategory, OrderSide, OrderStatus, SwapV2ExactTokensType } from '../enums';
 
 export type GetOrdersInput = {
   /**
@@ -136,183 +134,81 @@ export type FillRecord = {
   timestamp: number;
 };
 
-/**
- * Input class for creating a new spot order in the trading system.
- * Supports both limit orders and swap V2 orders through their respective detail objects.
- *
- * @class SubmitSpotOrderInput
- * @example
- * ```typescript
- * const spotOrder = new SubmitSpotOrderInput({
- *   orderCategory: OrderCategory.LIMIT,
- *   marketId: BigNumber.from("1234"),
- *   limitOrderDetails: new LimitOrderDetails({
- *     orderSide: OrderSide.BUY,
- *     price: BigNumber.from("100"),
- *     volume: BigNumber.from("10")
- *   })
- * });
- * ```
- */
-export class SubmitSpotOrderInput {
+export type SubmitSpotOrderInput = {
   /**
    * The category of the order (e.g., LIMIT, MARKET, SWAP_V2)
    * @decorators {@cborIndex(0)} {@cborBigInt()}
    */
-  @cborIndex(0)
-  @cborBigInt()
-  // @ts-ignore
-  public orderCategory: OrderCategory;
+  orderCategory: OrderCategory;
 
   /**
    * The ID of the market where the order will be placed
    * @decorators {@cborIndex(1)}
    */
-  @cborIndex(1)
-  // @ts-ignore
-  public marketId: bigint;
+  marketId: bigint;
 
   /**
    * Optional details specific to limit orders
    * Required when orderCategory is OrderCategory.LIMIT
-   * @decorators {@cborIndex(2)}
    */
-  @cborIndex(2)
-  public limitOrderDetails?: LimitOrderDetails;
+  limitOrderDetails?: LimitOrderDetails;
 
   /**
    * Optional details specific to swap V2 orders
    * Required when orderCategory is OrderCategory.SWAP_V2
-   * @decorators {@cborIndex(3)}
    */
-  @cborIndex(3)
-  public swapV2OrderDetails?: SwapV2OrderDetails;
+  swapV2OrderDetails?: SwapV2OrderDetails;
+};
 
-  /**
-   * Creates a new instance of SubmitSpotOrderInput
-   * @param {Partial<SubmitSpotOrderInput>} init - Initial values for the spot order
-   */
-  constructor(init?: Partial<SubmitSpotOrderInput>) {
-    Object.assign(this, init);
-  }
-}
-
-/**
- * Details for a limit order in the trading system.
- * Used when creating a new spot order with OrderCategory.LIMIT.
- *
- * @class LimitOrderDetails
- * @example
- * ```typescript
- * const limitDetails = new LimitOrderDetails({
- *   orderSide: OrderSide.BUY,
- *   price: BigNumber.from("100"),
- *   volume: BigNumber.from("10")
- * });
- * ```
- */
-export class LimitOrderDetails {
+export type LimitOrderDetails = {
   /**
    * The side of the order (buy/sell)
-   * @decorators {@cborIndex(0)} {@cborBigInt()}
    */
-  @cborIndex(0)
-  @cborBigInt()
-  // @ts-ignore
-  public orderSide: OrderSide;
+  orderSide: OrderSide;
 
   /**
    * The limit price for the order
-   * @decorators {@cborIndex(1)}
    */
-  @cborIndex(1)
-  // @ts-ignore
-  public price: BigNumber;
+  price: number;
 
   /**
    * The volume of tokens to trade
-   * @decorators {@cborIndex(2)}
    */
-  @cborIndex(2)
-  // @ts-ignore
-  public volume: BigNumber;
-
-  /**
-   * Creates a new instance of LimitOrderDetails
-   * @param {Partial<LimitOrderDetails>} init - Initial values for the limit order details
-   */
-  public constructor(init?: Partial<LimitOrderDetails>) {
-    Object.assign(this, init);
-  }
-}
+  volume: number;
+};
 
 /**
  * Details for a V2 swap order in the trading system.
  * Used when creating a new spot order with OrderCategory.SWAP_V2.
- *
- * @class SwapV2OrderDetails
- * @example
- * ```typescript
- * const swapDetails = new SwapV2OrderDetails({
- *   exactTokens: BigNumber.from("100"),
- *   exactTokensType: SwapV2ExactTokensType.INPUT,
- *   orderSide: OrderSide.BUY,
- *   minOut: BigNumber.from("95"),
- *   maxIn: BigNumber.from("105")
- * });
- * ```
  */
-export class SwapV2OrderDetails {
+export type SwapV2OrderDetails = {
   /**
    * The exact amount of tokens to swap
-   * @decorators {@cborIndex(0)}
    */
-  @cborIndex(0)
-  // @ts-ignore
-  public exactTokens: BigNumber;
+  exactTokens: number;
 
   /**
    * Specifies whether exactTokens is input or output amount
-   * @decorators {@cborIndex(1)} {@cborBigInt()}
    */
-  @cborIndex(1)
-  @cborBigInt()
-  // @ts-ignore
-  public exactTokensType: SwapV2ExactTokensType;
+  exactTokensType: SwapV2ExactTokensType;
 
   /**
    * The side of the swap order (buy/sell)
-   * @decorators {@cborIndex(2)} {@cborBigInt()}
    */
-  @cborIndex(2)
-  @cborBigInt()
-  // @ts-ignore
-  public orderSide: OrderSide;
+  orderSide: OrderSide;
 
   /**
    * Minimum output amount for the swap
    * Required when exactTokensType is INPUT
-   * @decorators {@cborIndex(3)}
    */
-  @cborIndex(3)
-  public minOut?: BigNumber;
+  minOut?: number;
 
   /**
    * Maximum input amount for the swap
    * Required when exactTokensType is OUTPUT
-   * @decorators {@cborIndex(4)}
    */
-  @cborIndex(4)
-  public maxIn?: BigNumber;
-
-  /**
-   * Creates a new instance of SwapV2OrderDetails
-   * @param {Partial<SwapV2OrderDetails>} init - Initial values for the swap order details
-   */
-  public constructor(init?: Partial<SwapV2OrderDetails>) {
-    Object.assign(this, init);
-  }
-}
+  maxIn?: number;
+};
 
 export function mapGetOrderInput(data: GetOrdersInput): Options<GetV1OrdersData, boolean> {
   return {
