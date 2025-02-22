@@ -1,3 +1,46 @@
+export enum Version {
+  V0 = 0
+}
+
+export enum TransactionType {
+  WalletRegister = 100,
+  Deposit = 200,
+  Withdraw = 201,
+  Transfer = 300,
+  ResetMainSecret = 400,
+  CreateApiSecret = 401,
+  DestroyApiSecret = 402,
+  CreateSpotOrder = 500,
+  CancelSpotOrder = 501,
+  AddAmmV2Liquidity = 600,
+  RemoveAmmV2Liquidity = 601,
+  RegisterAsset = 700,
+  UpdateGlobalWithdrawalFeeTo = 701,
+  UpdateAssetWithdrawalFeeTo = 702,
+  UpdateChainConfirmationTimes = 800,
+  RegisterMarket = 900,
+  UpdateMarketTradingSettings = 901,
+  UpdateSpotMarketInitialFeeTo = 902,
+  UpdateMarketFeeTo = 903,
+  UpdateMarketInitialFee = 904,
+  UpdateMarketFee = 905,
+  ClaimSpotMarketTradingFee = 906,
+  UpdateSpotMarketRoyalty = 907,
+  ClaimSpotMarketRoyalty = 908,
+  AssetAccountBinding = 1000,
+  AssetAccountUnbinding = 1001,
+  SubmitMemeOrder = 1100,
+  CancelMemeOrder = 1101,
+  RegisterMemeMarket = 1200,
+  UpdateMemeMarketInitialTradingSettings = 1201,
+  UpdateMemeMarketTradingSettings = 1202,
+  UpdateMemeMarketInitialFeeTo = 1203,
+  UpdateMemeMarketFeeTo = 1204,
+  UpdateMemeMarketInitialTradingFee = 1205,
+  UpdateMemeMarketTradingFee = 1206,
+  ClaimMemeMarketTradingFee = 1207
+}
+
 export enum WalletSignatureSchema {
   BtcEcdsa = '0x3e8',
   EvmEcdsa = '0x3e9',

@@ -30,6 +30,7 @@
   },
   "dependencies": {
     "@hey-api/client-fetch": "^0.8.1",
+    "@noble/hashes": "^1.7.1",
     "@noble/secp256k1": "^2.0.0",
     "bignumber.js": "^9.1.2",
     "borc": "^3.0.0",

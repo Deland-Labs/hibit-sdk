@@ -45,7 +45,7 @@ import {
   Trade
 } from './types/market';
 import { SubmitSpotOrderInput } from './types/order';
-import { ClientRequestFactory } from './TransactionManager.ts';
+import { TransactionManager } from './TransactionManager.ts';
 
 /**
  * Interface representing the Hibit API.
@@ -278,7 +278,6 @@ export class HibitApi implements IHibitApi {
 
   async getWalletBalance(): Promise<Map<string, BigNumber>> {
     const options: Options<GetV1WalletBalanceData, boolean> = {};
-    await this.configEx3L2Request(options);
     const resp = await getV1WalletBalance(options);
     if (resp.data?.code == 200) {
       const result = new Map<string, BigNumber>();
@@ -306,23 +305,13 @@ export class HibitApi implements IHibitApi {
     }
   }
 
-  private async configEx3L2Request(sendOptions: Options): Promise<void> {
-    if (!this.options.privateKey) {
-      throw new Error('Invalid key pair');
-    }
-    const token = await ClientRequestFactory.createEx3L2HeaderToken({
-      privateKey: this.options.privateKey
-    });
-    sendOptions.auth = () => `Ex3L2 ${token}`;
-  }
-
   private async configTxRequest<TInput>(txType: TransactionType, input: TInput, sendOptions: Options): Promise<void> {
     if (!this.options.privateKey) {
       throw new Error('Invalid key pair');
     }
 
     let nonce = await this.getNonce();
-    sendOptions.body = await ClientRequestFactory.createRequest(
+    sendOptions.body = await TransactionManager.createTransaction(
       txType,
       0,
       this.options.walletId,

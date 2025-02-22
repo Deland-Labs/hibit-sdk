@@ -4,10 +4,11 @@ export type HexString = string;
 export type { ChainInfo } from './chain';
 export type * from './asset';
 export type * from './enums';
+export * from './enums';
 export type * from './market';
 export type * from './order';
 export type { AssetInfo, SubAssetInfo, GetAssetsInput } from './asset';
-export type { Transaction } from './tx';
+export { Transaction } from './tx';
 export type HibitApiResponse = { code?: number; message?: string | null };
 export interface UserKeyPair {
   privateKey: string;
@@ -152,69 +153,6 @@ export class ChainAssetType {
   }
 
   equals(other: ChainAssetType): boolean {
-    if (!other) {
-      return false;
-    }
-    return this.value.isEqualTo(other.value);
-  }
-}
-
-export class TransactionType {
-  value: BigNumber;
-
-  constructor(value: BigNumber) {
-    this.value = value;
-  }
-
-  static WalletRegister = new TransactionType(BigNumber(100));
-  static Deposit = new TransactionType(BigNumber(200));
-  static Withdraw = new TransactionType(BigNumber(201));
-  static Transfer = new TransactionType(BigNumber(300));
-  static ResetMainSecret = new TransactionType(BigNumber(400));
-  static CreateApiSecret = new TransactionType(BigNumber(401));
-  static DestroyApiSecret = new TransactionType(BigNumber(402));
-  static CreateSpotOrder = new TransactionType(BigNumber(500));
-  static CancelSpotOrder = new TransactionType(BigNumber(501));
-  static AddAmmV2Liquidity = new TransactionType(BigNumber(600));
-  static RemoveAmmV2Liquidity = new TransactionType(BigNumber(601));
-  static RegisterAsset = new TransactionType(BigNumber(700));
-  static UpdateGlobalWithdrawalFeeTo = new TransactionType(BigNumber(701));
-  static UpdateAssetWithdrawalFeeTo = new TransactionType(BigNumber(702));
-  static UpdateChainConfirmationTimes = new TransactionType(BigNumber(800));
-  static RegisterMarket = new TransactionType(BigNumber(900));
-  static UpdateMarketTradingSettings = new TransactionType(BigNumber(901));
-  static UpdateSpotMarketInitialFeeTo = new TransactionType(BigNumber(902));
-  static UpdateMarketFeeTo = new TransactionType(BigNumber(903));
-  static UpdateMarketInitialFee = new TransactionType(BigNumber(904));
-  static UpdateMarketFee = new TransactionType(BigNumber(905));
-  static ClaimSpotMarketTradingFee = new TransactionType(BigNumber(906));
-  static UpdateSpotMarketRoyalty = new TransactionType(BigNumber(907));
-  static ClaimSpotMarketRoyalty = new TransactionType(BigNumber(908));
-  static AssetAccountBinding = new TransactionType(BigNumber(1000));
-  static AssetAccountUnbinding = new TransactionType(BigNumber(1001));
-  static SubmitMemeOrder = new TransactionType(BigNumber(1100));
-  static CancelMemeOrder = new TransactionType(BigNumber(1101));
-  static RegisterMemeMarket = new TransactionType(BigNumber(1200));
-  static UpdateMemeMarketInitialTradingSettings = new TransactionType(BigNumber(1201));
-  static UpdateMemeMarketTradingSettings = new TransactionType(BigNumber(1202));
-  static UpdateMemeMarketInitialFeeTo = new TransactionType(BigNumber(1203));
-  static UpdateMemeMarketFeeTo = new TransactionType(BigNumber(1204));
-  static UpdateMemeMarketInitialTradingFee = new TransactionType(BigNumber(1205));
-  static UpdateMemeMarketTradingFee = new TransactionType(BigNumber(1206));
-  static ClaimMemeMarketTradingFee = new TransactionType(BigNumber(1207));
-
-  static fromString(value: string): TransactionType {
-    if (!value) {
-      throw new Error('Invalid transaction type');
-    }
-    return new TransactionType(BigNumber(value));
-  }
-
-  toString(): string {
-    return this.value.toString();
-  }
-
-  equals(other: TransactionType): boolean {
     if (!other) {
       return false;
     }

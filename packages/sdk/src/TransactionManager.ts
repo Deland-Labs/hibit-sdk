@@ -1,54 +1,77 @@
-// @ts-ignore
-import cbor from 'borc';
 import { Transaction, TransactionType, UserKeyPair } from './types';
-import * as secp from '@noble/secp256k1';
-import { Buffer } from 'buffer';
-import { Signature } from '@noble/secp256k1';
-import { HibitChainSerializer } from './serialize/serializer.ts';
+import { TxPayloadEncoder } from './encoder';
 
-export class ClientRequestFactory {
-  static async createEx3L2HeaderToken(userKeyPair: UserKeyPair): Promise<string> {
-    const msg = `Ex3L2:${new Date().getTime()}`;
-    const hash = await secp.utils.sha256(Buffer.from(msg, 'utf-8'));
-    let [signature, recId] = await secp.sign(hash, Buffer.from(userKeyPair.privateKey, 'hex'), {
-      recovered: true
-    });
-    const s = Signature.fromDER(Buffer.from(signature).toString('hex'));
-
-    // concat recId to signature
-    const recoverableSignature = Buffer.concat([s.toCompactRawBytes(), Buffer.from([recId])]);
-    // hasHex.messageHex:signatureHex
-    return `${Buffer.from(msg).toString('hex')}.${Buffer.from(recoverableSignature).toString('hex')}`;
+/**
+ * Manages transaction creation and signing operations.
+ * Provides utilities for creating and signing transactions with user key pair.
+ *
+ * @class TransactionManager
+ * @example
+ * ```typescript
+ * const tx = TransactionManager.createTransaction(
+ *   TransactionType.Transfer,
+ *   Version.V0,
+ *   BigInt("123"),
+ *   BigInt("1"),
+ *   transferData
+ * );
+ * const signedTx = TransactionManager.sign(tx, userKeyPair);
+ * ```
+ */
+export class TransactionManager {
+  /**
+   * Creates a new transaction with the specified parameters and encoded payload.
+   *
+   * @template T - The type of the transaction data
+   * @param {TransactionType} type - The type of transaction to create
+   * @param {number} version - The transaction protocol version
+   * @param {bigint} from - The sender's wallet ID
+   * @param {bigint} nonce - Transaction sequence number
+   * @param {T} data - The transaction data to encode
+   * @returns {Transaction} A new transaction instance with encoded payload
+   *
+   * @example
+   * ```typescript
+   * const transferData = { to: "0x123", amount: "100" };
+   * const tx = TransactionManager.createTransaction(
+   *   TransactionType.Transfer,
+   *   Version.V0,
+   *   BigInt("123"),
+   *   BigInt("1"),
+   *   transferData
+   * );
+   * ```
+   */
+  static createTransaction<T>(
+    type: TransactionType,
+    version: number,
+    from: bigint,
+    nonce: bigint,
+    data: T
+  ): Transaction {
+    const payload = TxPayloadEncoder.encode(data);
+    return new Transaction(version, type, from, nonce, payload);
   }
 
-  static async createRequest<T>(
-    txType: TransactionType,
-    version: number,
-    userId: bigint,
-    nonce: bigint,
-    data: T,
-    userKeyPair: UserKeyPair
-  ): Promise<Transaction> {
-    const messageBytes = HibitChainSerializer.Encode(data);
-    let txData = [version, txType.value, userId, nonce, messageBytes];
-    const txBytes = cbor.encode(txData);
-
-    let hash = await secp.utils.sha256(txBytes);
-    let [signature, recId] = await secp.sign(hash, Buffer.from(userKeyPair.privateKey, 'hex'), {
-      recovered: true
-    });
-    const s = Signature.fromDER(Buffer.from(signature).toString('hex'));
-
-    // concat recId to signature
-    const recoverableSignature = Buffer.concat([s.toCompactRawBytes(), Buffer.from([recId])]);
-    return {
-      type: txType,
-      version,
-      userId,
-      nonce,
-      message: Buffer.from(messageBytes).toString('hex'),
-      hash: Buffer.from(hash).toString('hex'),
-      signature: Buffer.from(recoverableSignature).toString('hex')
-    };
+  /**
+   * Signs a transaction using the provided user keypair.
+   * Creates a recoverable signature that includes the recovery ID.
+   *
+   * @param {Transaction} transaction - The transaction to sign
+   * @param {UserKeyPair} userKeyPair - The keypair to sign with
+   * @returns {Transaction} A new transaction instance with the signature attached
+   * @throws {Error} If signing fails or the keypair is invalid
+   *
+   * @example
+   * ```typescript
+   * const userKeyPair = {
+   *   publicKey: "04...",
+   *   privateKey: "..."
+   * };
+   * const signedTx = TransactionManager.sign(tx, userKeyPair);
+   * ```
+   */
+  static sign(transaction: Transaction, userKeyPair: UserKeyPair): Transaction {
+    return transaction.sign(userKeyPair);
   }
 }
