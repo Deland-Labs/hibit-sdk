@@ -18,4 +18,8 @@ class HibitApiError extends Error {
   static throwInvalidResponseError(apiName: string) {
     throw new HibitApiError(`Invalid response: ${apiName}`);
   }
+
+  static throwRequiredPrivKeyError(apiName: string) {
+    throw new HibitApiError(`Private key is required: ${apiName}`);
+  }
 }

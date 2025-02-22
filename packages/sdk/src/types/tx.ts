@@ -2,26 +2,14 @@ import { TransactionType, Version } from './enums.ts';
 import { sha256 } from '@noble/hashes/sha256';
 import { TxPayloadEncoder } from '../encoder';
 import * as secp from '@noble/secp256k1';
-import { UserKeyPair } from './index.ts';
+import { HexString } from './index.ts';
 import { Buffer } from 'buffer';
+import { PostV1TxSubmitSpotOrderData } from '../client/types.gen';
+import { Options } from '@hey-api/client-fetch';
 
 /**
  * Represents a transaction in the system.
  * Handles transaction data encoding, hashing, and signature management.
- *
- * @class Transaction
- * @example
- * ```typescript
- * const tx = new Transaction(
- *   Version.V0,
- *   TransactionType.Transfer,
- *   BigInt("123"),
- *   BigInt("1"),
- *   new Uint8Array([1, 2, 3])
- * );
- * const hash = tx.hash();
- * tx.setSignature(signatureBytes);
- * ```
  */
 export class Transaction {
   /**
@@ -57,13 +45,13 @@ export class Transaction {
   /**
    * Creates a new Transaction instance.
    *
-   * @param {Version} version - The transaction protocol version
    * @param {TransactionType} type - The type of transaction
    * @param {bigint} from - The sender's wallet ID
    * @param {bigint} nonce - Transaction sequence number
    * @param {Uint8Array} payload - Encoded transaction payload
+   * @param {Version} version - The transaction version, defaults to V0
    */
-  constructor(version: Version, type: TransactionType, from: bigint, nonce: bigint, payload: Uint8Array) {
+  constructor(type: TransactionType, from: bigint, nonce: bigint, payload: Uint8Array, version: Version = Version.V0) {
     this.version = version;
     this.type = type;
     this.from = from;
@@ -92,8 +80,27 @@ export class Transaction {
     return sha256(this.toTxDataBytes());
   }
 
-  sign(userKeyPair: UserKeyPair): Transaction {
-    const signature = secp.sign(this.hash(), Buffer.from(userKeyPair.privateKey, 'hex'));
+  /**
+   * Signs the transaction with the provided private key using secp256k1.
+   * The signature includes a recovery ID for public key recovery.
+   *
+   * @param {HexString} privateKey - The private key in hex format to sign the transaction
+   * @returns {Transaction} The transaction instance with the signature attached
+   * @throws {Error} If signing fails or the private key is invalid
+   *
+   * @example
+   * ```typescript
+   * const tx = new Transaction(
+   *   TransactionType.Transfer,
+   *   BigInt("123"),
+   *   BigInt("1"),
+   *   payload
+   * );
+   * tx.sign("0123456789abcdef..."); // hex private key
+   * ```
+   */
+  sign(privateKey: HexString): Transaction {
+    const signature = secp.sign(this.hash(), Buffer.from(privateKey, 'hex'));
 
     // concat recId to signature
     this.signature = Buffer.concat([signature.toCompactRawBytes(), Buffer.from([signature.recovery])]);
@@ -108,4 +115,30 @@ export class Transaction {
   isSigned(): boolean {
     return !!this.signature;
   }
+}
+
+/**
+ * Maps a Transaction instance to the API request format.
+ * Converts internal transaction representation to the format expected by the API.
+ *
+ * @param {Transaction} transaction - The transaction to convert
+ * @returns {Ex3TransactionsL2Request} The formatted API request object
+ * @throws {Error} If the transaction is not signed
+ */
+export function mapTransactionToApiRequest(transaction: Transaction): Options<PostV1TxSubmitSpotOrderData, boolean> {
+  if (!transaction.isSigned()) {
+    throw new Error('Transaction must be signed before mapping to API request');
+  }
+
+  const options = {} as Options<PostV1TxSubmitSpotOrderData, boolean>;
+  options.body = {
+    type: transaction.type.toString(),
+    userId: transaction.from.toString(),
+    nonce: transaction.nonce.toString(),
+    message: Buffer.from(transaction.payload).toString('hex'),
+    hash: Buffer.from(transaction.hash()).toString('hex'),
+    signature: Buffer.from(transaction.signature!).toString('hex')
+  };
+
+  return options;
 }

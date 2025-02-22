@@ -1,5 +1,13 @@
 import BigNumber from 'bignumber.js';
-import { AssetInfo, ChainInfo, GetAssetsInput, HibitApiResponse, PageResponse, TransactionType } from './types';
+import {
+  AssetInfo,
+  ChainInfo,
+  GetAssetsInput,
+  HexString,
+  HibitApiResponse,
+  PageResponse,
+  TransactionType
+} from './types';
 import {
   getV1Assets,
   getV1Chains,
@@ -9,7 +17,6 @@ import {
   type GetV1WalletBalanceData,
   getV1WalletNonce,
   postV1TxSubmitSpotOrder,
-  type PostV1TxSubmitSpotOrderData,
   getV1MarketsTicker,
   getV1MarketKline,
   getV1MarketDepth,
@@ -46,18 +53,12 @@ import {
 } from './types/market';
 import { SubmitSpotOrderInput } from './types/order';
 import { TransactionManager } from './tx-manager.ts';
+import { mapTransactionToApiRequest } from './types/tx.ts';
 
 /**
  * Interface representing the Hibit API.
  */
 export interface IHibitApi {
-  /**
-   * Set the options for the Hibit API.
-   *
-   * @param {HibitApiOptions} options - The options to set.
-   */
-  setOptions(options: HibitApiOptions): void;
-
   /**
    * Get the current timestamp.
    *
@@ -146,12 +147,25 @@ export interface IHibitApi {
   /**
    * Get the nonce.
    *
-   * @returns {Promise<BigNumber>} A promise that resolves to the nonce.
+   * @returns {Promise<bigint>} A promise that resolves to the nonce.
    */
-  getNonce(): Promise<BigNumber>;
+  getNonce(): Promise<bigint>;
 }
 
 export class HibitApi implements IHibitApi {
+  //@ts-ignore
+  private options: HibitApiOptions;
+
+  constructor(options: Partial<HibitApiOptions> = {}) {
+    if (!options.baseUrl) {
+      throw new Error('Invalid base url');
+    }
+
+    Object.assign(this, options);
+    client.setConfig({
+      baseUrl: options.baseUrl
+    });
+  }
   /*-------------basic start----------------*/
   async getTimestamp(): Promise<number> {
     const apiName = 'getTimestamp';
@@ -256,26 +270,22 @@ export class HibitApi implements IHibitApi {
 
   /*-------------order start--------------*/
   async submitSpotOrder(input: SubmitSpotOrderInput): Promise<void> {
-    const options: Options<PostV1TxSubmitSpotOrderData, boolean> = {};
+    this.ensurePrivateKey('submitSpotOrder');
 
-    await this.configTxRequest(TransactionType.CreateSpotOrder, input, options);
-    const resp = await postV1TxSubmitSpotOrder(options);
+    const nonce = await this.getNonce();
+    const tx = TransactionManager.createTransaction(
+      TransactionType.CreateSpotOrder,
+      this.options.walletId,
+      nonce ? nonce : 0n,
+      input
+    );
+    const signedTx = TransactionManager.sign(tx, this.options.privateKey);
+    const resp = await postV1TxSubmitSpotOrder(mapTransactionToApiRequest(signedTx));
 
     this.ensureSuccess('submitSpotOrder', resp.data);
   }
 
   /*-------------order end----------------*/
-
-  // @ts-ignore
-  private options: HibitApiOptions;
-
-  setOptions(options: HibitApiOptions): void {
-    this.options = options;
-    client.setConfig({
-      baseUrl: options.baseUrl
-    });
-  }
-
   async getWalletBalance(): Promise<Map<string, BigNumber>> {
     const options: Options<GetV1WalletBalanceData, boolean> = {};
     const resp = await getV1WalletBalance(options);
@@ -290,7 +300,7 @@ export class HibitApi implements IHibitApi {
     throw new Error('Get user assets failed');
   }
 
-  async getNonce(): Promise<BigNumber> {
+  async getNonce(): Promise<bigint> {
     const resp = await getV1WalletNonce();
     if (resp.data?.code == 200) {
       // @ts-ignore
@@ -305,29 +315,15 @@ export class HibitApi implements IHibitApi {
     }
   }
 
-  private async configTxRequest<TInput>(txType: TransactionType, input: TInput, sendOptions: Options): Promise<void> {
+  private ensurePrivateKey(apiName: string) {
     if (!this.options.privateKey) {
-      throw new Error('Invalid key pair');
+      HibitApiError.throwRequiredPrivKeyError(apiName);
     }
-
-    let nonce = await this.getNonce();
-    sendOptions.body = await TransactionManager.createTransaction(
-      txType,
-      0,
-      this.options.walletId,
-      nonce ? nonce : BigNumber(0),
-      input,
-      {
-        privateKey: this.options.privateKey
-      }
-    );
   }
 }
 
 export interface HibitApiOptions {
   baseUrl: string;
-  privateKey: string;
-  walletId: BigNumber;
+  privateKey: HexString;
+  walletId: bigint;
 }
-
-export const hibitApi = new HibitApi();

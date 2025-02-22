@@ -1,4 +1,4 @@
-import { Transaction, TransactionType, UserKeyPair } from './types';
+import { HexString, Transaction, TransactionType, Version } from './types';
 import { TxPayloadEncoder } from './encoder';
 
 /**
@@ -8,14 +8,13 @@ import { TxPayloadEncoder } from './encoder';
  * @class TransactionManager
  * @example
  * ```typescript
- * const tx = TxManager.createTransaction(
+ * const tx = TransactionManager.createTransaction(
  *   TransactionType.Transfer,
- *   Version.V0,
  *   BigInt("123"),
  *   BigInt("1"),
- *   transferData
+ *   transfer
  * );
- * const signedTx = TxManager.sign(tx, userKeyPair);
+ * const signedTx = TransactionManager.sign(tx, privateKey);
  * ```
  */
 export class TransactionManager {
@@ -24,33 +23,32 @@ export class TransactionManager {
    *
    * @template T - The type of the transaction data
    * @param {TransactionType} type - The type of transaction to create
-   * @param {number} version - The transaction protocol version
    * @param {bigint} from - The sender's wallet ID
    * @param {bigint} nonce - Transaction sequence number
    * @param {T} data - The transaction data to encode
+   * @param {Version} version - The transaction protocol version, default is V0
    * @returns {Transaction} A new transaction instance with encoded payload
    *
    * @example
    * ```typescript
-   * const transferData = { to: "0x123", amount: "100" };
-   * const tx = TxManager.createTransaction(
+   * const transfer = { to: "0x123", amount: "100" };
+   * const tx = TransactionManager.createTransaction(
    *   TransactionType.Transfer,
-   *   Version.V0,
    *   BigInt("123"),
    *   BigInt("1"),
-   *   transferData
+   *   transfer
    * );
    * ```
    */
   static createTransaction<T>(
     type: TransactionType,
-    version: number,
     from: bigint,
     nonce: bigint,
-    data: T
+    data: T,
+    version: Version = Version.V0
   ): Transaction {
     const payload = TxPayloadEncoder.encode(data);
-    return new Transaction(version, type, from, nonce, payload);
+    return new Transaction(type, from, nonce, payload, version);
   }
 
   /**
@@ -58,20 +56,16 @@ export class TransactionManager {
    * Creates a recoverable signature that includes the recovery ID.
    *
    * @param {Transaction} transaction - The transaction to sign
-   * @param {UserKeyPair} userKeyPair - The keypair to sign with
+   * @param {privateKey} privateKey - The user's private key
    * @returns {Transaction} A new transaction instance with the signature attached
-   * @throws {Error} If signing fails or the keypair is invalid
+   * @throws {Error} If signing fails or the private key is invalid
    *
    * @example
    * ```typescript
-   * const userKeyPair = {
-   *   publicKey: "04...",
-   *   privateKey: "..."
-   * };
-   * const signedTx = TxManager.sign(tx, userKeyPair);
+   * const signedTx = TransactionManager.sign(tx, privateKey);
    * ```
    */
-  static sign(transaction: Transaction, userKeyPair: UserKeyPair): Transaction {
-    return transaction.sign(userKeyPair);
+  static sign(transaction: Transaction, privateKey: HexString): Transaction {
+    return transaction.sign(privateKey);
   }
 }
