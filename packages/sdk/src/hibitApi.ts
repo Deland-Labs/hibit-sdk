@@ -45,7 +45,7 @@ import {
   Trade
 } from './types/market';
 import { SubmitSpotOrderInput } from './types/order';
-import { TransactionManager } from './TransactionManager.ts';
+import { TransactionManager } from './tx-manager.ts';
 
 /**
  * Interface representing the Hibit API.

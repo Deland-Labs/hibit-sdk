@@ -8,14 +8,14 @@ import { TxPayloadEncoder } from './encoder';
  * @class TransactionManager
  * @example
  * ```typescript
- * const tx = TransactionManager.createTransaction(
+ * const tx = TxManager.createTransaction(
  *   TransactionType.Transfer,
  *   Version.V0,
  *   BigInt("123"),
  *   BigInt("1"),
  *   transferData
  * );
- * const signedTx = TransactionManager.sign(tx, userKeyPair);
+ * const signedTx = TxManager.sign(tx, userKeyPair);
  * ```
  */
 export class TransactionManager {
@@ -33,7 +33,7 @@ export class TransactionManager {
    * @example
    * ```typescript
    * const transferData = { to: "0x123", amount: "100" };
-   * const tx = TransactionManager.createTransaction(
+   * const tx = TxManager.createTransaction(
    *   TransactionType.Transfer,
    *   Version.V0,
    *   BigInt("123"),
@@ -68,7 +68,7 @@ export class TransactionManager {
    *   publicKey: "04...",
    *   privateKey: "..."
    * };
-   * const signedTx = TransactionManager.sign(tx, userKeyPair);
+   * const signedTx = TxManager.sign(tx, userKeyPair);
    * ```
    */
   static sign(transaction: Transaction, userKeyPair: UserKeyPair): Transaction {
