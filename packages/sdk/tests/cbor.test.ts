@@ -1,7 +1,7 @@
 import BigNumber from 'bignumber.js';
 import { test, expect, it } from 'vitest';
-import { cborIndex } from '../src/serialize/decorator';
-import { HibitChainSerializer } from '../src/serialize/serializer';
+import { cborIndex } from '../src/encoder/decorator';
+import { TxPayloadEncoder } from '../src/encoder';
 
 class TestCborData {
   @cborIndex(0)
@@ -78,7 +78,7 @@ test('ParentCborData', () => {
   const parentData = new ParentCborData();
   parentData.value1 = testCborData;
   parentData.value2 = 'value2';
-  let result = HibitChainSerializer['createCborArray'](parentData);
+  let result = TxPayloadEncoder['createCborArray'](parentData);
   expect(result).toEqual([[new BigNumber(10026), '100.26'], 'value2']);
 });
 
@@ -86,17 +86,17 @@ it('Test number & bigint & big number', () => {
   const testCborDataWithBigInt = new TestCborDataWithBigInt();
   testCborDataWithBigInt.value2 = 'value2';
   testCborDataWithBigInt.value1 = BigInt(10026);
-  const resultOfBigInt = HibitChainSerializer.Encode(testCborDataWithBigInt);
+  const resultOfBigInt = TxPayloadEncoder.encode(testCborDataWithBigInt);
 
   const testCborDataWithNumber = new TestCborDataWithNumber();
   testCborDataWithNumber.value2 = 'value2';
   testCborDataWithNumber.value1 = 10026;
-  const resultOfNumber = HibitChainSerializer.Encode(testCborDataWithNumber);
+  const resultOfNumber = TxPayloadEncoder.encode(testCborDataWithNumber);
 
   const testCborDataWithBigNumber = new TestCborData();
   testCborDataWithBigNumber.value1 = new BigNumber(10026);
   testCborDataWithBigNumber.value2 = 'value2';
-  let resultOfBigNumber = HibitChainSerializer.Encode(testCborDataWithBigNumber);
+  let resultOfBigNumber = TxPayloadEncoder.encode(testCborDataWithBigNumber);
 
   expect(resultOfBigInt).deep.equals(resultOfNumber);
   expect(resultOfBigInt).deep.equals(resultOfBigNumber);
@@ -105,7 +105,7 @@ it('Test number & bigint & big number', () => {
 test('null data', () => {
   const parentData = new ParentCborData2();
   parentData.value2 = 'value2';
-  let result = HibitChainSerializer['createCborArray'](parentData);
+  let result = TxPayloadEncoder['createCborArray'](parentData);
   expect(result).toEqual([null, 'value2']);
 });
 
@@ -114,6 +114,6 @@ test('encode with byte[]', () => {
   tx.assetId = BigNumber('10000');
   tx.items = [new TrasnsferTxItem(BigNumber('9999'), new BigNumber(1234))];
   tx.memo = new Uint8Array([255, 0, 255]);
-  let result = HibitChainSerializer.Encode(tx);
+  let result = TxPayloadEncoder.encode(tx);
   expect(result.toString('hex')).toEqual('83c24227108182c242270fc24204d243ff00ff');
 });
