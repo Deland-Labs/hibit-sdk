@@ -55,9 +55,9 @@ export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends 
   ThrowOnError
 > & {
   /**
-   * You can provide a client instance returned by `createClient()` instead of
+   * You can provide a openapi instance returned by `createClient()` instead of
    * individual options. This might be also useful if you want to implement a
-   * custom client.
+   * custom openapi.
    */
   client?: Client;
   /**

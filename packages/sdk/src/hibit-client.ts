@@ -6,14 +6,29 @@ import {
   HexString,
   HibitApiResponse,
   PageResponse,
-  TransactionType
+  TransactionType,
+  GetMarketDepthInput,
+  GetMarketKlineInput,
+  GetMarketsInput,
+  GetMarketTradeInput,
+  MarketDepth,
+  MarketInfo,
+  MarketKlineItem,
+  MarketSwapInfo,
+  MarketTickerInfo,
+  Trade,
+  CancelSpotOrderInput,
+  GetOrdersInput,
+  OrderInfo,
+  OrderTradeRecord,
+  SubmitSpotOrderInput,
+  GetWalletBalancesInput
 } from './types';
 import {
   getV1Assets,
   getV1Chains,
   getV1Markets,
   getV1Timestamp,
-  getV1WalletBalance,
   getV1WalletNonce,
   postV1TxSubmitSpotOrder,
   getV1MarketsTicker,
@@ -22,16 +37,12 @@ import {
   getV1MarketsSwap,
   getV1MarketTrade,
   getV1Orders,
-  getV1OrderTrades
-} from './client';
-import { client } from './client/client.gen';
+  getV1OrderTrades,
+  getV1WalletBalances
+} from './openapi';
 import { mapChainInfo } from './types/chain';
 import { mapAssetInfo, mapGetAssetsInput } from './types/asset';
 import {
-  GetMarketDepthInput,
-  GetMarketKlineInput,
-  GetMarketsInput,
-  GetMarketTradeInput,
   mapGetMarketDepthInput,
   mapGetMarketKlineInput,
   mapGetMarketsInput,
@@ -43,33 +54,27 @@ import {
   mapMarketKlineInfo,
   mapMarketSwapInfo,
   mapMarketTickerInfo,
-  mapMarketTradeInfo,
-  MarketDepth,
-  MarketInfo,
-  MarketKlineItem,
-  MarketSwapInfo,
-  MarketTickerInfo,
-  Trade
+  mapMarketTradeInfo
 } from './types/market';
-import {
-  CancelSpotOrderInput,
-  GetOrdersInput,
-  mapGetOrdersInput,
-  mapGetOrderTradesInput,
-  mapOrderInfo,
-  mapOrderTradeRecord,
-  OrderInfo,
-  OrderTradeRecord,
-  SubmitSpotOrderInput
-} from './types/order';
-import { TransactionManager } from './tx-manager.ts';
-import { mapTransactionToApiRequest } from './types/tx.ts';
-import { GetWalletBalancesInput, mapGetNonceInput, mapGetWalletBalancesInput } from './types/wallet.ts';
+import { mapGetOrdersInput, mapGetOrderTradesInput, mapOrderInfo, mapOrderTradeRecord } from './types/order';
+import { TransactionManager } from './tx-manager';
+import { mapTransactionToApiRequest } from './types/tx';
+import { mapGetNonceInput, mapGetWalletBalancesInput } from './types/wallet';
+import { client } from './openapi/client.gen';
+import { HibitClientError } from './error.ts';
+import { mapCancelOrdersCborInput, mapSubmitSpotOrderCborInput } from './types/order/cbor';
 
 /**
  * Interface representing the Hibit API.
  */
-export interface IHibitApi {
+export interface IHibitClient {
+  /**
+   * Set the options for the Hibit API.
+   *
+   * @param {HibitApiOptions} options - The options to set.
+   */
+  setOptions(options: HibitApiOptions): void;
+
   /**
    * Get the current timestamp.
    *
@@ -188,16 +193,13 @@ export interface IHibitApi {
   getNonce(walletId: bigint): Promise<bigint>;
 }
 
-export class HibitApi implements IHibitApi {
+export class HibitClient implements IHibitClient {
   //@ts-ignore
   private options: HibitApiOptions;
 
-  constructor(options: Partial<HibitApiOptions> = {}) {
-    if (!options.baseUrl) {
-      throw new Error('Invalid base url');
-    }
+  setOptions(options: HibitApiOptions) {
+    this.options = options;
 
-    Object.assign(this, options);
     client.setConfig({
       baseUrl: options.baseUrl
     });
@@ -211,7 +213,7 @@ export class HibitApi implements IHibitApi {
     this.ensureSuccess(apiName, response.data);
 
     if (!response.data?.data?.timestamp) {
-      HibitApiError.throwInvalidResponseError(apiName);
+      HibitClientError.throwInvalidResponseError(apiName);
     }
 
     return response.data!.data!.timestamp!;
@@ -333,11 +335,12 @@ export class HibitApi implements IHibitApi {
     this.ensurePrivateKey(apiName);
 
     const nonce = await this.getNonce(this.options.walletId);
+    const mappedInput = mapSubmitSpotOrderCborInput(input);
     const tx = TransactionManager.createTransaction(
       TransactionType.CreateSpotOrder,
       this.options.walletId,
       nonce ? nonce : 0n,
-      input
+      mappedInput
     );
     const signedTx = TransactionManager.sign(tx, this.options.privateKey);
     const resp = await postV1TxSubmitSpotOrder(mapTransactionToApiRequest(signedTx));
@@ -354,11 +357,12 @@ export class HibitApi implements IHibitApi {
     }
 
     const nonce = await this.getNonce(this.options.walletId);
+    const mappedInput = mapCancelOrdersCborInput(input);
     const tx = TransactionManager.createTransaction(
       TransactionType.CancelSpotOrder,
       this.options.walletId,
       nonce ? nonce : 0n,
-      input
+      mappedInput
     );
     const signedTx = TransactionManager.sign(tx, this.options.privateKey);
     const resp = await postV1TxSubmitSpotOrder(mapTransactionToApiRequest(signedTx));
@@ -370,7 +374,7 @@ export class HibitApi implements IHibitApi {
 
   async getWalletBalances(input: GetWalletBalancesInput): Promise<Map<string, BigNumber>> {
     const apiName = 'getWalletBalances';
-    const resp = await getV1WalletBalance(mapGetWalletBalancesInput(input));
+    const resp = await getV1WalletBalances(mapGetWalletBalancesInput(input));
 
     this.ensureSuccess(apiName, resp.data);
 
@@ -392,19 +396,35 @@ export class HibitApi implements IHibitApi {
 
   private ensureSuccess<T extends HibitApiResponse>(apiName: string, response?: T) {
     if (response?.code != 200) {
-      HibitApiError.throwBadRequestError(apiName, response?.code, response?.message);
+      HibitClientError.throwBadRequestError(apiName, response?.code, response?.message);
     }
   }
 
   private ensurePrivateKey(apiName: string) {
     if (!this.options.privateKey) {
-      HibitApiError.throwRequiredPrivKeyError(apiName);
+      HibitClientError.throwRequiredPrivKeyError(apiName);
     }
   }
 }
 
+/**
+ * Options for configuring the Hibit API.
+ */
 export interface HibitApiOptions {
+  /**
+   * The base URL for the Hibit API.
+   */
   baseUrl: string;
+
+  /**
+   * The private key used for authentication.
+   */
   privateKey: HexString;
+
+  /**
+   * The wallet ID associated with the API.
+   */
   walletId: bigint;
 }
+
+export const hibitClient = new HibitClient();

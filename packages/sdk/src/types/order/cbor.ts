@@ -1,7 +1,7 @@
 import { OrderCategory, OrderSide } from '../enums';
-import { cborIndex, cborBigInt } from '../../cbor.metadata';
 import BigNumber from 'bignumber.js';
-import { LimitOrderDetails, SubmitSpotOrderInput, SwapV2OrderDetails } from '.';
+import { CancelSpotOrderInput, LimitOrderDetails, SubmitSpotOrderInput, SwapV2OrderDetails } from '.';
+import { cborIndex, cborBigUint } from '../../encoder/decorator.ts';
 
 /**
  * Input class for creating a new spot order in the trading system.
@@ -10,10 +10,10 @@ import { LimitOrderDetails, SubmitSpotOrderInput, SwapV2OrderDetails } from '.';
 export class SubmitSpotOrderCborInput {
   /**
    * The category of the order (e.g., LIMIT, MARKET, SWAP_V2)
-   * @decorators {@cborIndex(0)} {@cborBigInt()}
+   * @decorators {@cborIndex(0)} {@cborBigUint()}
    */
   @cborIndex(0)
-  @cborBigInt()
+  @cborBigUint()
   // @ts-ignore
   public orderCategory: OrderCategory;
 
@@ -67,10 +67,10 @@ export class SubmitSpotOrderCborInput {
 export class LimitOrderDetailsCbor {
   /**
    * The side of the order (buy/sell)
-   * @decorators {@cborIndex(0)} {@cborBigInt()}
+   * @decorators {@cborIndex(0)} {@cborBigUint()}
    */
   @cborIndex(0)
-  @cborBigInt()
+  @cborBigUint()
   // @ts-ignore
   public orderSide: OrderSide;
 
@@ -102,11 +102,11 @@ export class LimitOrderDetailsCbor {
 export class CancelOrdersCborInput {
   @cborIndex(0)
   // @ts-ignore
-  public marketId: BigNumber;
+  public marketId?: bigint;
   @cborIndex(1)
   public orderId?: string;
   @cborIndex(2)
-  @cborBigInt()
+  @cborBigUint()
   public orderSide?: OrderSide;
   @cborIndex(3)
   public isCancelAll: boolean;
@@ -132,19 +132,19 @@ export class SwapV2OrderDetailsCbor {
 
   /**
    * Specifies whether exactTokens is input or output amount
-   * @decorators {@cborIndex(1)} {@cborBigInt()}
+   * @decorators {@cborIndex(1)} {@cborBigUint()}
    */
   @cborIndex(1)
-  @cborBigInt()
+  @cborBigUint()
   // @ts-ignore
   public exactTokensType: SwapV2ExactTokensType;
 
   /**
    * The side of the swap order (buy/sell)
-   * @decorators {@cborIndex(2)} {@cborBigInt()}
+   * @decorators {@cborIndex(2)} {@cborBigUint()}
    */
   @cborIndex(2)
-  @cborBigInt()
+  @cborBigUint()
   // @ts-ignore
   public orderSide: OrderSide;
 
@@ -200,5 +200,14 @@ export function mapSubmitSpotOrderCborInput(input: SubmitSpotOrderInput): Submit
     marketId: input.marketId,
     limitOrderDetails: input.limitOrderDetails ? mapLimitOrderDetails(input.limitOrderDetails) : undefined,
     swapV2OrderDetails: input.swapV2OrderDetails ? mapSwapV2OrderDetails(input.swapV2OrderDetails) : undefined
+  };
+}
+
+export function mapCancelOrdersCborInput(input: CancelSpotOrderInput): CancelOrdersCborInput {
+  return {
+    marketId: input.marketId,
+    orderId: input.orderId,
+    orderSide: input.orderSide,
+    isCancelAll: input.isCancelAll!
   };
 }

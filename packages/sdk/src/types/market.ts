@@ -11,7 +11,7 @@ import {
   GetV1MarketKlineData,
   GetV1MarketTradeData,
   GetV1MarketDepthData
-} from '../client';
+} from '../openapi';
 import { DepthIndex, OrderSide, TickSpace } from './enums';
 
 export type GetMarketsInput = {

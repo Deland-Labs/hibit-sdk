@@ -1,18 +1,14 @@
-import BigNumber from 'bignumber.js';
-
 export type HexString = string;
-export type { ChainInfo } from './chain';
-export type * from './asset';
-export type * from './enums';
+export { ChainAssetType, type AssetInfo, type SubAssetInfo, type GetAssetsInput } from './asset';
+export { Chain, ChainNetwork, type ChainInfo } from './chain';
 export * from './enums';
 export type * from './market';
 export type * from './order';
-export type { AssetInfo, SubAssetInfo, GetAssetsInput } from './asset';
+export type * from './wallet';
 export { Transaction } from './tx';
+
 export type HibitApiResponse = { code?: number; message?: string | null };
-export interface UserKeyPair {
-  privateKey: string;
-}
+
 /**
  * Represents a paginated response.
  *

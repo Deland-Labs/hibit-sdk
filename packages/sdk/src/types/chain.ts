@@ -1,5 +1,4 @@
-import BigNumber from 'bignumber.js';
-import { Ex3ExchangeOpenApiAppServicesChainInfoDto } from '../client';
+import { Ex3ExchangeOpenApiAppServicesChainInfoDto } from '../openapi';
 
 /**
  * Represents a blockchain with its chain identifier.

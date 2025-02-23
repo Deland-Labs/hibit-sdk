@@ -3,7 +3,7 @@ import cbor from 'borc';
 import { Buffer } from 'buffer';
 import BigNumber from 'bignumber.js';
 import 'reflect-metadata';
-import { Chain, ChainAssetType, ChainNetwork } from '../types';
+import { ChainAssetType, Chain, ChainNetwork } from '../types';
 import { ReflectHelper } from './reflect-helper.ts';
 
 /**

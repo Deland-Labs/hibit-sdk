@@ -3,7 +3,7 @@ import {
   Ex3ExchangeOpenApiAppServicesSubAssetInfoDto,
   GetV1AssetsData,
   Options
-} from '../client';
+} from '../openapi';
 
 /**
  * Represents a type of asset on a blockchain.
