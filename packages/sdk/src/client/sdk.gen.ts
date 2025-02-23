@@ -29,9 +29,9 @@ import type {
   GetV1MarketsData,
   GetV1MarketsResponse,
   GetV1MarketsError,
-  GetV1OrdersTradesData,
-  GetV1OrdersTradesResponse,
-  GetV1OrdersTradesError,
+  GetV1OrderTradesData,
+  GetV1OrderTradesResponse,
+  GetV1OrderTradesError,
   GetV1OrdersData,
   GetV1OrdersResponse,
   GetV1OrdersError,
@@ -175,11 +175,11 @@ export const getV1Markets = <ThrowOnError extends boolean = false>(
 /**
  * get trades of wallet
  */
-export const getV1OrdersTrades = <ThrowOnError extends boolean = false>(
-  options?: Options<GetV1OrdersTradesData, ThrowOnError>
+export const getV1OrderTrades = <ThrowOnError extends boolean = false>(
+  options?: Options<GetV1OrderTradesData, ThrowOnError>
 ) => {
-  return (options?.client ?? _heyApiClient).get<GetV1OrdersTradesResponse, GetV1OrdersTradesError, ThrowOnError>({
-    url: '/v1/orders/trades',
+  return (options?.client ?? _heyApiClient).get<GetV1OrderTradesResponse, GetV1OrderTradesError, ThrowOnError>({
+    url: '/v1/order/trades',
     ...options
   });
 };

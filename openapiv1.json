@@ -1588,7 +1588,7 @@
         }
       }
     },
-    "/v1/orders/trades": {
+    "/v1/order/trades": {
       "get": {
         "tags": ["Orders"],
         "summary": "get trades of wallet",
