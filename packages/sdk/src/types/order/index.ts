@@ -4,14 +4,14 @@ import {
   Ex3ExchangeOpenApiAppServicesWalletOrderTradeListItem,
   GetV1OrdersData,
   GetV1OrderTradesData
-} from '../../client';
+} from '../../openapi';
 import { OrderCategory, OrderSide, OrderStatus, SwapV2ExactTokensType } from '../enums';
 
 export type GetOrdersInput = {
   /**
    * Wallet Id of the orders
    */
-  WalletId: bigint;
+  walletId: bigint;
   /**
    * status to filter the orders, if null, means all statuses.
    */
@@ -19,7 +19,7 @@ export type GetOrdersInput = {
   /**
    * marketId, if null, means all markets
    */
-  marketId?: string;
+  marketId?: bigint;
   /**
    * order category, if null, means all categories.
    */
@@ -141,7 +141,7 @@ export type OrderTradeRecord = {
 export type SubmitSpotOrderInput = {
   /**
    * The category of the order (e.g., LIMIT, MARKET, SWAP_V2)
-   * @decorators {@cborIndex(0)} {@cborBigInt()}
+   * @decorators {@cborIndex(0)} {@cborBigUint()}
    */
   orderCategory: OrderCategory;
 
@@ -276,9 +276,9 @@ export type CancelSpotOrderInput = {
 export function mapGetOrdersInput(data: GetOrdersInput): Options<GetV1OrdersData, boolean> {
   return {
     query: {
-      WalletId: String(data.WalletId),
+      WalletId: String(data.walletId),
       Status: data.status,
-      MarketId: data.marketId,
+      MarketId: data.marketId ? String(data.marketId) : undefined,
       OrderCategory: data.orderCategory,
       OrderSide: data.orderSide,
       CreatedAtStart: data.createdAtStart,

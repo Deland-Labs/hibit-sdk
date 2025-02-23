@@ -1,4 +1,4 @@
-import { Options, GetV1WalletNonceData, GetV1WalletBalancesData } from '../client';
+import { Options, GetV1WalletNonceData, GetV1WalletBalancesData } from '../openapi';
 
 /**
  * Input parameters for retrieving wallet balance information.

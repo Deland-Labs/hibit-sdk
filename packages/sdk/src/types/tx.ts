@@ -1,12 +1,15 @@
 import { TransactionType, Version } from './enums.ts';
+import { hmac } from '@noble/hashes/hmac';
 import { sha256 } from '@noble/hashes/sha256';
 import { TxPayloadEncoder } from '../encoder';
 import * as secp from '@noble/secp256k1';
 import { HexString } from './index.ts';
 import { Buffer } from 'buffer';
-import { PostV1TxSubmitSpotOrderData } from '../client/types.gen';
+import { PostV1TxSubmitSpotOrderData } from '../openapi';
 import { Options } from '@hey-api/client-fetch';
 
+// Set the hmacSha256Sync function
+secp.etc.hmacSha256Sync = (key, ...msgs) => hmac(sha256, key, secp.etc.concatBytes(...msgs));
 /**
  * Represents a transaction in the system.
  * Handles transaction data encoding, hashing, and signature management.
