@@ -1059,7 +1059,7 @@ export type GetV1MarketsResponses = {
 
 export type GetV1MarketsResponse = GetV1MarketsResponses[keyof GetV1MarketsResponses];
 
-export type GetV1OrdersTradesData = {
+export type GetV1OrderTradesData = {
   body?: never;
   path?: never;
   query?: {
@@ -1068,10 +1068,10 @@ export type GetV1OrdersTradesData = {
      */
     OrderId?: string;
   };
-  url: '/v1/orders/trades';
+  url: '/v1/order/trades';
 };
 
-export type GetV1OrdersTradesErrors = {
+export type GetV1OrderTradesErrors = {
   /**
    * Bad Request
    */
@@ -1098,16 +1098,16 @@ export type GetV1OrdersTradesErrors = {
   501: VoloAbpHttpRemoteServiceErrorResponse;
 };
 
-export type GetV1OrdersTradesError = GetV1OrdersTradesErrors[keyof GetV1OrdersTradesErrors];
+export type GetV1OrderTradesError = GetV1OrderTradesErrors[keyof GetV1OrderTradesErrors];
 
-export type GetV1OrdersTradesResponses = {
+export type GetV1OrderTradesResponses = {
   /**
    * OK
    */
   200: Ex3ExchangeOpenApiAppServicesOpenApiResult1CollectionsPooledPooledList1Ex3ExchangeOpenApiAppServicesWalletOrderTradeListItem_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null___CollectionsPooled_Version_10820_Culture_neutral_PublicKeyToken_null;
 };
 
-export type GetV1OrdersTradesResponse = GetV1OrdersTradesResponses[keyof GetV1OrdersTradesResponses];
+export type GetV1OrderTradesResponse = GetV1OrderTradesResponses[keyof GetV1OrderTradesResponses];
 
 export type GetV1OrdersData = {
   body?: never;

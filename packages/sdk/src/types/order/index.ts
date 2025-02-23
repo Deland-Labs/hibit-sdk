@@ -3,7 +3,7 @@ import {
   Ex3ExchangeOpenApiAppServicesWalletOrderDto,
   Ex3ExchangeOpenApiAppServicesWalletOrderTradeListItem,
   GetV1OrdersData,
-  GetV1OrdersTradesData
+  GetV1OrderTradesData
 } from '../../client';
 import { OrderCategory, OrderSide, OrderStatus, SwapV2ExactTokensType } from '../enums';
 
@@ -52,7 +52,7 @@ export type GetOrdersInput = {
   orderBy?: string;
 };
 
-export type Order = {
+export type OrderInfo = {
   /**
    * order id
    */
@@ -106,7 +106,7 @@ export type Order = {
   timestamp: number;
 };
 
-export type FillRecord = {
+export type OrderTradeRecord = {
   /**
    * trade id
    */
@@ -210,7 +210,66 @@ export type SwapV2OrderDetails = {
   maxIn?: number;
 };
 
-export function mapGetOrderInput(data: GetOrdersInput): Options<GetV1OrdersData, boolean> {
+/**
+ * Input parameters for canceling spot orders.
+ * Supports three cancellation scenarios:
+ * 1. Cancel by order ID
+ * 2. Cancel by market ID and side
+ * 3. Cancel all orders in a market
+ *
+ * @example Scenario 1: Cancel a specific order by ID
+ * ```typescript
+ * const cancelSingleOrder: CancelSpotOrderInput = {
+ *   orderId: "0x1234567890abcdef"
+ * };
+ * ```
+ *
+ * @example Scenario 2: Cancel all orders of a specific side in a market
+ * ```typescript
+ * const cancelOrdersBySide: CancelSpotOrderInput = {
+ *   marketId: BigInt("12345"),
+ *   orderSide: OrderSide.Bid
+ * };
+ * ```
+ *
+ * @example Scenario 3: Cancel all orders in a market
+ * ```typescript
+ * const cancelAllMarketOrders: CancelSpotOrderInput = {
+ *   marketId: BigInt("12345"),
+ *   isCancelAll: true
+ * };
+ * ```
+ */
+export type CancelSpotOrderInput = {
+  /**
+   * The ID of the market where orders should be canceled.
+   * Required for:
+   * - Scenario 2: Canceling by market ID and side
+   * - Scenario 3: Canceling all orders in a market
+   */
+  marketId?: bigint;
+
+  /**
+   * Specific order ID to cancel.
+   * Used in Scenario 1: When specified, other parameters are ignored
+   */
+  orderId?: string;
+
+  /**
+   * Order side to cancel (buy/sell).
+   * Used in Scenario 2: Required when canceling by market ID and side
+   */
+  orderSide?: OrderSide;
+
+  /**
+   * Whether to cancel all orders in the specified market.
+   * Used in Scenario 3: When true, only marketId is required.
+   * Defaults to false when not specified.
+   */
+  isCancelAll?: boolean;
+};
+
+export function mapGetOrdersInput(data: GetOrdersInput): Options<GetV1OrdersData, boolean> {
   return {
     query: {
       Status: data.status,
@@ -226,7 +285,7 @@ export function mapGetOrderInput(data: GetOrdersInput): Options<GetV1OrdersData,
   };
 }
 
-export function mapOrder(data: Ex3ExchangeOpenApiAppServicesWalletOrderDto): Order {
+export function mapOrderInfo(data: Ex3ExchangeOpenApiAppServicesWalletOrderDto): OrderInfo {
   return {
     id: data.id,
     marketId: BigInt(data.mid),
@@ -244,7 +303,7 @@ export function mapOrder(data: Ex3ExchangeOpenApiAppServicesWalletOrderDto): Ord
   };
 }
 
-export function mapGetFillRecordInput(orderId: string): Options<GetV1OrdersTradesData, boolean> {
+export function mapGetOrderTradesInput(orderId: string): Options<GetV1OrderTradesData, boolean> {
   return {
     query: {
       OrderId: orderId
@@ -252,7 +311,7 @@ export function mapGetFillRecordInput(orderId: string): Options<GetV1OrdersTrade
   };
 }
 
-export function mapFillRecord(data: Ex3ExchangeOpenApiAppServicesWalletOrderTradeListItem): FillRecord {
+export function mapOrderTradeRecord(data: Ex3ExchangeOpenApiAppServicesWalletOrderTradeListItem): OrderTradeRecord {
   return {
     tradeId: data.tid!,
     filledPrice: Number(data.fp),

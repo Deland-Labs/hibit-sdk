@@ -21,7 +21,9 @@ import {
   getV1MarketKline,
   getV1MarketDepth,
   getV1MarketsSwap,
-  getV1MarketTrade
+  getV1MarketTrade,
+  getV1Orders,
+  getV1OrderTrades
 } from './client';
 import { Options } from '@hey-api/client-fetch';
 import { client } from './client/client.gen';
@@ -51,7 +53,17 @@ import {
   MarketTickerInfo,
   Trade
 } from './types/market';
-import { SubmitSpotOrderInput } from './types/order';
+import {
+  CancelSpotOrderInput,
+  GetOrdersInput,
+  mapGetOrdersInput,
+  mapGetOrderTradesInput,
+  mapOrderInfo,
+  mapOrderTradeRecord,
+  OrderInfo,
+  OrderTradeRecord,
+  SubmitSpotOrderInput
+} from './types/order';
 import { TransactionManager } from './tx-manager.ts';
 import { mapTransactionToApiRequest } from './types/tx.ts';
 
@@ -138,6 +150,28 @@ export interface IHibitApi {
   submitSpotOrder(input: SubmitSpotOrderInput): Promise<void>;
 
   /**
+   * Cancel a spot order.
+   *
+   * @param {CancelSpotOrderInput} input - The input parameters for canceling a spot order.
+   * @returns {Promise<void>} A promise that resolves when the spot order is canceled.
+   */
+  cancelSpotOrder(input: CancelSpotOrderInput): Promise<void>;
+
+  /**
+   * Get the list of orders.
+   * @param {GetOrdersInput} input - The input parameters for getting orders.
+   * @returns {Promise<PageResponse<OrderInfo>>} A promise that resolves to the list of orders.
+   */
+  getOrders(input: GetOrdersInput): Promise<PageResponse<OrderInfo>>;
+
+  /**
+   * Get the list of trades for an order.
+   * @param {string} orderId - The order id to get the trades for.
+   * @returns {Promise<Array<OrderTradeRecord>>} A promise that resolves to the list of trades for the order.
+   */
+  getOrderTrades(orderId: string): Promise<Array<OrderTradeRecord>>;
+
+  /**
    * Get the wallet balance.
    *
    * @returns {Promise<Map<string, BigNumber>>} A promise that resolves to the wallet balance.
@@ -166,6 +200,7 @@ export class HibitApi implements IHibitApi {
       baseUrl: options.baseUrl
     });
   }
+
   /*-------------basic start----------------*/
   async getTimestamp(): Promise<number> {
     const apiName = 'getTimestamp';
@@ -269,8 +304,31 @@ export class HibitApi implements IHibitApi {
   /*-------------market end---------------*/
 
   /*-------------order start--------------*/
+
+  async getOrders(input: GetOrdersInput): Promise<PageResponse<OrderInfo>> {
+    const apiName = 'getOrders';
+    const response = await getV1Orders(mapGetOrdersInput(input));
+
+    this.ensureSuccess(apiName, response.data);
+
+    return {
+      items: response.data!.data!.items!.map((order) => mapOrderInfo(order)),
+      totalCount: response.data!.data!.totalCount!
+    };
+  }
+
+  async getOrderTrades(orderId: string): Promise<Array<OrderTradeRecord>> {
+    const apiName = 'getOrderTrades';
+    const response = await getV1OrderTrades(mapGetOrderTradesInput(orderId));
+
+    this.ensureSuccess(apiName, response.data);
+
+    return response.data!.data!.map((trade) => mapOrderTradeRecord(trade));
+  }
+
   async submitSpotOrder(input: SubmitSpotOrderInput): Promise<void> {
-    this.ensurePrivateKey('submitSpotOrder');
+    const apiName = 'submitSpotOrder';
+    this.ensurePrivateKey(apiName);
 
     const nonce = await this.getNonce();
     const tx = TransactionManager.createTransaction(
@@ -282,7 +340,24 @@ export class HibitApi implements IHibitApi {
     const signedTx = TransactionManager.sign(tx, this.options.privateKey);
     const resp = await postV1TxSubmitSpotOrder(mapTransactionToApiRequest(signedTx));
 
-    this.ensureSuccess('submitSpotOrder', resp.data);
+    this.ensureSuccess(apiName, resp.data);
+  }
+
+  async cancelSpotOrder(input: CancelSpotOrderInput): Promise<void> {
+    const apiName = 'cancelSpotOrder';
+    this.ensurePrivateKey(apiName);
+
+    const nonce = await this.getNonce();
+    const tx = TransactionManager.createTransaction(
+      TransactionType.CancelSpotOrder,
+      this.options.walletId,
+      nonce ? nonce : 0n,
+      input
+    );
+    const signedTx = TransactionManager.sign(tx, this.options.privateKey);
+    const resp = await postV1TxSubmitSpotOrder(mapTransactionToApiRequest(signedTx));
+
+    this.ensureSuccess(apiName, resp.data);
   }
 
   /*-------------order end----------------*/
@@ -301,12 +376,11 @@ export class HibitApi implements IHibitApi {
   }
 
   async getNonce(): Promise<bigint> {
+    const apiName = 'getNonce';
     const resp = await getV1WalletNonce();
-    if (resp.data?.code == 200) {
-      // @ts-ignore
-      return BigNumber(resp.data.data?.nonce);
-    }
-    throw new Error('Get nonce failed');
+    this.ensureSuccess(apiName, resp.data);
+
+    return BigInt(resp.data!.data!.nonce!);
   }
 
   private ensureSuccess<T extends HibitApiResponse>(apiName: string, response?: T) {
