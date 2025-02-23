@@ -347,6 +347,10 @@ export class HibitApi implements IHibitApi {
     const apiName = 'cancelSpotOrder';
     this.ensurePrivateKey(apiName);
 
+    if (input.isCancelAll === undefined || input.isCancelAll === null) {
+      input.isCancelAll = false;
+    }
+
     const nonce = await this.getNonce();
     const tx = TransactionManager.createTransaction(
       TransactionType.CancelSpotOrder,
