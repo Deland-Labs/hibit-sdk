@@ -9,12 +9,12 @@ import {
 } from '@hey-api/client-fetch';
 
 /**
- * The `createClientConfig()` function will be called on openapi initialization
- * and the returned object will become the openapi's initial configuration.
+ * The `createClientConfig()` function will be called on client initialization
+ * and the returned object will become the client's initial configuration.
  *
- * You may want to initialize your openapi this way instead of calling
+ * You may want to initialize your client this way instead of calling
  * `setConfig()`. This is useful for example if you're using Next.js
- * to ensure your openapi always has the correct values.
+ * to ensure your client always has the correct values.
  */
 export type CreateClientConfig<T extends DefaultClientOptions = ClientOptions> = (
   override?: Config<DefaultClientOptions & T>
