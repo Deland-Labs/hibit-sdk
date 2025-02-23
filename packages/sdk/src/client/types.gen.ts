@@ -1114,6 +1114,10 @@ export type GetV1OrdersData = {
   path?: never;
   query?: {
     /**
+     * Wallet Id of the orders
+     */
+    WalletId?: string;
+    /**
      * status to filter the orders, if null, means all statuses.
      */
     Status?: Array<Ex3RepositoryHistoryEntitiesOrderStatus>;
@@ -1290,7 +1294,12 @@ export type PostV1TxCancelSpotOrderResponse = PostV1TxCancelSpotOrderResponses[k
 export type GetV1WalletNonceData = {
   body?: never;
   path?: never;
-  query?: never;
+  query?: {
+    /**
+     * Wallet Id
+     */
+    WalletId?: string;
+  };
   url: '/v1/wallet/nonce';
 };
 
@@ -1332,14 +1341,23 @@ export type GetV1WalletNonceResponses = {
 
 export type GetV1WalletNonceResponse = GetV1WalletNonceResponses[keyof GetV1WalletNonceResponses];
 
-export type GetV1WalletBalanceData = {
+export type GetV1WalletBalancesData = {
   body?: never;
   path?: never;
-  query?: never;
-  url: '/v1/wallet/balance';
+  query?: {
+    /**
+     * Wallet Id
+     */
+    WalletId?: string;
+    /**
+     * Asset Id (optional), if not provided, return all assets
+     */
+    AssetId?: string;
+  };
+  url: '/v1/wallet/balances';
 };
 
-export type GetV1WalletBalanceErrors = {
+export type GetV1WalletBalancesErrors = {
   /**
    * Bad Request
    */
@@ -1366,16 +1384,16 @@ export type GetV1WalletBalanceErrors = {
   501: VoloAbpHttpRemoteServiceErrorResponse;
 };
 
-export type GetV1WalletBalanceError = GetV1WalletBalanceErrors[keyof GetV1WalletBalanceErrors];
+export type GetV1WalletBalancesError = GetV1WalletBalancesErrors[keyof GetV1WalletBalancesErrors];
 
-export type GetV1WalletBalanceResponses = {
+export type GetV1WalletBalancesResponses = {
   /**
    * OK
    */
   200: Ex3ExchangeOpenApiAppServicesOpenApiResult1SystemCollectionsGenericDictionary2Ex3ModelsAssetId_Ex3Models_Version_1000_Culture_neutral_PublicKeyToken_null__Ex3ModelsOpenApiNumber_Ex3Models_Version_1000_Culture_neutral_PublicKeyToken_null___SystemPrivateCoreLib_Version_9000_Culture_neutral_PublicKeyToken_7Cec85D7Bea7798E;
 };
 
-export type GetV1WalletBalanceResponse = GetV1WalletBalanceResponses[keyof GetV1WalletBalanceResponses];
+export type GetV1WalletBalancesResponse = GetV1WalletBalancesResponses[keyof GetV1WalletBalancesResponses];
 
 export type ClientOptions = {
   baseUrl: `${string}://openapiv1.json` | (string & {});

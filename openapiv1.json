@@ -1753,6 +1753,14 @@
         "summary": "get orders of wallet",
         "parameters": [
           {
+            "name": "WalletId",
+            "in": "query",
+            "description": "Wallet Id of the orders",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
             "name": "Status",
             "in": "query",
             "description": "status to filter the orders, if null, means all statuses.",
@@ -2312,6 +2320,16 @@
       "get": {
         "tags": ["Wallet"],
         "summary": "get nonce of wallet",
+        "parameters": [
+          {
+            "name": "WalletId",
+            "in": "query",
+            "description": "Wallet Id",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -2456,10 +2474,28 @@
         }
       }
     },
-    "/v1/wallet/balance": {
+    "/v1/wallet/balances": {
       "get": {
         "tags": ["Wallet"],
         "summary": "get balance of wallet",
+        "parameters": [
+          {
+            "name": "WalletId",
+            "in": "query",
+            "description": "Wallet Id",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "AssetId",
+            "in": "query",
+            "description": "Asset Id (optional), if not provided, return all assets",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK",

@@ -14,7 +14,6 @@ import {
   getV1Markets,
   getV1Timestamp,
   getV1WalletBalance,
-  type GetV1WalletBalanceData,
   getV1WalletNonce,
   postV1TxSubmitSpotOrder,
   getV1MarketsTicker,
@@ -25,7 +24,6 @@ import {
   getV1Orders,
   getV1OrderTrades
 } from './client';
-import { Options } from '@hey-api/client-fetch';
 import { client } from './client/client.gen';
 import { mapChainInfo } from './types/chain';
 import { mapAssetInfo, mapGetAssetsInput } from './types/asset';
@@ -66,6 +64,7 @@ import {
 } from './types/order';
 import { TransactionManager } from './tx-manager.ts';
 import { mapTransactionToApiRequest } from './types/tx.ts';
+import { GetWalletBalancesInput, mapGetNonceInput, mapGetWalletBalancesInput } from './types/wallet.ts';
 
 /**
  * Interface representing the Hibit API.
@@ -166,6 +165,7 @@ export interface IHibitApi {
 
   /**
    * Get the list of trades for an order.
+   *
    * @param {string} orderId - The order id to get the trades for.
    * @returns {Promise<Array<OrderTradeRecord>>} A promise that resolves to the list of trades for the order.
    */
@@ -174,16 +174,18 @@ export interface IHibitApi {
   /**
    * Get the wallet balance.
    *
+   * @param {GetWalletBalancesInput} input - The input parameters for getting the wallet balance.
    * @returns {Promise<Map<string, BigNumber>>} A promise that resolves to the wallet balance.
    */
-  getWalletBalance(): Promise<Map<string, BigNumber>>;
+  getWalletBalances(input: GetWalletBalancesInput): Promise<Map<string, BigNumber>>;
 
   /**
    * Get the nonce.
    *
+   * @param {bigint} walletId - The wallet id to get the nonce for.
    * @returns {Promise<bigint>} A promise that resolves to the nonce.
    */
-  getNonce(): Promise<bigint>;
+  getNonce(walletId: bigint): Promise<bigint>;
 }
 
 export class HibitApi implements IHibitApi {
@@ -330,7 +332,7 @@ export class HibitApi implements IHibitApi {
     const apiName = 'submitSpotOrder';
     this.ensurePrivateKey(apiName);
 
-    const nonce = await this.getNonce();
+    const nonce = await this.getNonce(this.options.walletId);
     const tx = TransactionManager.createTransaction(
       TransactionType.CreateSpotOrder,
       this.options.walletId,
@@ -351,7 +353,7 @@ export class HibitApi implements IHibitApi {
       input.isCancelAll = false;
     }
 
-    const nonce = await this.getNonce();
+    const nonce = await this.getNonce(this.options.walletId);
     const tx = TransactionManager.createTransaction(
       TransactionType.CancelSpotOrder,
       this.options.walletId,
@@ -365,26 +367,27 @@ export class HibitApi implements IHibitApi {
   }
 
   /*-------------order end----------------*/
-  async getWalletBalance(): Promise<Map<string, BigNumber>> {
-    const options: Options<GetV1WalletBalanceData, boolean> = {};
-    const resp = await getV1WalletBalance(options);
-    if (resp.data?.code == 200) {
-      const result = new Map<string, BigNumber>();
-      for (const [assetId, balance] of Object.entries(resp.data.data as Record<string, string>)) {
-        result.set(assetId, BigNumber(balance));
-      }
-      return result;
-    }
 
-    throw new Error('Get user assets failed');
-  }
+  async getWalletBalances(input: GetWalletBalancesInput): Promise<Map<string, BigNumber>> {
+    const apiName = 'getWalletBalances';
+    const resp = await getV1WalletBalance(mapGetWalletBalancesInput(input));
 
-  async getNonce(): Promise<bigint> {
-    const apiName = 'getNonce';
-    const resp = await getV1WalletNonce();
     this.ensureSuccess(apiName, resp.data);
 
-    return BigInt(resp.data!.data!.nonce!);
+    const result = new Map<string, BigNumber>();
+    for (const [assetId, balance] of Object.entries(resp!.data!.data as Record<string, string>)) {
+      result.set(assetId, BigNumber(balance));
+    }
+    return result;
+  }
+
+  async getNonce(walletId: bigint): Promise<bigint> {
+    const apiName = 'getNonce';
+    const response = await getV1WalletNonce(mapGetNonceInput(walletId));
+
+    this.ensureSuccess(apiName, response.data);
+
+    return BigInt(response.data!.data!.nonce!);
   }
 
   private ensureSuccess<T extends HibitApiResponse>(apiName: string, response?: T) {
