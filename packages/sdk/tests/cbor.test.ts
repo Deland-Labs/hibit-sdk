@@ -4,70 +4,73 @@ import { cborIndex } from '../src/encoder/decorator';
 import { TxPayloadEncoder } from '../src/encoder';
 
 class TestCborData {
+  //@ts-ignore
   @cborIndex(0)
-  //@ts-ignore
   public value1: BigNumber;
-  @cborIndex(1)
   //@ts-ignore
+  @cborIndex(1)
   public value2: string;
 }
 
 class TestCborDataWithBigInt {
+  //@ts-ignore
   @cborIndex(0)
-  //@ts-ignore
   public value1: bigint;
-  @cborIndex(1)
   //@ts-ignore
+  @cborIndex(1)
   public value2: string;
 }
 
 class TestCborDataWithNumber {
+  //@ts-ignore
   @cborIndex(0)
-  //@ts-ignore
   public value1: number;
-  @cborIndex(1)
   //@ts-ignore
+  @cborIndex(1)
   public value2: string;
 }
 
 class ParentCborData {
+  //@ts-ignore
   @cborIndex(0)
-  //@ts-ignore
   public value1: TestCborData;
-  @cborIndex(1)
   //@ts-ignore
+  @cborIndex(1)
   public value2: string;
 }
 
 class ParentCborData2 {
+  //@ts-ignore
   @cborIndex(0)
   public value1?: TestCborData;
-  @cborIndex(1)
   //@ts-ignore
+  @cborIndex(1)
   public value2: string;
 }
 
-class TrasnsferTxItem {
+class TransferTxItem {
   constructor(userId: BigNumber, value: BigNumber) {
     this.userId = userId;
     this.value = value;
   }
 
+  //@ts-ignore
   @cborIndex(0)
   public userId: BigNumber;
+  //@ts-ignore
   @cborIndex(1)
   public value: BigNumber;
 }
 
 class TransferTx {
+  //@ts-ignore
   @cborIndex(0)
-  //@ts-ignore
   public assetId: BigNumber;
+  //@ts-ignore
   @cborIndex(1)
+  public items: TransferTxItem[];
   //@ts-ignore
-  public items: TrasnsferTxItem[];
   @cborIndex(2)
-  //@ts-ignore
   public memo: Uint8Array;
 }
 
@@ -112,7 +115,7 @@ test('null data', () => {
 test('encode with byte[]', () => {
   const tx = new TransferTx();
   tx.assetId = BigNumber('10000');
-  tx.items = [new TrasnsferTxItem(BigNumber('9999'), new BigNumber(1234))];
+  tx.items = [new TransferTxItem(BigNumber('9999'), new BigNumber(1234))];
   tx.memo = new Uint8Array([255, 0, 255]);
   let result = TxPayloadEncoder.encode(tx);
   expect(result.toString('hex')).toEqual('83c24227108182c242270fc24204d243ff00ff');
