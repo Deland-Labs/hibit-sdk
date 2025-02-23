@@ -9,6 +9,10 @@ import { OrderCategory, OrderSide, OrderStatus, SwapV2ExactTokensType } from '..
 
 export type GetOrdersInput = {
   /**
+   * Wallet Id of the orders
+   */
+  WalletId: bigint;
+  /**
    * status to filter the orders, if null, means all statuses.
    */
   status?: Array<OrderStatus>;
@@ -220,7 +224,7 @@ export type SwapV2OrderDetails = {
  * @example Scenario 1: Cancel a specific order by ID
  * ```typescript
  * const cancelSingleOrder: CancelSpotOrderInput = {
- *   orderId: "0x1234567890abcdef"
+ *   orderId: "1234567890abcdef"
  * };
  * ```
  *
@@ -272,6 +276,7 @@ export type CancelSpotOrderInput = {
 export function mapGetOrdersInput(data: GetOrdersInput): Options<GetV1OrdersData, boolean> {
   return {
     query: {
+      WalletId: String(data.WalletId),
       Status: data.status,
       MarketId: data.marketId,
       OrderCategory: data.orderCategory,

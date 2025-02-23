@@ -44,9 +44,9 @@ import type {
   GetV1WalletNonceData,
   GetV1WalletNonceResponse,
   GetV1WalletNonceError,
-  GetV1WalletBalanceData,
-  GetV1WalletBalanceResponse,
-  GetV1WalletBalanceError
+  GetV1WalletBalancesData,
+  GetV1WalletBalancesResponse,
+  GetV1WalletBalancesError
 } from './types.gen';
 import { client as _heyApiClient } from './client.gen';
 
@@ -243,11 +243,11 @@ export const getV1WalletNonce = <ThrowOnError extends boolean = false>(
 /**
  * get balance of wallet
  */
-export const getV1WalletBalance = <ThrowOnError extends boolean = false>(
-  options?: Options<GetV1WalletBalanceData, ThrowOnError>
+export const getV1WalletBalances = <ThrowOnError extends boolean = false>(
+  options?: Options<GetV1WalletBalancesData, ThrowOnError>
 ) => {
-  return (options?.client ?? _heyApiClient).get<GetV1WalletBalanceResponse, GetV1WalletBalanceError, ThrowOnError>({
-    url: '/v1/wallet/balance',
+  return (options?.client ?? _heyApiClient).get<GetV1WalletBalancesResponse, GetV1WalletBalancesError, ThrowOnError>({
+    url: '/v1/wallet/balances',
     ...options
   });
 };
