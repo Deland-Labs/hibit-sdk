@@ -47,6 +47,11 @@ describe('Hibit Client Test', () => {
       expect(markets.totalCount).toBeGreaterThan(0);
     });
 
+    it('should get single market', async () => {
+      const market = await hibitClient.getMarket(10016n);
+      expect(market).toBeInstanceOf(Object);
+    });
+
     it('should get market tickers', async () => {
       const tickers = await hibitClient.getMarketsTicker();
       expect(tickers).toBeInstanceOf(Array);
