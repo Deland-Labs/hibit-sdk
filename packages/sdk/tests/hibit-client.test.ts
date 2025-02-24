@@ -51,9 +51,8 @@ describe('Hibit Client Test', () => {
       const market = await hibitClient.getMarket(10016n);
       expect(market).toMatchObject({
         marketId: expect.any(BigInt),
-        baseAssetId: expect.any(String),
-        quoteAssetId: expect.any(String),
-        // Add other expected properties
+        baseAssetId: expect.any(BigInt),
+        quoteAssetId: expect.any(BigInt)
       });
     });
 
