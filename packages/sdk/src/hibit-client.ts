@@ -65,7 +65,7 @@ import { mapTransactionToApiRequest } from './types/tx';
 import { mapGetNonceInput, mapGetWalletBalancesInput } from './types/wallet';
 import { client } from './openapi/client.gen';
 import { HibitClientError } from './error.ts';
-import { mapCancelOrdersCborInput, mapSubmitSpotOrderCborInput } from './types/order/cbor';
+import { mapCancelOrdersCborInput, mapSubmitSpotOrderCborInput } from './types/order/payload.ts';
 
 /**
  * Interface representing the Hibit API.
