@@ -186,29 +186,29 @@ export function mapSwapV2OrderDetails(
   if (swapV2OrderDetails.exactTokensType === SwapV2ExactTokensType.Source) {
     exactTokenDecimals =
       swapV2OrderDetails.orderSide === OrderSide.Ask
+        ? decimalOptions.baseAssetDecimals
+        : decimalOptions.quoteAssetDecimals;
+    minOutDecimals =
+      swapV2OrderDetails.orderSide === OrderSide.Ask
         ? decimalOptions.quoteAssetDecimals
         : decimalOptions.baseAssetDecimals;
-    minOutDecimals =
+    maxInDecimals =
       swapV2OrderDetails.orderSide === OrderSide.Ask
         ? decimalOptions.baseAssetDecimals
         : decimalOptions.quoteAssetDecimals;
-    maxInDecimals =
-      swapV2OrderDetails.orderSide === OrderSide.Ask
-        ? decimalOptions.quoteAssetDecimals
-        : decimalOptions.baseAssetDecimals;
   } else {
     exactTokenDecimals =
       swapV2OrderDetails.orderSide === OrderSide.Ask
+        ? decimalOptions.quoteAssetDecimals
+        : decimalOptions.baseAssetDecimals;
+    minOutDecimals =
+      swapV2OrderDetails.orderSide === OrderSide.Ask
         ? decimalOptions.baseAssetDecimals
         : decimalOptions.quoteAssetDecimals;
-    minOutDecimals =
+    maxInDecimals =
       swapV2OrderDetails.orderSide === OrderSide.Ask
         ? decimalOptions.quoteAssetDecimals
         : decimalOptions.baseAssetDecimals;
-    maxInDecimals =
-      swapV2OrderDetails.orderSide === OrderSide.Ask
-        ? decimalOptions.baseAssetDecimals
-        : decimalOptions.quoteAssetDecimals;
   }
 
   return {
