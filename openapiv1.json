@@ -161,7 +161,7 @@
           {
             "name": "ChainIds",
             "in": "query",
-            "description": "chain ids to filter the markets list.",
+            "description": "chain ids to filter the assets list.",
             "schema": {
               "type": "array",
               "items": {
@@ -172,7 +172,7 @@
           {
             "name": "ChainAssetTypes",
             "in": "query",
-            "description": "chain asset types to filter the markets list.",
+            "description": "chain asset types to filter the assets list.",
             "schema": {
               "type": "array",
               "items": {
@@ -1418,6 +1418,22 @@
             }
           },
           {
+            "name": "BaseAssetId",
+            "in": "query",
+            "description": "The base asset id. This is an optional field that specifies the base asset for which the market list is requested.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "QuoteAssetId",
+            "in": "query",
+            "description": "The quote asset id. This is an optional field that specifies the quote asset for which the market list is requested.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
             "name": "Limit",
             "in": "query",
             "description": "maximum number of items to return. maximum value is 500.",
@@ -1461,6 +1477,164 @@
               "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Volo.Abp.Application.Dtos.PagedResultDto`1[[Ex3.Exchange.OpenApi.AppServices.MarketInfoItem, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Volo.Abp.Ddd.Application.Contracts, Version=9.0.5.0, Culture=neutral, PublicKeyToken=null]]"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              }
+            }
+          },
+          "501": {
+            "description": "Not Implemented",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/market": {
+      "get": {
+        "tags": ["Markets"],
+        "summary": "get the market by market id",
+        "parameters": [
+          {
+            "name": "MarketId",
+            "in": "query",
+            "description": "The market id.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Ex3.Exchange.OpenApi.AppServices.MarketInfoItem, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Ex3.Exchange.OpenApi.AppServices.MarketInfoItem, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Ex3.Exchange.OpenApi.AppServices.MarketInfoItem, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
                 }
               }
             }
@@ -2833,24 +3007,24 @@
         "additionalProperties": false
       },
       "Ex3.Exchange.OpenApi.AppServices.MarketInfoItem": {
-        "required": ["baseTokenId", "marketId", "marketSymbol", "quoteTokenId"],
+        "required": ["baseAssetId", "marketId", "marketSymbol", "quoteAssetId"],
         "type": "object",
         "properties": {
           "marketId": {
             "type": "string",
-            "description": "market id"
+            "description": "The market id."
           },
           "marketSymbol": {
             "type": "string",
-            "description": "market symbol"
+            "description": "Market symbol"
           },
-          "baseTokenId": {
+          "baseAssetId": {
             "type": "string",
-            "description": "base token id"
+            "description": "The base asset id of the market."
           },
-          "quoteTokenId": {
+          "quoteAssetId": {
             "type": "string",
-            "description": "quote token id"
+            "description": "The quote asset id of the market."
           },
           "depthLevels": {
             "type": "array",
@@ -2995,6 +3169,23 @@
           },
           "data": {
             "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.GetSwapOutput"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Ex3.Exchange.OpenApi.AppServices.MarketInfoItem, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.MarketInfoItem"
           }
         },
         "additionalProperties": false

@@ -38,12 +38,14 @@ import {
   getV1MarketTrade,
   getV1Orders,
   getV1OrderTrades,
-  getV1WalletBalances
+  getV1WalletBalances,
+  getV1Market
 } from './openapi';
 import { mapChainInfo } from './types/chain';
 import { mapAssetInfo, mapGetAssetsInput } from './types/asset';
 import {
   mapGetMarketDepthInput,
+  mapGetMarketInput,
   mapGetMarketKlineInput,
   mapGetMarketsInput,
   mapGetMarketsSwapInfoInput,
@@ -104,6 +106,14 @@ export interface IHibitClient {
    * @returns {Promise<PageResponse<MarketInfo>>} A promise that resolves to the list of markets.
    */
   getMarkets(input: GetMarketsInput): Promise<PageResponse<MarketInfo>>;
+
+  /**
+   * Get the market information.
+   *
+   * @param {bigint} marketId - The market id to get the information for.
+   * @returns {Promise<MarketInfo>} A promise that resolves to the market information.
+   */
+  getMarket(marketId: bigint): Promise<MarketInfo>;
 
   /**
    * Get the ticker information for markets.
@@ -253,6 +263,15 @@ export class HibitClient implements IHibitClient {
       items: response.data!.data!.items!.map((market) => mapMarketInfo(market)),
       totalCount: response.data!.data!.totalCount
     } as PageResponse<MarketInfo>;
+  }
+
+  async getMarket(marketId: bigint): Promise<MarketInfo> {
+    const apiName = 'getMarket';
+    const response = await getV1Market(mapGetMarketInput(marketId));
+
+    this.ensureSuccess(apiName, response.data);
+
+    return mapMarketInfo(response.data!.data!);
   }
 
   async getMarketsTicker(marketId?: bigint): Promise<Array<MarketTickerInfo>> {

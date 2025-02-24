@@ -139,21 +139,21 @@ export type Ex3ExchangeOpenApiAppServicesMarket24HrTickerItem = {
 
 export type Ex3ExchangeOpenApiAppServicesMarketInfoItem = {
   /**
-   * market id
+   * The market id.
    */
   marketId: string;
   /**
-   * market symbol
+   * Market symbol
    */
   marketSymbol: string;
   /**
-   * base token id
+   * The base asset id of the market.
    */
-  baseTokenId: string;
+  baseAssetId: string;
   /**
-   * quote token id
+   * The quote asset id of the market.
    */
-  quoteTokenId: string;
+  quoteAssetId: string;
   /**
    * values of the depth levels
    */
@@ -228,6 +228,13 @@ export type Ex3ExchangeOpenApiAppServicesOpenApiResult1Ex3ExchangeOpenApiAppServ
     code?: number;
     message?: string | null;
     data?: Ex3ExchangeOpenApiAppServicesGetSwapOutput;
+  };
+
+export type Ex3ExchangeOpenApiAppServicesOpenApiResult1Ex3ExchangeOpenApiAppServicesMarketInfoItem_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null =
+  {
+    code?: number;
+    message?: string | null;
+    data?: Ex3ExchangeOpenApiAppServicesMarketInfoItem;
   };
 
 export type Ex3ExchangeOpenApiAppServicesOpenApiResult1Ex3ExchangeOpenApiAppServicesNonceResult_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null =
@@ -566,11 +573,11 @@ export type GetV1AssetsData = {
   path?: never;
   query?: {
     /**
-     * chain ids to filter the markets list.
+     * chain ids to filter the assets list.
      */
     ChainIds?: Array<string>;
     /**
-     * chain asset types to filter the markets list.
+     * chain asset types to filter the assets list.
      */
     ChainAssetTypes?: Array<string>;
     /**
@@ -1000,6 +1007,14 @@ export type GetV1MarketsData = {
      */
     ChainAssetTypes?: Array<string>;
     /**
+     * The base asset id. This is an optional field that specifies the base asset for which the market list is requested.
+     */
+    BaseAssetId?: string;
+    /**
+     * The quote asset id. This is an optional field that specifies the quote asset for which the market list is requested.
+     */
+    QuoteAssetId?: string;
+    /**
      * maximum number of items to return. maximum value is 500.
      */
     Limit?: number;
@@ -1058,6 +1073,56 @@ export type GetV1MarketsResponses = {
 };
 
 export type GetV1MarketsResponse = GetV1MarketsResponses[keyof GetV1MarketsResponses];
+
+export type GetV1MarketData = {
+  body?: never;
+  path?: never;
+  query?: {
+    /**
+     * The market id.
+     */
+    MarketId?: string;
+  };
+  url: '/v1/market';
+};
+
+export type GetV1MarketErrors = {
+  /**
+   * Bad Request
+   */
+  400: VoloAbpHttpRemoteServiceErrorResponse;
+  /**
+   * Unauthorized
+   */
+  401: VoloAbpHttpRemoteServiceErrorResponse;
+  /**
+   * Forbidden
+   */
+  403: VoloAbpHttpRemoteServiceErrorResponse;
+  /**
+   * Not Found
+   */
+  404: VoloAbpHttpRemoteServiceErrorResponse;
+  /**
+   * Internal Server Error
+   */
+  500: VoloAbpHttpRemoteServiceErrorResponse;
+  /**
+   * Not Implemented
+   */
+  501: VoloAbpHttpRemoteServiceErrorResponse;
+};
+
+export type GetV1MarketError = GetV1MarketErrors[keyof GetV1MarketErrors];
+
+export type GetV1MarketResponses = {
+  /**
+   * OK
+   */
+  200: Ex3ExchangeOpenApiAppServicesOpenApiResult1Ex3ExchangeOpenApiAppServicesMarketInfoItem_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null;
+};
+
+export type GetV1MarketResponse = GetV1MarketResponses[keyof GetV1MarketResponses];
 
 export type GetV1OrderTradesData = {
   body?: never;

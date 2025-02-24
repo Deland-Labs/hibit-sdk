@@ -10,7 +10,8 @@ import {
   Ex3CacheDepthManagerSpotMarketDepthDataDto,
   GetV1MarketKlineData,
   GetV1MarketTradeData,
-  GetV1MarketDepthData
+  GetV1MarketDepthData,
+  GetV1MarketData
 } from '../openapi';
 import { DepthIndex, OrderSide, TickSpace } from './enums';
 
@@ -23,6 +24,14 @@ export type GetMarketsInput = {
    * chain asset types to filter the markets list.
    */
   chainAssetTypes?: Array<string>;
+  /**
+   * The base asset id. This is an optional field that specifies the base asset for which the market list is requested.
+   */
+  baseAssetId?: bigint;
+  /**
+   * The quote asset id. This is an optional field that specifies the quote asset for which the market list is requested.
+   */
+  quoteAssetId?: bigint;
   /**
    * maximum number of items to return. maximum value is 500.
    */
@@ -53,13 +62,13 @@ export type MarketInfo = {
    */
   marketSymbol: string;
   /**
-   * base token id
+   * base asset id
    */
-  baseTokenId: bigint;
+  baseAssetId: bigint;
   /**
-   * quote token id
+   * quote asset id
    */
-  quoteTokenId: bigint;
+  quoteAssetId: bigint;
   /**
    * values of the depth levels
    */
@@ -294,9 +303,19 @@ export function mapGetMarketsInput(input: GetMarketsInput): Options<GetV1Markets
     query: {
       ChainIds: input.chainIds,
       ChainAssetTypes: input.chainAssetTypes,
+      BaseAssetId: input.baseAssetId ? String(input.baseAssetId) : undefined,
+      QuoteAssetId: input.quoteAssetId ? String(input.quoteAssetId) : undefined,
       Limit: input.limit,
       Offset: input.offset,
       OrderBy: input.orderBy
+    }
+  };
+}
+
+export function mapGetMarketInput(marketId: bigint): Options<GetV1MarketData, boolean> {
+  return {
+    query: {
+      MarketId: String(marketId)
     }
   };
 }
@@ -305,8 +324,8 @@ export function mapMarketInfo(market: Ex3ExchangeOpenApiAppServicesMarketInfoIte
   return {
     marketId: BigInt(market.marketId),
     marketSymbol: market.marketSymbol,
-    baseTokenId: BigInt(market.baseTokenId),
-    quoteTokenId: BigInt(market.quoteTokenId),
+    baseAssetId: BigInt(market.baseAssetId),
+    quoteAssetId: BigInt(market.quoteAssetId),
     depthLevels: market.depthLevels!
   };
 }

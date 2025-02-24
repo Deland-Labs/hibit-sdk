@@ -29,6 +29,9 @@ import type {
   GetV1MarketsData,
   GetV1MarketsResponse,
   GetV1MarketsError,
+  GetV1MarketData,
+  GetV1MarketResponse,
+  GetV1MarketError,
   GetV1OrderTradesData,
   GetV1OrderTradesResponse,
   GetV1OrderTradesError,
@@ -168,6 +171,16 @@ export const getV1Markets = <ThrowOnError extends boolean = false>(
 ) => {
   return (options?.client ?? _heyApiClient).get<GetV1MarketsResponse, GetV1MarketsError, ThrowOnError>({
     url: '/v1/markets',
+    ...options
+  });
+};
+
+/**
+ * get the market by market id
+ */
+export const getV1Market = <ThrowOnError extends boolean = false>(options?: Options<GetV1MarketData, ThrowOnError>) => {
+  return (options?.client ?? _heyApiClient).get<GetV1MarketResponse, GetV1MarketError, ThrowOnError>({
+    url: '/v1/market',
     ...options
   });
 };
