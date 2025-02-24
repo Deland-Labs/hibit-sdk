@@ -1,7 +1,8 @@
-import { OrderCategory, OrderSide } from '../enums';
-import BigNumber from 'bignumber.js';
-import { CancelSpotOrderInput, LimitOrderDetails, SubmitSpotOrderInput, SwapV2OrderDetails } from '.';
+import { OrderCategory, OrderSide, SwapV2ExactTokensType } from '../enums';
+import { CancelSpotOrderInput, DecimalOptions, LimitOrderDetails, SubmitSpotOrderInput, SwapV2OrderDetails } from '.';
 import { cborIndex, cborBigUint } from '../../encoder/decorator.ts';
+import { toSmallestUnit } from '../../utils.ts';
+import { PRICE_DECIMALS } from './constant.ts';
 
 /**
  * Input class for creating a new spot order in the trading system.
@@ -80,7 +81,7 @@ export class LimitOrderDetailsCbor {
    */
   @cborIndex(1)
   // @ts-ignore
-  public price: BigNumber;
+  public price: bigint;
 
   /**
    * The volume of tokens to trade
@@ -88,7 +89,7 @@ export class LimitOrderDetailsCbor {
    */
   @cborIndex(2)
   // @ts-ignore
-  public volume: BigNumber;
+  public volume: bigint;
 
   /**
    * Creates a new instance of LimitOrderDetailsCbor
@@ -128,7 +129,7 @@ export class SwapV2OrderDetailsCbor {
    */
   @cborIndex(0)
   // @ts-ignore
-  public exactTokens: BigNumber;
+  public exactTokens: bigint;
 
   /**
    * Specifies whether exactTokens is input or output amount
@@ -154,7 +155,7 @@ export class SwapV2OrderDetailsCbor {
    * @decorators {@cborIndex(3)}
    */
   @cborIndex(3)
-  public minOut?: BigNumber;
+  public minOut?: bigint;
 
   /**
    * Maximum input amount for the swap
@@ -162,7 +163,7 @@ export class SwapV2OrderDetailsCbor {
    * @decorators {@cborIndex(4)}
    */
   @cborIndex(4)
-  public maxIn?: BigNumber;
+  public maxIn?: bigint;
 
   /**
    * Creates a new instance of SwapV2OrderDetailsCbor
@@ -174,32 +175,75 @@ export class SwapV2OrderDetailsCbor {
   }
 }
 
-// TODO: add decimals mapping
-export function mapSwapV2OrderDetails(swapV2OrderDetails: SwapV2OrderDetails): SwapV2OrderDetailsCbor {
+export function mapSwapV2OrderDetails(
+  swapV2OrderDetails: SwapV2OrderDetails,
+  decimalOptions: DecimalOptions
+): SwapV2OrderDetailsCbor {
+  let exactTokenDecimals: number;
+  let minOutDecimals: number;
+  let maxInDecimals: number;
+
+  if (swapV2OrderDetails.exactTokensType === SwapV2ExactTokensType.Source) {
+    exactTokenDecimals =
+      swapV2OrderDetails.orderSide === OrderSide.Ask
+        ? decimalOptions.quoteAssetDecimals
+        : decimalOptions.baseAssetDecimals;
+    minOutDecimals =
+      swapV2OrderDetails.orderSide === OrderSide.Ask
+        ? decimalOptions.baseAssetDecimals
+        : decimalOptions.quoteAssetDecimals;
+    maxInDecimals =
+      swapV2OrderDetails.orderSide === OrderSide.Ask
+        ? decimalOptions.quoteAssetDecimals
+        : decimalOptions.baseAssetDecimals;
+  } else {
+    exactTokenDecimals =
+      swapV2OrderDetails.orderSide === OrderSide.Ask
+        ? decimalOptions.baseAssetDecimals
+        : decimalOptions.quoteAssetDecimals;
+    minOutDecimals =
+      swapV2OrderDetails.orderSide === OrderSide.Ask
+        ? decimalOptions.quoteAssetDecimals
+        : decimalOptions.baseAssetDecimals;
+    maxInDecimals =
+      swapV2OrderDetails.orderSide === OrderSide.Ask
+        ? decimalOptions.baseAssetDecimals
+        : decimalOptions.quoteAssetDecimals;
+  }
+
   return {
-    exactTokens: new BigNumber(swapV2OrderDetails.exactTokens),
+    exactTokens: toSmallestUnit(swapV2OrderDetails.exactTokens, exactTokenDecimals),
     exactTokensType: swapV2OrderDetails.exactTokensType,
     orderSide: swapV2OrderDetails.orderSide,
-    minOut: swapV2OrderDetails.minOut ? new BigNumber(swapV2OrderDetails.minOut) : undefined,
-    maxIn: swapV2OrderDetails.maxIn ? new BigNumber(swapV2OrderDetails.maxIn) : undefined
+    minOut: swapV2OrderDetails.minOut ? toSmallestUnit(swapV2OrderDetails.minOut, minOutDecimals) : undefined,
+    maxIn: swapV2OrderDetails.maxIn ? toSmallestUnit(swapV2OrderDetails.maxIn, maxInDecimals) : undefined
   };
 }
 
-// TODO: add decimals mapping
-export function mapLimitOrderDetails(limitOrderDetails: LimitOrderDetails): LimitOrderDetailsCbor {
+export function mapLimitOrderDetails(
+  limitOrderDetails: LimitOrderDetails,
+  decimalOptions: DecimalOptions
+): LimitOrderDetailsCbor {
   return {
     orderSide: limitOrderDetails.orderSide,
-    price: new BigNumber(limitOrderDetails.price),
-    volume: new BigNumber(limitOrderDetails.volume)
+    price: toSmallestUnit(limitOrderDetails.price, PRICE_DECIMALS),
+    volume: toSmallestUnit(limitOrderDetails.volume, decimalOptions.baseAssetDecimals)
   };
 }
 
-export function mapSubmitSpotOrderCborInput(input: SubmitSpotOrderInput): SubmitSpotOrderCborInput {
+export function mapSubmitSpotOrderCborInput(
+  input: SubmitSpotOrderInput,
+  decimalOptions: DecimalOptions
+): SubmitSpotOrderCborInput {
   return {
     orderCategory: input.orderCategory,
     marketId: input.marketId,
-    limitOrderDetails: input.limitOrderDetails ? mapLimitOrderDetails(input.limitOrderDetails) : undefined,
-    swapV2OrderDetails: input.swapV2OrderDetails ? mapSwapV2OrderDetails(input.swapV2OrderDetails) : undefined
+    limitOrderDetails: input.limitOrderDetails
+      ? mapLimitOrderDetails(input.limitOrderDetails, decimalOptions)
+      : undefined,
+    swapV2OrderDetails: input.swapV2OrderDetails
+      ? mapSwapV2OrderDetails(input.swapV2OrderDetails, decimalOptions)
+      : undefined
   };
 }
 

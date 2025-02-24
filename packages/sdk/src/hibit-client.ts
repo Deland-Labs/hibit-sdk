@@ -22,7 +22,8 @@ import {
   OrderInfo,
   OrderTradeRecord,
   SubmitSpotOrderInput,
-  GetWalletBalancesInput
+  GetWalletBalancesInput,
+  DecimalOptions
 } from './types';
 import {
   getV1Assets,
@@ -159,9 +160,10 @@ export interface IHibitClient {
    * Create a spot order.
    *
    * @param {SubmitSpotOrderInput} input - The input parameters for creating a spot order.
+   * @param {DecimalOptions} decimalOptions - Required, the decimal options for the base and quote assets.
    * @returns {Promise<void>} A promise that resolves when the spot order is created.
    */
-  submitSpotOrder(input: SubmitSpotOrderInput): Promise<void>;
+  submitSpotOrder(input: SubmitSpotOrderInput, decimalOptions: DecimalOptions): Promise<void>;
 
   /**
    * Cancel a spot order.
@@ -349,12 +351,12 @@ export class HibitClient implements IHibitClient {
     return response.data!.data!.map((trade) => mapOrderTradeRecord(trade));
   }
 
-  async submitSpotOrder(input: SubmitSpotOrderInput): Promise<void> {
+  async submitSpotOrder(input: SubmitSpotOrderInput, decimalOptions: DecimalOptions): Promise<void> {
     const apiName = 'submitSpotOrder';
     this.ensurePrivateKey(apiName);
 
     const nonce = await this.getNonce(this.options.walletId);
-    const mappedInput = mapSubmitSpotOrderCborInput(input);
+    const mappedInput = mapSubmitSpotOrderCborInput(input, decimalOptions);
     const tx = TransactionManager.createTransaction(
       TransactionType.CreateSpotOrder,
       this.options.walletId,

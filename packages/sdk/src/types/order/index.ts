@@ -138,6 +138,21 @@ export type OrderTradeRecord = {
   timestamp: number;
 };
 
+/**
+ * Options for specifying decimal precision for assets.
+ */
+export type DecimalOptions = {
+  /**
+   * The number of decimal places for the base asset.
+   */
+  baseAssetDecimals: number;
+
+  /**
+   * The number of decimal places for the quote asset.
+   */
+  quoteAssetDecimals: number;
+};
+
 export type SubmitSpotOrderInput = {
   /**
    * The category of the order (e.g., LIMIT, MARKET, SWAP_V2)
