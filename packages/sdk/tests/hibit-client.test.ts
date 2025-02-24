@@ -49,7 +49,16 @@ describe('Hibit Client Test', () => {
 
     it('should get single market', async () => {
       const market = await hibitClient.getMarket(10016n);
-      expect(market).toBeInstanceOf(Object);
+      expect(market).toMatchObject({
+        marketId: expect.any(BigInt),
+        baseAssetId: expect.any(String),
+        quoteAssetId: expect.any(String),
+        // Add other expected properties
+      });
+    });
+
+    it('should handle invalid market ID', async () => {
+      await expect(hibitClient.getMarket(999999n)).rejects.toThrow();
     });
 
     it('should get market tickers', async () => {
