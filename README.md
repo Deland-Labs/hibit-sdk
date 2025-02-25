@@ -7,7 +7,6 @@
 [![npm version](https://badge.fury.io/js/@deland-labs%2Fhibit-sdk.svg)](https://www.npmjs.com/package/@deland-labs/hibit-sdk)
 [![License: GPL-3.0](https://img.shields.io/badge/License-GPL%203.0-blue.svg)](LICENSE)
 
-// ...existing code...
 [API Documentation](https://docs.hibit.app/api)
 
 ## Introduction
