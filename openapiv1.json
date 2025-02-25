@@ -3408,12 +3408,7 @@
         "additionalProperties": false
       },
       "Ex3.Exchange.OpenApi.AppServices.SubAssetInfoDto": {
-        "required": [
-          "assetId",
-          "chainAssetType",
-          "contractAddress",
-          "decimalPlaces"
-        ],
+        "required": ["assetId", "chainAssetType", "contractAddress", "decimalPlaces"],
         "type": "object",
         "properties": {
           "assetId": {
@@ -3452,21 +3447,7 @@
         "description": "system information"
       },
       "Ex3.Exchange.OpenApi.AppServices.WalletOrderDto": {
-        "required": [
-          "cat",
-          "fa",
-          "fp",
-          "fv",
-          "id",
-          "mid",
-          "p",
-          "s",
-          "st",
-          "t",
-          "ta",
-          "tv",
-          "wid"
-        ],
+        "required": ["cat", "fa", "fp", "fv", "id", "mid", "p", "s", "st", "t", "ta", "tv", "wid"],
         "type": "object",
         "properties": {
           "id": {
