@@ -1,9 +1,13 @@
 # HiBit SDK
 
-[![Tests](https://img.shields.io/github/workflow/status/hibit-dev/hibit-sdk/tests?label=tests)](https://github.com/hibit-dev/hibit-sdk/actions)
-[![Build](https://img.shields.io/github/workflow/status/hibit-dev/hibit-sdk/build)](https://github.com/hibit-dev/hibit-sdk/actions)
-[![npm version](https://img.shields.io/npm/v/hibit-sdk)](https://www.npmjs.com/package/hibit-sdk)
+# HiBit SDK
 
+[![Tests](https://github.com/Deland-Labs/hibit-sdk/actions/workflows/test.yml/badge.svg)](https://github.com/Deland-Labs/hibit-sdk/actions)
+[![Build](https://github.com/Deland-Labs/hibit-sdk/actions/workflows/build.yml/badge.svg)](https://github.com/Deland-Labs/hibit-sdk/actions)
+[![npm version](https://badge.fury.io/js/@deland-labs%2Fhibit-sdk.svg)](https://www.npmjs.com/package/@deland-labs/hibit-sdk)
+[![License: GPL-3.0](https://img.shields.io/badge/License-GPL%203.0-blue.svg)](LICENSE)
+
+// ...existing code...
 [API Documentation](https://docs.hibit.app/api)
 
 ## Introduction
@@ -43,7 +47,3 @@ const timestamp = await hibitClient.getTimestamp();
 ## Contributing
 
 We welcome contributions to the HiBit SDK. Please see our [contributing guidelines](CONTRIBUTING.md) for more information.
-
-## License
-
-This project is licensed under the GNU General Public License v3.0. See the [LICENSE](LICENSE) file for details.
