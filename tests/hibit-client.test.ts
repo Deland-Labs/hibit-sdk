@@ -80,15 +80,21 @@ describe('Hibit Client Test', () => {
   describe('Order API Tests', () => {
     it('should submit limit order', async () => {
       await expect(
-        hibitClient.submitSpotOrder({
-          orderCategory: OrderCategory.LimitOrder,
-          marketId: 10000n,
-          limitOrderDetails: {
-            orderSide: OrderSide.Ask,
-            price: 100,
-            volume: 100
+        hibitClient.submitSpotOrder(
+          {
+            orderCategory: OrderCategory.LimitOrder,
+            marketId: 10000n,
+            limitOrderDetails: {
+              orderSide: OrderSide.Ask,
+              price: 100,
+              volume: 100
+            }
+          },
+          {
+            baseAssetDecimals: 18,
+            quoteAssetDecimals: 6
           }
-        })
+        )
       ).resolves.not.toThrow();
     });
 
