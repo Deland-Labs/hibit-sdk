@@ -9,7 +9,7 @@
 
 ## Introduction
 
-HiBit SDK is a comprehensive toolkit for interacting with the HiBit platform. This SDK provides a simple and intuitive way to leverage HiBit's features in your applications.
+HiBit SDK is a comprehensive toolkit designed for developers to interact seamlessly with the HiBit platform, which includes a Decentralized Exchange (DEX) and blockchain functionalities. This SDK provides a robust set of tools and utilities to facilitate the integration and management of various features offered by the HiBit platform, such as market data retrieval, order management, wallet operations, and more. With HiBit SDK, developers can build sophisticated applications that leverage the full potential of the HiBit ecosystem, ensuring secure, efficient, and scalable interactions with the decentralized exchange and blockchain services.
 
 ## Installation
 
