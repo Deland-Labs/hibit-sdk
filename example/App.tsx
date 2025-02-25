@@ -1,6 +1,8 @@
 import { FC, useEffect, useState } from 'react';
 import { HibitClient } from '../src/hibit-client';
 import SectionGetTimestamp from './components/SectionGetTimestamp';
+import SectionGetChains from './components/SectionGetChains';
+import SectionGetAssets from './components/SectionGetAssets';
 
 const OPTIONS = {
   baseUrl: 'https://alphaopenapi.ex3.one',
@@ -26,6 +28,8 @@ const App: FC = () => {
       <h1 className="text-3xl font-bold text-center">Hibit SDK Examples</h1>
 
       <SectionGetTimestamp client={client} />
+      <SectionGetChains client={client} />
+      <SectionGetAssets client={client} />
     </main>
   );
 };
