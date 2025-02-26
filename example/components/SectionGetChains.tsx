@@ -8,7 +8,7 @@ export default function SectionGetChains({ client }: { client: HibitClient }) {
   const [result, setResult] = useState<Array<ChainInfo> | null>(null);
   const [error, setError] = useState<string>('');
 
-  const getChains = async () => {
+  const submit = async () => {
     setLoading(true);
     setResult(null);
     setError('');
@@ -26,7 +26,7 @@ export default function SectionGetChains({ client }: { client: HibitClient }) {
       title="GetChains"
       form={
         <div>
-          <button className="btn" onClick={getChains} disabled={loading}>
+          <button className="btn" onClick={submit} disabled={loading}>
             {loading ? 'Loading...' : 'Submit'}
           </button>
         </div>

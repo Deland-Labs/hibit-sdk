@@ -7,7 +7,7 @@ export default function SectionGetTimestamp({ client }: { client: HibitClient })
   const [result, setResult] = useState<number | null>(null);
   const [error, setError] = useState<string>('');
 
-  const getTimestamp = async () => {
+  const submit = async () => {
     setLoading(true);
     setResult(null);
     setError('');
@@ -25,7 +25,7 @@ export default function SectionGetTimestamp({ client }: { client: HibitClient })
       title="GetTimestamp"
       form={
         <div>
-          <button className="btn" onClick={getTimestamp} disabled={loading}>
+          <button className="btn" onClick={submit} disabled={loading}>
             {loading ? 'Loading...' : 'Submit'}
           </button>
         </div>
