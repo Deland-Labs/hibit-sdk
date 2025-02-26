@@ -10,6 +10,13 @@ import SectionGetMarketsSwapInfo from './components/SectionGetMarketsSwapInfo';
 import SectionGetMarketKline from './components/SectionGetMarketKline';
 import SectionGetMarketDepth from './components/SectionGetMarketDepth';
 import SectionGetMarketTrade from './components/SectionGetMarketTrade';
+import SectionSubmitSpotOrderLimit from './components/SectionSubmitSpotOrderLimit';
+import SectionSubmitSpotOrderSwapV2 from './components/SectionSubmitSpotOrderSwapV2';
+import SectionCancelSpotOrder from './components/SectionCancelSpotOrder';
+import SectionGetOrders from './components/SectionGetOrders';
+import SectionGetOrderTrades from './components/SectionGetOrderTrades';
+import SectionGetWalletBalances from './components/SectionGetWalletBalances';
+import SectionGetNonce from './components/SectionGetNonce';
 
 const OPTIONS = {
   baseUrl: 'https://testnetopenapi.hibit.app',
@@ -31,7 +38,7 @@ const App: FC = () => {
   }
 
   return (
-    <main className="container mx-auto flex flex-col gap-4">
+    <main className="container mx-auto flex flex-col gap-6 p-6">
       <h1 className="text-3xl font-bold text-center">Hibit SDK Examples</h1>
 
       <SectionGetTimestamp client={client} />
@@ -44,6 +51,13 @@ const App: FC = () => {
       <SectionGetMarketDepth client={client} />
       <SectionGetMarketKline client={client} />
       <SectionGetMarketTrade client={client} />
+      <SectionSubmitSpotOrderLimit client={client} />
+      <SectionSubmitSpotOrderSwapV2 client={client} />
+      <SectionCancelSpotOrder client={client} />
+      <SectionGetOrders client={client} />
+      <SectionGetOrderTrades client={client} />
+      <SectionGetWalletBalances client={client} />
+      <SectionGetNonce client={client} />
     </main>
   );
 };

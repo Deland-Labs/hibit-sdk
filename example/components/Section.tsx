@@ -17,12 +17,20 @@ const Section: FC<PropsWithChildren<{ title: string; form: ReactNode; result: an
             {JSON.stringify(
               result,
               (key, value) => {
-                return typeof value === 'bigint' ? String(value) : value;
+                if (typeof value === 'bigint') return String(value);
+                if (value instanceof Map) {
+                  const obj: Record<string, any> = {};
+                  value.forEach((v: any, k: string) => {
+                    obj[k] = String(v);
+                  });
+                  return obj;
+                }
+                return value;
               },
               2
             )}
           </pre>
-          <pre className="text-red-500">{error}</pre>
+          <pre className="text-red-500 whitespace-pre-wrap">{error}</pre>
         </div>
       </div>
     </section>
