@@ -50,7 +50,6 @@ export default function SectionGetWalletBalances({ client }: { client: HibitClie
       form={
         <div className="flex flex-col gap-2">
           <FormField label="WalletId" error={errors.walletId} required>
-          <FormField label="WalletId" error={errors.walletId} required>
             <input type="number" className="input" {...register('walletId')} pattern="[0-9]*" />
           </FormField>
           <FormField label="AssetId" error={errors.assetId}>
