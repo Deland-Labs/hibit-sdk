@@ -5,12 +5,14 @@ export type FormFieldProps = {
   label: string;
   labelDesc?: string;
   error?: FieldError;
+  required?: boolean;
 };
 
-const FormField: FC<PropsWithChildren<FormFieldProps>> = ({ label, labelDesc, children, error }) => {
+const FormField: FC<PropsWithChildren<FormFieldProps>> = ({ label, labelDesc, children, error, required }) => {
   return (
     <label className="flex flex-col gap-1">
       <span className="text-sm">
+        {required && <span className="text-red-500">*</span>}
         {label}
         {labelDesc && <span className="text-gray-500">({labelDesc})</span>}
       </span>

@@ -3,6 +3,13 @@ import { HibitClient } from '../src/hibit-client';
 import SectionGetTimestamp from './components/SectionGetTimestamp';
 import SectionGetChains from './components/SectionGetChains';
 import SectionGetAssets from './components/SectionGetAssets';
+import SectionGetMarkets from './components/SectionGetMarkets';
+import SectionGetMarket from './components/SectionGetMarket';
+import SectionGetMarketsTicker from './components/SectionGetMarketsTicker';
+import SectionGetMarketsSwapInfo from './components/SectionGetMarketsSwapInfo';
+import SectionGetMarketKline from './components/SectionGetMarketKline';
+import SectionGetMarketDepth from './components/SectionGetMarketDepth';
+import SectionGetMarketTrade from './components/SectionGetMarketTrade';
 
 const OPTIONS = {
   baseUrl: 'https://testnetopenapi.hibit.app',
@@ -30,6 +37,13 @@ const App: FC = () => {
       <SectionGetTimestamp client={client} />
       <SectionGetChains client={client} />
       <SectionGetAssets client={client} />
+      <SectionGetMarkets client={client} />
+      <SectionGetMarket client={client} />
+      <SectionGetMarketsTicker client={client} />
+      <SectionGetMarketsSwapInfo client={client} />
+      <SectionGetMarketDepth client={client} />
+      <SectionGetMarketKline client={client} />
+      <SectionGetMarketTrade client={client} />
     </main>
   );
 };
