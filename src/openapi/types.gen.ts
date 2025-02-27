@@ -165,11 +165,11 @@ export type Ex3ExchangeOpenApiAppServicesMarketInfoItem = {
  */
 export type Ex3ExchangeOpenApiAppServicesMarketTradingHistoryItem = {
   /**
-   * The display information of the maker user. if null, means the maker is swap pool.
+   * The display information of the maker wallet. if null, means the maker is swap pool.
    */
   maker?: string | null;
   /**
-   * The display information of the taker user.
+   * The display information of the taker wallet.
    */
   taker?: string;
   takerSide: Ex3ModelsOrderSide;
@@ -384,9 +384,9 @@ export type Ex3ExchangeOpenApiAppServicesWalletOrderDto = {
    */
   mid: string;
   /**
-   * wallet id
+   * The HIN (Hibit chain identity number) of the wallet
    */
-  wid: string;
+  hin: string;
   cat: Ex3ModelsOrderCategory;
   s: Ex3ModelsOrderSide;
   /**
@@ -1179,9 +1179,9 @@ export type GetV1OrdersData = {
   path?: never;
   query?: {
     /**
-     * Wallet Id of the orders
+     * HIN (hibit chain identity number)
      */
-    WalletId?: string;
+    HIN?: string;
     /**
      * status to filter the orders, if null, means all statuses.
      */
@@ -1361,9 +1361,9 @@ export type GetV1WalletNonceData = {
   path?: never;
   query?: {
     /**
-     * Wallet Id
+     * HIN, hibit chain identity number
      */
-    WalletId?: string;
+    HIN?: string;
   };
   url: '/v1/wallet/nonce';
 };
@@ -1411,9 +1411,9 @@ export type GetV1WalletBalancesData = {
   path?: never;
   query?: {
     /**
-     * Wallet Id
+     * HIN, hibit chain identity number
      */
-    WalletId?: string;
+    HIN?: string;
     /**
      * Asset Id (optional), if not provided, return all assets
      */

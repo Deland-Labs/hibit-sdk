@@ -9,7 +9,7 @@ import FormField from './FormField';
 import BigNumber from 'bignumber.js';
 
 const schema = object({
-  walletId: string().required(),
+  hin: string().required(),
   assetId: string()
 });
 
@@ -32,7 +32,7 @@ export default function SectionGetWalletBalances({ client }: { client: HibitClie
     setError('');
     try {
       const req: GetWalletBalancesInput = {
-        walletId: BigInt(input.walletId),
+        hin: BigInt(input.hin),
         assetId: input.assetId ? BigInt(input.assetId) : undefined
       };
       const res = await client.getWalletBalances(req);
@@ -49,8 +49,8 @@ export default function SectionGetWalletBalances({ client }: { client: HibitClie
       title="GetWalletBalances"
       form={
         <div className="flex flex-col gap-2">
-          <FormField label="WalletId" error={errors.walletId} required>
-            <input type="number" className="input" {...register('walletId')} pattern="[0-9]*" />
+          <FormField label="WalletId" error={errors.hin} required>
+            <input type="number" className="input" {...register('hin')} pattern="[0-9]*" />
           </FormField>
           <FormField label="AssetId" error={errors.assetId}>
             <input type="number" className="input" {...register('assetId')} pattern="[0-9]*" />

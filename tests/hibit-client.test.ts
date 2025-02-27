@@ -5,7 +5,7 @@ import BigNumber from 'bignumber.js';
 
 const options = {
   baseUrl: 'https://testnetopenapi.hibit.app',
-  walletId: 10000n,
+  hin: 10000n,
   privateKey: 'fa3e933f1788d7d56a20e078370f4c3b713ee0bcdb44392e4cfeaf524716d06a'
 };
 
@@ -125,14 +125,14 @@ describe('Hibit Client Test', () => {
 
   describe('Wallet API Tests', () => {
     it('should get wallet nonce', async () => {
-      const nonce = await hibitClient.getNonce(options.walletId);
+      const nonce = await hibitClient.getNonce(options.hin);
       expect(nonce).toBeTypeOf('bigint');
       expect(nonce).toBeGreaterThanOrEqual(0n);
     });
 
     it('should get wallet balances', async () => {
       const balances = await hibitClient.getWalletBalances({
-        walletId: options.walletId
+        hin: options.hin
       });
       expect(balances).toBeInstanceOf(Map);
       balances.forEach((balance) => {

@@ -16,7 +16,7 @@ const Section: FC<PropsWithChildren<{ title: string; form: ReactNode; result: an
           <pre className="max-w-full max-h-[500px] overflow-auto">
             {JSON.stringify(
               result,
-              (key, value) => {
+              (_, value) => {
                 if (typeof value === 'bigint') return String(value);
                 if (value instanceof Map) {
                   const obj: Record<string, any> = {};
