@@ -16,7 +16,7 @@ export class TxPayloadEncoder {
    * @param data - The data to encode.
    * @returns The encoded data as a Buffer.
    */
-  public static encode(data: any): Buffer {
+  public static encode(data: Object): Buffer {
     const reorganizedData = this.createCborArray(data);
     return Buffer.from(cbor.encode(reorganizedData));
   }

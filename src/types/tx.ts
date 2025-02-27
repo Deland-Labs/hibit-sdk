@@ -1,12 +1,14 @@
 import { TransactionType, Version } from './enums.ts';
 import { hmac } from '@noble/hashes/hmac';
 import { sha256 } from '@noble/hashes/sha256';
-import { TxPayloadEncoder } from '../encoder';
+//@ts-ignore
+import cbor from 'borc';
 import * as secp from '@noble/secp256k1';
 import { HexString } from './index.ts';
 import { Buffer } from 'buffer';
 import { PostV1TxSubmitSpotOrderData } from '../openapi';
 import { Options } from '@hey-api/client-fetch';
+import BigNumber from 'bignumber.js';
 
 // Set the hmacSha256Sync function
 secp.etc.hmacSha256Sync = (key, ...msgs) => hmac(sha256, key, secp.etc.concatBytes(...msgs));
@@ -69,8 +71,14 @@ export class Transaction {
    * @returns {Uint8Array} The encoded transaction data bytes
    */
   toTxDataBytes(): Uint8Array {
-    const txData = [this.version, this.type, this.from, this.nonce, this.payload];
-    return TxPayloadEncoder.encode(txData);
+    const txData = [
+      this.version,
+      BigNumber(this.type),
+      BigNumber(this.from.toString()),
+      BigNumber(this.nonce.toString()),
+      this.payload
+    ];
+    return cbor.encode(txData);
   }
 
   /**
