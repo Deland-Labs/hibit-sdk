@@ -7,21 +7,21 @@ import { Options, GetV1WalletNonceData, GetV1WalletBalancesData } from '../opena
  * @example Query all balances for a wallet
  * ```typescript
  * const input: GetWalletBalancesInput = {
- *   walletId: BigInt("12345")
+ *   hin: BigInt("12345")
  * };
  * ```
  *
  * @example Query balance for a specific asset
  * ```typescript
  * const input: GetWalletBalancesInput = {
- *   walletId: BigInt("12345"),
+ *   hin: BigInt("12345"),
  *   assetId: BigInt("56789")
  * };
  * ```
  */
 export type GetWalletBalancesInput = {
-  /** The unique identifier of the wallet to query */
-  walletId: bigint;
+  /** The HIN(hibit chain identity number) of the wallet to query */
+  hin: bigint;
 
   /**
    * Optional asset ID to filter the balance query.
@@ -30,10 +30,17 @@ export type GetWalletBalancesInput = {
    */
   assetId?: bigint;
 };
-export function mapGetNonceInput(walletId: bigint): Options<GetV1WalletNonceData, boolean> {
+
+/**
+ * Maps the HIN to the input format required for retrieving the wallet nonce.
+ *
+ * @param hin - The HIN (hibit chain identity number) of the wallet.
+ * @returns An object containing the query parameters for the API call.
+ */
+export function mapGetNonceInput(hin: bigint): Options<GetV1WalletNonceData, boolean> {
   return {
     query: {
-      WalletId: String(walletId)
+      HIN: String(hin)
     }
   };
 }
@@ -41,7 +48,7 @@ export function mapGetNonceInput(walletId: bigint): Options<GetV1WalletNonceData
 export function mapGetWalletBalancesInput(input: GetWalletBalancesInput): Options<GetV1WalletBalancesData, boolean> {
   return {
     query: {
-      WalletId: String(input.walletId),
+      HIN: String(input.hin),
       AssetId: input.assetId ? String(input.assetId) : undefined
     }
   };

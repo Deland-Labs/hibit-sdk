@@ -7,7 +7,7 @@ import { object, string } from 'yup';
 import FormField from './FormField';
 
 const schema = object({
-  walletId: string().required()
+  hin: string().required()
 });
 
 export default function SectionGetNonce({ client }: { client: HibitClient }) {
@@ -28,7 +28,7 @@ export default function SectionGetNonce({ client }: { client: HibitClient }) {
     setResult(null);
     setError('');
     try {
-      const req = BigInt(input.walletId);
+      const req = BigInt(input.hin);
       setResult(await client.getNonce(req));
     } catch (e: any) {
       setError(e.message ?? JSON.stringify(e));
@@ -42,8 +42,8 @@ export default function SectionGetNonce({ client }: { client: HibitClient }) {
       title="GetNonce"
       form={
         <div className="flex flex-col gap-2">
-          <FormField label="WalletId" error={errors.walletId} required>
-            <input type="number" className="input" {...register('walletId')} />
+          <FormField label="HIN(Hibit chain identity number)" error={errors.hin} required>
+            <input type="number" className="input" {...register('hin')} />
           </FormField>
           <button className="btn" onClick={submit} disabled={loading}>
             {loading ? 'Loading...' : 'Submit'}

@@ -200,10 +200,10 @@ export interface IHibitClient {
   /**
    * Get the nonce.
    *
-   * @param {bigint} walletId - The wallet id to get the nonce for.
+   * @param {bigint} hin - The HIN (hibit chain identity number) of the wallet.
    * @returns {Promise<bigint>} A promise that resolves to the nonce.
    */
-  getNonce(walletId: bigint): Promise<bigint>;
+  getNonce(hin: bigint): Promise<bigint>;
 }
 
 export class HibitClient implements IHibitClient {
@@ -356,11 +356,11 @@ export class HibitClient implements IHibitClient {
     const apiName = 'submitSpotOrder';
     this.ensurePrivateKey(apiName);
 
-    const nonce = await this.getNonce(this.options.walletId);
+    const nonce = await this.getNonce(this.options.hin);
     const mappedInput = mapSubmitSpotOrderCborInput(input, decimalOptions);
     const tx = TransactionManager.createTransaction(
       TransactionType.CreateSpotOrder,
-      this.options.walletId,
+      this.options.hin,
       nonce ? nonce : 0n,
       mappedInput
     );
@@ -378,11 +378,11 @@ export class HibitClient implements IHibitClient {
       input.isCancelAll = false;
     }
 
-    const nonce = await this.getNonce(this.options.walletId);
+    const nonce = await this.getNonce(this.options.hin);
     const mappedInput = mapCancelOrdersCborInput(input);
     const tx = TransactionManager.createTransaction(
       TransactionType.CancelSpotOrder,
-      this.options.walletId,
+      this.options.hin,
       nonce ? nonce : 0n,
       mappedInput
     );
@@ -407,9 +407,9 @@ export class HibitClient implements IHibitClient {
     return result;
   }
 
-  async getNonce(walletId: bigint): Promise<bigint> {
+  async getNonce(hin: bigint): Promise<bigint> {
     const apiName = 'getNonce';
-    const response = await getV1WalletNonce(mapGetNonceInput(walletId));
+    const response = await getV1WalletNonce(mapGetNonceInput(hin));
 
     this.ensureSuccess(apiName, response.data);
 
@@ -444,9 +444,9 @@ export interface HibitApiOptions {
   privateKey: HexString;
 
   /**
-   * The wallet ID associated with the API.
+   * The HIN (hibit chain identity number) of the wallet.
    */
-  walletId: bigint;
+  hin: bigint;
 }
 
 export const hibitClient = new HibitClient();

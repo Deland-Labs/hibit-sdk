@@ -9,7 +9,7 @@ import FormField from './FormField';
 import dayjs from 'dayjs';
 
 const schema = object({
-  walletId: string().required(),
+  hin: string().required(),
   status: array(
     number()
       .oneOf(
@@ -65,7 +65,7 @@ export default function SectionGetOrders({ client }: { client: HibitClient }) {
     setError('');
     try {
       const req: GetOrdersInput = {
-        walletId: BigInt(input.walletId),
+        hin: BigInt(input.hin),
         status: input.status?.length ? input.status : undefined,
         marketId: input.marketId ? BigInt(input.marketId) : undefined,
         orderCategory: input.orderCategory ?? undefined,
@@ -89,8 +89,8 @@ export default function SectionGetOrders({ client }: { client: HibitClient }) {
       title="GetOrders"
       form={
         <div className="flex flex-col gap-2">
-          <FormField label="WalletId" error={errors.walletId} required>
-            <input type="number" className="input" {...register('walletId')} />
+          <FormField label="HIN(Hibit chain identity number)" error={errors.hin} required>
+            <input type="number" className="input" {...register('hin')} />
           </FormField>
           <FormField label="Status" error={errors.status}>
             <Controller

@@ -9,9 +9,9 @@ import { OrderCategory, OrderSide, OrderStatus, SwapV2ExactTokensType } from '..
 
 export type GetOrdersInput = {
   /**
-   * Wallet Id of the orders
+   * The HIN(hibit chain identity number) of orders
    */
-  walletId: bigint;
+  hin: bigint;
   /**
    * status to filter the orders, if null, means all statuses.
    */
@@ -66,10 +66,9 @@ export type OrderInfo = {
    */
   marketId: bigint;
   /**
-   * wallet id
+   * The HIN(hibit chain identity number) of the wallet
    */
-  walletId: bigint;
-
+  hin: bigint;
   /**
    * category of the order
    */
@@ -291,7 +290,7 @@ export type CancelSpotOrderInput = {
 export function mapGetOrdersInput(data: GetOrdersInput): Options<GetV1OrdersData, boolean> {
   return {
     query: {
-      WalletId: String(data.walletId),
+      HIN: String(data.hin),
       Status: data.status,
       MarketId: data.marketId ? String(data.marketId) : undefined,
       OrderCategory: data.orderCategory,
@@ -309,7 +308,7 @@ export function mapOrderInfo(data: Ex3ExchangeOpenApiAppServicesWalletOrderDto):
   return {
     id: data.id,
     marketId: BigInt(data.mid),
-    walletId: BigInt(data.wid),
+    hin: BigInt(data.hin),
     category: data.cat,
     side: data.s,
     filledVolume: Number(data.fv),

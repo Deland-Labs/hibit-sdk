@@ -1927,9 +1927,9 @@
         "summary": "get orders of wallet",
         "parameters": [
           {
-            "name": "WalletId",
+            "name": "HIN",
             "in": "query",
-            "description": "Wallet Id of the orders",
+            "description": "HIN (hibit chain identity number)",
             "schema": {
               "type": "string"
             }
@@ -2496,9 +2496,9 @@
         "summary": "get nonce of wallet",
         "parameters": [
           {
-            "name": "WalletId",
+            "name": "HIN",
             "in": "query",
-            "description": "Wallet Id",
+            "description": "HIN, hibit chain identity number",
             "schema": {
               "type": "string"
             }
@@ -2654,9 +2654,9 @@
         "summary": "get balance of wallet",
         "parameters": [
           {
-            "name": "WalletId",
+            "name": "HIN",
             "in": "query",
-            "description": "Wallet Id",
+            "description": "HIN, hibit chain identity number",
             "schema": {
               "type": "string"
             }
@@ -3044,12 +3044,12 @@
         "properties": {
           "maker": {
             "type": "string",
-            "description": "The display information of the maker user. if null, means the maker is swap pool.",
+            "description": "The display information of the maker wallet. if null, means the maker is swap pool.",
             "nullable": true
           },
           "taker": {
             "type": "string",
-            "description": "The display information of the taker user."
+            "description": "The display information of the taker wallet."
           },
           "takerSide": {
             "$ref": "#/components/schemas/Ex3.Models.OrderSide"
@@ -3447,7 +3447,7 @@
         "description": "system information"
       },
       "Ex3.Exchange.OpenApi.AppServices.WalletOrderDto": {
-        "required": ["cat", "fa", "fp", "fv", "id", "mid", "p", "s", "st", "t", "ta", "tv", "wid"],
+        "required": ["cat", "fa", "fp", "fv", "hin", "id", "mid", "p", "s", "st", "t", "ta", "tv"],
         "type": "object",
         "properties": {
           "id": {
@@ -3459,9 +3459,9 @@
             "type": "string",
             "description": "market id"
           },
-          "wid": {
+          "hin": {
             "type": "string",
-            "description": "wallet id"
+            "description": "The HIN (Hibit chain identity number) of the wallet"
           },
           "cat": {
             "$ref": "#/components/schemas/Ex3.Models.OrderCategory"
