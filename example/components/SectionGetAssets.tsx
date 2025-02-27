@@ -40,8 +40,8 @@ export default function SectionGetAssets({ client }: { client: HibitClient }) {
       const req: GetAssetsInput = {
         chainIds: input.chainIds ? input.chainIds.split(',').map((id) => id.trim()) : undefined,
         chainAssetTypes: input.chainAssetTypes ? input.chainAssetTypes.split(',').map((id) => id.trim()) : undefined,
-        limit: input.limit ? input.limit : undefined,
-        offset: input.offset ? input.offset : undefined,
+        limit: input.limit ?? undefined,
+        offset: input.offset ?? undefined,
         orderBy: input.orderBy || undefined
       };
       setResult(await client.getAssets(req));

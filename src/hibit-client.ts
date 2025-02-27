@@ -40,7 +40,8 @@ import {
   getV1Orders,
   getV1OrderTrades,
   getV1WalletBalances,
-  getV1Market
+  getV1Market,
+  postV1TxCancelSpotOrder
 } from './openapi';
 import { mapChainInfo } from './types/chain';
 import { mapAssetInfo, mapGetAssetsInput } from './types/asset';
@@ -386,7 +387,7 @@ export class HibitClient implements IHibitClient {
       mappedInput
     );
     const signedTx = TransactionManager.sign(tx, this.options.privateKey);
-    const resp = await postV1TxSubmitSpotOrder(mapTransactionToApiRequest(signedTx));
+    const resp = await postV1TxCancelSpotOrder(mapTransactionToApiRequest(signedTx));
 
     this.ensureSuccess(apiName, resp.data);
   }

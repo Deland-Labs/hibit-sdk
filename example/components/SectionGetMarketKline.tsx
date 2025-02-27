@@ -79,7 +79,7 @@ export default function SectionGetMarketKline({ client }: { client: HibitClient 
                       <label key={key} className="flex items-center gap-1">
                         <span>{key}</span>
                         <input
-                          name="tickSpace"
+                          name="getMarketKline-tickSpace"
                           type="radio"
                           checked={field.value === Number(TickSpace[key as any])}
                           onChange={(ev) => {

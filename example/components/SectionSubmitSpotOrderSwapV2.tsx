@@ -98,7 +98,7 @@ export default function SectionSubmitSpotOrderSwapV2({ client }: { client: Hibit
                       <label key={key} className="flex items-center gap-1">
                         <span>{key}</span>
                         <input
-                          name="orderSide"
+                          name="SubmitSpotOrderSwapV2-orderSide"
                           type="radio"
                           value={Number(OrderSide[key as any])}
                           checked={field.value === Number(OrderSide[key as any])}
@@ -126,7 +126,7 @@ export default function SectionSubmitSpotOrderSwapV2({ client }: { client: Hibit
                       <label key={key} className="flex items-center gap-1">
                         <span>{key}</span>
                         <input
-                          name="exactTokensType"
+                          name="SubmitSpotOrderSwapV2-exactTokensType"
                           type="radio"
                           value={Number(SwapV2ExactTokensType[key as any])}
                           checked={field.value === Number(SwapV2ExactTokensType[key as any])}

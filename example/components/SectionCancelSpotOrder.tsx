@@ -76,7 +76,7 @@ export default function SectionCancelSpotOrder({ client }: { client: HibitClient
                       <label key={key} className="flex items-center gap-1">
                         <span>{key}</span>
                         <input
-                          name="orderSide"
+                          name="CancelSpotOrder-orderSide"
                           type="radio"
                           value={Number(OrderSide[key as any])}
                           checked={field.value === Number(OrderSide[key as any])}
