@@ -71,7 +71,7 @@ export default function SectionGetMarketDepth({ client }: { client: HibitClient 
                       <label key={key} className="flex items-center gap-1">
                         <span>{key}</span>
                         <input
-                          name="index"
+                          name="getMarketDepth-index"
                           type="radio"
                           checked={field.value === Number(DepthIndex[key as any])}
                           onChange={(ev) => {

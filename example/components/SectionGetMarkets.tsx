@@ -44,8 +44,8 @@ export default function SectionGetMarkets({ client }: { client: HibitClient }) {
         chainAssetTypes: input.chainAssetTypes ? input.chainAssetTypes.split(',').map((id) => id.trim()) : undefined,
         baseAssetId: input.baseAssetId ? BigInt(input.baseAssetId) : undefined,
         quoteAssetId: input.quoteAssetId ? BigInt(input.quoteAssetId) : undefined,
-        limit: input.limit ? input.limit : undefined,
-        offset: input.offset ? input.offset : undefined,
+        limit: input.limit ?? undefined,
+        offset: input.offset ?? undefined,
         orderBy: input.orderBy || undefined
       };
       setResult(await client.getMarkets(req));

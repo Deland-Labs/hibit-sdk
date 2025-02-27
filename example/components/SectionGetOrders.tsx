@@ -104,7 +104,7 @@ export default function SectionGetOrders({ client }: { client: HibitClient }) {
                       <label key={key} className="flex items-center gap-1">
                         <span>{key}</span>
                         <input
-                          name="status"
+                          name="GetOrders-status"
                           type="checkbox"
                           value={Number(OrderStatus[key as any])}
                           checked={field.value?.includes(Number(OrderStatus[key as any])) ?? false}
@@ -137,7 +137,7 @@ export default function SectionGetOrders({ client }: { client: HibitClient }) {
                       <label key={key} className="flex items-center gap-1">
                         <span>{key}</span>
                         <input
-                          name="orderCategory"
+                          name="GetOrders-orderCategory"
                           type="radio"
                           value={Number(OrderCategory[key as any])}
                           checked={field.value === Number(OrderCategory[key as any])}
@@ -165,7 +165,7 @@ export default function SectionGetOrders({ client }: { client: HibitClient }) {
                       <label key={key} className="flex items-center gap-1">
                         <span>{key}</span>
                         <input
-                          name="orderSide"
+                          name="GetOrders-orderSide"
                           type="radio"
                           value={Number(OrderSide[key as any])}
                           checked={field.value === Number(OrderSide[key as any])}

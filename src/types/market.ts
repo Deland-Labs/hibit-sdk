@@ -11,7 +11,8 @@ import {
   GetV1MarketKlineData,
   GetV1MarketTradeData,
   GetV1MarketDepthData,
-  GetV1MarketData
+  GetV1MarketData,
+  GetV1MarketsSwapData
 } from '../openapi';
 import { DepthIndex, OrderSide, TickSpace } from './enums';
 
@@ -400,11 +401,13 @@ export function mapMarketTradeInfo(data: Ex3ExchangeOpenApiAppServicesMarketTrad
   };
 }
 
-export function mapGetMarketsSwapInfoInput(marketId?: bigint): Options<GetV1MarketTradeData, boolean> {
+export function mapGetMarketsSwapInfoInput(marketId?: bigint): Options<GetV1MarketsSwapData, boolean> {
   return {
-    query: {
-      MarketId: String(marketId)
-    }
+    query: marketId
+      ? {
+          MarketId: String(marketId)
+        }
+      : {}
   };
 }
 
