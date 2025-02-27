@@ -1,10 +1,10 @@
 import { it, describe, expect, beforeAll } from 'vitest';
 import { hibitClient } from '../src/hibit-client';
-import { DepthIndex, OrderCategory, OrderSide } from '../src';
+import { DepthIndex } from '../src';
 import BigNumber from 'bignumber.js';
 
 const options = {
-  baseUrl: 'https://alphaopenapi.ex3.one',
+  baseUrl: 'https://testnetopenapi.hibit.app',
   walletId: 10000n,
   privateKey: 'fa3e933f1788d7d56a20e078370f4c3b713ee0bcdb44392e4cfeaf524716d06a'
 };
