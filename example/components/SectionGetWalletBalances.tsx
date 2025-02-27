@@ -49,7 +49,7 @@ export default function SectionGetWalletBalances({ client }: { client: HibitClie
       title="GetWalletBalances"
       form={
         <div className="flex flex-col gap-2">
-          <FormField label="WalletId" error={errors.hin} required>
+          <FormField label="HIN(Hibit chain identity number)" error={errors.hin} required>
             <input type="number" className="input" {...register('hin')} pattern="[0-9]*" />
           </FormField>
           <FormField label="AssetId" error={errors.assetId}>

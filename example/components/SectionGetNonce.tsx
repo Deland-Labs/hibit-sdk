@@ -42,7 +42,7 @@ export default function SectionGetNonce({ client }: { client: HibitClient }) {
       title="GetNonce"
       form={
         <div className="flex flex-col gap-2">
-          <FormField label="WalletId" error={errors.hin} required>
+          <FormField label="HIN(Hibit chain identity number)" error={errors.hin} required>
             <input type="number" className="input" {...register('hin')} />
           </FormField>
           <button className="btn" onClick={submit} disabled={loading}>

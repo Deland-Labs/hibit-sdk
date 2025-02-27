@@ -20,7 +20,7 @@ import SectionGetNonce from './components/SectionGetNonce';
 
 const OPTIONS = {
   baseUrl: 'https://testnetopenapi.hibit.app',
-  walletId: 10000n,
+  hin: 10000n,
   privateKey: 'fa3e933f1788d7d56a20e078370f4c3b713ee0bcdb44392e4cfeaf524716d06a'
 };
 
