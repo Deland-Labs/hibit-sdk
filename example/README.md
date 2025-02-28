@@ -30,5 +30,5 @@ To run the example application, follow these steps:
    ```
 2. Start the application:
    ```sh
-   yarn start
+   yarn dev
    ```
