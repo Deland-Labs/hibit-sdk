@@ -16,13 +16,13 @@ HiBit SDK is a comprehensive toolkit designed for developers to interact seamles
 To install the HiBit SDK, you can use npm or yarn:
 
 ```sh
-npm install hibit-sdk
+npm install @delandlabs/hibit-sdk
 ```
 
 or
 
 ```sh
-yarn add hibit-sdk
+yarn add @delandlabs/hibit-sdk
 ```
 
 ## Usage
@@ -30,9 +30,9 @@ yarn add hibit-sdk
 Here is how to use the HiBit SDK with TypeScript:
 
 ```typescript
-import { hibitClient } from '../src/hibit-client';
+import { hibitClient } from '@delandlabs/hibit-sdk';
 const options = {
-  baseUrl: 'https://alphaopenapi.hibit.app',
+  baseUrl: 'https://testnetopenapi.hibit.app',
   walletId: 10000n,
   privateKey: 'fa3e933f1788d7d56a20e078370f4c3b713ee0bcdb44392e4cfeaf524716d06a'
 };
@@ -40,6 +40,10 @@ const options = {
 hibitClient.setOptions(options);
 const timestamp = await hibitClient.getTimestamp();
 ```
+
+## Examples
+
+For more examples, please refer to the [examples](./example).
 
 ## Contributing
 
