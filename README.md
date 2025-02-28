@@ -1,4 +1,4 @@
-# HiBit SDK
+# Hibit SDK
 
 [![Tests](https://github.com/Deland-Labs/hibit-sdk/actions/workflows/test.yml/badge.svg)](https://github.com/Deland-Labs/hibit-sdk/actions)
 [![Build](https://github.com/Deland-Labs/hibit-sdk/actions/workflows/build.yml/badge.svg)](https://github.com/Deland-Labs/hibit-sdk/actions)
@@ -9,11 +9,11 @@
 
 ## Introduction
 
-HiBit SDK is a comprehensive toolkit designed for developers to interact seamlessly with the HiBit platform, which includes a Decentralized Exchange (DEX) and blockchain functionalities. This SDK provides a robust set of tools and utilities to facilitate the integration and management of various features offered by the HiBit platform, such as market data retrieval, order management, wallet operations, and more. With HiBit SDK, developers can build sophisticated applications that leverage the full potential of the HiBit ecosystem, ensuring secure, efficient, and scalable interactions with the decentralized exchange and blockchain services.
+Hibit SDK is a comprehensive toolkit designed for developers to interact seamlessly with the Hibit platform, which includes a Decentralized Exchange (DEX) and blockchain functionalities. This SDK provides a robust set of tools and utilities to facilitate the integration and management of various features offered by the Hibit platform, such as market data retrieval, order management, wallet operations, and more. With Hibit SDK, developers can build sophisticated applications that leverage the full potential of the Hibit ecosystem, ensuring secure, efficient, and scalable interactions with the decentralized exchange and blockchain services.
 
 ## Installation
 
-To install the HiBit SDK, you can use npm or yarn:
+To install the Hibit SDK, you can use npm or yarn:
 
 ```sh
 npm install @delandlabs/hibit-sdk
@@ -27,7 +27,7 @@ yarn add @delandlabs/hibit-sdk
 
 ## Usage
 
-Here is how to use the HiBit SDK with TypeScript:
+Here is how to use the Hibit SDK with TypeScript:
 
 ```typescript
 import { hibitClient } from '@delandlabs/hibit-sdk';
@@ -47,4 +47,4 @@ For more examples, please refer to the [examples](./example).
 
 ## Contributing
 
-We welcome contributions to the HiBit SDK. Please see our [contributing guidelines](CONTRIBUTING.md) for more information.
+We welcome contributions to the Hibit SDK. Please see our [contributing guidelines](CONTRIBUTING.md) for more information.

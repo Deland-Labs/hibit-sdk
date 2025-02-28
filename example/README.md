@@ -1,8 +1,8 @@
-# HiBit SDK Examples
+# Hibit SDK Examples
 
 ## Overview
 
-This directory contains interactive examples demonstrating how to use the HiBit SDK. The examples are implemented as React components, each showcasing different features of the SDK.
+This directory contains interactive examples demonstrating how to use the Hibit SDK. The examples are implemented as React components, each showcasing different features of the SDK.
 
 ## Available Examples
 
