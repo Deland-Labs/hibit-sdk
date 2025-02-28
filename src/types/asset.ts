@@ -5,92 +5,7 @@ import {
   GetV1AssetsData,
   Options
 } from '../openapi';
-
-/**
- * Represents a type of asset on a blockchain.
- * Provides static instances for supported asset types across different chains.
- *
- * @example
- * ```typescript
- * const erc20 = ChainAssetType.ERC20;
- * const native = ChainAssetType.Native;
- * console.log(erc20.toString()); // "3"
- * ```
- */
-export class ChainAssetType {
-  /**
-   * The asset type identifier value
-   */
-  value: bigint;
-
-  /**
-   * Creates a new ChainAssetType instance
-   * @param value - The asset type identifier as a bigint
-   */
-  constructor(value: bigint) {
-    this.value = value;
-  }
-
-  /** Native blockchain token (Type ID: 0) */
-  static Native = new ChainAssetType(0n);
-  /** Native gas token (Type ID: 1) */
-  static NativeGas = new ChainAssetType(1n);
-  /** ERC20 token standard (Type ID: 3) */
-  static ERC20 = new ChainAssetType(3n);
-  /** ERC721 NFT standard (Type ID: 4) */
-  static ERC721 = new ChainAssetType(4n);
-  /** Internet Computer Protocol token (Type ID: 5) */
-  static ICP = new ChainAssetType(5n);
-  /** ICRC-3 token standard (Type ID: 6) */
-  static ICRC3 = new ChainAssetType(6n);
-  /** BRC20 token standard (Type ID: 7) */
-  static BRC20 = new ChainAssetType(7n);
-  /** Solana Program Library token (Type ID: 8) */
-  static SPL = new ChainAssetType(8n);
-  /** TRON TRC20 token standard (Type ID: 9) */
-  static TRC20 = new ChainAssetType(9n);
-  /** TON Jetton token standard (Type ID: 10) */
-  static Jetton = new ChainAssetType(10n);
-  /** Kaspa KRC20 token standard (Type ID: 11) */
-  static KRC20 = new ChainAssetType(11n);
-
-  /**
-   * Creates a ChainAssetType instance from a string value
-   * @param value - The asset type identifier as a string
-   * @returns A new ChainAssetType instance or null if value is empty
-   *
-   * @example
-   * ```typescript
-   * const erc20 = ChainAssetType.fromString("3");
-   * ```
-   */
-  static fromString(value: string): ChainAssetType | null {
-    if (!value) {
-      return null;
-    }
-    return new ChainAssetType(BigInt(value));
-  }
-
-  /**
-   * Converts the asset type identifier to string
-   * @returns The asset type identifier as a string
-   */
-  toString(): string {
-    return this.value.toString();
-  }
-
-  /**
-   * Checks if this asset type is equal to another asset type
-   * @param other - The asset type to compare with
-   * @returns True if the asset types are equal, false otherwise
-   */
-  equals(other: ChainAssetType): boolean {
-    if (!other) {
-      return false;
-    }
-    return this.value === other.value;
-  }
-}
+import { ChainAssetType } from './enums';
 
 export type AssetInfo = {
   /**
@@ -104,7 +19,7 @@ export type AssetInfo = {
   /**
    * Chain asset type
    */
-  chainAssetType: string;
+  chainAssetType: ChainAssetType;
   /**
    * address of smart contract. e.g., eth address for erc20, ticker for krc20
    */
@@ -162,7 +77,7 @@ export type GetAssetsInput = {
   /**
    * chain asset types to filter the markets list.
    */
-  chainAssetTypes?: Array<string>;
+  chainAssetTypes?: Array<ChainAssetType>;
   /**
    * maximum number of items to return. maximum value is 500.
    */
@@ -187,7 +102,7 @@ export function mapAssetInfo(asset: Ex3ExchangeOpenApiAppServicesRootAssetInfoDt
   return {
     assetId: asset.assetId,
     chainId: asset.chainId || undefined,
-    chainAssetType: asset.chainAssetType,
+    chainAssetType: Number(asset.chainAssetType) as ChainAssetType,
     contractAddress: asset.contractAddress,
     decimalPlaces: asset.decimalPlaces,
     isBaseToken: asset.isBaseToken,
@@ -211,7 +126,7 @@ export function mapGetAssetsInput(input: GetAssetsInput): Options<GetV1AssetsDat
   return {
     query: {
       ChainIds: input.chainIds,
-      ChainAssetTypes: input.chainAssetTypes,
+      ChainAssetTypes: input.chainAssetTypes?.map((type) => type.toString()),
       Limit: input.limit,
       Offset: input.offset,
       OrderBy: input.orderBy

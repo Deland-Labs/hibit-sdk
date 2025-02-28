@@ -1,4 +1,5 @@
 import BigNumber from 'bignumber.js';
+//@ts-ignore
 import cbor from 'borc';
 import { expect, it, describe } from 'vitest';
 import { cborIndex } from '../src/encoder/decorator';
