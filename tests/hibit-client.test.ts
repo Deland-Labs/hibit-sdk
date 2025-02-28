@@ -1,12 +1,12 @@
-import { it, describe, expect, beforeAll } from 'vitest';
+import { beforeAll, describe, expect, it } from 'vitest';
 import { hibitClient } from '../src/hibit-client';
-import { DepthIndex } from '../src';
+import { DepthIndex, TickSpace } from '../src';
 import BigNumber from 'bignumber.js';
 
 const options = {
   baseUrl: 'https://testnetopenapi.hibit.app',
   hin: 10000n,
-  privateKey: 'fa3e933f1788d7d56a20e078370f4c3b713ee0bcdb44392e4cfeaf524716d06a'
+  proxyKey: 'fa3e933f1788d7d56a20e078370f4c3b713ee0bcdb44392e4cfeaf524716d06a'
 };
 
 describe('Hibit Client Test', () => {
@@ -34,6 +34,11 @@ describe('Hibit Client Test', () => {
       });
       expect(assets.items).toBeInstanceOf(Array);
       expect(assets.totalCount).toBeGreaterThan(0);
+    });
+
+    it('should get single asset', async () => {
+      const asset = await hibitClient.getAsset(10001n);
+      expect(asset).toBeInstanceOf(Object);
     });
   });
 
@@ -66,6 +71,21 @@ describe('Hibit Client Test', () => {
       expect(tickers.length).toBeGreaterThan(0);
     });
 
+    it('should get market kline', async () => {
+      const kline = await hibitClient.getMarketKline({
+        marketId: 10008n,
+        tickSpace: TickSpace.OneMinute,
+        limit: 100
+      });
+      expect(kline.totalCount).toBeGreaterThan(0);
+      expect(kline.items).toBeInstanceOf(Array);
+    });
+
+    it('should get swap info', async () => {
+      const swapInfos = await hibitClient.getMarketsSwapInfo(10000n);
+      expect(swapInfos).toBeInstanceOf(Array);
+    });
+
     it('should get market depth', async () => {
       const depth = await hibitClient.getMarketDepth({
         index: DepthIndex.L3,
@@ -75,53 +95,67 @@ describe('Hibit Client Test', () => {
       expect(depth.asks).toBeInstanceOf(Array);
       expect(depth.bids).toBeInstanceOf(Array);
     });
+
+    it('should get market trade history', async () => {
+      const trades = await hibitClient.getMarketTrade({
+        marketId: 10006n,
+        limit: 10,
+        offset: 0
+      });
+      expect(trades.totalCount).toBeGreaterThan(0);
+      expect(trades.items).toBeInstanceOf(Array);
+    });
   });
 
-  // describe('Order API Tests', () => {
-  //   it('should submit limit order', async () => {
-  //     await expect(
-  //       hibitClient.submitSpotOrder(
-  //         {
-  //           orderCategory: OrderCategory.LimitOrder,
-  //           marketId: 10000n,
-  //           limitOrderDetails: {
-  //             orderSide: OrderSide.Ask,
-  //             price: 100,
-  //             volume: 100
-  //           }
-  //         },
-  //         {
-  //           baseAssetDecimals: 18,
-  //           quoteAssetDecimals: 6
-  //         }
-  //       )
-  //     ).resolves.not.toThrow();
-  //   });
+  describe('Order API Tests', () => {
+    //   it('should submit limit order', async () => {
+    //     await expect(
+    //       hibitClient.submitSpotOrder(
+    //         {
+    //           orderCategory: OrderCategory.LimitOrder,
+    //           marketId: 10000n,
+    //           limitOrderDetails: {
+    //             orderSide: OrderSide.Ask,
+    //             price: 100,
+    //             volume: 100
+    //           }
+    //         },
+    //         {
+    //           baseAssetDecimals: 18,
+    //           quoteAssetDecimals: 6
+    //         }
+    //       )
+    //     ).resolves.not.toThrow();
+    //   });
 
-  //   it('should get orders list', async () => {
-  //     const orders = await hibitClient.getOrders({
-  //       walletId: options.walletId,
-  //       limit: 10,
-  //       offset: 0
-  //     });
-  //     expect(orders.items).toBeInstanceOf(Array);
-  //   });
+    it('should throw error when hin is not provided in options', async () => {
+      await expect(hibitClient.getOrders({} as any)).rejects.toThrow();
+    });
 
-  //   it('should get order trades', async () => {
-  //     const orderId = 'test order id';
-  //     const trades = await hibitClient.getOrderTrades(orderId);
-  //     expect(trades).toBeInstanceOf(Array);
-  //   });
+    it('should get orders list', async () => {
+      const orders = await hibitClient.getOrders({
+        hin: options.hin,
+        limit: 10,
+        offset: 0
+      });
+      expect(orders.items).toBeInstanceOf(Array);
+    });
 
-  //   it('should cancel order', async () => {
-  //     await expect(
-  //       hibitClient.cancelSpotOrder({
-  //         marketId: 10000n,
-  //         isCancelAll: true
-  //       })
-  //     ).resolves.not.toThrow();
-  //   });
-  // });
+    //   it('should get order trades', async () => {
+    //     const orderId = 'test order id';
+    //     const trades = await hibitClient.getOrderTrades(orderId);
+    //     expect(trades).toBeInstanceOf(Array);
+    //   });
+
+    //   it('should cancel order', async () => {
+    //     await expect(
+    //       hibitClient.cancelSpotOrder({
+    //         marketId: 10000n,
+    //         isCancelAll: true
+    //       })
+    //     ).resolves.not.toThrow();
+    //   });
+  });
 
   describe('Wallet API Tests', () => {
     it('should get wallet nonce', async () => {

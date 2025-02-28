@@ -8,7 +8,7 @@
     "/v1/timestamp": {
       "get": {
         "tags": ["Basic"],
-        "summary": "get system information",
+        "summary": "get system timestamp",
         "responses": {
           "200": {
             "description": "OK",
@@ -156,7 +156,7 @@
     "/v1/assets": {
       "get": {
         "tags": ["Basic"],
-        "summary": "get all assets",
+        "summary": "get assets supported by Hibit",
         "parameters": [
           {
             "name": "ChainIds",
@@ -351,10 +351,167 @@
         }
       }
     },
+    "/v1/asset": {
+      "get": {
+        "tags": ["Basic"],
+        "summary": "Get asset information by asset id",
+        "parameters": [
+          {
+            "name": "AssetId",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Ex3.Exchange.OpenApi.AppServices.RootAssetInfoDto, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Ex3.Exchange.OpenApi.AppServices.RootAssetInfoDto, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Ex3.Exchange.OpenApi.AppServices.RootAssetInfoDto, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              }
+            }
+          },
+          "501": {
+            "description": "Not Implemented",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/v1/chains": {
       "get": {
         "tags": ["Basic"],
-        "summary": "get all chains supported by the system",
+        "summary": "get all chains supported by Hibit",
         "responses": {
           "200": {
             "description": "OK",
@@ -1765,7 +1922,7 @@
     "/v1/order/trades": {
       "get": {
         "tags": ["Orders"],
-        "summary": "get trades of wallet",
+        "summary": "get trades of the order",
         "parameters": [
           {
             "name": "OrderId",
@@ -2161,6 +2318,7 @@
     "/v1/tx/submit-spot-order": {
       "post": {
         "tags": ["Tx"],
+        "summary": "Submit a spot order",
         "requestBody": {
           "content": {
             "application/json": {
@@ -2327,6 +2485,7 @@
     "/v1/tx/cancel-spot-order": {
       "post": {
         "tags": ["Tx"],
+        "summary": "Cancel a spot order",
         "requestBody": {
           "content": {
             "application/json": {
@@ -3207,6 +3366,23 @@
         },
         "additionalProperties": false
       },
+      "Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Ex3.Exchange.OpenApi.AppServices.RootAssetInfoDto, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.RootAssetInfoDto"
+          }
+        },
+        "additionalProperties": false
+      },
       "Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Ex3.Exchange.OpenApi.AppServices.SystemInfo, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]": {
         "type": "object",
         "properties": {
@@ -3369,7 +3545,7 @@
           },
           "chainId": {
             "type": "string",
-            "description": "id of chain"
+            "description": "ID of chain"
           },
           "chainAssetType": {
             "type": "string",
@@ -3417,7 +3593,7 @@
           },
           "chainId": {
             "type": "string",
-            "description": "id of chain"
+            "description": "ID of chain"
           },
           "chainAssetType": {
             "type": "string",
