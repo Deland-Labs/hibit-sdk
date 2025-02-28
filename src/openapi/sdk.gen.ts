@@ -8,6 +8,9 @@ import type {
   GetV1AssetsData,
   GetV1AssetsResponse,
   GetV1AssetsError,
+  GetV1AssetData,
+  GetV1AssetResponse,
+  GetV1AssetError,
   GetV1ChainsData,
   GetV1ChainsResponse,
   GetV1ChainsError,
@@ -71,7 +74,7 @@ export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends 
 };
 
 /**
- * get system information
+ * get system timestamp
  */
 export const getV1Timestamp = <ThrowOnError extends boolean = false>(
   options?: Options<GetV1TimestampData, ThrowOnError>
@@ -83,7 +86,7 @@ export const getV1Timestamp = <ThrowOnError extends boolean = false>(
 };
 
 /**
- * get all assets
+ * get assets supported by Hibit
  */
 export const getV1Assets = <ThrowOnError extends boolean = false>(options?: Options<GetV1AssetsData, ThrowOnError>) => {
   return (options?.client ?? _heyApiClient).get<GetV1AssetsResponse, GetV1AssetsError, ThrowOnError>({
@@ -93,7 +96,17 @@ export const getV1Assets = <ThrowOnError extends boolean = false>(options?: Opti
 };
 
 /**
- * get all chains supported by the system
+ * Get asset information by asset id
+ */
+export const getV1Asset = <ThrowOnError extends boolean = false>(options?: Options<GetV1AssetData, ThrowOnError>) => {
+  return (options?.client ?? _heyApiClient).get<GetV1AssetResponse, GetV1AssetError, ThrowOnError>({
+    url: '/v1/asset',
+    ...options
+  });
+};
+
+/**
+ * get all chains supported by Hibit
  */
 export const getV1Chains = <ThrowOnError extends boolean = false>(options?: Options<GetV1ChainsData, ThrowOnError>) => {
   return (options?.client ?? _heyApiClient).get<GetV1ChainsResponse, GetV1ChainsError, ThrowOnError>({
@@ -186,7 +199,7 @@ export const getV1Market = <ThrowOnError extends boolean = false>(options?: Opti
 };
 
 /**
- * get trades of wallet
+ * get trades of the order
  */
 export const getV1OrderTrades = <ThrowOnError extends boolean = false>(
   options?: Options<GetV1OrderTradesData, ThrowOnError>
@@ -207,6 +220,9 @@ export const getV1Orders = <ThrowOnError extends boolean = false>(options?: Opti
   });
 };
 
+/**
+ * Submit a spot order
+ */
 export const postV1TxSubmitSpotOrder = <ThrowOnError extends boolean = false>(
   options?: Options<PostV1TxSubmitSpotOrderData, ThrowOnError>
 ) => {
@@ -224,6 +240,9 @@ export const postV1TxSubmitSpotOrder = <ThrowOnError extends boolean = false>(
   });
 };
 
+/**
+ * Cancel a spot order
+ */
 export const postV1TxCancelSpotOrder = <ThrowOnError extends boolean = false>(
   options?: Options<PostV1TxCancelSpotOrderData, ThrowOnError>
 ) => {

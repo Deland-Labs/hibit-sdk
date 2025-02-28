@@ -41,10 +41,11 @@ import {
   getV1OrderTrades,
   getV1WalletBalances,
   getV1Market,
-  postV1TxCancelSpotOrder
+  postV1TxCancelSpotOrder,
+  getV1Asset
 } from './openapi';
 import { mapChainInfo } from './types/chain';
-import { mapAssetInfo, mapGetAssetsInput } from './types/asset';
+import { mapAssetInfo, mapGetAssetInput, mapGetAssetsInput } from './types/asset';
 import {
   mapGetMarketDepthInput,
   mapGetMarketInput,
@@ -100,6 +101,14 @@ export interface IHibitClient {
    * @returns {Promise<PageResponse<AssetInfo>>} A promise that resolves to the list of supported assets.
    */
   getAssets(input: GetAssetsInput): Promise<PageResponse<AssetInfo>>;
+
+  /**
+   * Get the asset information.
+   *
+   * @param {bigint} assetId - The asset id to get the information for.
+   * @returns {Promise<AssetInfo>} A promise that resolves to the asset information.
+   */
+  getAsset(assetId: bigint): Promise<AssetInfo>;
 
   /**
    * Get the list of markets.
@@ -252,6 +261,15 @@ export class HibitClient implements IHibitClient {
       totalCount: response.data!.data!.totalCount
     } as PageResponse<AssetInfo>;
   }
+
+  async getAsset(assetId: bigint): Promise<AssetInfo> {
+    const apiName = 'getAsset';
+    const response = await getV1Asset(mapGetAssetInput(assetId));
+
+    this.ensureSuccess(apiName, response.data);
+
+    return mapAssetInfo(response.data!.data!);
+  }
   /*-------------basic end----------------*/
 
   /*-------------market start-------------*/
@@ -333,8 +351,9 @@ export class HibitClient implements IHibitClient {
 
   async getOrders(input: GetOrdersInput): Promise<PageResponse<OrderInfo>> {
     const apiName = 'getOrders';
-    const response = await getV1Orders(mapGetOrdersInput(input));
+    this.ensureHIN(apiName);
 
+    const response = await getV1Orders(mapGetOrdersInput(input));
     this.ensureSuccess(apiName, response.data);
 
     return {
@@ -356,15 +375,15 @@ export class HibitClient implements IHibitClient {
     const apiName = 'submitSpotOrder';
     this.ensurePrivateKey(apiName);
 
-    const nonce = await this.getNonce(this.options.hin);
+    const nonce = await this.getNonce(this.options.hin!);
     const mappedInput = mapSubmitSpotOrderCborInput(input, decimalOptions);
     const tx = TransactionManager.createTransaction(
       TransactionType.CreateSpotOrder,
-      this.options.hin,
+      this.options.hin!,
       nonce ? nonce : 0n,
       mappedInput
     );
-    const signedTx = TransactionManager.sign(tx, this.options.privateKey);
+    const signedTx = TransactionManager.sign(tx, this.options.proxyKey!);
     const resp = await postV1TxSubmitSpotOrder(mapTransactionToApiRequest(signedTx));
 
     this.ensureSuccess(apiName, resp.data);
@@ -378,15 +397,15 @@ export class HibitClient implements IHibitClient {
       input.isCancelAll = false;
     }
 
-    const nonce = await this.getNonce(this.options.hin);
+    const nonce = await this.getNonce(this.options.hin!);
     const mappedInput = mapCancelOrdersCborInput(input);
     const tx = TransactionManager.createTransaction(
       TransactionType.CancelSpotOrder,
-      this.options.hin,
+      this.options.hin!,
       nonce ? nonce : 0n,
       mappedInput
     );
-    const signedTx = TransactionManager.sign(tx, this.options.privateKey);
+    const signedTx = TransactionManager.sign(tx, this.options.proxyKey!);
     const resp = await postV1TxCancelSpotOrder(mapTransactionToApiRequest(signedTx));
 
     this.ensureSuccess(apiName, resp.data);
@@ -423,8 +442,15 @@ export class HibitClient implements IHibitClient {
   }
 
   private ensurePrivateKey(apiName: string) {
-    if (!this.options.privateKey) {
+    this.ensureHIN(apiName);
+    if (!this.options.proxyKey) {
       HibitClientError.throwRequiredPrivKeyError(apiName);
+    }
+  }
+
+  private ensureHIN(apiName: string) {
+    if (!this.options.hin) {
+      HibitClientError.throwRequiredHINError(apiName);
     }
   }
 }
@@ -439,14 +465,18 @@ export interface HibitApiOptions {
   baseUrl: string;
 
   /**
-   * The private key used for authentication.
+   * The proxy key used for authentication.
+   *
+   * Note: This is required for all transactional operations.
    */
-  privateKey: HexString;
+  proxyKey?: HexString;
 
   /**
    * The HIN (hibit chain identity number) of the wallet.
+   *
+   * Note: This is required for all transactional operations.
    */
-  hin: bigint;
+  hin?: bigint;
 }
 
 export const hibitClient = new HibitClient();

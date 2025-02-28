@@ -1,6 +1,7 @@
 import {
   Ex3ExchangeOpenApiAppServicesRootAssetInfoDto,
   Ex3ExchangeOpenApiAppServicesSubAssetInfoDto,
+  type GetV1AssetData,
   GetV1AssetsData,
   Options
 } from '../openapi';
@@ -214,6 +215,14 @@ export function mapGetAssetsInput(input: GetAssetsInput): Options<GetV1AssetsDat
       Limit: input.limit,
       Offset: input.offset,
       OrderBy: input.orderBy
+    }
+  };
+}
+
+export function mapGetAssetInput(assetId: bigint): Options<GetV1AssetData, boolean> {
+  return {
+    query: {
+      AssetId: assetId.toString()
     }
   };
 }

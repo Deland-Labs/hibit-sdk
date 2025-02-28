@@ -244,6 +244,13 @@ export type Ex3ExchangeOpenApiAppServicesOpenApiResult1Ex3ExchangeOpenApiAppServ
     data?: Ex3ExchangeOpenApiAppServicesNonceResult;
   };
 
+export type Ex3ExchangeOpenApiAppServicesOpenApiResult1Ex3ExchangeOpenApiAppServicesRootAssetInfoDto_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null =
+  {
+    code?: number;
+    message?: string | null;
+    data?: Ex3ExchangeOpenApiAppServicesRootAssetInfoDto;
+  };
+
 export type Ex3ExchangeOpenApiAppServicesOpenApiResult1Ex3ExchangeOpenApiAppServicesSystemInfo_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null =
   {
     code?: number;
@@ -308,7 +315,7 @@ export type Ex3ExchangeOpenApiAppServicesRootAssetInfoDto = {
    */
   assetId: string;
   /**
-   * id of chain
+   * ID of chain
    */
   chainId?: string;
   /**
@@ -347,7 +354,7 @@ export type Ex3ExchangeOpenApiAppServicesSubAssetInfoDto = {
    */
   assetId: string;
   /**
-   * id of chain
+   * ID of chain
    */
   chainId?: string;
   /**
@@ -639,6 +646,53 @@ export type GetV1AssetsResponses = {
 };
 
 export type GetV1AssetsResponse = GetV1AssetsResponses[keyof GetV1AssetsResponses];
+
+export type GetV1AssetData = {
+  body?: never;
+  path?: never;
+  query?: {
+    AssetId?: string;
+  };
+  url: '/v1/asset';
+};
+
+export type GetV1AssetErrors = {
+  /**
+   * Bad Request
+   */
+  400: VoloAbpHttpRemoteServiceErrorResponse;
+  /**
+   * Unauthorized
+   */
+  401: VoloAbpHttpRemoteServiceErrorResponse;
+  /**
+   * Forbidden
+   */
+  403: VoloAbpHttpRemoteServiceErrorResponse;
+  /**
+   * Not Found
+   */
+  404: VoloAbpHttpRemoteServiceErrorResponse;
+  /**
+   * Internal Server Error
+   */
+  500: VoloAbpHttpRemoteServiceErrorResponse;
+  /**
+   * Not Implemented
+   */
+  501: VoloAbpHttpRemoteServiceErrorResponse;
+};
+
+export type GetV1AssetError = GetV1AssetErrors[keyof GetV1AssetErrors];
+
+export type GetV1AssetResponses = {
+  /**
+   * OK
+   */
+  200: Ex3ExchangeOpenApiAppServicesOpenApiResult1Ex3ExchangeOpenApiAppServicesRootAssetInfoDto_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null;
+};
+
+export type GetV1AssetResponse = GetV1AssetResponses[keyof GetV1AssetResponses];
 
 export type GetV1ChainsData = {
   body?: never;

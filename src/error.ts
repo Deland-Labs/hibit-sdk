@@ -19,6 +19,9 @@ export class HibitClientError extends Error {
     throw new HibitClientError(`Invalid response: ${apiName}`);
   }
 
+  static throwRequiredHINError(apiName: string) {
+    throw new HibitClientError(`HIN is required: ${apiName}`);
+  }
   static throwRequiredPrivKeyError(apiName: string) {
     throw new HibitClientError(`Private key is required: ${apiName}`);
   }

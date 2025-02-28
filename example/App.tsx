@@ -21,7 +21,7 @@ import SectionGetNonce from './components/SectionGetNonce';
 const OPTIONS = {
   baseUrl: 'https://testnetopenapi.hibit.app',
   hin: 10000n,
-  privateKey: 'fa3e933f1788d7d56a20e078370f4c3b713ee0bcdb44392e4cfeaf524716d06a'
+  proxyKey: 'fa3e933f1788d7d56a20e078370f4c3b713ee0bcdb44392e4cfeaf524716d06a'
 };
 
 const App: FC = () => {
