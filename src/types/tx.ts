@@ -1,4 +1,4 @@
-import { TransactionType, Version } from './enums.ts';
+import { TransactionType, Version } from './enums';
 import { hmac } from '@noble/hashes/hmac';
 import { sha256 } from '@noble/hashes/sha256';
 //@ts-ignore

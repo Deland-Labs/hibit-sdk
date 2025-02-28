@@ -3,7 +3,7 @@ import cbor from 'borc';
 import { Buffer } from 'buffer';
 import BigNumber from 'bignumber.js';
 import 'reflect-metadata';
-import { ChainAssetType, Chain, ChainNetwork } from '../types';
+import { Chain, ChainNetwork } from '../types';
 import { ReflectHelper } from './reflect-helper.ts';
 
 /**
@@ -60,7 +60,7 @@ export class TxPayloadEncoder {
       return null;
     } else if (value instanceof BigNumber) {
       return value;
-    } else if (value instanceof Chain || value instanceof ChainNetwork || value instanceof ChainAssetType) {
+    } else if (value instanceof Chain || value instanceof ChainNetwork) {
       return value.value;
     } else if (value instanceof Uint8Array) {
       return value;
