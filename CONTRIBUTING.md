@@ -1,6 +1,6 @@
-# Contributing to HiBit SDK
+# Contributing to Hibit SDK
 
-We welcome contributions to the HiBit SDK! By contributing, you help make this project better for everyone. Here are some guidelines to help you get started.
+We welcome contributions to the Hibit SDK! By contributing, you help make this project better for everyone. Here are some guidelines to help you get started.
 
 ## How to Contribute
 
@@ -71,6 +71,6 @@ If you find a bug or have a feature request, please open an issue on GitHub. Be 
 
 ## License
 
-By contributing to the HiBit SDK, you agree that your contributions will be licensed under the GNU General Public License v3.0.
+By contributing to the Hibit SDK, you agree that your contributions will be licensed under the GNU General Public License v3.0.
 
 Thank you for your contributions!
