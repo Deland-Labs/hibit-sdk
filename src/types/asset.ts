@@ -6,6 +6,7 @@ import {
   Options
 } from '../openapi';
 import { ChainAssetType } from './enums';
+import { toChainAssetType } from './enums/chain-asset-type.ts';
 
 export type AssetInfo = {
   /**
@@ -102,7 +103,7 @@ export function mapAssetInfo(asset: Ex3ExchangeOpenApiAppServicesRootAssetInfoDt
   return {
     assetId: asset.assetId,
     chainId: asset.chainId || undefined,
-    chainAssetType: Number(asset.chainAssetType) as ChainAssetType,
+    chainAssetType: toChainAssetType(asset.chainAssetType)!,
     contractAddress: asset.contractAddress,
     decimalPlaces: asset.decimalPlaces,
     isBaseToken: asset.isBaseToken,

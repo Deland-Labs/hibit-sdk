@@ -60,3 +60,11 @@ export enum ChainAssetType {
    */
   KRC20 = 11
 }
+
+export function toChainAssetType(value: string | number) {
+  const numValue = Number(value);
+  if (Object.values(ChainAssetType).includes(numValue)) {
+    return numValue as ChainAssetType;
+  }
+  return null;
+}
