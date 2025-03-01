@@ -7,6 +7,7 @@ export { OrderSide } from './order-side';
 export { TickSpace } from './tick-space';
 export { OrderStatus } from './order-status';
 export { TransactionType } from './tx-type';
+export { HibitNetwork } from './hibit-network';
 export { WalletSignatureSchema } from './wallet-sign-schema';
 
 export enum Version {

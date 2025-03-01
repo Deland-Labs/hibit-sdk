@@ -30,9 +30,9 @@ yarn add @delandlabs/hibit-sdk
 Here is how to use the Hibit SDK with TypeScript:
 
 ```typescript
-import { hibitClient } from '@delandlabs/hibit-sdk';
+import { hibitClient, HibitNetwork } from '@delandlabs/hibit-sdk';
 const options = {
-  baseUrl: 'https://testnetopenapi.hibit.app',
+  network: HibitNetwork.Testnet,
   walletId: 10000n,
   privateKey: 'fa3e933f1788d7d56a20e078370f4c3b713ee0bcdb44392e4cfeaf524716d06a'
 };

@@ -1,8 +1,7 @@
 import { beforeAll, describe, expect, it } from 'vitest';
 import { hibitClient } from '../src/hibit-client';
-import { DepthIndex, TickSpace } from '../src';
+import { DepthIndex, HibitNetwork, TickSpace } from '../src';
 import BigNumber from 'bignumber.js';
-import { HibitNetwork } from '../src/types/enums/hibit-network';
 
 const options = {
   network: HibitNetwork.Testnet,
