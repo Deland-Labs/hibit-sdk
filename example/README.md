@@ -10,7 +10,7 @@ The example application demonstrates a wide range of SDK functionalities:
 
 - Getting server timestamp
 - Retrieving chains, assets, and markets information
-- Fetching market details (ticker, depth, klines, trades)
+- Fetching market details (ticker, depth, k-lines, trades)
 - Working with spot orders (limit orders, swaps)
 - Canceling orders
 - Getting order history and trades

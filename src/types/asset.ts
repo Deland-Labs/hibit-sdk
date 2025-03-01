@@ -6,7 +6,7 @@ import {
   Options
 } from '../openapi';
 import { ChainAssetType } from './enums';
-import { toChainAssetType } from './enums/chain-asset-type.ts';
+import { toChainAssetType } from './enums/chain-asset-type';
 
 export type AssetInfo = {
   /**

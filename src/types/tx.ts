@@ -4,7 +4,7 @@ import { sha256 } from '@noble/hashes/sha256';
 //@ts-ignore
 import cbor from 'borc';
 import * as secp from '@noble/secp256k1';
-import { HexString } from './index.ts';
+import { HexString } from './index';
 import { Buffer } from 'buffer';
 import { PostV1TxSubmitSpotOrderData } from '../openapi';
 import { Options } from '@hey-api/client-fetch';
