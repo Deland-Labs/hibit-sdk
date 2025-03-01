@@ -66,8 +66,10 @@ import { TransactionManager } from './tx-manager';
 import { mapTransactionToApiRequest } from './types/tx';
 import { mapGetNonceInput, mapGetWalletBalancesInput } from './types/wallet';
 import { client } from './openapi/client.gen';
-import { HibitClientError } from './error.ts';
-import { mapCancelOrdersCborInput, mapSubmitSpotOrderCborInput } from './types/order/payload.ts';
+import { HibitClientError } from './error';
+import { mapCancelOrdersCborInput, mapSubmitSpotOrderCborInput } from './types/order/payload';
+import { HibitNetwork } from './types/enums/hibit-network';
+import { HIBIT_MAINNET_API_ENDPOINT, HIBIT_TESTNET_API_ENDPOINT } from './constant';
 
 /**
  * Interface representing the Hibit API.
@@ -153,8 +155,8 @@ export interface IHibitClient {
   /**
    * Get the kline data for market.
    *
-   * @param {GetMarketKlineInput} input - The input parameters for getting market klines.
-   * @returns {Promise<PageResponse<MarketKlineItem>>} A promise that resolves to the list of market klines.
+   * @param {GetMarketKlineInput} input - The input parameters for getting market k-lines.
+   * @returns {Promise<PageResponse<MarketKlineItem>>} A promise that resolves to the list of market k-lines.
    */
   getMarketKline(input: GetMarketKlineInput): Promise<PageResponse<MarketKlineItem>>;
 
@@ -223,7 +225,7 @@ export class HibitClient implements IHibitClient {
     this.options = options;
 
     client.setConfig({
-      baseUrl: options.baseUrl
+      baseUrl: options.network === HibitNetwork.Mainnet ? HIBIT_MAINNET_API_ENDPOINT : HIBIT_TESTNET_API_ENDPOINT
     });
   }
 
@@ -270,6 +272,7 @@ export class HibitClient implements IHibitClient {
 
     return mapAssetInfo(response.data!.data!);
   }
+
   /*-------------basic end----------------*/
 
   /*-------------market start-------------*/
@@ -460,11 +463,6 @@ export class HibitClient implements IHibitClient {
  */
 export interface HibitApiOptions {
   /**
-   * The base URL for the Hibit API.
-   */
-  baseUrl: string;
-
-  /**
    * The proxy key used for authentication.
    *
    * Note: This is required for all transactional operations.
@@ -477,6 +475,8 @@ export interface HibitApiOptions {
    * Note: This is required for all transactional operations.
    */
   hin?: bigint;
+
+  network: HibitNetwork;
 }
 
 export const hibitClient = new HibitClient();

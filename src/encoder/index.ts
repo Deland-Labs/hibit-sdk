@@ -4,7 +4,7 @@ import { Buffer } from 'buffer';
 import BigNumber from 'bignumber.js';
 import 'reflect-metadata';
 import { Chain, ChainNetwork } from '../types';
-import { ReflectHelper } from './reflect-helper.ts';
+import { ReflectHelper } from './reflect-helper';
 
 /**
  * Hibit chain transaction's payload encoder.

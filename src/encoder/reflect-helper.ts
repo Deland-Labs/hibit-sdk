@@ -1,4 +1,4 @@
-import { cborBigUintKey, cborIndexMetadataKey } from './decorator.ts';
+import { cborBigUintKey, cborIndexMetadataKey } from './decorator';
 
 export class ReflectHelper {
   /**

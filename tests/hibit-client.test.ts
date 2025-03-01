@@ -2,9 +2,10 @@ import { beforeAll, describe, expect, it } from 'vitest';
 import { hibitClient } from '../src/hibit-client';
 import { DepthIndex, TickSpace } from '../src';
 import BigNumber from 'bignumber.js';
+import { HibitNetwork } from '../src/types/enums/hibit-network';
 
 const options = {
-  baseUrl: 'https://testnetopenapi.hibit.app',
+  network: HibitNetwork.Testnet,
   hin: 10000n,
   proxyKey: 'fa3e933f1788d7d56a20e078370f4c3b713ee0bcdb44392e4cfeaf524716d06a'
 };

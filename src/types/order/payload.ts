@@ -1,8 +1,8 @@
 import { OrderCategory, OrderSide, SwapV2ExactTokensType } from '../enums';
 import { CancelSpotOrderInput, DecimalOptions, LimitOrderDetails, SubmitSpotOrderInput, SwapV2OrderDetails } from '.';
-import { cborIndex, cborBigUint } from '../../encoder/decorator.ts';
-import { toSmallestUnit } from '../../utils.ts';
-import { PRICE_DECIMALS } from './constant.ts';
+import { cborIndex, cborBigUint } from '../../encoder/decorator';
+import { toSmallestUnit } from '../../utils';
+import { PRICE_DECIMALS } from '../../constant';
 
 /**
  * Input class for creating a new spot order in the trading system.
