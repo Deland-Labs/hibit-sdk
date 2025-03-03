@@ -983,11 +983,11 @@ export type GetV1MarketTradeData = {
     /**
      * The start date and time for the trade list.
      */
-    TradedAtStart?: unknown;
+    TradedAtStart?: number;
     /**
      * The end date and time for the trade list.
      */
-    TradedAtEnd?: unknown;
+    TradedAtEnd?: number;
     /**
      * maximum number of items to return. maximum value is 500.
      */
@@ -1255,11 +1255,11 @@ export type GetV1OrdersData = {
     /**
      * order created at after this time
      */
-    CreatedAtStart?: unknown;
+    CreatedAtStart?: number;
     /**
      * order created at before this time
      */
-    CreatedAtEnd?: unknown;
+    CreatedAtEnd?: number;
     /**
      * maximum number of items to return. maximum value is 500.
      */
