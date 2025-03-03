@@ -36,10 +36,12 @@ export default function SectionCancelSpotOrder({ client }: { client: HibitClient
     setLoading(true);
     setResult(null);
     setError('');
+    const trimMarketId = input.marketId?.trim();
+    const trimOrderId = input.orderId?.trim();
     try {
       const req: CancelSpotOrderInput = {
-        marketId: input.marketId ? BigInt(input.marketId) : undefined,
-        orderId: input.orderId || undefined,
+        marketId: trimMarketId ? BigInt(trimMarketId) : undefined,
+        orderId: trimOrderId || undefined,
         orderSide: input.orderSide ?? undefined,
         isCancelAll: input.isCancelAll ?? undefined
       };

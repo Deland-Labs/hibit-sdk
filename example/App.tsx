@@ -18,12 +18,12 @@ import SectionGetOrders from './components/SectionGetOrders';
 import SectionGetOrderTrades from './components/SectionGetOrderTrades';
 import SectionGetWalletBalances from './components/SectionGetWalletBalances';
 import SectionGetNonce from './components/SectionGetNonce';
-import { HibitNetwork } from '../src/types/enums/hibit-network';
+import { HibitNetwork } from '../src';
 
 const OPTIONS = {
   network: HibitNetwork.Testnet,
-  hin: 10000n,
-  proxyKey: 'fa3e933f1788d7d56a20e078370f4c3b713ee0bcdb44392e4cfeaf524716d06a'
+  hin: BigInt(10001),
+  proxyKey: 'fbd71d4068e3c9664afb6b121dface1b1319a168892bb9d5d3c44d220b6e9f9e'
 };
 
 const App: FC = () => {

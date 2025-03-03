@@ -1,10 +1,11 @@
-// @ts-ignore
+//@ts-expect-error Could not find a declaration file for module borc
 import cbor from 'borc';
 import { Buffer } from 'buffer';
 import BigNumber from 'bignumber.js';
 import 'reflect-metadata';
 import { Chain, ChainNetwork } from '../types';
 import { ReflectHelper } from './reflect-helper';
+import { OrderId } from '../types/order/order-id.ts';
 
 /**
  * Hibit chain transaction's payload encoder.
@@ -16,7 +17,7 @@ export class TxPayloadEncoder {
    * @param data - The data to encode.
    * @returns The encoded data as a Buffer.
    */
-  public static encode(data: Object): Buffer {
+  public static encode<T>(data: T): Buffer {
     const reorganizedData = this.createCborArray(data);
     return Buffer.from(cbor.encode(reorganizedData));
   }
@@ -60,7 +61,7 @@ export class TxPayloadEncoder {
       return null;
     } else if (value instanceof BigNumber) {
       return value;
-    } else if (value instanceof Chain || value instanceof ChainNetwork) {
+    } else if (value instanceof Chain || value instanceof ChainNetwork || value instanceof OrderId) {
       return value.value;
     } else if (value instanceof Uint8Array) {
       return value;
