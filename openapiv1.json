@@ -1363,7 +1363,7 @@
             "in": "query",
             "description": "The start date and time for the trade list.",
             "schema": {
-              "type": "int64",
+              "type": "integer",
               "format": "int64"
             }
           },
@@ -1372,7 +1372,7 @@
             "in": "query",
             "description": "The end date and time for the trade list.",
             "schema": {
-              "type": "int64",
+              "type": "integer",
               "format": "int64"
             }
           },
@@ -2131,7 +2131,7 @@
             "in": "query",
             "description": "order created at after this time",
             "schema": {
-              "type": "int64",
+              "type": "integer",
               "format": "int64"
             }
           },
@@ -2140,7 +2140,7 @@
             "in": "query",
             "description": "order created at before this time",
             "schema": {
-              "type": "int64",
+              "type": "integer",
               "format": "int64"
             }
           },
@@ -3978,18 +3978,6 @@
         },
         "additionalProperties": false
       }
-    },
-    "securitySchemes": {
-      "bearer": {
-        "type": "http",
-        "scheme": "Ex3L2",
-        "bearerFormat": "JWT"
-      }
     }
-  },
-  "security": [
-    {
-      "http": []
-    }
-  ]
+  }
 }
