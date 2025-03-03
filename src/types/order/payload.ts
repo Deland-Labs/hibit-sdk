@@ -3,6 +3,7 @@ import { CancelSpotOrderInput, DecimalOptions, LimitOrderDetails, SubmitSpotOrde
 import { cborIndex, cborBigUint } from '../../encoder/decorator';
 import { toSmallestUnit } from '../../utils';
 import { PRICE_DECIMALS } from '../../constant';
+import { OrderId } from './order-id.ts';
 
 /**
  * Input class for creating a new spot order in the trading system.
@@ -104,7 +105,7 @@ export class CancelOrdersCborInput {
   @cborIndex(0)
   public marketId?: bigint;
   @cborIndex(1)
-  public orderId?: string;
+  public orderId?: OrderId;
   @cborIndex(2)
   @cborBigUint()
   public orderSide?: OrderSide;
@@ -249,7 +250,7 @@ export function mapSubmitSpotOrderCborInput(
 export function mapCancelOrdersCborInput(input: CancelSpotOrderInput): CancelOrdersCborInput {
   return new CancelOrdersCborInput({
     marketId: input.marketId,
-    orderId: input.orderId,
+    orderId: input.orderId ? OrderId.fromString(input.orderId) : undefined,
     orderSide: input.orderSide,
     isCancelAll: input.isCancelAll!
   });

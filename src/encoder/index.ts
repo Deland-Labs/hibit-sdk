@@ -5,6 +5,7 @@ import BigNumber from 'bignumber.js';
 import 'reflect-metadata';
 import { Chain, ChainNetwork } from '../types';
 import { ReflectHelper } from './reflect-helper';
+import { OrderId } from '../types/order/order-id.ts';
 
 /**
  * Hibit chain transaction's payload encoder.
@@ -60,7 +61,7 @@ export class TxPayloadEncoder {
       return null;
     } else if (value instanceof BigNumber) {
       return value;
-    } else if (value instanceof Chain || value instanceof ChainNetwork) {
+    } else if (value instanceof Chain || value instanceof ChainNetwork || value instanceof OrderId) {
       return value.value;
     } else if (value instanceof Uint8Array) {
       return value;
