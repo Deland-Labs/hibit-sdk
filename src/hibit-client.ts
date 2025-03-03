@@ -23,7 +23,8 @@ import {
   OrderTradeRecord,
   SubmitSpotOrderInput,
   GetWalletBalancesInput,
-  DecimalOptions
+  DecimalOptions,
+  HibitNetwork
 } from './types';
 import {
   getV1Assets,
@@ -68,7 +69,6 @@ import { mapGetNonceInput, mapGetWalletBalancesInput } from './types/wallet';
 import { client } from './openapi/client.gen';
 import { HibitClientError } from './error';
 import { mapCancelOrdersCborInput, mapSubmitSpotOrderCborInput } from './types/order/payload';
-import { HibitNetwork } from './types/enums/hibit-network';
 import { HIBIT_MAINNET_API_ENDPOINT, HIBIT_TESTNET_API_ENDPOINT } from './constant';
 
 /**
