@@ -53,7 +53,7 @@ describe('Hibit Client Test', () => {
     });
 
     it('should get single market', async () => {
-      const market = await hibitClient.getMarket(10016n);
+      const market = await hibitClient.getMarket(10000n);
       expect(market).toMatchObject({
         marketId: expect.any(BigInt),
         baseAssetId: expect.any(BigInt),
