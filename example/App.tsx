@@ -3,6 +3,7 @@ import { HibitClient } from '../src/hibit-client';
 import SectionGetTimestamp from './components/SectionGetTimestamp';
 import SectionGetChains from './components/SectionGetChains';
 import SectionGetAssets from './components/SectionGetAssets';
+import SectionGetAsset from './components/SectionGetAsset';
 import SectionGetMarkets from './components/SectionGetMarkets';
 import SectionGetMarket from './components/SectionGetMarket';
 import SectionGetMarketsTicker from './components/SectionGetMarketsTicker';
@@ -45,6 +46,7 @@ const App: FC = () => {
       <SectionGetTimestamp client={client} />
       <SectionGetChains client={client} />
       <SectionGetAssets client={client} />
+      <SectionGetAsset client={client} />
       <SectionGetMarkets client={client} />
       <SectionGetMarket client={client} />
       <SectionGetMarketsTicker client={client} />
