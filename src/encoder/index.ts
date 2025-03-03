@@ -1,4 +1,4 @@
-// @ts-ignore
+//@ts-expect-error Could not find a declaration file for module borc
 import cbor from 'borc';
 import { Buffer } from 'buffer';
 import BigNumber from 'bignumber.js';
@@ -16,7 +16,7 @@ export class TxPayloadEncoder {
    * @param data - The data to encode.
    * @returns The encoded data as a Buffer.
    */
-  public static encode(data: Object): Buffer {
+  public static encode<T>(data: T): Buffer {
     const reorganizedData = this.createCborArray(data);
     return Buffer.from(cbor.encode(reorganizedData));
   }

@@ -15,7 +15,7 @@ export class SubmitSpotOrderCborInput {
    */
   @cborIndex(0)
   @cborBigUint()
-  // @ts-ignore
+  //@ts-expect-error no initializer and is not definitely assigned in the constructor
   public orderCategory: OrderCategory;
 
   /**
@@ -23,7 +23,7 @@ export class SubmitSpotOrderCborInput {
    * @decorators {@cborIndex(1)}
    */
   @cborIndex(1)
-  // @ts-ignore
+  //@ts-expect-error no initializer and is not definitely assigned in the constructor
   public marketId: bigint;
 
   /**
@@ -72,7 +72,7 @@ export class LimitOrderDetailsCbor {
    */
   @cborIndex(0)
   @cborBigUint()
-  // @ts-ignore
+  //@ts-expect-error no initializer and is not definitely assigned in the constructor
   public orderSide: OrderSide;
 
   /**
@@ -80,7 +80,7 @@ export class LimitOrderDetailsCbor {
    * @decorators {@cborIndex(1)}
    */
   @cborIndex(1)
-  // @ts-ignore
+  //@ts-expect-error no initializer and is not definitely assigned in the constructor
   public price: bigint;
 
   /**
@@ -88,7 +88,7 @@ export class LimitOrderDetailsCbor {
    * @decorators {@cborIndex(2)}
    */
   @cborIndex(2)
-  // @ts-ignore
+  //@ts-expect-error no initializer and is not definitely assigned in the constructor
   public volume: bigint;
 
   /**
@@ -102,7 +102,6 @@ export class LimitOrderDetailsCbor {
 
 export class CancelOrdersCborInput {
   @cborIndex(0)
-  // @ts-ignore
   public marketId?: bigint;
   @cborIndex(1)
   public orderId?: string;
@@ -128,7 +127,7 @@ export class SwapV2OrderDetailsCbor {
    * @decorators {@cborIndex(0)}
    */
   @cborIndex(0)
-  // @ts-ignore
+  //@ts-expect-error no initializer and is not definitely assigned in the constructor
   public exactTokens: bigint;
 
   /**
@@ -137,7 +136,7 @@ export class SwapV2OrderDetailsCbor {
    */
   @cborIndex(1)
   @cborBigUint()
-  // @ts-ignore
+  //@ts-expect-error no initializer and is not definitely assigned in the constructor
   public exactTokensType: SwapV2ExactTokensType;
 
   /**
@@ -146,7 +145,7 @@ export class SwapV2OrderDetailsCbor {
    */
   @cborIndex(2)
   @cborBigUint()
-  // @ts-ignore
+  //@ts-expect-error no initializer and is not definitely assigned in the constructor
   public orderSide: OrderSide;
 
   /**
@@ -211,31 +210,31 @@ export function mapSwapV2OrderDetails(
         : decimalOptions.baseAssetDecimals;
   }
 
-  return {
+  return new SwapV2OrderDetailsCbor({
     exactTokens: toSmallestUnit(swapV2OrderDetails.exactTokens, exactTokenDecimals),
     exactTokensType: swapV2OrderDetails.exactTokensType,
     orderSide: swapV2OrderDetails.orderSide,
     minOut: swapV2OrderDetails.minOut ? toSmallestUnit(swapV2OrderDetails.minOut, minOutDecimals) : undefined,
     maxIn: swapV2OrderDetails.maxIn ? toSmallestUnit(swapV2OrderDetails.maxIn, maxInDecimals) : undefined
-  };
+  });
 }
 
 export function mapLimitOrderDetails(
   limitOrderDetails: LimitOrderDetails,
   decimalOptions: DecimalOptions
 ): LimitOrderDetailsCbor {
-  return {
+  return new LimitOrderDetailsCbor({
     orderSide: limitOrderDetails.orderSide,
     price: toSmallestUnit(limitOrderDetails.price, PRICE_DECIMALS),
     volume: toSmallestUnit(limitOrderDetails.volume, decimalOptions.baseAssetDecimals)
-  };
+  });
 }
 
 export function mapSubmitSpotOrderCborInput(
   input: SubmitSpotOrderInput,
   decimalOptions: DecimalOptions
 ): SubmitSpotOrderCborInput {
-  return {
+  return new SubmitSpotOrderCborInput({
     orderCategory: input.orderCategory,
     marketId: input.marketId,
     limitOrderDetails: input.limitOrderDetails
@@ -244,14 +243,14 @@ export function mapSubmitSpotOrderCborInput(
     swapV2OrderDetails: input.swapV2OrderDetails
       ? mapSwapV2OrderDetails(input.swapV2OrderDetails, decimalOptions)
       : undefined
-  };
+  });
 }
 
 export function mapCancelOrdersCborInput(input: CancelSpotOrderInput): CancelOrdersCborInput {
-  return {
+  return new CancelOrdersCborInput({
     marketId: input.marketId,
     orderId: input.orderId,
     orderSide: input.orderSide,
     isCancelAll: input.isCancelAll!
-  };
+  });
 }

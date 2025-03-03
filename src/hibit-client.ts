@@ -218,7 +218,7 @@ export interface IHibitClient {
 }
 
 export class HibitClient implements IHibitClient {
-  //@ts-ignore
+  //@ts-expect-error - no constructor
   private options: HibitApiOptions;
 
   setOptions(options: HibitApiOptions) {
