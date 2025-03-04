@@ -32,4 +32,4 @@ jobs:
 
           yarn build
 
-          yarn publish --frozen-lockfile --non-interactive --no-git-tag-version --no-commit-hooks --access public
+          yarn publish --frozen-lockfile --non-interactive --no-git-tag-version --no-commit-hooks --new-version ${Version} --access public
