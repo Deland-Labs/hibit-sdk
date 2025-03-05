@@ -31,11 +31,11 @@ export type GetOrdersInput = {
   /**
    * order created at after this time
    */
-  createdAtStart?: unknown;
+  createdAtStart?: number;
   /**
    * order created at before this time
    */
-  createdAtEnd?: unknown;
+  createdAtEnd?: number;
   /**
    * maximum number of items to return. maximum value is 500.
    */
