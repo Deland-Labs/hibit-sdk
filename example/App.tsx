@@ -15,6 +15,7 @@ import SectionSubmitSpotOrderLimit from './components/SectionSubmitSpotOrderLimi
 import SectionSubmitSpotOrderSwapV2 from './components/SectionSubmitSpotOrderSwapV2';
 import SectionCancelSpotOrder from './components/SectionCancelSpotOrder';
 import SectionGetOrders from './components/SectionGetOrders';
+import SectionGetOrderById from './components/SectionGetOrderById';
 import SectionGetOrderTrades from './components/SectionGetOrderTrades';
 import SectionGetWalletBalances from './components/SectionGetWalletBalances';
 import SectionGetNonce from './components/SectionGetNonce';
@@ -58,6 +59,7 @@ const App: FC = () => {
       <SectionSubmitSpotOrderSwapV2 client={client} />
       <SectionCancelSpotOrder client={client} />
       <SectionGetOrders client={client} />
+      <SectionGetOrderById client={client} />
       <SectionGetOrderTrades client={client} />
       <SectionGetWalletBalances client={client} />
       <SectionGetNonce client={client} />

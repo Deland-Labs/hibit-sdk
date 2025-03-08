@@ -20,6 +20,7 @@ const schema = object({
       .required()
   ),
   marketId: string(),
+  orderIds: string(),
   orderCategory: number().oneOf(
     Object.keys(OrderCategory)
       .filter((v) => !isNaN(Number(v)))
@@ -68,6 +69,7 @@ export default function SectionGetOrders({ client }: { client: HibitClient }) {
         hin: BigInt(input.hin),
         status: input.status?.length ? input.status : undefined,
         marketId: input.marketId ? BigInt(input.marketId) : undefined,
+        orderIds: input.orderIds ? input.orderIds.split(',').map((id) => id.trim()) : undefined,
         orderCategory: input.orderCategory ?? undefined,
         orderSide: input.orderSide ?? undefined,
         createdAtStart: input.createdAtStart ?? undefined,
@@ -124,6 +126,9 @@ export default function SectionGetOrders({ client }: { client: HibitClient }) {
           </FormField>
           <FormField label="MarketId" error={errors.marketId}>
             <input type="number" className="input" {...register('marketId')} />
+          </FormField>
+          <FormField label="OrderIds" error={errors.orderIds}>
+            <input type="text" className="input" {...register('orderIds')} />
           </FormField>
           <FormField label="OrderCategory" error={errors.orderCategory}>
             <Controller

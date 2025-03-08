@@ -258,6 +258,13 @@ export type Ex3ExchangeOpenApiAppServicesOpenApiResult1Ex3ExchangeOpenApiAppServ
     data?: Ex3ExchangeOpenApiAppServicesSystemInfo;
   };
 
+export type Ex3ExchangeOpenApiAppServicesOpenApiResult1Ex3ExchangeOpenApiAppServicesWalletOrderDto_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null =
+  {
+    code?: number;
+    message?: string | null;
+    data?: Ex3ExchangeOpenApiAppServicesWalletOrderDto;
+  };
+
 export type Ex3ExchangeOpenApiAppServicesOpenApiResult1SystemCollectionsGenericDictionary2Ex3ModelsAssetId_Ex3Models_Version_1000_Culture_neutral_PublicKeyToken_null__Ex3ModelsOpenApiNumber_Ex3Models_Version_1000_Culture_neutral_PublicKeyToken_null___SystemPrivateCoreLib_Version_9000_Culture_neutral_PublicKeyToken_7Cec85D7Bea7798E =
   {
     code?: number;
@@ -274,35 +281,35 @@ export type Ex3ExchangeOpenApiAppServicesOpenApiResult1SystemCollectionsGenericI
     data?: Array<Ex3ExchangeOpenApiAppServicesChainInfoDto> | null;
   };
 
-export type Ex3ExchangeOpenApiAppServicesOpenApiResult1VoloAbpApplicationDtosPagedResultDto1Ex3ExchangeOpenApiAppServicesKlineItem_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null___VoloAbpDddApplicationContracts_Version_9050_Culture_neutral_PublicKeyToken_null =
+export type Ex3ExchangeOpenApiAppServicesOpenApiResult1VoloAbpApplicationDtosPagedResultDto1Ex3ExchangeOpenApiAppServicesKlineItem_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null___VoloAbpDddApplicationContracts_Version_9100_Culture_neutral_PublicKeyToken_null =
   {
     code?: number;
     message?: string | null;
     data?: VoloAbpApplicationDtosPagedResultDto1Ex3ExchangeOpenApiAppServicesKlineItem_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null;
   };
 
-export type Ex3ExchangeOpenApiAppServicesOpenApiResult1VoloAbpApplicationDtosPagedResultDto1Ex3ExchangeOpenApiAppServicesMarketInfoItem_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null___VoloAbpDddApplicationContracts_Version_9050_Culture_neutral_PublicKeyToken_null =
+export type Ex3ExchangeOpenApiAppServicesOpenApiResult1VoloAbpApplicationDtosPagedResultDto1Ex3ExchangeOpenApiAppServicesMarketInfoItem_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null___VoloAbpDddApplicationContracts_Version_9100_Culture_neutral_PublicKeyToken_null =
   {
     code?: number;
     message?: string | null;
     data?: VoloAbpApplicationDtosPagedResultDto1Ex3ExchangeOpenApiAppServicesMarketInfoItem_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null;
   };
 
-export type Ex3ExchangeOpenApiAppServicesOpenApiResult1VoloAbpApplicationDtosPagedResultDto1Ex3ExchangeOpenApiAppServicesMarketTradingHistoryItem_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null___VoloAbpDddApplicationContracts_Version_9050_Culture_neutral_PublicKeyToken_null =
+export type Ex3ExchangeOpenApiAppServicesOpenApiResult1VoloAbpApplicationDtosPagedResultDto1Ex3ExchangeOpenApiAppServicesMarketTradingHistoryItem_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null___VoloAbpDddApplicationContracts_Version_9100_Culture_neutral_PublicKeyToken_null =
   {
     code?: number;
     message?: string | null;
     data?: VoloAbpApplicationDtosPagedResultDto1Ex3ExchangeOpenApiAppServicesMarketTradingHistoryItem_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null;
   };
 
-export type Ex3ExchangeOpenApiAppServicesOpenApiResult1VoloAbpApplicationDtosPagedResultDto1Ex3ExchangeOpenApiAppServicesRootAssetInfoDto_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null___VoloAbpDddApplicationContracts_Version_9050_Culture_neutral_PublicKeyToken_null =
+export type Ex3ExchangeOpenApiAppServicesOpenApiResult1VoloAbpApplicationDtosPagedResultDto1Ex3ExchangeOpenApiAppServicesRootAssetInfoDto_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null___VoloAbpDddApplicationContracts_Version_9100_Culture_neutral_PublicKeyToken_null =
   {
     code?: number;
     message?: string | null;
     data?: VoloAbpApplicationDtosPagedResultDto1Ex3ExchangeOpenApiAppServicesRootAssetInfoDto_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null;
   };
 
-export type Ex3ExchangeOpenApiAppServicesOpenApiResult1VoloAbpApplicationDtosPagedResultDto1Ex3ExchangeOpenApiAppServicesWalletOrderDto_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null___VoloAbpDddApplicationContracts_Version_9050_Culture_neutral_PublicKeyToken_null =
+export type Ex3ExchangeOpenApiAppServicesOpenApiResult1VoloAbpApplicationDtosPagedResultDto1Ex3ExchangeOpenApiAppServicesWalletOrderDto_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null___VoloAbpDddApplicationContracts_Version_9100_Culture_neutral_PublicKeyToken_null =
   {
     code?: number;
     message?: string | null;
@@ -642,7 +649,7 @@ export type GetV1AssetsResponses = {
   /**
    * OK
    */
-  200: Ex3ExchangeOpenApiAppServicesOpenApiResult1VoloAbpApplicationDtosPagedResultDto1Ex3ExchangeOpenApiAppServicesRootAssetInfoDto_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null___VoloAbpDddApplicationContracts_Version_9050_Culture_neutral_PublicKeyToken_null;
+  200: Ex3ExchangeOpenApiAppServicesOpenApiResult1VoloAbpApplicationDtosPagedResultDto1Ex3ExchangeOpenApiAppServicesRootAssetInfoDto_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null___VoloAbpDddApplicationContracts_Version_9100_Culture_neutral_PublicKeyToken_null;
 };
 
 export type GetV1AssetsResponse = GetV1AssetsResponses[keyof GetV1AssetsResponses];
@@ -967,7 +974,7 @@ export type GetV1MarketKlineResponses = {
   /**
    * OK
    */
-  200: Ex3ExchangeOpenApiAppServicesOpenApiResult1VoloAbpApplicationDtosPagedResultDto1Ex3ExchangeOpenApiAppServicesKlineItem_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null___VoloAbpDddApplicationContracts_Version_9050_Culture_neutral_PublicKeyToken_null;
+  200: Ex3ExchangeOpenApiAppServicesOpenApiResult1VoloAbpApplicationDtosPagedResultDto1Ex3ExchangeOpenApiAppServicesKlineItem_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null___VoloAbpDddApplicationContracts_Version_9100_Culture_neutral_PublicKeyToken_null;
 };
 
 export type GetV1MarketKlineResponse = GetV1MarketKlineResponses[keyof GetV1MarketKlineResponses];
@@ -1043,7 +1050,7 @@ export type GetV1MarketTradeResponses = {
   /**
    * OK
    */
-  200: Ex3ExchangeOpenApiAppServicesOpenApiResult1VoloAbpApplicationDtosPagedResultDto1Ex3ExchangeOpenApiAppServicesMarketTradingHistoryItem_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null___VoloAbpDddApplicationContracts_Version_9050_Culture_neutral_PublicKeyToken_null;
+  200: Ex3ExchangeOpenApiAppServicesOpenApiResult1VoloAbpApplicationDtosPagedResultDto1Ex3ExchangeOpenApiAppServicesMarketTradingHistoryItem_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null___VoloAbpDddApplicationContracts_Version_9100_Culture_neutral_PublicKeyToken_null;
 };
 
 export type GetV1MarketTradeResponse = GetV1MarketTradeResponses[keyof GetV1MarketTradeResponses];
@@ -1123,7 +1130,7 @@ export type GetV1MarketsResponses = {
   /**
    * OK
    */
-  200: Ex3ExchangeOpenApiAppServicesOpenApiResult1VoloAbpApplicationDtosPagedResultDto1Ex3ExchangeOpenApiAppServicesMarketInfoItem_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null___VoloAbpDddApplicationContracts_Version_9050_Culture_neutral_PublicKeyToken_null;
+  200: Ex3ExchangeOpenApiAppServicesOpenApiResult1VoloAbpApplicationDtosPagedResultDto1Ex3ExchangeOpenApiAppServicesMarketInfoItem_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null___VoloAbpDddApplicationContracts_Version_9100_Culture_neutral_PublicKeyToken_null;
 };
 
 export type GetV1MarketsResponse = GetV1MarketsResponses[keyof GetV1MarketsResponses];
@@ -1245,6 +1252,11 @@ export type GetV1OrdersData = {
      */
     MarketId?: string;
     /**
+     * order ids, if null, means not filter by order ids.
+     * Max length is 20, if more than 20, return error.
+     */
+    OrderIds?: Array<string>;
+    /**
      * order category, if null, means all categories.
      */
     OrderCategory?: Ex3ModelsOrderCategory;
@@ -1315,10 +1327,60 @@ export type GetV1OrdersResponses = {
   /**
    * OK
    */
-  200: Ex3ExchangeOpenApiAppServicesOpenApiResult1VoloAbpApplicationDtosPagedResultDto1Ex3ExchangeOpenApiAppServicesWalletOrderDto_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null___VoloAbpDddApplicationContracts_Version_9050_Culture_neutral_PublicKeyToken_null;
+  200: Ex3ExchangeOpenApiAppServicesOpenApiResult1VoloAbpApplicationDtosPagedResultDto1Ex3ExchangeOpenApiAppServicesWalletOrderDto_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null___VoloAbpDddApplicationContracts_Version_9100_Culture_neutral_PublicKeyToken_null;
 };
 
 export type GetV1OrdersResponse = GetV1OrdersResponses[keyof GetV1OrdersResponses];
+
+export type GetV1OrderData = {
+  body?: never;
+  path?: never;
+  query?: {
+    /**
+     * order id
+     */
+    OrderId?: string;
+  };
+  url: '/v1/order';
+};
+
+export type GetV1OrderErrors = {
+  /**
+   * Bad Request
+   */
+  400: VoloAbpHttpRemoteServiceErrorResponse;
+  /**
+   * Unauthorized
+   */
+  401: VoloAbpHttpRemoteServiceErrorResponse;
+  /**
+   * Forbidden
+   */
+  403: VoloAbpHttpRemoteServiceErrorResponse;
+  /**
+   * Not Found
+   */
+  404: VoloAbpHttpRemoteServiceErrorResponse;
+  /**
+   * Internal Server Error
+   */
+  500: VoloAbpHttpRemoteServiceErrorResponse;
+  /**
+   * Not Implemented
+   */
+  501: VoloAbpHttpRemoteServiceErrorResponse;
+};
+
+export type GetV1OrderError = GetV1OrderErrors[keyof GetV1OrderErrors];
+
+export type GetV1OrderResponses = {
+  /**
+   * OK
+   */
+  200: Ex3ExchangeOpenApiAppServicesOpenApiResult1Ex3ExchangeOpenApiAppServicesWalletOrderDto_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null;
+};
+
+export type GetV1OrderResponse = GetV1OrderResponses[keyof GetV1OrderResponses];
 
 export type PostV1TxSubmitSpotOrderData = {
   body?: Ex3TransactionsL2Request;
