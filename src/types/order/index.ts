@@ -22,8 +22,10 @@ export type GetOrdersInput = {
    */
   marketId?: bigint;
   /**
-   * order ids, if null, means not filter by order ids.
-   * Max length is 20, if more than 20, return error.
+   * The orderIds parameter is optional for filtering. If set to null,
+   * no filtering by order ID will be applied.
+   * However, if provided, the list must contain no more than 20 order IDs;
+   * otherwise, an error is returned.
    */
   orderIds?: Array<string>;
   /**
