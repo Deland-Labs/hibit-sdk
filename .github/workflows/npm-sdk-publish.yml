@@ -21,15 +21,10 @@ jobs:
         env:
           REGISTRY: //registry.npmjs.org/
       - run: |
-          if ! Version=$(git describe --tags --abbrev=0 2>/dev/null); then
-            echo "Error: No git tags found"
-            exit 1
-          fi
-
           yarn install --frozen-lockfile
 
           yarn test
 
           yarn build
 
-          yarn publish --frozen-lockfile --non-interactive --no-git-tag-version --no-commit-hooks --new-version ${Version} --access public
+          yarn publish --frozen-lockfile --non-interactive --no-git-tag-version --no-commit-hooks --access public
