@@ -1,6 +1,6 @@
 ---
 name: Bug report
-about: Create a report to help improve kaspa-web3.js
+about: Create a report to help improve hibit sdk
 title: ''
 labels: bug
 assignees: ''
