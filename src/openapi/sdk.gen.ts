@@ -41,6 +41,9 @@ import type {
   GetV1OrdersData,
   GetV1OrdersResponse,
   GetV1OrdersError,
+  GetV1OrderData,
+  GetV1OrderResponse,
+  GetV1OrderError,
   PostV1TxSubmitSpotOrderData,
   PostV1TxSubmitSpotOrderResponse,
   PostV1TxSubmitSpotOrderError,
@@ -216,6 +219,16 @@ export const getV1OrderTrades = <ThrowOnError extends boolean = false>(
 export const getV1Orders = <ThrowOnError extends boolean = false>(options?: Options<GetV1OrdersData, ThrowOnError>) => {
   return (options?.client ?? _heyApiClient).get<GetV1OrdersResponse, GetV1OrdersError, ThrowOnError>({
     url: '/v1/orders',
+    ...options
+  });
+};
+
+/**
+ * get order by the order id
+ */
+export const getV1Order = <ThrowOnError extends boolean = false>(options?: Options<GetV1OrderData, ThrowOnError>) => {
+  return (options?.client ?? _heyApiClient).get<GetV1OrderResponse, GetV1OrderError, ThrowOnError>({
+    url: '/v1/order',
     ...options
   });
 };

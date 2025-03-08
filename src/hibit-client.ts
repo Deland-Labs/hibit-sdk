@@ -43,7 +43,8 @@ import {
   getV1WalletBalances,
   getV1Market,
   postV1TxCancelSpotOrder,
-  getV1Asset
+  getV1Asset,
+  getV1Order
 } from './openapi';
 import { mapChainInfo } from './types/chain';
 import { mapAssetInfo, mapGetAssetInput, mapGetAssetsInput } from './types/asset';
@@ -62,7 +63,13 @@ import {
   mapMarketTickerInfo,
   mapMarketTradeInfo
 } from './types/market';
-import { mapGetOrdersInput, mapGetOrderTradesInput, mapOrderInfo, mapOrderTradeRecord } from './types/order';
+import {
+  mapGetOrdersInput,
+  mapGetOrderTradesInput,
+  mapOrderInfo,
+  mapOrderTradeRecord,
+  mapGetOrderByOrderIdInput
+} from './types/order';
 import { TransactionManager } from './tx-manager';
 import { mapTransactionToApiRequest } from './types/tx';
 import { mapGetNonceInput, mapGetWalletBalancesInput } from './types/wallet';
@@ -191,6 +198,14 @@ export interface IHibitClient {
    * @returns {Promise<PageResponse<OrderInfo>>} A promise that resolves to the list of orders.
    */
   getOrders(input: GetOrdersInput): Promise<PageResponse<OrderInfo>>;
+
+  /**
+   * Get order by the order id.
+   *
+   * @param {string} orderId - The order id to get the information for.
+   * @returns {Promise<OrderInfo>} A promise that resolves to the order information.
+   */
+  getOrder(orderId: string): Promise<OrderInfo>;
 
   /**
    * Get the list of trades for an order.
@@ -363,6 +378,15 @@ export class HibitClient implements IHibitClient {
       items: response.data!.data!.items!.map((order) => mapOrderInfo(order)),
       totalCount: response.data!.data!.totalCount!
     };
+  }
+
+  async getOrder(orderId: string): Promise<OrderInfo> {
+    const apiName = 'getOrder';
+    const response = await getV1Order(mapGetOrderByOrderIdInput(orderId));
+
+    this.ensureSuccess(apiName, response.data);
+
+    return mapOrderInfo(response.data!.data!);
   }
 
   async getOrderTrades(orderId: string): Promise<Array<OrderTradeRecord>> {

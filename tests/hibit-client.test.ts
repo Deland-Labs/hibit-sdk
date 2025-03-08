@@ -141,6 +141,12 @@ describe('Hibit Client Test', () => {
       expect(orders.items).toBeInstanceOf(Array);
     });
 
+    // get order by id
+    it('should get order by id', async () => {
+      const order = await hibitClient.getOrder('12000027100000000000000000000003');
+      expect(order).toBeInstanceOf(Object);
+    });
+
     //   it('should get order trades', async () => {
     //     const orderId = 'test order id';
     //     const trades = await hibitClient.getOrderTrades(orderId);

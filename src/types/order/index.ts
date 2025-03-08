@@ -2,6 +2,7 @@ import { Options } from '@hey-api/client-fetch';
 import {
   Ex3ExchangeOpenApiAppServicesWalletOrderDto,
   Ex3ExchangeOpenApiAppServicesWalletOrderTradeListItem,
+  GetV1OrderData,
   GetV1OrdersData,
   GetV1OrderTradesData
 } from '../../openapi';
@@ -20,6 +21,13 @@ export type GetOrdersInput = {
    * marketId, if null, means all markets
    */
   marketId?: bigint;
+  /**
+   * The orderIds parameter is optional for filtering. If set to null,
+   * no filtering by order ID will be applied.
+   * However, if provided, the list must contain no more than 20 order IDs;
+   * otherwise, an error is returned.
+   */
+  orderIds?: Array<string>;
   /**
    * order category, if null, means all categories.
    */
@@ -293,6 +301,7 @@ export function mapGetOrdersInput(data: GetOrdersInput): Options<GetV1OrdersData
       HIN: String(data.hin),
       Status: data.status,
       MarketId: data.marketId ? String(data.marketId) : undefined,
+      OrderIds: data.orderIds,
       OrderCategory: data.orderCategory,
       OrderSide: data.orderSide,
       CreatedAtStart: data.createdAtStart,
@@ -300,6 +309,14 @@ export function mapGetOrdersInput(data: GetOrdersInput): Options<GetV1OrdersData
       Limit: data.limit,
       Offset: data.offset,
       OrderBy: data.orderBy
+    }
+  };
+}
+
+export function mapGetOrderByOrderIdInput(orderId: string): Options<GetV1OrderData, boolean> {
+  return {
+    query: {
+      OrderId: orderId
     }
   };
 }
