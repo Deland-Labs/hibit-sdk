@@ -4,6 +4,14 @@
     "title": "Hibit API",
     "version": "v1"
   },
+  "servers": [
+    {
+      "url": "https://testnetopenapi.hibit.io"
+    },
+    {
+      "url": "https://openapi.hibit.io"
+    }
+  ],
   "paths": {
     "/v1/timestamp": {
       "get": {
