@@ -6,53 +6,6 @@ import { PRICE_DECIMALS } from '../../constant';
 import { OrderId } from './order-id.ts';
 
 /**
- * Input class for creating a new spot order in the trading system.
- * Supports both limit orders and swap V2 orders through their respective detail objects.
- */
-export class SubmitSpotOrderCborInput {
-  /**
-   * The category of the order (e.g., LIMIT, MARKET, SWAP_V2)
-   * @decorators {@cborIndex(0)} {@cborBigUint()}
-   */
-  @cborIndex(0)
-  @cborBigUint()
-  //@ts-expect-error no initializer and is not definitely assigned in the constructor
-  public orderCategory: OrderCategory;
-
-  /**
-   * The ID of the market where the order will be placed
-   * @decorators {@cborIndex(1)}
-   */
-  @cborIndex(1)
-  //@ts-expect-error no initializer and is not definitely assigned in the constructor
-  public marketId: bigint;
-
-  /**
-   * Optional details specific to limit orders
-   * Required when orderCategory is OrderCategory.LIMIT
-   * @decorators {@cborIndex(2)}
-   */
-  @cborIndex(2)
-  public limitOrderDetails?: LimitOrderDetailsCbor;
-
-  /**
-   * Optional details specific to swap V2 orders
-   * Required when orderCategory is OrderCategory.SWAP_V2
-   * @decorators {@cborIndex(3)}
-   */
-  @cborIndex(3)
-  public swapV2OrderDetails?: SwapV2OrderDetailsCbor;
-
-  /**
-   * Creates a new instance of SubmitSpotOrderCborInput
-   * @param {Partial<SubmitSpotOrderInput>} init - Initial values for the spot order
-   */
-  constructor(init?: Partial<SubmitSpotOrderCborInput>) {
-    Object.assign(this, init);
-  }
-}
-
-/**
  * Details for a limit order in the trading system.
  * Used when creating a new spot order with OrderCategory.LIMIT.
  *
@@ -97,23 +50,6 @@ export class LimitOrderDetailsCbor {
    * @param {Partial<LimitOrderDetailsCbor>} init - Initial values for the limit order details
    */
   public constructor(init?: Partial<LimitOrderDetailsCbor>) {
-    Object.assign(this, init);
-  }
-}
-
-export class CancelOrdersCborInput {
-  @cborIndex(0)
-  public marketId?: bigint;
-  @cborIndex(1)
-  public orderId?: OrderId;
-  @cborIndex(2)
-  @cborBigUint()
-  public orderSide?: OrderSide;
-  @cborIndex(3)
-  public isCancelAll: boolean;
-
-  public constructor(init?: Partial<CancelOrdersCborInput>) {
-    this.isCancelAll = false;
     Object.assign(this, init);
   }
 }
@@ -171,6 +107,70 @@ export class SwapV2OrderDetailsCbor {
    * @param {Partial<SwapV2OrderDetailsCbor>} init - Initial values for the swap order details
    */
   public constructor(init?: Partial<SwapV2OrderDetailsCbor>) {
+    Object.assign(this, init);
+  }
+}
+
+/**
+ * Input class for creating a new spot order in the trading system.
+ * Supports both limit orders and swap V2 orders through their respective detail objects.
+ */
+export class SubmitSpotOrderCborInput {
+  /**
+   * The category of the order (e.g., LIMIT, MARKET, SWAP_V2)
+   * @decorators {@cborIndex(0)} {@cborBigUint()}
+   */
+  @cborIndex(0)
+  @cborBigUint()
+  //@ts-expect-error no initializer and is not definitely assigned in the constructor
+  public orderCategory: OrderCategory;
+
+  /**
+   * The ID of the market where the order will be placed
+   * @decorators {@cborIndex(1)}
+   */
+  @cborIndex(1)
+  //@ts-expect-error no initializer and is not definitely assigned in the constructor
+  public marketId: bigint;
+
+  /**
+   * Optional details specific to limit orders
+   * Required when orderCategory is OrderCategory.LIMIT
+   * @decorators {@cborIndex(2)}
+   */
+  @cborIndex(2)
+  public limitOrderDetails?: LimitOrderDetailsCbor;
+
+  /**
+   * Optional details specific to swap V2 orders
+   * Required when orderCategory is OrderCategory.SWAP_V2
+   * @decorators {@cborIndex(3)}
+   */
+  @cborIndex(3)
+  public swapV2OrderDetails?: SwapV2OrderDetailsCbor;
+
+  /**
+   * Creates a new instance of SubmitSpotOrderCborInput
+   * @param {Partial<SubmitSpotOrderInput>} init - Initial values for the spot order
+   */
+  constructor(init?: Partial<SubmitSpotOrderCborInput>) {
+    Object.assign(this, init);
+  }
+}
+
+export class CancelOrdersCborInput {
+  @cborIndex(0)
+  public marketId?: bigint;
+  @cborIndex(1)
+  public orderId?: OrderId;
+  @cborIndex(2)
+  @cborBigUint()
+  public orderSide?: OrderSide;
+  @cborIndex(3)
+  public isCancelAll: boolean;
+
+  public constructor(init?: Partial<CancelOrdersCborInput>) {
+    this.isCancelAll = false;
     Object.assign(this, init);
   }
 }

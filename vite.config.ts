@@ -11,6 +11,9 @@ export default defineConfig({
       src: resolve(__dirname, 'src')
     }
   },
+  define: {
+    self: 'globalThis'
+  },
   build: {
     lib: {
       // Could also be a dictionary or array of multiple entry points
