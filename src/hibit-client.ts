@@ -202,9 +202,14 @@ export interface IHibitClient {
   getOrders(input: GetOrdersInput): Promise<PageResponse<OrderInfo>>;
 
   /**
-   * Get order by the order id.
+   * Retrieves a specific order based on the provided input.
+   *
+   * The input must have exactly one of the following properties set: `orderId`, `clientOrderId`, or `txHash`.
    *
    * @param {GetOrderInput} input - The input parameters for getting the order.
+   * @param {string} [input.orderId] - The unique identifier of the order. Must be set if `clientOrderId` and `txHash` are not provided.
+   * @param {string} [input.clientOrderId] - The client order identifier. Format: "${HIN}_${nonce}". Example: "10001_123". Must be set if `orderId` and `txHash` are not provided.
+   * @param {string} [input.txHash] - The transaction hash associated with the order. Must be set if `orderId` and `clientOrderId` are not provided.
    * @returns {Promise<OrderInfo>} A promise that resolves to the order information.
    */
   getOrder(input: GetOrderInput): Promise<OrderInfo>;
