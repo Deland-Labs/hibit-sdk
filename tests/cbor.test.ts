@@ -4,60 +4,52 @@ import cbor from 'borc';
 import { expect, it, describe } from 'vitest';
 import { cborIndex } from '../src/encoder/decorator';
 import { TxPayloadEncoder } from '../src/encoder';
-import { TransactionType } from '../src';
+import { Transaction, TransactionType } from '../src';
+import { Buffer } from 'buffer';
 
 class TestCborData {
-  //@ts-ignore
   @cborIndex(0)
-  //@ts-ignore
+  //@ts-expect-error value1 has no initializer
   public value1: BigNumber;
-  //@ts-ignore
   @cborIndex(1)
-  //@ts-ignore
+  //@ts-expect-error value2 has no initializer
   public value2: string;
 }
 
 class TestCborDataWithBigInt {
-  //@ts-ignore
   @cborIndex(0)
-  //@ts-ignore
+  //@ts-expect-error value1 has no initializer
   public value1: bigint;
-  //@ts-ignore
   @cborIndex(1)
-  //@ts-ignore
+  //@ts-expect-error value2 has no initializer
   public value2: string;
 }
 
 class TestCborDataWithNumber {
-  //@ts-ignore
   @cborIndex(0)
-  //@ts-ignore
+  //@ts-expect-error value1 has no initializer
   public value1: number;
-  //@ts-ignore
   @cborIndex(1)
-  //@ts-ignore
+  //@ts-expect-error value2 has no initializer
   public value2: string;
 }
 
 class ParentCborData {
-  //@ts-ignore
   @cborIndex(0)
-  //@ts-ignore
+  //@ts-expect-error value1 has no initializer
   public value1: TestCborData;
-  //@ts-ignore
+
   @cborIndex(1)
-  //@ts-ignore
+  //@ts-expect-error value2 has no initializer
   public value2: string;
 }
 
 class ParentCborData2 {
-  //@ts-ignore
   @cborIndex(0)
-  //@ts-ignore
   public value1?: TestCborData;
-  //@ts-ignore
+
   @cborIndex(1)
-  //@ts-ignore
+  //@ts-expect-error value2 has no initializer
   public value2: string;
 }
 
@@ -67,26 +59,21 @@ class TransferTxItem {
     this.value = value;
   }
 
-  //@ts-ignore
   @cborIndex(0)
   public userId: BigNumber;
-  //@ts-ignore
   @cborIndex(1)
   public value: BigNumber;
 }
 
 class TransferTx {
-  //@ts-ignore
   @cborIndex(0)
-  //@ts-ignore
+  //@ts-expect-error assetId has no initializer
   public assetId: BigNumber;
-  //@ts-ignore
   @cborIndex(1)
-  //@ts-ignore
+  //@ts-expect-error items has no initializer
   public items: TransferTxItem[];
-  //@ts-ignore
   @cborIndex(2)
-  //@ts-ignore
+  //@ts-expect-error memo has no initializer
   public memo: Uint8Array;
 }
 
@@ -98,7 +85,7 @@ describe('Test cbor encoder', () => {
     const parentData = new ParentCborData();
     parentData.value1 = testCborData;
     parentData.value2 = 'value2';
-    let result = TxPayloadEncoder['createCborArray'](parentData);
+    const result = TxPayloadEncoder['createCborArray'](parentData);
     expect(result).toEqual([[new BigNumber(10026), '100.26'], 'value2']);
   });
 
@@ -116,7 +103,7 @@ describe('Test cbor encoder', () => {
     const testCborDataWithBigNumber = new TestCborData();
     testCborDataWithBigNumber.value1 = new BigNumber(10026);
     testCborDataWithBigNumber.value2 = 'value2';
-    let resultOfBigNumber = TxPayloadEncoder.encode(testCborDataWithBigNumber);
+    const resultOfBigNumber = TxPayloadEncoder.encode(testCborDataWithBigNumber);
 
     expect(resultOfBigInt).deep.equals(resultOfNumber);
     expect(resultOfBigInt).deep.equals(resultOfBigNumber);
@@ -125,7 +112,7 @@ describe('Test cbor encoder', () => {
   it('serde null value should correct', () => {
     const parentData = new ParentCborData2();
     parentData.value2 = 'value2';
-    let result = TxPayloadEncoder['createCborArray'](parentData);
+    const result = TxPayloadEncoder['createCborArray'](parentData);
     expect(result).toEqual([null, 'value2']);
   });
 
@@ -134,7 +121,7 @@ describe('Test cbor encoder', () => {
     tx.assetId = BigNumber('10000');
     tx.items = [new TransferTxItem(BigNumber('9999'), new BigNumber(1234))];
     tx.memo = new Uint8Array([255, 0, 255]);
-    let result = TxPayloadEncoder.encode(tx);
+    const result = TxPayloadEncoder.encode(tx);
     expect(result.toString('hex')).toEqual('83c24227108182c242270fc24204d243ff00ff');
   });
 });
@@ -151,5 +138,12 @@ describe('Test tx cbor serde', () => {
     ]);
 
     expect(exceptData).toEqual(selfEncodedTxDataBytes.toString('hex'));
+  });
+
+  it('tx hash should correct', () => {
+    const exceptedHash = '316ab1839817c15b46367c319817b5c37c21c31b8f18303a32a026ebbb1a9906';
+    const tx = new Transaction(TransactionType.Deposit, 1000000n, 1n, new Uint8Array([1, 2, 3]));
+    const hash = tx.hash();
+    expect(Buffer.from(hash).toString('hex')).toEqual(exceptedHash);
   });
 });
