@@ -96,7 +96,7 @@ export function validateGetOrderInput(input: GetOrderInput): boolean {
     input.clientOrderId !== undefined,
     input.txHash !== undefined
   ].filter(Boolean).length;
-  
+
   return providedIdentifiers === 1;
 }
 

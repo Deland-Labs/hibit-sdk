@@ -69,7 +69,8 @@ import {
   mapGetOrderTradesInput,
   mapOrderInfo,
   mapOrderTradeRecord,
-  mapGetOrderInput
+  mapGetOrderInput,
+  validateGetOrderInput
 } from './types/order';
 import { TransactionManager } from './tx-manager';
 import { mapTransactionToApiRequest } from './types/tx';
@@ -383,6 +384,15 @@ export class HibitClient implements IHibitClient {
 
   async getOrder(input: GetOrderInput): Promise<OrderInfo> {
     const apiName = 'getOrder';
+
+    if (!validateGetOrderInput(input)) {
+      HibitClientError.throwBadRequestError(
+        apiName,
+        400,
+        'Must have exactly one of the following properties set: `OrderId`, `ClientOrderId`, or `TxHash`'
+      );
+    }
+
     const response = await getV1Order(mapGetOrderInput(input));
 
     this.ensureSuccess(apiName, response.data);

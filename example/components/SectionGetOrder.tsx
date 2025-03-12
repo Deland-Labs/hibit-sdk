@@ -11,7 +11,14 @@ const schema = object({
   orderId: string(),
   clientOrderId: string(),
   txHash: string()
-});
+}).test(
+  'exactly-one-identifier',
+  'Exactly one of Order ID, Client Order ID, or Tx Hash must be provided',
+  function (value) {
+    const providedCount = [!!value.orderId, !!value.clientOrderId, !!value.txHash].filter(Boolean).length;
+    return providedCount === 1;
+  }
+);
 
 export default function SectionGetOrder({ client }: { client: HibitClient }) {
   const [loading, setLoading] = useState(false);
