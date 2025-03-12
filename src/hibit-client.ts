@@ -24,7 +24,8 @@ import {
   SubmitSpotOrderInput,
   GetWalletBalancesInput,
   DecimalOptions,
-  HibitNetwork
+  HibitNetwork,
+  GetOrderInput
 } from './types';
 import {
   getV1Assets,
@@ -68,7 +69,7 @@ import {
   mapGetOrderTradesInput,
   mapOrderInfo,
   mapOrderTradeRecord,
-  mapGetOrderByOrderIdInput
+  mapGetOrderInput
 } from './types/order';
 import { TransactionManager } from './tx-manager';
 import { mapTransactionToApiRequest } from './types/tx';
@@ -202,10 +203,10 @@ export interface IHibitClient {
   /**
    * Get order by the order id.
    *
-   * @param {string} orderId - The order id to get the information for.
+   * @param {GetOrderInput} input - The input parameters for getting the order.
    * @returns {Promise<OrderInfo>} A promise that resolves to the order information.
    */
-  getOrder(orderId: string): Promise<OrderInfo>;
+  getOrder(input: GetOrderInput): Promise<OrderInfo>;
 
   /**
    * Get the list of trades for an order.
@@ -380,9 +381,9 @@ export class HibitClient implements IHibitClient {
     };
   }
 
-  async getOrder(orderId: string): Promise<OrderInfo> {
+  async getOrder(input: GetOrderInput): Promise<OrderInfo> {
     const apiName = 'getOrder';
-    const response = await getV1Order(mapGetOrderByOrderIdInput(orderId));
+    const response = await getV1Order(mapGetOrderInput(input));
 
     this.ensureSuccess(apiName, response.data);
 

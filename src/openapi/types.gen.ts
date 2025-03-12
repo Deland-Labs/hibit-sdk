@@ -460,6 +460,9 @@ export type Ex3ExchangeOpenApiAppServicesWalletOrderTradeListItem = {
 
 export type Ex3ModelsKLineTickSpace = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
 
+/**
+ * Order category
+ */
 export type Ex3ModelsOrderCategory = 0 | 1;
 
 /**
@@ -1340,6 +1343,15 @@ export type GetV1OrderData = {
      * order id
      */
     OrderId?: string;
+    /**
+     * Client order id. Format: "${HIN}_${nonce}".
+     * Example: "10001_123"
+     */
+    ClientOrderId?: string;
+    /**
+     * tx hash
+     */
+    TxHash?: string;
   };
   url: '/v1/order';
 };
@@ -1577,5 +1589,5 @@ export type GetV1WalletBalancesResponses = {
 export type GetV1WalletBalancesResponse = GetV1WalletBalancesResponses[keyof GetV1WalletBalancesResponses];
 
 export type ClientOptions = {
-  baseUrl: `${string}://openapiv1.json` | (string & {});
+  baseUrl: 'https://testnetopenapi.hibit.app' | 'https://openapi.hibit.app' | (string & {});
 };

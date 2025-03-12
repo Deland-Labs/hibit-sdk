@@ -6,10 +6,10 @@
   },
   "servers": [
     {
-      "url": "https://testnetopenapi.hibit.io"
+      "url": "https://testnetopenapi.hibit.app"
     },
     {
-      "url": "https://openapi.hibit.io"
+      "url": "https://openapi.hibit.app"
     }
   ],
   "paths": {
@@ -2339,7 +2339,7 @@
     "/v1/order": {
       "get": {
         "tags": ["Orders"],
-        "summary": "get order by the order id",
+        "summary": "get order detail",
         "parameters": [
           {
             "name": "OrderId",
@@ -2348,6 +2348,22 @@
             "schema": {
               "type": "string",
               "format": "string"
+            }
+          },
+          {
+            "name": "ClientOrderId",
+            "in": "query",
+            "description": "Client order id. Format: \"${HIN}_${nonce}\".\r\nExample: \"10001_123\"",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "TxHash",
+            "in": "query",
+            "description": "tx hash",
+            "schema": {
+              "type": "string"
             }
           }
         ],
@@ -3951,6 +3967,7 @@
       "Ex3.Models.OrderCategory": {
         "enum": [0, 1],
         "type": "integer",
+        "description": "Order category",
         "format": "int32",
         "x-enumNames": ["SpotLimitOrder", "SpotSwapOrder"],
         "x-enum-varnames": ["SpotLimitOrder", "SpotSwapOrder"],
