@@ -141,9 +141,18 @@ describe('Hibit Client Test', () => {
       expect(orders.items).toBeInstanceOf(Array);
     });
 
-    // get order by id
-    it('should get order by id', async () => {
-      const order = await hibitClient.getOrder('12000027100000000000000000000003');
+    it('get order with invalid input should throw error', async () => {
+      // empty
+      await expect(hibitClient.getOrder({})).rejects.toThrow();
+
+      // more than one parameter
+      await expect(
+        hibitClient.getOrder({ orderId: '12000027100000000000000000000003', clientOrderId: 'clientOrderId' })
+      ).rejects.toThrow();
+    });
+
+    it('get order', async () => {
+      const order = await hibitClient.getOrder({ orderId: '12000027100000000000000000000003' });
       expect(order).toBeInstanceOf(Object);
     });
 

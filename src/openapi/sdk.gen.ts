@@ -224,7 +224,7 @@ export const getV1Orders = <ThrowOnError extends boolean = false>(options?: Opti
 };
 
 /**
- * get order by the order id
+ * get order detail
  */
 export const getV1Order = <ThrowOnError extends boolean = false>(options?: Options<GetV1OrderData, ThrowOnError>) => {
   return (options?.client ?? _heyApiClient).get<GetV1OrderResponse, GetV1OrderError, ThrowOnError>({

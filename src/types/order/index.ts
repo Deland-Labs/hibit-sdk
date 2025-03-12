@@ -64,6 +64,42 @@ export type GetOrdersInput = {
   orderBy?: string;
 };
 
+/**
+ * Input type for retrieving a specific order.
+ * Must have exactly one of the following properties set: `OrderId`, `ClientOrderId`, or `TxHash`.
+ */
+export type GetOrderInput = {
+  /**
+   * The unique identifier of the order.
+   * Must be set if `clientOrderId` and `txHash` are not provided.
+   */
+  orderId?: string;
+  /**
+   * The client order identifier. Format: "${HIN}_${nonce}".
+   * Example: "10001_123".
+   * Must be set if `orderId` and `txHash` are not provided.
+   */
+  clientOrderId?: string;
+  /**
+   * The transaction hash associated with the order.
+   * Must be set if `orderId` and `clientOrderId` are not provided.
+   */
+  txHash?: string;
+};
+
+/**
+ * Validates that exactly one identifier is provided in the GetOrderInput
+ */
+export function validateGetOrderInput(input: GetOrderInput): boolean {
+  const providedIdentifiers = [
+    input.orderId !== undefined,
+    input.clientOrderId !== undefined,
+    input.txHash !== undefined
+  ].filter(Boolean).length;
+
+  return providedIdentifiers === 1;
+}
+
 export type OrderInfo = {
   /**
    * order id
@@ -313,10 +349,12 @@ export function mapGetOrdersInput(data: GetOrdersInput): Options<GetV1OrdersData
   };
 }
 
-export function mapGetOrderByOrderIdInput(orderId: string): Options<GetV1OrderData, boolean> {
+export function mapGetOrderInput(input: GetOrderInput): Options<GetV1OrderData, boolean> {
   return {
     query: {
-      OrderId: orderId
+      OrderId: input.orderId,
+      ClientOrderId: input.clientOrderId,
+      TxHash: input.txHash
     }
   };
 }

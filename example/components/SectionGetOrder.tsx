@@ -8,10 +8,19 @@ import { object, string } from 'yup';
 import FormField from './FormField';
 
 const schema = object({
-  orderId: string().required('Order ID is required')
-});
+  orderId: string(),
+  clientOrderId: string(),
+  txHash: string()
+}).test(
+  'exactly-one-identifier',
+  'Exactly one of Order ID, Client Order ID, or Tx Hash must be provided',
+  function (value) {
+    const providedCount = [!!value.orderId, !!value.clientOrderId, !!value.txHash].filter(Boolean).length;
+    return providedCount === 1;
+  }
+);
 
-export default function SectionGetOrderById({ client }: { client: HibitClient }) {
+export default function SectionGetOrder({ client }: { client: HibitClient }) {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<OrderInfo | null>(null);
   const [error, setError] = useState<string>('');
@@ -29,7 +38,7 @@ export default function SectionGetOrderById({ client }: { client: HibitClient })
     setResult(null);
     setError('');
     try {
-      setResult(await client.getOrder(input.orderId));
+      setResult(await client.getOrder(input));
     } catch (e: any) {
       setError(e.message ?? JSON.stringify(e));
     } finally {
@@ -39,11 +48,17 @@ export default function SectionGetOrderById({ client }: { client: HibitClient })
 
   return (
     <Section
-      title="GetOrderById"
+      title="GetOrder"
       form={
         <div className="flex flex-col gap-2">
-          <FormField label="Order ID" error={errors.orderId} required>
+          <FormField label="Order ID" error={errors.orderId}>
             <input type="text" className="input" {...register('orderId')} />
+          </FormField>
+          <FormField label="Client Order ID" error={errors.clientOrderId}>
+            <input type="text" className="input" {...register('clientOrderId')} />
+          </FormField>
+          <FormField label="Tx Hash" error={errors.txHash}>
+            <input type="text" className="input" {...register('txHash')} />
           </FormField>
           <button className="btn" onClick={submit} disabled={loading}>
             {loading ? 'Loading...' : 'Submit'}
