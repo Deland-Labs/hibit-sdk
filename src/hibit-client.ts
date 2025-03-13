@@ -182,17 +182,19 @@ export interface IHibitClient {
    *
    * @param {SubmitSpotOrderInput} input - The input parameters for creating a spot order.
    * @param {DecimalOptions} decimalOptions - Required, the decimal options for the base and quote assets.
+   * @param {number} nonce - Optional, the nonce to use for the transaction, if not provided, the nonce will be fetched automatically.
    * @returns {Promise<void>} A promise that resolves when the spot order is created.
    */
-  submitSpotOrder(input: SubmitSpotOrderInput, decimalOptions: DecimalOptions): Promise<void>;
+  submitSpotOrder(input: SubmitSpotOrderInput, decimalOptions: DecimalOptions, nonce?: number): Promise<void>;
 
   /**
    * Cancel a spot order.
    *
    * @param {CancelSpotOrderInput} input - The input parameters for canceling a spot order.
+   * @param {number} nonce - Optional, the nonce to use for the transaction, if not provided, the nonce will be fetched automatically.
    * @returns {Promise<void>} A promise that resolves when the spot order is canceled.
    */
-  cancelSpotOrder(input: CancelSpotOrderInput): Promise<void>;
+  cancelSpotOrder(input: CancelSpotOrderInput, nonce?: number): Promise<void>;
 
   /**
    * Get the list of orders.
@@ -414,16 +416,16 @@ export class HibitClient implements IHibitClient {
     return response.data!.data!.map((trade) => mapOrderTradeRecord(trade));
   }
 
-  async submitSpotOrder(input: SubmitSpotOrderInput, decimalOptions: DecimalOptions): Promise<void> {
+  async submitSpotOrder(input: SubmitSpotOrderInput, decimalOptions: DecimalOptions, nonce?: number): Promise<void> {
     const apiName = 'submitSpotOrder';
     this.ensurePrivateKey(apiName);
 
-    const nonce = await this.getNonce(this.options.hin!);
+    const nonceBigInt = nonce ? BigInt(nonce) : await this.getNonce(this.options.hin!);
     const mappedInput = mapSubmitSpotOrderCborInput(input, decimalOptions);
     const tx = TransactionManager.createTransaction(
       TransactionType.CreateSpotOrder,
       this.options.hin!,
-      nonce ? nonce : 0n,
+      nonceBigInt | 0n,
       mappedInput
     );
     const signedTx = TransactionManager.sign(tx, this.options.proxyKey!);
@@ -432,7 +434,7 @@ export class HibitClient implements IHibitClient {
     this.ensureSuccess(apiName, resp.data);
   }
 
-  async cancelSpotOrder(input: CancelSpotOrderInput): Promise<void> {
+  async cancelSpotOrder(input: CancelSpotOrderInput, nonce?: number): Promise<void> {
     const apiName = 'cancelSpotOrder';
     this.ensurePrivateKey(apiName);
 
@@ -440,12 +442,12 @@ export class HibitClient implements IHibitClient {
       input.isCancelAll = false;
     }
 
-    const nonce = await this.getNonce(this.options.hin!);
+    const nonceBigInt = nonce ? BigInt(nonce) : await this.getNonce(this.options.hin!);
     const mappedInput = mapCancelOrdersCborInput(input);
     const tx = TransactionManager.createTransaction(
       TransactionType.CancelSpotOrder,
       this.options.hin!,
-      nonce ? nonce : 0n,
+      nonceBigInt | 0n,
       mappedInput
     );
     const signedTx = TransactionManager.sign(tx, this.options.proxyKey!);
