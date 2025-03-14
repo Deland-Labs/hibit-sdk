@@ -1201,7 +1201,7 @@ Error generating stack: ` +
     if (e.alternate) for (; t.return; ) t = t.return;
     else {
       e = t;
-      do (t = e), t.flags & 4098 && (r = t.return), (e = t.return);
+      do (t = e), (t.flags & 4098) !== 0 && (r = t.return), (e = t.return);
       while (e);
     }
     return t.tag === 3 ? r : null;
@@ -1440,7 +1440,10 @@ Error generating stack: ` +
         : ((B = r & ~l), B !== 0 ? (i = He(B)) : f !== 0 ? (i = He(f)) : e || ((g = r & ~g), g !== 0 && (i = He(g)))),
       i === 0
         ? 0
-        : t !== 0 && t !== i && !(t & l) && ((l = i & -i), (g = t & -t), l >= g || (l === 32 && (g & 4194176) !== 0))
+        : t !== 0 &&
+            t !== i &&
+            (t & l) === 0 &&
+            ((l = i & -i), (g = t & -t), l >= g || (l === 32 && (g & 4194176) !== 0))
           ? t
           : i
     );
@@ -1491,11 +1494,11 @@ Error generating stack: ` +
   }
   function fr() {
     var e = Ie;
-    return (Ie <<= 1), !(Ie & 4194176) && (Ie = 128), e;
+    return (Ie <<= 1), (Ie & 4194176) === 0 && (Ie = 128), e;
   }
   function Zi() {
     var e = Le;
-    return (Le <<= 1), !(Le & 62914560) && (Le = 4194304), e;
+    return (Le <<= 1), (Le & 62914560) === 0 && (Le = 4194304), e;
   }
   function Qi(e) {
     for (var t = [], r = 0; 31 > r; r++) t.push(e);
@@ -1545,7 +1548,7 @@ Error generating stack: ` +
     }
   }
   function Qu(e) {
-    return (e &= -e), 2 < e ? (8 < e ? (e & 134217727 ? 32 : 268435456) : 8) : 2;
+    return (e &= -e), 2 < e ? (8 < e ? ((e & 134217727) !== 0 ? 32 : 268435456) : 8) : 2;
   }
   function Ku() {
     var e = w.p;
@@ -3254,7 +3257,7 @@ Error generating stack: ` +
         var r = t.memoizedState;
         if (r !== null && ((r = r.dehydrated), r === null || r.data === '$?' || r.data === '$!')) return t;
       } else if (t.tag === 19 && t.memoizedProps.revealOrder !== void 0) {
-        if (t.flags & 128) return t;
+        if ((t.flags & 128) !== 0) return t;
       } else if (t.child !== null) {
         (t.child.return = t), (t = t.child);
         continue;
@@ -3637,7 +3640,7 @@ Error generating stack: ` +
     ) {
       if (((i.flags |= 2048), da(9, Jh.bind(null, i, l, r, t), { destroy: void 0 }, null), Nt === null))
         throw Error(s(349));
-      f || Xn & 60 || Kh(i, t, r);
+      f || (Xn & 60) !== 0 || Kh(i, t, r);
     }
     return r;
   }
@@ -3932,7 +3935,7 @@ Error generating stack: ` +
     return (r.memoizedState = [i, t]), i;
   }
   function Uc(e, t, r) {
-    return r === void 0 || Xn & 1073741824
+    return r === void 0 || (Xn & 1073741824) !== 0
       ? (e.memoizedState = t)
       : ((e.memoizedState = r), (e = S0()), (lt.lanes |= e), (ni |= e), r);
   }
@@ -3941,9 +3944,9 @@ Error generating stack: ` +
       ? r
       : sa.current !== null
         ? ((e = Uc(e, r, i)), Ar(e, t) || (Qt = !0), e)
-        : Xn & 42
-          ? ((e = S0()), (lt.lanes |= e), (ni |= e), t)
-          : ((Qt = !0), (e.memoizedState = r));
+        : (Xn & 42) === 0
+          ? ((Qt = !0), (e.memoizedState = r))
+          : ((e = S0()), (lt.lanes |= e), (ni |= e), t);
   }
   function Sd(e, t, r, i, l) {
     var f = w.p;
@@ -4073,7 +4076,7 @@ Error generating stack: ` +
     r === null ? (t.next = t) : ((t.next = r.next), (r.next = t)), (e.pending = t);
   }
   function Nd(e, t, r) {
-    if (r & 4194176) {
+    if ((r & 4194176) !== 0) {
       var i = t.lanes;
       (i &= e.pendingLanes), (r |= i), (t.lanes = r), Is(e, r);
     }
@@ -4182,7 +4185,7 @@ Error generating stack: ` +
         r = r();
       } else {
         if (((r = t()), Nt === null)) throw Error(s(349));
-        yt & 60 || Kh(i, t, r);
+        (yt & 60) !== 0 || Kh(i, t, r);
       }
       l.memoizedState = r;
       var f = { value: r, getSnapshot: t };
@@ -4477,7 +4480,7 @@ Error generating stack: ` +
       return (
         (t = Gr.current),
         t !== null
-          ? (!(t.flags & 65536) && (t.flags |= 256),
+          ? ((t.flags & 65536) === 0 && (t.flags |= 256),
             (t.flags |= 65536),
             (t.lanes = l),
             i !== hc && ((e = Error(s(422), { cause: i })), $a(Ir(e, r))))
@@ -4549,7 +4552,7 @@ Error generating stack: ` +
     if (e !== null) {
       var f = e.memoizedProps;
       if (Ga(f, i) && e.ref === t.ref)
-        if (((Qt = !1), (t.pendingProps = i = f), $c(e, l))) e.flags & 131072 && (Qt = !0);
+        if (((Qt = !1), (t.pendingProps = i = f), $c(e, l))) (e.flags & 131072) !== 0 && (Qt = !0);
         else return (t.lanes = e.lanes), _n(e, t, l);
     }
     return kc(e, t, r, i, l);
@@ -4560,14 +4563,14 @@ Error generating stack: ` +
       f = (t.stateNode._pendingVisibility & 2) !== 0,
       g = e !== null ? e.memoizedState : null;
     if ((ru(e, t), i.mode === 'hidden' || f)) {
-      if (t.flags & 128) {
+      if ((t.flags & 128) !== 0) {
         if (((i = g !== null ? g.baseLanes | r : r), e !== null)) {
           for (l = t.child = e.child, f = 0; l !== null; ) (f = f | l.lanes | l.childLanes), (l = l.sibling);
           t.childLanes = f & ~i;
         } else (t.childLanes = 0), (t.child = null);
         return Hd(e, t, i, r);
       }
-      if (r & 536870912)
+      if ((r & 536870912) !== 0)
         (t.memoizedState = { baseLanes: 0, cachePool: null }),
           e !== null && bl(t, g !== null ? g.cachePool : null),
           g !== null ? Gh(t, g) : mc(),
@@ -4865,7 +4868,7 @@ Error generating stack: ` +
           (t = Vc(e, t, r));
       } else if ((Qt || nu(e, t, r, !1), (g = (r & e.childLanes) !== 0), Qt || g)) {
         if (((g = Nt), g !== null)) {
-          if (((i = r & -r), i & 42)) i = 1;
+          if (((i = r & -r), (i & 42) !== 0)) i = 1;
           else
             switch (i) {
               case 2:
@@ -4904,7 +4907,7 @@ Error generating stack: ` +
               default:
                 i = 0;
             }
-          if (((i = i & (g.suspendedLanes | r) ? 0 : i), i !== 0 && i !== $.retryLane))
+          if (((i = (i & (g.suspendedLanes | r)) !== 0 ? 0 : i), i !== 0 && i !== $.retryLane))
             throw (($.retryLane = i), Vn(e, i), hr(g, e, i), qd);
         }
         B.data === '$?' || bf(), (t = Vc(e, t, r));
@@ -4987,9 +4990,9 @@ Error generating stack: ` +
     var i = t.pendingProps,
       l = i.revealOrder,
       f = i.tail;
-    if ((tr(e, t, i.children, r), (i = Vt.current), i & 2)) (i = (i & 1) | 2), (t.flags |= 128);
+    if ((tr(e, t, i.children, r), (i = Vt.current), (i & 2) !== 0)) (i = (i & 1) | 2), (t.flags |= 128);
     else {
-      if (e !== null && e.flags & 128)
+      if (e !== null && (e.flags & 128) !== 0)
         e: for (e = t.child; e !== null; ) {
           if (e.tag === 13) e.memoizedState !== null && $d(e, r, t);
           else if (e.tag === 19) $d(e, r, t);
@@ -5033,7 +5036,7 @@ Error generating stack: ` +
     return t.child;
   }
   function _n(e, t, r) {
-    if ((e !== null && (t.dependencies = e.dependencies), (ni |= t.lanes), !(r & t.childLanes)))
+    if ((e !== null && (t.dependencies = e.dependencies), (ni |= t.lanes), (r & t.childLanes) === 0))
       if (e !== null) {
         if ((nu(e, t, r, !1), (r & t.childLanes) === 0)) return null;
       } else return null;
@@ -5046,7 +5049,7 @@ Error generating stack: ` +
     return t.child;
   }
   function $c(e, t) {
-    return e.lanes & t ? !0 : ((e = e.dependencies), !!(e !== null && Bl(e)));
+    return (e.lanes & t) !== 0 ? !0 : ((e = e.dependencies), !!(e !== null && Bl(e)));
   }
   function jg(e, t, r) {
     switch (t.tag) {
@@ -5068,7 +5071,7 @@ Error generating stack: ` +
         if (i !== null)
           return i.dehydrated !== null
             ? (Yn(t), (t.flags |= 128), null)
-            : r & t.child.childLanes
+            : (r & t.child.childLanes) !== 0
               ? Yd(e, t, r)
               : (Yn(t), (e = _n(e, t, r)), e !== null ? e.sibling : null);
         Yn(t);
@@ -5099,10 +5102,10 @@ Error generating stack: ` +
     if (e !== null)
       if (e.memoizedProps !== t.pendingProps) Qt = !0;
       else {
-        if (!$c(e, r) && !(t.flags & 128)) return (Qt = !1), jg(e, t, r);
-        Qt = !!(e.flags & 131072);
+        if (!$c(e, r) && (t.flags & 128) === 0) return (Qt = !1), jg(e, t, r);
+        Qt = (e.flags & 131072) !== 0;
       }
-    else (Qt = !1), vt && t.flags & 1048576 && Dh(t, dl, t.index);
+    else (Qt = !1), vt && (t.flags & 1048576) !== 0 && Dh(t, dl, t.index);
     switch (((t.lanes = 0), t.tag)) {
       case 16:
         e: {
@@ -5284,7 +5287,7 @@ Error generating stack: ` +
               (t.memoizedState = { parent: i, cache: l }),
               Kc(t),
               Qn(t, Yt, l))
-            : (e.lanes & r && (Jc(e, t), uu(t, null, null, r), au()),
+            : ((e.lanes & r) !== 0 && (Jc(e, t), uu(t, null, null, r), au()),
               (l = e.memoizedState),
               (f = t.memoizedState),
               l.parent !== i
@@ -5364,8 +5367,8 @@ Error generating stack: ` +
     e = null;
     for (var l = t, f = !1; l !== null; ) {
       if (!f) {
-        if (l.flags & 524288) f = !0;
-        else if (l.flags & 262144) break;
+        if ((l.flags & 524288) !== 0) f = !0;
+        else if ((l.flags & 262144) !== 0) break;
       }
       if (l.tag === 10) {
         var g = l.alternate;
@@ -5433,7 +5436,7 @@ Error generating stack: ` +
   function Wn(e, t, r) {
     var i = e.updateQueue;
     if (i === null) return null;
-    if (((i = i.shared), Dt & 2)) {
+    if (((i = i.shared), (Dt & 2) !== 0)) {
       var l = i.pending;
       return (
         l === null ? (t.next = t) : ((t.next = l.next), (l.next = t)), (i.pending = t), (t = ol(e)), Bh(e, null, r), t
@@ -5794,7 +5797,7 @@ Error generating stack: ` +
             case 15:
               break;
             case 1:
-              if (e & 1024 && f !== null) {
+              if ((e & 1024) !== 0 && f !== null) {
                 (e = void 0), (r = t), (l = f.memoizedProps), (f = f.memoizedState), (i = r.stateNode);
                 try {
                   var Ze = Bi(r.type, l, r.elementType === r.type);
@@ -5805,7 +5808,7 @@ Error generating stack: ` +
               }
               break;
             case 3:
-              if (e & 1024) {
+              if ((e & 1024) !== 0) {
                 if (((e = t.stateNode.containerInfo), (r = e.nodeType), r === 9)) qf(e);
                 else if (r === 1)
                   switch (e.nodeName) {
@@ -5827,7 +5830,7 @@ Error generating stack: ` +
             case 17:
               break;
             default:
-              if (e & 1024) throw Error(s(163));
+              if ((e & 1024) !== 0) throw Error(s(163));
           }
           if (((e = t.sibling), e !== null)) {
             (e.return = t.return), (Kt = e);
@@ -6586,7 +6589,7 @@ Error generating stack: ` +
   }
   function fu(e) {
     var t = e.deletions;
-    if (e.flags & 16) {
+    if ((e.flags & 16) !== 0) {
       if (t !== null)
         for (var r = 0; r < t.length; r++) {
           var i = t[r];
@@ -6621,7 +6624,7 @@ Error generating stack: ` +
   }
   function Rl(e) {
     var t = e.deletions;
-    if (e.flags & 16) {
+    if ((e.flags & 16) !== 0) {
       if (t !== null)
         for (var r = 0; r < t.length; r++) {
           var i = t[r];
@@ -6815,7 +6818,7 @@ Error generating stack: ` +
       detach: function () {
         var f = l._current;
         if (f === null) throw Error(s(456));
-        if (!(l._pendingVisibility & 2)) {
+        if ((l._pendingVisibility & 2) === 0) {
           var g = Vn(f, 2);
           g !== null && ((l._pendingVisibility |= 2), hr(g, f, 2));
         }
@@ -6823,7 +6826,7 @@ Error generating stack: ` +
       attach: function () {
         var f = l._current;
         if (f === null) throw Error(s(456));
-        if (l._pendingVisibility & 2) {
+        if ((l._pendingVisibility & 2) !== 0) {
           var g = Vn(f, 2);
           g !== null && ((l._pendingVisibility &= -3), hr(g, f, 2));
         }
@@ -6846,11 +6849,12 @@ Error generating stack: ` +
     e.flags |= 4;
   }
   function v0(e, t) {
-    if (t.type !== 'stylesheet' || t.state.loading & 4) e.flags &= -16777217;
+    if (t.type !== 'stylesheet' || (t.state.loading & 4) !== 0) e.flags &= -16777217;
     else if (((e.flags |= 16777216), !rm(t))) {
       if (
         ((t = Gr.current),
-        t !== null && ((yt & 4194176) === yt ? cn !== null : ((yt & 62914560) !== yt && !(yt & 536870912)) || t !== cn))
+        t !== null &&
+          ((yt & 4194176) === yt ? cn !== null : ((yt & 62914560) !== yt && (yt & 536870912) === 0) || t !== cn))
       )
         throw ((Za = dc), Ch);
       e.flags |= 8192;
@@ -6917,7 +6921,7 @@ Error generating stack: ` +
             (Va(t)
               ? Mn(t)
               : e === null ||
-                (e.memoizedState.isDehydrated && !(t.flags & 256)) ||
+                (e.memoizedState.isDehydrated && (t.flags & 256) === 0) ||
                 ((t.flags |= 1024), Pr !== null && (gf(Pr), (Pr = null)))),
           Ut(t),
           null
@@ -7039,12 +7043,12 @@ Error generating stack: ` +
               if (!l) throw Error(s(318));
               if (((l = t.memoizedState), (l = l !== null ? l.dehydrated : null), !l)) throw Error(s(317));
               l[ft] = t;
-            } else Ya(), !(t.flags & 128) && (t.memoizedState = null), (t.flags |= 4);
+            } else Ya(), (t.flags & 128) === 0 && (t.memoizedState = null), (t.flags |= 4);
             Ut(t), (l = !1);
           } else Pr !== null && (gf(Pr), (Pr = null)), (l = !0);
           if (!l) return t.flags & 256 ? (En(t), t) : (En(t), null);
         }
-        if ((En(t), t.flags & 128)) return (t.lanes = r), t;
+        if ((En(t), (t.flags & 128) !== 0)) return (t.lanes = r), t;
         if (((r = i !== null), (e = e !== null && e.memoizedState !== null), r)) {
           (i = t.child),
             (l = null),
@@ -7066,7 +7070,7 @@ Error generating stack: ` +
         if (((i = (t.flags & 128) !== 0), (f = l.rendering), f === null))
           if (i) ou(l, !1);
           else {
-            if (Ct !== 0 || (e !== null && e.flags & 128))
+            if (Ct !== 0 || (e !== null && (e.flags & 128) !== 0))
               for (e = t.child; e !== null; ) {
                 if (((f = vl(e)), f !== null)) {
                   for (
@@ -7126,7 +7130,9 @@ Error generating stack: ` +
           pc(),
           (i = t.memoizedState !== null),
           e !== null ? (e.memoizedState !== null) !== i && (t.flags |= 8192) : i && (t.flags |= 8192),
-          i ? r & 536870912 && !(t.flags & 128) && (Ut(t), t.subtreeFlags & 6 && (t.flags |= 8192)) : Ut(t),
+          i
+            ? (r & 536870912) !== 0 && (t.flags & 128) === 0 && (Ut(t), t.subtreeFlags & 6 && (t.flags |= 8192))
+            : Ut(t),
           (r = t.updateQueue),
           r !== null && Cl(t, r.retryQueue),
           (r = null),
@@ -7159,7 +7165,9 @@ Error generating stack: ` +
       case 1:
         return (e = t.flags), e & 65536 ? ((t.flags = (e & -65537) | 128), t) : null;
       case 3:
-        return wn(Yt), ce(), (e = t.flags), e & 65536 && !(e & 128) ? ((t.flags = (e & -65537) | 128), t) : null;
+        return (
+          wn(Yt), ce(), (e = t.flags), (e & 65536) !== 0 && (e & 128) === 0 ? ((t.flags = (e & -65537) | 128), t) : null
+        );
       case 26:
       case 27:
       case 5:
@@ -7256,7 +7264,7 @@ Error generating stack: ` +
     mu = 0,
     yf = null;
   function Tr() {
-    if (Dt & 2 && yt !== 0) return yt & -yt;
+    if ((Dt & 2) !== 0 && yt !== 0) return yt & -yt;
     if (_.T !== null) {
       var e = ca;
       return e !== 0 ? e : Af();
@@ -7264,17 +7272,17 @@ Error generating stack: ` +
     return Ku();
   }
   function S0() {
-    $r === 0 && ($r = !(yt & 536870912) || vt ? fr() : 536870912);
+    $r === 0 && ($r = (yt & 536870912) === 0 || vt ? fr() : 536870912);
     var e = Gr.current;
     return e !== null && (e.flags |= 32), $r;
   }
   function hr(e, t, r) {
     ((e === Nt && Tt === 2) || e.cancelPendingCommit !== null) && (ba(e, 0), Dn(e, yt, $r, !1)),
       Ot(e, r),
-      (!(Dt & 2) || e !== Nt) && (e === Nt && (!(Dt & 2) && (Ci |= r), Ct === 4 && Dn(e, yt, $r, !1)), hn(e));
+      ((Dt & 2) === 0 || e !== Nt) && (e === Nt && ((Dt & 2) === 0 && (Ci |= r), Ct === 4 && Dn(e, yt, $r, !1)), hn(e));
   }
   function E0(e, t, r) {
-    if (Dt & 6) throw Error(s(327));
+    if ((Dt & 6) !== 0) throw Error(s(327));
     var i = (!r && (t & 60) === 0 && (t & e.expiredLanes) === 0) || st(e, t),
       l = i ? Vg(e, t) : Sf(e, t, !0),
       f = i;
@@ -7404,7 +7412,7 @@ Error generating stack: ` +
     r !== 0 && ks(e, r, t);
   }
   function Il() {
-    return Dt & 6 ? !0 : (pu(0), !1);
+    return (Dt & 6) === 0 ? (pu(0), !1) : !0;
   }
   function vf() {
     if (ht !== null) {
@@ -7432,7 +7440,7 @@ Error generating stack: ` +
       (va = $r = of = Ci = ni = Ct = 0),
       (on = hu = null),
       (hf = !1),
-      t & 8 && (t |= t & 32);
+      (t & 8) !== 0 && (t |= t & 32);
     var i = e.entangledLanes;
     if (i !== 0)
       for (e = e.entanglements, i &= t; 0 < i; ) {
@@ -7464,7 +7472,7 @@ Error generating stack: ` +
   function bf() {
     (Ct = 4),
       Bn || ((yt & 4194176) !== yt && Gr.current !== null) || (ga = !0),
-      (!(ni & 134217727) && !(Ci & 134217727)) || Nt === null || Dn(Nt, yt, $r, !1);
+      ((ni & 134217727) === 0 && (Ci & 134217727) === 0) || Nt === null || Dn(Nt, yt, $r, !1);
   }
   function Sf(e, t, r) {
     var i = Dt;
@@ -7629,7 +7637,7 @@ Error generating stack: ` +
     t.flags & 32768
       ? (vt || i === 1
           ? (e = !0)
-          : ga || yt & 536870912
+          : ga || (yt & 536870912) !== 0
             ? (e = !1)
             : ((Bn = e = !0),
               (i === 2 || i === 3 || i === 6) && ((i = Gr.current), i !== null && i.tag === 13 && (i.flags |= 16384))),
@@ -7639,7 +7647,7 @@ Error generating stack: ` +
   function Ll(e) {
     var t = e;
     do {
-      if (t.flags & 32768) {
+      if ((t.flags & 32768) !== 0) {
         T0(t, Bn);
         return;
       }
@@ -7688,7 +7696,7 @@ Error generating stack: ` +
   function $g(e, t, r, i, l, f, g, B) {
     do Ea();
     while (qi !== null);
-    if (Dt & 6) throw Error(s(327));
+    if ((Dt & 6) !== 0) throw Error(s(327));
     var $ = e.finishedWork;
     if (((i = e.finishedLanes), $ === null)) return null;
     if (((e.finishedWork = null), (e.finishedLanes = 0), $ === e.current)) throw Error(s(177));
@@ -7698,7 +7706,7 @@ Error generating stack: ` +
       ((le |= sc),
       Fo(e, i, le, f, g, B),
       e === Nt && ((ht = Nt = null), (yt = 0)),
-      (!($.subtreeFlags & 10256) && !($.flags & 10256)) ||
+      (($.subtreeFlags & 10256) === 0 && ($.flags & 10256) === 0) ||
         kl ||
         ((kl = !0),
         (mf = le),
@@ -7707,7 +7715,7 @@ Error generating stack: ` +
           return Ea(), null;
         })),
       (r = ($.flags & 15990) !== 0),
-      $.subtreeFlags & 15990 || r
+      ($.subtreeFlags & 15990) !== 0 || r
         ? ((r = _.T),
           (_.T = null),
           (f = w.p),
@@ -7735,9 +7743,9 @@ Error generating stack: ` +
     )
       for (l = e.onRecoverableError, $ = 0; $ < t.length; $++) (le = t[$]), l(le.value, { componentStack: le.stack });
     return (
-      du & 3 && Ea(),
+      (du & 3) !== 0 && Ea(),
       (le = e.pendingLanes),
-      i & 4194218 && le & 42 ? (e === yf ? mu++ : ((mu = 0), (yf = e))) : (mu = 0),
+      (i & 4194218) !== 0 && (le & 42) !== 0 ? (e === yf ? mu++ : ((mu = 0), (yf = e))) : (mu = 0),
       pu(0),
       null
     );
@@ -7759,7 +7767,7 @@ Error generating stack: ` +
           (r = pf), (pf = null);
           var g = qi,
             B = du;
-          if (((qi = null), (du = 0), Dt & 6)) throw Error(s(331));
+          if (((qi = null), (du = 0), (Dt & 6) !== 0)) throw Error(s(331));
           var $ = Dt;
           if (
             ((Dt |= 4),
@@ -7820,7 +7828,7 @@ Error generating stack: ` +
       (e.warmLanes &= ~r),
       Nt === e &&
         (yt & r) === r &&
-        (Ct === 4 || (Ct === 3 && (yt & 62914560) === yt && 300 > Me() - df) ? !(Dt & 2) && ba(e, 0) : (of |= r),
+        (Ct === 4 || (Ct === 3 && (yt & 62914560) === yt && 300 > Me() - df) ? (Dt & 2) === 0 && ba(e, 0) : (of |= r),
         va === yt && (va = 0)),
       hn(e);
   }
@@ -7881,7 +7889,7 @@ Error generating stack: ` +
                 (f = f & 201326677 ? (f & 201326677) | 1 : f ? f | 2 : 0);
             }
             f !== 0 && ((r = !0), C0(i, f));
-          } else (f = yt), (f = nt(i, i === Nt ? f : 0)), !(f & 3) || st(i, f) || ((r = !0), C0(i, f));
+          } else (f = yt), (f = nt(i, i === Nt ? f : 0)), (f & 3) === 0 || st(i, f) || ((r = !0), C0(i, f));
           i = i.next;
         }
       while (r);
@@ -7897,7 +7905,7 @@ Error generating stack: ` +
         f = R0(i, t);
       f === 0
         ? ((i.next = null), r === null ? (Hl = l) : (r.next = l), l === null && (xa = r))
-        : ((r = i), (e !== 0 || f & 3) && (Gl = !0)),
+        : ((r = i), (e !== 0 || (f & 3) !== 0) && (Gl = !0)),
         (i = l);
     }
     pu(e);
@@ -7907,7 +7915,7 @@ Error generating stack: ` +
       var g = 31 - Ce(f),
         B = 1 << g,
         $ = l[g];
-      $ === -1 ? (!(B & r) || B & i) && (l[g] = Bt(B, t)) : $ <= t && (e.expiredLanes |= B), (f &= ~B);
+      $ === -1 ? ((B & r) === 0 || (B & i) !== 0) && (l[g] = Bt(B, t)) : $ <= t && (e.expiredLanes |= B), (f &= ~B);
     }
     if (
       ((t = Nt),
@@ -7917,7 +7925,7 @@ Error generating stack: ` +
       r === 0 || (e === t && Tt === 2) || e.cancelPendingCommit !== null)
     )
       return i !== null && i !== null && J(i), (e.callbackNode = null), (e.callbackPriority = 0);
-    if (!(r & 3) || st(e, r)) {
+    if ((r & 3) === 0 || st(e, r)) {
       if (((t = r & -r), t === e.callbackPriority)) return t;
       switch ((i !== null && J(i), Qu(r))) {
         case 2:
@@ -7954,7 +7962,7 @@ Error generating stack: ` +
   }
   function Wg(e) {
     s1(function () {
-      Dt & 6 ? I(tt, e) : e();
+      (Dt & 6) !== 0 ? I(tt, e) : e();
     });
   }
   function Af() {
@@ -8125,7 +8133,7 @@ Error generating stack: ` +
   }
   function Mf(e, t, r, i, l) {
     var f = i;
-    if (!(t & 1) && !(t & 2) && i !== null)
+    if ((t & 1) === 0 && (t & 2) === 0 && i !== null)
       e: for (;;) {
         if (i === null) return;
         var g = i.tag;
@@ -8262,7 +8270,7 @@ Error generating stack: ` +
           0 < rt.length && ((pe = new Se(pe, Ze, null, r, Ee)), Te.push({ event: pe, listeners: rt }));
         }
       }
-      if (!(t & 7)) {
+      if ((t & 7) === 0) {
         e: {
           if (
             ((pe = e === 'mouseover' || e === 'pointerover'),
@@ -9586,7 +9594,7 @@ Error generating stack: ` +
       }
     else
       t.type === 'stylesheet' &&
-        !(t.state.loading & 4) &&
+        (t.state.loading & 4) === 0 &&
         ((i = t.instance), (t.state.loading |= 4), Zl(i, r.precedence, e));
     return t.instance;
   }
@@ -9674,7 +9682,7 @@ Error generating stack: ` +
     return !1;
   }
   function rm(e) {
-    return !(e.type === 'stylesheet' && !(e.state.loading & 3));
+    return !(e.type === 'stylesheet' && (e.state.loading & 3) === 0);
   }
   var Su = null;
   function _1() {}
@@ -9684,7 +9692,7 @@ Error generating stack: ` +
     if (
       t.type === 'stylesheet' &&
       (typeof r.media != 'string' || matchMedia(r.media).matches !== !1) &&
-      !(t.state.loading & 4)
+      (t.state.loading & 4) === 0
     ) {
       if (t.instance === null) {
         var l = wa(r.href),
@@ -9711,7 +9719,7 @@ Error generating stack: ` +
       i.stylesheets === null && (i.stylesheets = new Map()),
         i.stylesheets.set(t, e),
         (e = t.state.preload) &&
-          !(t.state.loading & 3) &&
+          (t.state.loading & 3) === 0 &&
           (i.count++, (t = Kl.bind(i)), e.addEventListener('load', t), e.addEventListener('error', t));
     }
   }
@@ -9894,7 +9902,7 @@ Error generating stack: ` +
                       var $ = 1 << (31 - Ce(g));
                       (B.entanglements[1] |= $), (g &= ~$);
                     }
-                    hn(f), !(Dt & 6) && ((ql = Me() + 500), pu(0));
+                    hn(f), (Dt & 6) === 0 && ((ql = Me() + 500), pu(0));
                   }
                 }
                 break;
@@ -15021,7 +15029,7 @@ function Ro() {
             const v = a.allocUnsafe(4);
             v.writeFloatBE(U, 0);
             const x = v.readUInt32BE(0);
-            if (x & 8191) return !1;
+            if ((x & 8191) !== 0) return !1;
             let N = (x >> 16) & 32768;
             const te = (x >> 23) & 255,
               he = x & 8388607;
@@ -16330,7 +16338,7 @@ class Ru {
     const m = Vp(Yi(a, Dr)),
       h = c === 2 || c === 3 ? u + mr : u;
     h >= Hi && Mt('q.x invalid');
-    const o = c & 1 ? '03' : '02',
+    const o = (c & 1) === 0 ? '02' : '03',
       S = Ur.fromHex(o + Du(h)),
       E = js(h, mr),
       U = Fe(-m * E, mr),
@@ -23430,7 +23438,19 @@ function b2({ client: n, defaultOptions: a }) {
           required: !0,
           children: H.jsx('input', { type: 'text', className: 'input', ...u('proxyKey') })
         }),
-        H.jsx('button', { className: 'btn self-start', onClick: h, children: 'Update Options' })
+        H.jsxs('div', {
+          className: 'flex items-center gap-2',
+          children: [
+            H.jsx('button', { className: 'btn self-start', onClick: h, children: 'Update Options' }),
+            H.jsx('a', {
+              href: 'https://docs.hibit.app/developers/getting-your-proxy-key',
+              target: '_blank',
+              rel: 'noopener noreferrer',
+              className: 'text-blue-500 underline',
+              children: 'How to get your HIN and Proxy Key?'
+            })
+          ]
+        })
       ]
     }),
     error: ''
