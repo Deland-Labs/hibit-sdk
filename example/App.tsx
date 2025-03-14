@@ -20,11 +20,12 @@ import SectionGetOrderTrades from './components/SectionGetOrderTrades';
 import SectionGetWalletBalances from './components/SectionGetWalletBalances';
 import SectionGetNonce from './components/SectionGetNonce';
 import { HibitNetwork } from '../src';
+import SectionSetOptions from './components/SectionSetOptions.tsx';
 
 const OPTIONS = {
   network: HibitNetwork.Testnet,
-  hin: BigInt(10001),
-  proxyKey: 'fbd71d4068e3c9664afb6b121dface1b1319a168892bb9d5d3c44d220b6e9f9e'
+  hin: BigInt(10000),
+  proxyKey: 'fa3e933f1788d7d56a20e078370f4c3b713ee0bcdb44392e4cfeaf524716d06a'
 };
 
 const App: FC = () => {
@@ -43,6 +44,8 @@ const App: FC = () => {
   return (
     <main className="container mx-auto flex flex-col gap-6 p-6">
       <h1 className="text-3xl font-bold text-center">Hibit SDK Examples</h1>
+
+      <SectionSetOptions client={client} defaultOptions={OPTIONS} />
 
       <SectionGetTimestamp client={client} />
       <SectionGetChains client={client} />
