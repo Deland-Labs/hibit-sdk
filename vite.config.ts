@@ -9,6 +9,7 @@ export default defineConfig(({ mode }) => {
 
   return {
     base: isExample ? '/docs' : '/',
+    publicDir: isExample ? 'example/public' : 'public',
     plugins: [tailwindcss()],
     resolve: {
       alias: {
