@@ -2,7 +2,7 @@
 
 [![Tests](https://github.com/Deland-Labs/hibit-sdk/actions/workflows/test.yml/badge.svg)](https://github.com/Deland-Labs/hibit-sdk/actions)
 [![Build](https://github.com/Deland-Labs/hibit-sdk/actions/workflows/build.yml/badge.svg)](https://github.com/Deland-Labs/hibit-sdk/actions)
-[![npm version](https://badge.fury.io/js/@delandlabs%2Fhibit-sdk.svg)](https://www.npmjs.com/package/@delandlabs/hibit-sdk)
+[![npm version](https://badge.fury.io/js/@delandlabs%2Fhibit-sdk.svg?q=1)](https://www.npmjs.com/package/@delandlabs/hibit-sdk)
 [![License: GPL-3.0](https://img.shields.io/badge/License-GPL%203.0-blue.svg)](LICENSE)
 
 [API Documentation](https://docs.hibit.app/api)

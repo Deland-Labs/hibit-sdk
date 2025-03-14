@@ -77,9 +77,19 @@ export default function SectionSetOptions({
           <FormField label="Proxy Key" error={errors.proxyKey} required>
             <input type="text" className="input" {...register('proxyKey')} />
           </FormField>
-          <button className="btn self-start" onClick={submit}>
-            Update Options
-          </button>
+          <div className="flex items-center gap-2">
+            <button className="btn self-start" onClick={submit}>
+              Update Options
+            </button>
+            <a
+              href="https://docs.hibit.app/developers/getting-your-proxy-key"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-500 underline"
+            >
+              How to get your HIN and Proxy Key?
+            </a>
+          </div>
         </div>
       }
       error={''}
