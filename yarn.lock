@@ -3136,10 +3136,10 @@ util@^0.12.4, util@^0.12.5:
     is-typed-array "^1.1.3"
     which-typed-array "^1.1.2"
 
-vite-bundle-analyzer@^0.17.0:
-  version "0.17.1"
-  resolved "https://registry.yarnpkg.com/vite-bundle-analyzer/-/vite-bundle-analyzer-0.17.1.tgz#d05913e970821688d1085d7bc1cae0f3e1bc829c"
-  integrity sha512-ubjLhkuRgOSBNck+6xBbQmjmh8SeLTG4alEM5PX2TNzyGhKLwWlyCz1YG0an3RQnscbhVzSb6kYteoHXhP///A==
+vite-bundle-analyzer@^0.18.0:
+  version "0.18.0"
+  resolved "https://registry.yarnpkg.com/vite-bundle-analyzer/-/vite-bundle-analyzer-0.18.0.tgz#01467eeb337d7bdb933a3b2e7d0ed4462c65ff57"
+  integrity sha512-FCVZ7zN3hEdn65QZoV0VpbsbVO3QekfESO1DgFd3algXWqiEIM+DgpdCzCoc5fKKEh3CmUCMbuyIL7HEu7Eiog==
 
 vite-node@3.0.8:
   version "3.0.8"
