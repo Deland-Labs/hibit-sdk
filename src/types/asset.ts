@@ -7,6 +7,7 @@ import {
 } from '../openapi';
 import { ChainAssetType } from './enums';
 import { toChainAssetType } from './enums/chain-asset-type';
+import { ChainId } from './chain';
 
 export type AssetInfo = {
   /**
@@ -16,7 +17,7 @@ export type AssetInfo = {
   /**
    * id of chain
    */
-  chainId?: string;
+  chainId?: ChainId;
   /**
    * Chain asset type
    */
@@ -55,7 +56,7 @@ export type SubAssetInfo = {
   /**
    * id of chain
    */
-  chainId?: string;
+  chainId?: ChainId;
   /**
    * Chain asset type
    */
@@ -74,7 +75,7 @@ export type GetAssetsInput = {
   /**
    * chain ids to filter the markets list.
    */
-  chainIds?: Array<string>;
+  chainIds?: Array<ChainId>;
   /**
    * chain asset types to filter the markets list.
    */
@@ -102,7 +103,7 @@ export type GetAssetsInput = {
 export function mapAssetInfo(asset: Ex3ExchangeOpenApiAppServicesRootAssetInfoDto): AssetInfo {
   return {
     assetId: asset.assetId,
-    chainId: asset.chainId || undefined,
+    chainId: asset.chainId ? ChainId.fromString(asset.chainId) : undefined,
     chainAssetType: toChainAssetType(asset.chainAssetType)!,
     contractAddress: asset.contractAddress,
     decimalPlaces: asset.decimalPlaces,
@@ -116,17 +117,17 @@ export function mapAssetInfo(asset: Ex3ExchangeOpenApiAppServicesRootAssetInfoDt
 export function mapSubAssetInfo(subAsset: Ex3ExchangeOpenApiAppServicesSubAssetInfoDto): SubAssetInfo {
   return {
     assetId: subAsset.assetId,
-    chainId: subAsset.chainId || undefined,
+    chainId: subAsset.chainId ? ChainId.fromString(subAsset.chainId) : undefined,
     chainAssetType: subAsset.chainAssetType,
     contractAddress: subAsset.contractAddress,
     decimalPlaces: subAsset.decimalPlaces
   };
 }
 
-export function mapGetAssetsInput(input: GetAssetsInput): Options<GetV1AssetsData, boolean> {
+export function mapGetAssetsInput(input: GetAssetsInput): Options<GetV1AssetsData> {
   return {
     query: {
-      ChainIds: input.chainIds,
+      ChainIds: input.chainIds?.map((chainId) => chainId.toString()),
       ChainAssetTypes: input.chainAssetTypes?.map((type) => type.toString()),
       Limit: input.limit,
       Offset: input.offset,
@@ -135,7 +136,7 @@ export function mapGetAssetsInput(input: GetAssetsInput): Options<GetV1AssetsDat
   };
 }
 
-export function mapGetAssetInput(assetId: bigint): Options<GetV1AssetData, boolean> {
+export function mapGetAssetInput(assetId: bigint): Options<GetV1AssetData> {
   return {
     query: {
       AssetId: assetId.toString()
