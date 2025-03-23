@@ -1,4 +1,4 @@
-import { AssetInfo, GetAssetsInput, PageResponse } from '../../src';
+import { AssetInfo, ChainId, GetAssetsInput, PageResponse } from '../../src';
 import { HibitClient } from '../../src/hibit-client';
 import Section from './Section';
 import { useState } from 'react';
@@ -6,10 +6,12 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { object, number, string } from 'yup';
 import FormField from './FormField';
+import ChainIdSelector from './ChainIdSelector';
+import AssetTypeSelector from './AssetTypeSelector';
 
 const schema = object({
-  chainIds: string(),
-  chainAssetTypes: string(),
+  chainIds: object().nullable(),
+  chainAssetTypes: object().nullable(),
   limit: number()
     .nullable()
     .transform((value, original) => (original === '' ? null : value)),
@@ -23,6 +25,8 @@ export default function SectionGetAssets({ client }: { client: HibitClient }) {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<PageResponse<AssetInfo> | null>(null);
   const [error, setError] = useState<string>('');
+  const [selectedAssetTypes, setSelectedAssetTypes] = useState<number[]>([]);
+  const [selectedChainIds, setSelectedChainIds] = useState<ChainId[]>([]);
 
   const {
     register,
@@ -38,8 +42,8 @@ export default function SectionGetAssets({ client }: { client: HibitClient }) {
     setError('');
     try {
       const req: GetAssetsInput = {
-        chainIds: input.chainIds ? input.chainIds.split(',').map((id) => id.trim()) : undefined,
-        chainAssetTypes: input.chainAssetTypes ? input.chainAssetTypes.split(',').map((id) => id.trim()) : undefined,
+        chainIds: selectedChainIds.length > 0 ? selectedChainIds : undefined,
+        chainAssetTypes: selectedAssetTypes.length > 0 ? selectedAssetTypes : undefined,
         limit: input.limit ?? undefined,
         offset: input.offset ?? undefined,
         orderBy: input.orderBy || undefined
@@ -57,12 +61,12 @@ export default function SectionGetAssets({ client }: { client: HibitClient }) {
       title="GetAssets"
       form={
         <div className="flex flex-col gap-2">
-          <FormField label="ChainIds" labelDesc="comma separated" error={errors.chainIds}>
-            <input type="text" className="input" {...register('chainIds')} />
-          </FormField>
-          <FormField label="ChainAssetTypes" labelDesc="comma separated" error={errors.chainAssetTypes}>
-            <input type="text" className="input" {...register('chainAssetTypes')} />
-          </FormField>
+          <ChainIdSelector selectedChainIds={selectedChainIds} onChange={setSelectedChainIds} error={errors.chainIds} />
+          <AssetTypeSelector
+            selectedAssetTypes={selectedAssetTypes}
+            onChange={setSelectedAssetTypes}
+            error={errors.chainAssetTypes}
+          />
           <FormField label="Limit" error={errors.limit}>
             <input type="number" className="input" {...register('limit')} />
           </FormField>
