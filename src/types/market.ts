@@ -14,17 +14,18 @@ import {
   GetV1MarketData,
   GetV1MarketsSwapData
 } from '../openapi';
-import { DepthIndex, OrderSide, TickSpace } from './enums';
+import { ChainAssetType, DepthIndex, OrderSide, TickSpace } from './enums';
+import { ChainId } from './chain.ts';
 
 export type GetMarketsInput = {
   /**
    * chain ids to filter the markets list.
    */
-  chainIds?: Array<string>;
+  chainIds?: Array<ChainId>;
   /**
    * chain asset types to filter the markets list.
    */
-  chainAssetTypes?: Array<string>;
+  chainAssetTypes?: Array<ChainAssetType>;
   /**
    * The base asset id. This is an optional field that specifies the base asset for which the market list is requested.
    */
@@ -299,11 +300,11 @@ export type MarketDepth = {
  * @param input - The input parameters for the GetMarkets API call.
  * @returns An object containing the query parameters for the GetMarkets API call.
  */
-export function mapGetMarketsInput(input: GetMarketsInput): Options<GetV1MarketsData, boolean> {
+export function mapGetMarketsInput(input: GetMarketsInput): Options<GetV1MarketsData> {
   return {
     query: {
-      ChainIds: input.chainIds,
-      ChainAssetTypes: input.chainAssetTypes,
+      ChainIds: input.chainIds?.map((chainId) => chainId.toString()),
+      ChainAssetTypes: input.chainAssetTypes?.map((type) => type.toString()),
       BaseAssetId: input.baseAssetId ? String(input.baseAssetId) : undefined,
       QuoteAssetId: input.quoteAssetId ? String(input.quoteAssetId) : undefined,
       Limit: input.limit,
@@ -313,7 +314,7 @@ export function mapGetMarketsInput(input: GetMarketsInput): Options<GetV1Markets
   };
 }
 
-export function mapGetMarketInput(marketId: bigint): Options<GetV1MarketData, boolean> {
+export function mapGetMarketInput(marketId: bigint): Options<GetV1MarketData> {
   return {
     query: {
       MarketId: String(marketId)
@@ -331,7 +332,7 @@ export function mapMarketInfo(market: Ex3ExchangeOpenApiAppServicesMarketInfoIte
   };
 }
 
-export function mapGetMarketsTickerInput(marketId: bigint | undefined): Options<GetV1MarketsTickerData, boolean> {
+export function mapGetMarketsTickerInput(marketId: bigint | undefined): Options<GetV1MarketsTickerData> {
   return {
     query: {
       MarketId: marketId ? String(marketId) : undefined
@@ -352,7 +353,7 @@ export function mapMarketTickerInfo(data: Ex3ExchangeOpenApiAppServicesMarket24H
   };
 }
 
-export function mapGetMarketKlineInput(input: GetMarketKlineInput): Options<GetV1MarketKlineData, boolean> {
+export function mapGetMarketKlineInput(input: GetMarketKlineInput): Options<GetV1MarketKlineData> {
   return {
     query: {
       MarketId: String(input.marketId),
@@ -376,7 +377,7 @@ export function mapMarketKlineInfo(data: Ex3ExchangeOpenApiAppServicesKlineItem)
   };
 }
 
-export function mapGetMarketTradeInput(input: GetMarketTradeInput): Options<GetV1MarketTradeData, boolean> {
+export function mapGetMarketTradeInput(input: GetMarketTradeInput): Options<GetV1MarketTradeData> {
   return {
     query: {
       MarketId: String(input.marketId),
@@ -401,7 +402,7 @@ export function mapMarketTradeInfo(data: Ex3ExchangeOpenApiAppServicesMarketTrad
   };
 }
 
-export function mapGetMarketsSwapInfoInput(marketId?: bigint): Options<GetV1MarketsSwapData, boolean> {
+export function mapGetMarketsSwapInfoInput(marketId?: bigint): Options<GetV1MarketsSwapData> {
   return {
     query: marketId
       ? {
@@ -420,7 +421,7 @@ export function mapMarketSwapInfo(data: Ex3ExchangeOpenApiAppServicesGetSwapOutp
   };
 }
 
-export function mapGetMarketDepthInput(input: GetMarketDepthInput): Options<GetV1MarketDepthData, boolean> {
+export function mapGetMarketDepthInput(input: GetMarketDepthInput): Options<GetV1MarketDepthData> {
   return {
     query: {
       Index: input.index,

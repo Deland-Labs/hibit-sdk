@@ -203,6 +203,33 @@ export class ChainNetwork {
   }
 }
 
+/**
+ * Represents a chain identifier with its network identifier.
+ * Provides methods to convert to and from string.
+ */
+export class ChainId {
+  chain: Chain;
+  network: ChainNetwork;
+
+  constructor(chain: Chain, network: ChainNetwork) {
+    this.chain = chain;
+    this.network = network;
+  }
+
+  toString(): string {
+    return `${this.chain.toString()}_${this.network.toString()}`;
+  }
+
+  static fromString(chainId: string): ChainId {
+    const [chain, network] = chainId.split('_');
+    return new ChainId(Chain.fromString(chain)!, ChainNetwork.fromString(network)!);
+  }
+
+  equals(other: ChainId): boolean {
+    return this.chain.equals(other.chain) && this.network.equals(other.network);
+  }
+}
+
 export type ChainInfo = {
   /**
    * chain id
