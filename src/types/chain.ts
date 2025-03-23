@@ -221,8 +221,18 @@ export class ChainId {
   }
 
   static fromString(chainId: string): ChainId {
+    if (!chainId || !chainId.includes('_')) {
+      throw new Error(`Invalid chainId format: ${chainId}. Expected format: "chain_network"`);
+    }
     const [chain, network] = chainId.split('_');
-    return new ChainId(Chain.fromString(chain)!, ChainNetwork.fromString(network)!);
+    const chainObj = Chain.fromString(chain);
+    const networkObj = ChainNetwork.fromString(network);
+    
+    if (!chainObj || !networkObj) {
+      throw new Error(`Invalid chain or network in chainId: ${chainId}`);
+    }
+    
+    return new ChainId(chainObj, networkObj);
   }
 
   equals(other: ChainId): boolean {
