@@ -1,4 +1,4 @@
-import { ChainId, GetMarket24HrTickerInput, Market24HrTickerInfo } from '../../src';
+import { ChainId, GetMarket24HrTickerInput, Market24HrTickerExtendInfo } from '../../src';
 import { HibitClient } from '../../src/hibit-client';
 import Section from './Section';
 import { useState } from 'react';
@@ -17,7 +17,7 @@ const schema = object({
 
 export default function SectionGetMarkets24HrTickerExtended({ client }: { client: HibitClient }) {
   const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState<Array<Market24HrTickerInfo> | null>(null);
+  const [result, setResult] = useState<Array<Market24HrTickerExtendInfo> | null>(null);
   const [error, setError] = useState<string>('');
   const [selectedAssetTypes, setSelectedAssetTypes] = useState<number[]>([]);
   const [selectedChainIds, setSelectedChainIds] = useState<ChainId[]>([]);
