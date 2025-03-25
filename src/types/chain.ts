@@ -227,11 +227,11 @@ export class ChainId {
     const [chain, network] = chainId.split('_');
     const chainObj = Chain.fromString(chain);
     const networkObj = ChainNetwork.fromString(network);
-    
+
     if (!chainObj || !networkObj) {
       throw new Error(`Invalid chain or network in chainId: ${chainId}`);
     }
-    
+
     return new ChainId(chainObj, networkObj);
   }
 

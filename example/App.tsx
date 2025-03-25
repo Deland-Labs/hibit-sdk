@@ -6,7 +6,8 @@ import SectionGetAssets from './components/SectionGetAssets';
 import SectionGetAsset from './components/SectionGetAsset';
 import SectionGetMarkets from './components/SectionGetMarkets';
 import SectionGetMarket from './components/SectionGetMarket';
-import SectionGetMarketsTicker from './components/SectionGetMarketsTicker';
+import SectionGetMarkets24HrTicker from './components/SectionGetMarkets24HrTicker';
+import SectionGetMarkets24HrTickerExtended from './components/SectionGetMarkets24HrTickerExtended';
 import SectionGetMarketsSwapInfo from './components/SectionGetMarketsSwapInfo';
 import SectionGetMarketKline from './components/SectionGetMarketKline';
 import SectionGetMarketDepth from './components/SectionGetMarketDepth';
@@ -15,12 +16,12 @@ import SectionSubmitSpotOrderLimit from './components/SectionSubmitSpotOrderLimi
 import SectionSubmitSpotOrderSwapV2 from './components/SectionSubmitSpotOrderSwapV2';
 import SectionCancelSpotOrder from './components/SectionCancelSpotOrder';
 import SectionGetOrders from './components/SectionGetOrders';
-import SectionGetOrder from './components/SectionGetOrder.tsx';
+import SectionGetOrder from './components/SectionGetOrder';
 import SectionGetOrderTrades from './components/SectionGetOrderTrades';
 import SectionGetWalletBalances from './components/SectionGetWalletBalances';
 import SectionGetNonce from './components/SectionGetNonce';
 import { HibitNetwork } from '../src';
-import SectionSetOptions from './components/SectionSetOptions.tsx';
+import SectionSetOptions from './components/SectionSetOptions';
 
 const OPTIONS = {
   network: HibitNetwork.Testnet,
@@ -53,7 +54,8 @@ const App: FC = () => {
       <SectionGetAsset client={client} />
       <SectionGetMarkets client={client} />
       <SectionGetMarket client={client} />
-      <SectionGetMarketsTicker client={client} />
+      <SectionGetMarkets24HrTicker client={client} />
+      <SectionGetMarkets24HrTickerExtended client={client} />
       <SectionGetMarketsSwapInfo client={client} />
       <SectionGetMarketDepth client={client} />
       <SectionGetMarketKline client={client} />

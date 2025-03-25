@@ -1003,7 +1003,7 @@
     "/v1/markets/ticker": {
       "get": {
         "tags": ["Markets"],
-        "summary": "get the ticker of the market which is the last 24 hours",
+        "summary": "Gets the 24-hour ticker info for markets",
         "parameters": [
           {
             "name": "MarketId",
@@ -1011,6 +1011,28 @@
             "description": "The market id.",
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "name": "ChainIds",
+            "in": "query",
+            "description": "Filter markets by chain IDs (optional).",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "ChainAssetTypes",
+            "in": "query",
+            "description": "Filter markets by chain asset types (optional).",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             }
           }
         ],
@@ -1031,6 +1053,186 @@
               "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Ex3.Exchange.OpenApi.AppServices.Get24HrTickerOutput, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              }
+            }
+          },
+          "501": {
+            "description": "Not Implemented",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/markets/ticker/extended": {
+      "get": {
+        "tags": ["Markets"],
+        "summary": "Gets the extended 24-hour ticker info for markets",
+        "parameters": [
+          {
+            "name": "MarketId",
+            "in": "query",
+            "description": "The market id.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "ChainIds",
+            "in": "query",
+            "description": "Filter markets by chain IDs (optional).",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "ChainAssetTypes",
+            "in": "query",
+            "description": "Filter markets by chain asset types (optional).",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Ex3.Exchange.OpenApi.AppServices.Get24HrTickerOutputExtend, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Ex3.Exchange.OpenApi.AppServices.Get24HrTickerOutputExtend, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Ex3.Exchange.OpenApi.AppServices.Get24HrTickerOutputExtend, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
                 }
               }
             }
@@ -3249,6 +3451,20 @@
         },
         "additionalProperties": false
       },
+      "Ex3.Exchange.OpenApi.AppServices.Get24HrTickerOutputExtend": {
+        "required": ["items"],
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.Market24HrTickerExtendItem"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "Ex3.Exchange.OpenApi.AppServices.GetSwapOutput": {
         "type": "object",
         "properties": {
@@ -3318,6 +3534,63 @@
             "type": "int64",
             "description": "timestamp of kline",
             "format": "int64"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Ex3.Exchange.OpenApi.AppServices.Market24HrTickerExtendItem": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "the market id."
+          },
+          "o": {
+            "type": "string",
+            "description": "The open price of the trading pair in the last 24 hours."
+          },
+          "h": {
+            "type": "string",
+            "description": "The highest price of the trading pair in the last 24 hours."
+          },
+          "l": {
+            "type": "string",
+            "description": "The lowest price of the trading pair in the last 24 hours."
+          },
+          "c": {
+            "type": "string",
+            "description": "The close price of the trading pair in the last 24 hours."
+          },
+          "v": {
+            "type": "string",
+            "description": "The volume of the trading pair in the last 24 hours."
+          },
+          "a": {
+            "type": "string",
+            "description": "The amount of the trading pair in the last 24 hours."
+          },
+          "t": {
+            "type": "int64",
+            "description": "time of the ticker update.",
+            "format": "int64"
+          },
+          "lpusd": {
+            "type": "string",
+            "description": "The last price converted to USD."
+          },
+          "ausd": {
+            "type": "string",
+            "description": "The 24-hour trading volume in USD."
+          },
+          "bas": {
+            "type": "string",
+            "description": "The base asset symbol.",
+            "nullable": true
+          },
+          "qas": {
+            "type": "string",
+            "description": "The quote asset symbol.",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -3507,6 +3780,23 @@
           },
           "data": {
             "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.Get24HrTickerOutput"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Ex3.Exchange.OpenApi.AppServices.Get24HrTickerOutputExtend, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.Get24HrTickerOutputExtend"
           }
         },
         "additionalProperties": false

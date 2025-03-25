@@ -45,6 +45,10 @@ export type Ex3ExchangeOpenApiAppServicesGet24HrTickerOutput = {
   items: Array<Ex3ExchangeOpenApiAppServicesMarket24HrTickerItem> | null;
 };
 
+export type Ex3ExchangeOpenApiAppServicesGet24HrTickerOutputExtend = {
+  items: Array<Ex3ExchangeOpenApiAppServicesMarket24HrTickerExtendItem> | null;
+};
+
 export type Ex3ExchangeOpenApiAppServicesGetSwapOutput = {
   items?: Array<Ex3ExchangeOpenApiAppServicesGetSwapOutputItem> | null;
 };
@@ -100,6 +104,57 @@ export type Ex3ExchangeOpenApiAppServicesKlineItem = {
    * timestamp of kline
    */
   t: unknown;
+};
+
+export type Ex3ExchangeOpenApiAppServicesMarket24HrTickerExtendItem = {
+  /**
+   * the market id.
+   */
+  id?: string;
+  /**
+   * The open price of the trading pair in the last 24 hours.
+   */
+  o?: string;
+  /**
+   * The highest price of the trading pair in the last 24 hours.
+   */
+  h?: string;
+  /**
+   * The lowest price of the trading pair in the last 24 hours.
+   */
+  l?: string;
+  /**
+   * The close price of the trading pair in the last 24 hours.
+   */
+  c?: string;
+  /**
+   * The volume of the trading pair in the last 24 hours.
+   */
+  v?: string;
+  /**
+   * The amount of the trading pair in the last 24 hours.
+   */
+  a?: string;
+  /**
+   * time of the ticker update.
+   */
+  t?: unknown;
+  /**
+   * The last price converted to USD.
+   */
+  lpusd?: string;
+  /**
+   * The 24-hour trading volume in USD.
+   */
+  ausd?: string;
+  /**
+   * The base asset symbol.
+   */
+  bas?: string | null;
+  /**
+   * The quote asset symbol.
+   */
+  qas?: string | null;
 };
 
 export type Ex3ExchangeOpenApiAppServicesMarket24HrTickerItem = {
@@ -221,6 +276,13 @@ export type Ex3ExchangeOpenApiAppServicesOpenApiResult1Ex3ExchangeOpenApiAppServ
     code?: number;
     message?: string | null;
     data?: Ex3ExchangeOpenApiAppServicesGet24HrTickerOutput;
+  };
+
+export type Ex3ExchangeOpenApiAppServicesOpenApiResult1Ex3ExchangeOpenApiAppServicesGet24HrTickerOutputExtend_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null =
+  {
+    code?: number;
+    message?: string | null;
+    data?: Ex3ExchangeOpenApiAppServicesGet24HrTickerOutputExtend;
   };
 
 export type Ex3ExchangeOpenApiAppServicesOpenApiResult1Ex3ExchangeOpenApiAppServicesGetSwapOutput_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null =
@@ -868,6 +930,14 @@ export type GetV1MarketsTickerData = {
      * The market id.
      */
     MarketId?: string;
+    /**
+     * Filter markets by chain IDs (optional).
+     */
+    ChainIds?: Array<string>;
+    /**
+     * Filter markets by chain asset types (optional).
+     */
+    ChainAssetTypes?: Array<string>;
   };
   url: '/v1/markets/ticker';
 };
@@ -909,6 +979,65 @@ export type GetV1MarketsTickerResponses = {
 };
 
 export type GetV1MarketsTickerResponse = GetV1MarketsTickerResponses[keyof GetV1MarketsTickerResponses];
+
+export type GetV1MarketsTickerExtendedData = {
+  body?: never;
+  path?: never;
+  query?: {
+    /**
+     * The market id.
+     */
+    MarketId?: string;
+    /**
+     * Filter markets by chain IDs (optional).
+     */
+    ChainIds?: Array<string>;
+    /**
+     * Filter markets by chain asset types (optional).
+     */
+    ChainAssetTypes?: Array<string>;
+  };
+  url: '/v1/markets/ticker/extended';
+};
+
+export type GetV1MarketsTickerExtendedErrors = {
+  /**
+   * Bad Request
+   */
+  400: VoloAbpHttpRemoteServiceErrorResponse;
+  /**
+   * Unauthorized
+   */
+  401: VoloAbpHttpRemoteServiceErrorResponse;
+  /**
+   * Forbidden
+   */
+  403: VoloAbpHttpRemoteServiceErrorResponse;
+  /**
+   * Not Found
+   */
+  404: VoloAbpHttpRemoteServiceErrorResponse;
+  /**
+   * Internal Server Error
+   */
+  500: VoloAbpHttpRemoteServiceErrorResponse;
+  /**
+   * Not Implemented
+   */
+  501: VoloAbpHttpRemoteServiceErrorResponse;
+};
+
+export type GetV1MarketsTickerExtendedError = GetV1MarketsTickerExtendedErrors[keyof GetV1MarketsTickerExtendedErrors];
+
+export type GetV1MarketsTickerExtendedResponses = {
+  /**
+   * OK
+   */
+  200: Ex3ExchangeOpenApiAppServicesOpenApiResult1Ex3ExchangeOpenApiAppServicesGet24HrTickerOutputExtend_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null;
+};
+
+export type GetV1MarketsTickerExtendedResponse =
+  GetV1MarketsTickerExtendedResponses[keyof GetV1MarketsTickerExtendedResponses];
 
 export type GetV1MarketKlineData = {
   body?: never;

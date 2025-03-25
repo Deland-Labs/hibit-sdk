@@ -1,29 +1,23 @@
-import { AssetInfo, ChainId, GetAssetsInput, PageResponse } from '../../src';
+import { ChainId, GetMarket24HrTickerInput, Market24HrTickerInfo } from '../../src';
 import { HibitClient } from '../../src/hibit-client';
 import Section from './Section';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { object, number, string } from 'yup';
+import { object, string } from 'yup';
 import FormField from './FormField';
-import ChainIdSelector from './ChainIdSelector';
-import AssetTypeSelector from './AssetTypeSelector';
+import ChainIdSelector from './ChainIdSelector.tsx';
+import AssetTypeSelector from './AssetTypeSelector.tsx';
 
 const schema = object({
+  marketId: string(),
   chainIds: object().nullable(),
-  chainAssetTypes: object().nullable(),
-  limit: number()
-    .nullable()
-    .transform((value, original) => (original === '' ? null : value)),
-  offset: number()
-    .nullable()
-    .transform((value, original) => (original === '' ? null : value)),
-  orderBy: string()
+  chainAssetTypes: object().nullable()
 });
 
-export default function SectionGetAssets({ client }: { client: HibitClient }) {
+export default function SectionGetMarkets24HrTickerExtended({ client }: { client: HibitClient }) {
   const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState<PageResponse<AssetInfo> | null>(null);
+  const [result, setResult] = useState<Array<Market24HrTickerInfo> | null>(null);
   const [error, setError] = useState<string>('');
   const [selectedAssetTypes, setSelectedAssetTypes] = useState<number[]>([]);
   const [selectedChainIds, setSelectedChainIds] = useState<ChainId[]>([]);
@@ -41,14 +35,12 @@ export default function SectionGetAssets({ client }: { client: HibitClient }) {
     setResult(null);
     setError('');
     try {
-      const req: GetAssetsInput = {
+      const req: GetMarket24HrTickerInput = {
+        marketId: input.marketId ? BigInt(input.marketId) : undefined,
         chainIds: selectedChainIds.length > 0 ? selectedChainIds : undefined,
-        chainAssetTypes: selectedAssetTypes.length > 0 ? selectedAssetTypes : undefined,
-        limit: input.limit ?? undefined,
-        offset: input.offset ?? undefined,
-        orderBy: input.orderBy || undefined
+        chainAssetTypes: selectedAssetTypes.length > 0 ? selectedAssetTypes : undefined
       };
-      setResult(await client.getAssets(req));
+      setResult(await client.getMarkets24HrTickerExtended(req));
     } catch (e: any) {
       setError(e.message ?? JSON.stringify(e));
     } finally {
@@ -58,24 +50,18 @@ export default function SectionGetAssets({ client }: { client: HibitClient }) {
 
   return (
     <Section
-      title="GetAssets"
+      title="GetMarkets24HrTickerExtended"
       form={
         <div className="flex flex-col gap-2">
+          <FormField label="MarketId" error={errors.marketId}>
+            <input type="number" className="input" {...register('marketId')} />
+          </FormField>
           <ChainIdSelector selectedChainIds={selectedChainIds} onChange={setSelectedChainIds} error={errors.chainIds} />
           <AssetTypeSelector
             selectedAssetTypes={selectedAssetTypes}
             onChange={setSelectedAssetTypes}
             error={errors.chainAssetTypes}
           />
-          <FormField label="Limit" error={errors.limit}>
-            <input type="number" className="input" {...register('limit')} />
-          </FormField>
-          <FormField label="Offset" error={errors.offset}>
-            <input type="number" className="input" {...register('offset')} />
-          </FormField>
-          <FormField label="OrderBy" error={errors.orderBy}>
-            <input type="text" className="input" {...register('orderBy')} />
-          </FormField>
           <button className="btn" onClick={submit} disabled={loading}>
             {loading ? 'Loading...' : 'Submit'}
           </button>

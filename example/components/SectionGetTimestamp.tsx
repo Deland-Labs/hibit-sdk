@@ -30,6 +30,7 @@ export default function SectionGetTimestamp({ client }: { client: HibitClient })
           </button>
         </div>
       }
+      loading={loading}
       result={result}
       error={error}
     />

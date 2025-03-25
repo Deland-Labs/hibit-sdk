@@ -65,6 +65,7 @@ export default function SectionGetOrder({ client }: { client: HibitClient }) {
           </button>
         </div>
       }
+      loading={loading}
       result={result}
       error={error}
     />

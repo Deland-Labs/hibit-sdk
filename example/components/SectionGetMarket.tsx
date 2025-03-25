@@ -51,6 +51,7 @@ export default function SectionGetMarket({ client }: { client: HibitClient }) {
           </button>
         </div>
       }
+      loading={loading}
       result={result}
       error={error}
     />

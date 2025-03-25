@@ -65,10 +65,15 @@ describe('Hibit Client Test', () => {
       await expect(hibitClient.getMarket(999999n)).rejects.toThrow();
     });
 
-    it('should get market tickers', async () => {
-      const tickers = await hibitClient.getMarketsTicker();
+    it('should get market 24 tickers', async () => {
+      const tickers = await hibitClient.getMarkets24HrTicker();
       expect(tickers).toBeInstanceOf(Array);
       expect(tickers.length).toBeGreaterThan(0);
+    });
+
+    it('should get market 24 ticker extended', async () => {
+      const ticker = await hibitClient.getMarkets24HrTickerExtended();
+      expect(ticker).toBeInstanceOf(Object);
     });
 
     it('should get market kline', async () => {

@@ -23,6 +23,9 @@ import type {
   GetV1MarketsTickerData,
   GetV1MarketsTickerResponse,
   GetV1MarketsTickerError,
+  GetV1MarketsTickerExtendedData,
+  GetV1MarketsTickerExtendedResponse,
+  GetV1MarketsTickerExtendedError,
   GetV1MarketKlineData,
   GetV1MarketKlineResponse,
   GetV1MarketKlineError,
@@ -144,13 +147,29 @@ export const getV1MarketsSwap = <ThrowOnError extends boolean = false>(
 };
 
 /**
- * get the ticker of the market which is the last 24 hours
+ * Gets the 24-hour ticker info for markets
  */
 export const getV1MarketsTicker = <ThrowOnError extends boolean = false>(
   options?: Options<GetV1MarketsTickerData, ThrowOnError>
 ) => {
   return (options?.client ?? _heyApiClient).get<GetV1MarketsTickerResponse, GetV1MarketsTickerError, ThrowOnError>({
     url: '/v1/markets/ticker',
+    ...options
+  });
+};
+
+/**
+ * Gets the extended 24-hour ticker info for markets
+ */
+export const getV1MarketsTickerExtended = <ThrowOnError extends boolean = false>(
+  options?: Options<GetV1MarketsTickerExtendedData, ThrowOnError>
+) => {
+  return (options?.client ?? _heyApiClient).get<
+    GetV1MarketsTickerExtendedResponse,
+    GetV1MarketsTickerExtendedError,
+    ThrowOnError
+  >({
+    url: '/v1/markets/ticker/extended',
     ...options
   });
 };

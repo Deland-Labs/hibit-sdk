@@ -60,6 +60,7 @@ export default function SectionGetWalletBalances({ client }: { client: HibitClie
           </button>
         </div>
       }
+      loading={loading}
       result={result}
       error={error}
     />

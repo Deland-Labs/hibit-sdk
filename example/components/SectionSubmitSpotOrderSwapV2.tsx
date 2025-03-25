@@ -162,6 +162,7 @@ export default function SectionSubmitSpotOrderSwapV2({ client }: { client: Hibit
           </button>
         </div>
       }
+      loading={loading}
       result={result}
       error={error}
     />
