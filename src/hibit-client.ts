@@ -15,7 +15,7 @@ import {
   MarketInfo,
   MarketKlineItem,
   MarketSwapInfo,
-  MarketTickerInfo,
+  Market24HrTickerInfo,
   Trade,
   CancelSpotOrderInput,
   GetOrdersInput,
@@ -25,7 +25,9 @@ import {
   GetWalletBalancesInput,
   DecimalOptions,
   HibitNetwork,
-  GetOrderInput
+  GetOrderInput,
+  GetMarket24HrTickerInput,
+  Market24HrTickerExtendInfo
 } from './types';
 import {
   getV1Assets,
@@ -45,7 +47,8 @@ import {
   getV1Market,
   postV1TxCancelSpotOrder,
   getV1Asset,
-  getV1Order
+  getV1Order,
+  getV1MarketsTickerExtended
 } from './openapi';
 import { mapChainInfo } from './types/chain';
 import { mapAssetInfo, mapGetAssetInput, mapGetAssetsInput } from './types/asset';
@@ -61,8 +64,10 @@ import {
   mapMarketInfo,
   mapMarketKlineInfo,
   mapMarketSwapInfo,
-  mapMarketTickerInfo,
-  mapMarketTradeInfo
+  mapMarket24HrTickerInfo,
+  mapMarketTradeInfo,
+  mapGetMarkets24HrTickerInput,
+  mapMarket24HrTickerExtendInfo
 } from './types/market';
 import {
   mapGetOrdersInput,
@@ -138,12 +143,20 @@ export interface IHibitClient {
   getMarket(marketId: bigint): Promise<MarketInfo>;
 
   /**
-   * Get the ticker information for markets.
+   * Get the 24-hour ticker information for markets.
    *
-   * @param { bigint} marketId - The market id to get the ticker information for. If not provided, all market tickers are returned.
-   * @returns {Promise<PageResponse<MarketTickerInfo>>} A promise that resolves to the list of market tickers.
+   * @param {GetMarket24HrTickerInput} input - The input parameters for getting market tickers.
+   * @returns {Promise<PageResponse<Market24HrTickerInfo>>} A promise that resolves to the list of market tickers.
    */
-  getMarketsTicker(marketId?: bigint): Promise<Array<MarketTickerInfo>>;
+  getMarkets24HrTicker(input?: GetMarket24HrTickerInput): Promise<Array<Market24HrTickerInfo>>;
+
+  /**
+   * Get the extended 24-hour ticker information for markets.
+   *
+   * @param {GetMarket24HrTickerInput} input - The input parameters for getting market tickers.
+   * @returns {Promise<Array<Market24HrTickerExtendInfo>>} A promise that resolves to the list of extended market tickers.
+   */
+  getMarkets24HrTickerExtended(input?: GetMarket24HrTickerInput): Promise<Array<Market24HrTickerExtendInfo>>;
 
   /**
    * Get the swap information for markets.
@@ -322,13 +335,31 @@ export class HibitClient implements IHibitClient {
     return mapMarketInfo(response.data!.data!);
   }
 
-  async getMarketsTicker(marketId?: bigint): Promise<Array<MarketTickerInfo>> {
+  async getMarketsTicker(marketId?: bigint): Promise<Array<Market24HrTickerInfo>> {
     const apiName = 'getMarketsTicker';
     const response = await getV1MarketsTicker(mapGetMarketsTickerInput(marketId));
 
     this.ensureSuccess(apiName, response.data);
 
-    return response.data!.data!.items!.map((ticker) => mapMarketTickerInfo(ticker));
+    return response.data!.data!.items!.map((ticker) => mapMarket24HrTickerInfo(ticker));
+  }
+
+  async getMarkets24HrTicker(input?: GetMarket24HrTickerInput): Promise<Array<Market24HrTickerInfo>> {
+    const apiName = 'getMarkets24HrTicker';
+    const response = await getV1MarketsTicker(mapGetMarkets24HrTickerInput(input || {}));
+
+    this.ensureSuccess(apiName, response.data);
+
+    return response.data!.data!.items!.map((ticker) => mapMarket24HrTickerInfo(ticker));
+  }
+
+  async getMarkets24HrTickerExtended(input?: GetMarket24HrTickerInput): Promise<Array<Market24HrTickerExtendInfo>> {
+    const apiName = 'getMarkets24HrTickerExtended';
+    const response = await getV1MarketsTickerExtended(mapGetMarkets24HrTickerInput(input || {}));
+
+    this.ensureSuccess(apiName, response.data);
+
+    return response.data!.data!.items!.map((ticker) => mapMarket24HrTickerExtendInfo(ticker));
   }
 
   async getMarketsSwapInfo(marketId?: bigint): Promise<Array<MarketSwapInfo>> {

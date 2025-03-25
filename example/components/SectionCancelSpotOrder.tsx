@@ -105,6 +105,7 @@ export default function SectionCancelSpotOrder({ client }: { client: HibitClient
           </button>
         </div>
       }
+      loading={loading}
       result={result}
       error={error}
     />

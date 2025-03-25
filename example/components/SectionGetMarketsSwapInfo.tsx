@@ -51,6 +51,7 @@ export default function SectionGetMarketsSwapInfo({ client }: { client: HibitCli
           </button>
         </div>
       }
+      loading={loading}
       result={result}
       error={error}
     />

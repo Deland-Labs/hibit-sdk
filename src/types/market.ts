@@ -12,10 +12,11 @@ import {
   GetV1MarketTradeData,
   GetV1MarketDepthData,
   GetV1MarketData,
-  GetV1MarketsSwapData
+  GetV1MarketsSwapData,
+  Ex3ExchangeOpenApiAppServicesMarket24HrTickerExtendItem
 } from '../openapi';
 import { ChainAssetType, DepthIndex, OrderSide, TickSpace } from './enums';
-import { ChainId } from './chain.ts';
+import { ChainId } from './chain';
 
 export type GetMarketsInput = {
   /**
@@ -54,6 +55,21 @@ export type GetMarketsInput = {
   orderBy?: string;
 };
 
+export type GetMarket24HrTickerInput = {
+  /**
+   * The market id.
+   */
+  marketId?: bigint;
+  /**
+   * Filter markets by chain IDs (optional).
+   */
+  chainIds?: Array<ChainId>;
+  /**
+   * Filter markets by chain asset types (optional).
+   */
+  chainAssetTypes?: Array<ChainAssetType>;
+};
+
 export type MarketInfo = {
   /**
    * market id
@@ -77,7 +93,7 @@ export type MarketInfo = {
   depthLevels: Array<number>;
 };
 
-export type MarketTickerInfo = {
+export type Market24HrTickerInfo = {
   /**
    * The market id.
    */
@@ -112,6 +128,24 @@ export type MarketTickerInfo = {
   timestamp: number;
 };
 
+export type Market24HrTickerExtendInfo = Market24HrTickerInfo & {
+  /**
+   * The last price of the trading pair in USD.
+   */
+  lastPriceInUsd: number;
+  /**
+   * The total amount of the trading pair in USD.
+   */
+  amountInUsd: number;
+  /**
+   * The symbol of the base asset.
+   */
+  baseAssetSymbol: string;
+  /**
+   * The symbol of the quote asset.
+   */
+  quoteAssetSymbol: string;
+};
 export type GetMarketKlineInput = {
   /**
    * The market id.
@@ -340,7 +374,17 @@ export function mapGetMarketsTickerInput(marketId: bigint | undefined): Options<
   };
 }
 
-export function mapMarketTickerInfo(data: Ex3ExchangeOpenApiAppServicesMarket24HrTickerItem): MarketTickerInfo {
+export function mapGetMarkets24HrTickerInput(input: GetMarket24HrTickerInput): Options<GetV1MarketsTickerData> {
+  return {
+    query: {
+      MarketId: input.marketId ? String(input.marketId) : undefined,
+      ChainIds: input.chainIds?.map((chainId) => chainId.toString()),
+      ChainAssetTypes: input.chainAssetTypes?.map((type) => type.toString())
+    }
+  };
+}
+
+export function mapMarket24HrTickerInfo(data: Ex3ExchangeOpenApiAppServicesMarket24HrTickerItem): Market24HrTickerInfo {
   return {
     id: BigInt(data.id!),
     open: Number(data.o),
@@ -350,6 +394,25 @@ export function mapMarketTickerInfo(data: Ex3ExchangeOpenApiAppServicesMarket24H
     volume: Number(data.v),
     amount: Number(data.a),
     timestamp: Number(data.t)
+  };
+}
+
+export function mapMarket24HrTickerExtendInfo(
+  data: Ex3ExchangeOpenApiAppServicesMarket24HrTickerExtendItem
+): Market24HrTickerExtendInfo {
+  return {
+    id: BigInt(data.id!),
+    open: Number(data.o),
+    high: Number(data.h),
+    low: Number(data.l),
+    close: Number(data.c),
+    volume: Number(data.v),
+    amount: Number(data.a),
+    timestamp: Number(data.t),
+    lastPriceInUsd: Number(data.lpusd),
+    amountInUsd: Number(data.ausd),
+    baseAssetSymbol: data.bas!,
+    quoteAssetSymbol: data.qas!
   };
 }
 

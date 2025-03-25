@@ -5,6 +5,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { object, string } from 'yup';
 import FormField from './FormField';
+import { useEffect } from 'react';
 
 const schema = object({
   network: string().oneOf(Object.values(HibitNetwork).map(String)).required(),
@@ -22,24 +23,29 @@ export default function SectionSetOptions({
   const {
     register,
     control,
-    handleSubmit,
-    formState: { errors }
+    watch,
+    formState: { errors, isValid }
   } = useForm({
     defaultValues: {
       network: defaultOptions.network,
       hin: defaultOptions.hin?.toString() ?? '',
       proxyKey: defaultOptions.proxyKey
     },
-    resolver: yupResolver(schema)
+    resolver: yupResolver(schema),
+    mode: 'onChange'
   });
 
-  const submit = handleSubmit(async (input) => {
-    client.setOptions({
-      network: input.network as HibitNetwork,
-      hin: BigInt(input.hin),
-      proxyKey: input.proxyKey
-    });
-  });
+  const formValues = watch();
+
+  useEffect(() => {
+    if (isValid && formValues.hin && formValues.proxyKey) {
+      client.setOptions({
+        network: formValues.network as HibitNetwork,
+        hin: BigInt(formValues.hin),
+        proxyKey: formValues.proxyKey
+      });
+    }
+  }, [formValues, isValid, client]);
 
   return (
     <Section
@@ -78,9 +84,6 @@ export default function SectionSetOptions({
             <input type="text" className="input" {...register('proxyKey')} />
           </FormField>
           <div className="flex items-center gap-2">
-            <button className="btn self-start" onClick={submit}>
-              Update Options
-            </button>
             <a
               href="https://docs.hibit.app/developers/getting-your-proxy-key"
               target="_blank"
