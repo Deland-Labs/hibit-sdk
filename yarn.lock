@@ -201,9 +201,9 @@
     levn "^0.4.1"
 
 "@hey-api/client-fetch@^0.8.1":
-  version "0.8.1"
-  resolved "https://registry.npmjs.org/@hey-api/client-fetch/-/client-fetch-0.8.1.tgz"
-  integrity sha512-AaVNVLBl7N9Fun7QDnb00YDubAFjB9ICi5U6kmzcJSnnQTQGRMsuBBRupQV5ERdMMFt71zjSDym7Z+gLVe8m3A==
+  version "0.8.4"
+  resolved "https://registry.yarnpkg.com/@hey-api/client-fetch/-/client-fetch-0.8.4.tgz#2dc2d368b4dd2137789f46adcae68ccd04ea2adb"
+  integrity sha512-SWtUjVEFIUdiJGR2NiuF0njsSrSdTe7WHWkp3BLH3DEl2bRhiflOnBo29NSDdrY90hjtTQiTQkBxUgGOF29Xzg==
 
 "@hey-api/json-schema-ref-parser@1.0.2":
   version "1.0.2"
