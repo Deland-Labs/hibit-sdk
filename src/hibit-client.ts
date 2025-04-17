@@ -27,7 +27,9 @@ import {
   HibitNetwork,
   GetOrderInput,
   GetMarket24HrTickerInput,
-  Market24HrTickerExtendInfo
+  Market24HrTickerExtendInfo,
+  GetAssetInput,
+  GetChainBalancesInput
 } from './types';
 import {
   getV1Assets,
@@ -48,10 +50,11 @@ import {
   postV1TxCancelSpotOrder,
   getV1Asset,
   getV1Order,
-  getV1MarketsTickerExtended
+  getV1MarketsTickerExtended,
+  getV1ChainBalances
 } from './openapi';
 import { mapChainInfo } from './types/chain';
-import { mapAssetInfo, mapGetAssetInput, mapGetAssetsInput } from './types/asset';
+import { mapAssetInfo, mapGetAssetInput, mapGetAssetsInput, mapGetChainBalancesInput } from './types/asset';
 import {
   mapGetMarketDepthInput,
   mapGetMarketInput,
@@ -121,10 +124,19 @@ export interface IHibitClient {
   /**
    * Get the asset information.
    *
-   * @param {bigint} assetId - The asset id to get the information for.
-   * @returns {Promise<AssetInfo>} A promise that resolves to the asset information.
+   * @param {GetAssetInput} input - The input parameters for getting asset information.
+   * @returns {Promise<AssetInfo[]>} A promise that resolves to the asset information.
    */
-  getAsset(assetId: bigint): Promise<AssetInfo>;
+  getAsset(input: GetAssetInput): Promise<AssetInfo[]>;
+
+  /**
+   * Retrieves the balances of assets on a specific chain.
+   *
+   * @param {GetChainBalancesInput} input - The input parameters for getting chain balances.
+   * @returns {Promise<Map<string, BigNumber>>} A promise that resolves to a map where the key is the asset ID (bigint)
+   * and the value is the balance (BigNumber).
+   */
+  getChainBalances(input: GetChainBalancesInput): Promise<Map<string, BigNumber>>;
 
   /**
    * Get the list of markets.
@@ -301,13 +313,25 @@ export class HibitClient implements IHibitClient {
     } as PageResponse<AssetInfo>;
   }
 
-  async getAsset(assetId: bigint): Promise<AssetInfo> {
+  async getAsset(input: GetAssetInput): Promise<AssetInfo[]> {
     const apiName = 'getAsset';
-    const response = await getV1Asset(mapGetAssetInput(assetId));
+    const response = await getV1Asset(mapGetAssetInput(input));
+
+    this.ensureSuccess(apiName, response.data);
+    return response.data!.data!.map((asset) => mapAssetInfo(asset));
+  }
+
+  async getChainBalances(input: GetChainBalancesInput): Promise<Map<string, BigNumber>> {
+    const apiName = 'getChainBalances';
+    const response = await getV1ChainBalances(mapGetChainBalancesInput(input));
 
     this.ensureSuccess(apiName, response.data);
 
-    return mapAssetInfo(response.data!.data!);
+    const result = new Map<string, BigNumber>();
+    for (const [assetId, balance] of Object.entries(response!.data!.data as Record<string, string>)) {
+      result.set(assetId, BigNumber(balance));
+    }
+    return result;
   }
 
   /*-------------basic end----------------*/
