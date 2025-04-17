@@ -68,7 +68,7 @@ export type Ex3BrokerApiAppServicesDtosSwapInput = {
   /**
    * The public key of the wallet that initiated the swap operation.
    */
-  sourceWalletPublicKey?: string;
+  sourceWalletPublicKey?: string | null;
   /**
    * The address of the wallet that initiated the swap operation.
    */
@@ -125,6 +125,7 @@ export type Ex3BrokerApiAppServicesDtosSwapInput = {
    * The minimum amount of target asset to be received, expressed in the smallest unit
    */
   targetVolumeMin?: string;
+  signatureSchema?: Ex3ModelsWalletSignatureSchema;
   /**
    * The signature of the swap operation.
    */
@@ -204,6 +205,11 @@ export type Ex3BrokerApiOpenApiResult1Ex3BrokerApiAppServicesDtosSwapOutput_Ex3B
     message?: string | null;
     data?: Ex3BrokerApiAppServicesDtosSwapOutput;
   };
+
+/**
+ * Represents the schema of a wallet signature.
+ */
+export type Ex3ModelsWalletSignatureSchema = 1000 | 1001 | 1002 | 2000 | 2010 | 2020 | 3000 | 3010;
 
 export type VoloAbpAspNetCoreMvcApplicationConfigurationsApplicationAuthConfigurationDto = {
   grantedPolicies?: {

@@ -8,7 +8,7 @@ import {
   GetV1QuoteData,
   PostV1SwapData
 } from '../broker-api';
-import { ChainAssetType } from './enums';
+import { ChainAssetType, WalletSignatureSchema } from './enums';
 
 export type GetPaymentAddressInput = {
   /**
@@ -100,76 +100,151 @@ export type QuoteResult = {
   targetVolumeInUsd: number;
 };
 
-export type SwapInput = {
+export class SwapInput {
   /**
    * The HIN of the agent that initiated the swap operation.
    */
   hin: bigint;
+
   /**
    * The public key of the wallet that initiated the swap operation.
    */
   sourceWalletPublicKey: string;
+
   /**
    * The address of the wallet that initiated the swap operation.
    */
   sourceWalletAddress: string;
+
   /**
    * A unique identifier for the fund transfer tx.
    * For example, the hash of the transaction on the source blockchain.
    */
   txRef: string;
+
   /**
    * The blockchain where the source asset currently resides
    */
   sourceChainId: ChainId;
+
   /**
    * The type of the source asset (Native, SPL, ERC20, KRC20 etc.).
    * Determines how the asset is identified and processed.
    */
   sourceAssetType?: ChainAssetType;
+
   /**
    * The identifier for the source asset - either a contract address for tokens or a ticker symbol.
    * Should be null when SourceAssetType is Native (e.g., BTC, ETH, KAS).
    */
   sourceAsset?: string;
+
   /**
    * The amount of source asset to be exchanged/transferred, expressed in the smallest unit
    * of the asset (e.g., satoshi for Bitcoin, wei for Ethereum).
    */
   sourceVolume: bigint;
+
   /**
    * The destination blockchain for the exchange operation.
    * When null, the system will use the same chain as the source (intra-chain operation).
    */
   targetChainId?: ChainId;
+
   /**
    * The destination wallet address where the target assets will be sent.
    * When null, the system will use the source wallet address as the destination.
    */
   targetWalletAddress?: string;
+
   /**
    * The type of the target asset to receive.
    * When null, the system will use the same asset type as the source.
    */
   targetAssetType?: ChainAssetType;
+
   /**
    * The identifier for the target asset - either a contract address for tokens or a ticker symbol.
    * Should be null when TargetAssetType is Native (e.g., BTC, ETH, KAS).
    */
   targetAsset?: string;
+
   /**
    * The amount of target asset to be received, expressed in the smallest unit
    */
   targetVolume: bigint;
+
   /**
    * The minimum amount of target asset to be received, expressed in the smallest unit
    */
   targetVolumeMin: bigint;
+
+  /**
+   * The schema of the wallet signature used to sign the swap operation.
+   */
+  signatureSchema?: WalletSignatureSchema;
+
   /**
    * The signature of the swap operation.
    */
-  signature: string;
-};
+  signature?: string;
+
+  constructor(params: {
+    hin: bigint;
+    sourceWalletPublicKey: string;
+    sourceWalletAddress: string;
+    txRef: string;
+    sourceChainId: ChainId;
+    sourceVolume: bigint;
+    targetVolume: bigint;
+    targetVolumeMin: bigint;
+    sourceAssetType?: ChainAssetType;
+    sourceAsset?: string;
+    targetChainId?: ChainId;
+    targetWalletAddress?: string;
+    targetAssetType?: ChainAssetType;
+    targetAsset?: string;
+  }) {
+    this.hin = params.hin;
+    this.sourceWalletPublicKey = params.sourceWalletPublicKey;
+    this.sourceWalletAddress = params.sourceWalletAddress;
+    this.txRef = params.txRef;
+    this.sourceChainId = params.sourceChainId;
+    this.sourceAssetType = params.sourceAssetType;
+    this.sourceAsset = params.sourceAsset;
+    this.sourceVolume = params.sourceVolume;
+    this.targetChainId = params.targetChainId;
+    this.targetWalletAddress = params.targetWalletAddress;
+    this.targetAssetType = params.targetAssetType;
+    this.targetAsset = params.targetAsset;
+    this.targetVolume = params.targetVolume;
+    this.targetVolumeMin = params.targetVolumeMin;
+  }
+
+  toJson(): string {
+    return JSON.stringify({
+      hin: this.hin.toString(),
+      sourceWalletPublicKey: this.sourceWalletPublicKey,
+      sourceWalletAddress: this.sourceWalletAddress,
+      txRef: this.txRef,
+      sourceChainId: this.sourceChainId.toString(),
+      sourceAssetType: this.sourceAssetType?.toString(),
+      sourceAsset: this.sourceAsset,
+      sourceVolume: this.sourceVolume.toString(),
+      targetChainId: this.targetChainId?.toString(),
+      targetWalletAddress: this.targetWalletAddress,
+      targetAssetType: this.targetAssetType?.toString(),
+      targetAsset: this.targetAsset,
+      targetVolume: this.targetVolume.toString(),
+      targetVolumeMin: this.targetVolumeMin.toString()
+    });
+  }
+
+  setSignature(signature: string, schema: WalletSignatureSchema): void {
+    this.signature = signature;
+    this.signatureSchema = schema;
+  }
+}
 
 export enum AgentOrderStatus {
   /**

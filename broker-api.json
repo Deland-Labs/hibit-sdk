@@ -12,6 +12,7 @@
       "url": "https://brokerapi.hibit.app"
     }
   ],
+
   "paths": {
     "/v1/payment-address": {
       "get": {
@@ -804,7 +805,8 @@
           },
           "sourceWalletPublicKey": {
             "type": "string",
-            "description": "The public key of the wallet that initiated the swap operation."
+            "description": "The public key of the wallet that initiated the swap operation.",
+            "nullable": true
           },
           "sourceWalletAddress": {
             "type": "string",
@@ -862,6 +864,9 @@
             "type": "string",
             "description": "The minimum amount of target asset to be received, expressed in the smallest unit",
             "format": "string"
+          },
+          "signatureSchema": {
+            "$ref": "#/components/schemas/Ex3.Models.WalletSignatureSchema"
           },
           "signature": {
             "type": "string",
@@ -961,6 +966,33 @@
         },
         "additionalProperties": false,
         "description": "result of open api"
+      },
+      "Ex3.Models.WalletSignatureSchema": {
+        "enum": [1000, 1001, 1002, 2000, 2010, 2020, 3000, 3010],
+        "type": "integer",
+        "description": "Represents the schema of a wallet signature.",
+        "format": "int32",
+        "x-enumNames": [
+          "BtcEcdsa",
+          "EvmEcdsa",
+          "TronEcdsa",
+          "TonEddsaOpenMask",
+          "SolanaEddsa",
+          "IcpEcdsa",
+          "BtcSchnorr",
+          "KaspaSchnorr"
+        ],
+        "x-enum-varnames": [
+          "BtcEcdsa",
+          "EvmEcdsa",
+          "TronEcdsa",
+          "TonEddsaOpenMask",
+          "SolanaEddsa",
+          "IcpEcdsa",
+          "BtcSchnorr",
+          "KaspaSchnorr"
+        ],
+        "x-enumDescriptions": []
       },
       "Volo.Abp.AspNetCore.Mvc.ApplicationConfigurations.ApplicationAuthConfigurationDto": {
         "type": "object",

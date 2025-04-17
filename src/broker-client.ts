@@ -12,7 +12,7 @@ import {
   SwapInput
 } from './types/broker';
 import { client } from './broker-api/client.gen';
-import { HexString, HibitNetwork } from './types';
+import { HibitNetwork } from './types';
 import { HIBIT_BROKER_API_ENDPOINT, HIBIT_TESTNET_BROKER_API_ENDPOINT } from './constant';
 import { HibitError } from './error';
 import { getV1Order, getV1PaymentAddress, getV1Quote, postV1Swap } from './broker-api';
@@ -25,18 +25,11 @@ export interface IBrokerClient {
 }
 
 export interface BrokerApiOptions {
-  proxyKey?: HexString;
-  hin?: bigint;
-
   network: HibitNetwork;
 }
 
 export class BrokerClient implements IBrokerClient {
-  private options?: BrokerApiOptions;
-
   setOptions(options: BrokerApiOptions): void {
-    this.options = options;
-
     client.setConfig({
       baseUrl: options.network === HibitNetwork.Testnet ? HIBIT_TESTNET_BROKER_API_ENDPOINT : HIBIT_BROKER_API_ENDPOINT
     });
