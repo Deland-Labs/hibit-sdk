@@ -5,6 +5,7 @@ export * from './enums';
 export type * from './market';
 export type * from './order';
 export type * from './wallet';
+export type * from './broker';
 export { Transaction } from './tx';
 
 export type HibitApiResponse = { code?: number; message?: string | null };

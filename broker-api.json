@@ -27,17 +27,9 @@
             }
           },
           {
-            "name": "Chain",
+            "name": "ChainId",
             "in": "query",
-            "description": "The blockchain type (e.g., Ethereum, Bitcoin) for the requested address.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "Network",
-            "in": "query",
-            "description": "The network configuration (e.g., Mainnet, Testnet) for the requested address.",
+            "description": "The chain of the payment address.",
             "schema": {
               "type": "string"
             }
@@ -194,17 +186,9 @@
         "description": "Quotes the exchange rate between two assets.",
         "parameters": [
           {
-            "name": "SourceChain",
+            "name": "SourceChainId",
             "in": "query",
             "description": "The blockchain where the source asset currently resides (e.g., Bitcoin, Ethereum, Kaspa).",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "SourceNetwork",
-            "in": "query",
-            "description": "The specific network of the source blockchain.\r\nEach chain type supports different networks with unique identifiers.",
             "schema": {
               "type": "string"
             }
@@ -235,17 +219,9 @@
             }
           },
           {
-            "name": "TargetChain",
+            "name": "TargetChainId",
             "in": "query",
             "description": "The destination blockchain for the exchange operation.\r\nWhen null, the system will use the same chain as the source (intra-chain operation).",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "TargetNetwork",
-            "in": "query",
-            "description": "The specific network on the target blockchain.\r\nWhen null, the system will use the same network as the source.",
             "schema": {
               "type": "string"
             }
@@ -421,7 +397,8 @@
             "in": "query",
             "description": "Agent order id",
             "schema": {
-              "$ref": "#/components/schemas/Ex3.Models.AgentOrderId"
+              "type": "string",
+              "format": "string"
             }
           }
         ],
@@ -770,13 +747,9 @@
       "Ex3.Broker.Api.AppServices.Dtos.QuoteResult": {
         "type": "object",
         "properties": {
-          "targetChain": {
+          "targetChainId": {
             "type": "string",
             "description": "The blockchain where the target asset resides (e.g., Ethereum, Bitcoin)."
-          },
-          "targetChainNetwork": {
-            "type": "string",
-            "description": "The network of the target blockchain."
           },
           "targetVolume": {
             "type": "string",
@@ -825,9 +798,9 @@
         "required": ["txRef"],
         "type": "object",
         "properties": {
-          "agentId": {
+          "hin": {
             "type": "string",
-            "description": "A unique identifier for the agent that initiated the swap operation."
+            "description": "The HIN of the agent that initiated the swap operation."
           },
           "sourceWalletPublicKey": {
             "type": "string",
@@ -842,13 +815,9 @@
             "description": "A unique identifier for the fund transfer tx.\r\nFor example, the hash of the transaction on the source blockchain.",
             "nullable": true
           },
-          "sourceChain": {
+          "sourceChainId": {
             "type": "string",
-            "description": "The blockchain where the source asset currently resides (e.g., Bitcoin, Ethereum, Kaspa)."
-          },
-          "sourceNetwork": {
-            "type": "string",
-            "description": "The specific network of the source blockchain.\r\nEach chain type supports different networks with unique identifiers."
+            "description": "The blockchain where the source asset currently resides"
           },
           "sourceAssetType": {
             "type": "string",
@@ -864,14 +833,9 @@
             "description": "The amount of source asset to be exchanged/transferred, expressed in the smallest unit\r\nof the asset (e.g., satoshi for Bitcoin, wei for Ethereum).",
             "format": "string"
           },
-          "targetChain": {
+          "targetChainId": {
             "type": "string",
             "description": "The destination blockchain for the exchange operation.\r\nWhen null, the system will use the same chain as the source (intra-chain operation).",
-            "nullable": true
-          },
-          "targetNetwork": {
-            "type": "string",
-            "description": "The specific network on the target blockchain.\r\nWhen null, the system will use the same network as the source.",
             "nullable": true
           },
           "targetWalletAddress": {
@@ -910,7 +874,9 @@
         "type": "object",
         "properties": {
           "agentOrderId": {
-            "$ref": "#/components/schemas/Ex3.Models.AgentOrderId"
+            "type": "string",
+            "description": "A unique identifier for the agent that initiated the swap operation.",
+            "format": "string"
           }
         },
         "additionalProperties": false,
@@ -995,17 +961,6 @@
         },
         "additionalProperties": false,
         "description": "result of open api"
-      },
-      "Ex3.Models.AgentOrderId": {
-        "type": "object",
-        "properties": {
-          "value": {
-            "type": "integer",
-            "format": "int128",
-            "readOnly": true
-          }
-        },
-        "additionalProperties": false
       },
       "Volo.Abp.AspNetCore.Mvc.ApplicationConfigurations.ApplicationAuthConfigurationDto": {
         "type": "object",
