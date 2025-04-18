@@ -1,19 +1,20 @@
-import { OrderTradeRecord } from '../../src';
-import { HibitClient } from '../../src/hibit-client';
-import Section from './Section';
+import { AssetInfo, GetAssetInput } from '../../../src';
+import { HibitClient } from '../../../src/hibit-client';
+import Section from '../Section';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { object, string } from 'yup';
-import FormField from './FormField';
+import FormField from '../FormField';
 
 const schema = object({
-  orderId: string().required()
+  assetId: string(),
+  tokenAddress: string()
 });
 
-export default function SectionGetOrderTrades({ client }: { client: HibitClient }) {
+export default function SectionGetAsset({ client }: { client: HibitClient }) {
   const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState<Array<OrderTradeRecord> | null>(null);
+  const [result, setResult] = useState<AssetInfo[] | null>(null);
   const [error, setError] = useState<string>('');
 
   const {
@@ -29,8 +30,11 @@ export default function SectionGetOrderTrades({ client }: { client: HibitClient 
     setResult(null);
     setError('');
     try {
-      const req = input.orderId;
-      setResult(await client.getOrderTrades(req));
+      const req: GetAssetInput = {
+        assetId: input.assetId,
+        tokenAddress: input.tokenAddress
+      };
+      setResult(await client.getAsset(req));
     } catch (e: any) {
       setError(e.message ?? JSON.stringify(e));
     } finally {
@@ -40,11 +44,14 @@ export default function SectionGetOrderTrades({ client }: { client: HibitClient 
 
   return (
     <Section
-      title="GetOrderTrades"
+      title="GetAsset"
       form={
         <div className="flex flex-col gap-2">
-          <FormField label="OrderId" error={errors.orderId} required>
-            <input type="text" className="input" {...register('orderId')} />
+          <FormField label="AssetId" error={errors.assetId}>
+            <input type="number" className="input" {...register('assetId')} />
+          </FormField>
+          <FormField label="TokenAddress" error={errors.tokenAddress}>
+            <input type="text" className="input" {...register('tokenAddress')} />
           </FormField>
           <button className="btn" onClick={submit} disabled={loading}>
             {loading ? 'Loading...' : 'Submit'}

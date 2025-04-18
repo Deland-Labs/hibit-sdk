@@ -1,35 +1,30 @@
-import { HibitNetwork } from '../../src';
-import { HibitApiOptions, HibitClient } from '../../src/hibit-client';
-import Section from './Section';
+import { HibitNetwork } from '../../../src';
+import Section from '../Section';
 import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { object, string } from 'yup';
-import FormField from './FormField';
+import FormField from '../FormField';
 import { useEffect } from 'react';
+import { BrokerApiOptions, BrokerClient } from '../../../src/broker-client';
 
 const schema = object({
-  network: string().oneOf(Object.values(HibitNetwork).map(String)).required(),
-  hin: string().required(),
-  proxyKey: string().required()
+  network: string().oneOf(Object.values(HibitNetwork).map(String)).required()
 });
 
-export default function SectionSetOptions({
+export default function SectionSetBrokerClientOptions({
   client,
   defaultOptions
 }: {
-  client: HibitClient;
-  defaultOptions: HibitApiOptions;
+  client: BrokerClient;
+  defaultOptions: BrokerApiOptions;
 }) {
   const {
-    register,
     control,
     watch,
     formState: { errors, isValid }
   } = useForm({
     defaultValues: {
-      network: defaultOptions.network,
-      hin: defaultOptions.hin?.toString() ?? '',
-      proxyKey: defaultOptions.proxyKey
+      network: defaultOptions.network
     },
     resolver: yupResolver(schema),
     mode: 'onChange'
@@ -38,18 +33,16 @@ export default function SectionSetOptions({
   const formValues = watch();
 
   useEffect(() => {
-    if (isValid && formValues.hin && formValues.proxyKey) {
+    if (isValid) {
       client.setOptions({
-        network: formValues.network as HibitNetwork,
-        hin: BigInt(formValues.hin),
-        proxyKey: formValues.proxyKey
+        network: formValues.network as HibitNetwork
       });
     }
   }, [formValues, isValid, client]);
 
   return (
     <Section
-      title="SDK Options Config"
+      title="Broker Client Options Config"
       form={
         <div className="flex flex-col gap-2">
           <FormField label="Network" error={errors.network} required>
@@ -77,22 +70,6 @@ export default function SectionSetOptions({
               )}
             />
           </FormField>
-          <FormField label="HIN" error={errors.hin} required>
-            <input type="number" className="input" {...register('hin')} />
-          </FormField>
-          <FormField label="Proxy Key" error={errors.proxyKey} required>
-            <input type="text" className="input" {...register('proxyKey')} />
-          </FormField>
-          <div className="flex items-center gap-2">
-            <a
-              href="https://docs.hibit.app/developers/getting-your-proxy-key"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-blue-500 underline"
-            >
-              How to get your HIN and Proxy Key?
-            </a>
-          </div>
         </div>
       }
       error={''}

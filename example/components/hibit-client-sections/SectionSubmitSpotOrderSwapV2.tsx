@@ -1,11 +1,11 @@
-import { DecimalOptions, OrderCategory, OrderSide, SubmitSpotOrderInput } from '../../src';
-import { HibitClient } from '../../src/hibit-client';
-import Section from './Section';
+import { DecimalOptions, OrderCategory, OrderSide, SubmitSpotOrderInput, SwapV2ExactTokensType } from '../../../src';
+import { HibitClient } from '../../../src/hibit-client';
+import Section from '../Section';
 import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { object, number, string } from 'yup';
-import FormField from './FormField';
+import FormField from '../FormField';
 
 const schema = object({
   marketId: string().required(),
@@ -16,13 +16,25 @@ const schema = object({
         .map(Number)
     )
     .required(),
-  price: number().required(),
-  volume: number().required(),
+  exactTokensType: number()
+    .oneOf(
+      Object.keys(SwapV2ExactTokensType)
+        .filter((v) => !isNaN(Number(v)))
+        .map(Number)
+    )
+    .required(),
+  exactTokens: number().required(),
+  minOut: number()
+    .nullable()
+    .transform((value, original) => (original === '' ? null : value)),
+  maxIn: number()
+    .nullable()
+    .transform((value, original) => (original === '' ? null : value)),
   baseAssetDecimals: number().required(),
   quoteAssetDecimals: number().required()
 });
 
-export default function SectionSubmitSpotOrderLimit({ client }: { client: HibitClient }) {
+export default function SectionSubmitSpotOrderSwapV2({ client }: { client: HibitClient }) {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<boolean | null>(null);
   const [error, setError] = useState<string>('');
@@ -43,11 +55,13 @@ export default function SectionSubmitSpotOrderLimit({ client }: { client: HibitC
     try {
       const req: SubmitSpotOrderInput = {
         marketId: BigInt(input.marketId),
-        orderCategory: OrderCategory.LimitOrder,
-        limitOrderDetails: {
+        orderCategory: OrderCategory.SwapOrder,
+        swapV2OrderDetails: {
           orderSide: input.orderSide,
-          price: input.price,
-          volume: input.volume
+          exactTokensType: input.exactTokensType,
+          exactTokens: input.exactTokens,
+          minOut: input.minOut ?? undefined,
+          maxIn: input.maxIn ?? undefined
         }
       };
       const decimalOptions: DecimalOptions = {
@@ -66,7 +80,7 @@ export default function SectionSubmitSpotOrderLimit({ client }: { client: HibitC
 
   return (
     <Section
-      title="SubmitSpotOrderLimit"
+      title="SubmitSpotOrderSwapV2"
       form={
         <div className="flex flex-col gap-2">
           <FormField label="MarketId" error={errors.marketId} required>
@@ -84,7 +98,7 @@ export default function SectionSubmitSpotOrderLimit({ client }: { client: HibitC
                       <label key={key} className="flex items-center gap-1">
                         <span>{key}</span>
                         <input
-                          name="SubmitSpotOrderLimit-orderSide"
+                          name="SubmitSpotOrderSwapV2-orderSide"
                           type="radio"
                           value={Number(OrderSide[key as any])}
                           checked={field.value === Number(OrderSide[key as any])}
@@ -100,11 +114,42 @@ export default function SectionSubmitSpotOrderLimit({ client }: { client: HibitC
               )}
             />
           </FormField>
-          <FormField label="Price" error={errors.price} required>
-            <input type="number" className="input" {...register('price')} />
+          <FormField label="ExactTokensType" error={errors.exactTokensType} required>
+            <Controller
+              name="exactTokensType"
+              control={control}
+              render={({ field }) => (
+                <div className="flex items-center gap-3 flex-wrap">
+                  {Object.keys(SwapV2ExactTokensType)
+                    .filter((v) => isNaN(Number(v)))
+                    .map((key) => (
+                      <label key={key} className="flex items-center gap-1">
+                        <span>{key}</span>
+                        <input
+                          name="SubmitSpotOrderSwapV2-exactTokensType"
+                          type="radio"
+                          value={Number(SwapV2ExactTokensType[key as any])}
+                          checked={field.value === Number(SwapV2ExactTokensType[key as any])}
+                          onChange={(ev) => {
+                            if (ev.target.checked) {
+                              field.onChange(Number(SwapV2ExactTokensType[key as any]));
+                            }
+                          }}
+                        />
+                      </label>
+                    ))}
+                </div>
+              )}
+            />
           </FormField>
-          <FormField label="Volume" error={errors.volume} required>
-            <input type="number" className="input" {...register('volume')} />
+          <FormField label="ExactTokens" error={errors.exactTokens} required>
+            <input type="number" className="input" {...register('exactTokens')} />
+          </FormField>
+          <FormField label="MinOut" error={errors.minOut}>
+            <input type="number" className="input" {...register('minOut')} />
+          </FormField>
+          <FormField label="MaxIn" error={errors.maxIn}>
+            <input type="number" className="input" {...register('maxIn')} />
           </FormField>
           <FormField label="BaseAssetDecimals" error={errors.baseAssetDecimals} required>
             <input type="number" className="input" {...register('baseAssetDecimals')} />

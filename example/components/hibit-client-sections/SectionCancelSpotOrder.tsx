@@ -1,11 +1,11 @@
-import { CancelSpotOrderInput, OrderSide } from '../../src';
-import { HibitClient } from '../../src/hibit-client';
-import Section from './Section';
+import { CancelSpotOrderInput, OrderSide } from '../../../src';
+import { HibitClient } from '../../../src/hibit-client';
+import Section from '../Section';
 import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { object, number, string, boolean } from 'yup';
-import FormField from './FormField';
+import FormField from '../FormField';
 
 const schema = object({
   marketId: string(),

@@ -1,5 +1,11 @@
 @import 'tailwindcss';
 
+html,
+body,
+#root {
+  @apply h-screen overflow-hidden;
+}
+
 @layer components {
   .btn {
     @apply bg-blue-500 px-3 py-2 rounded text-white cursor-pointer disabled:opacity-50;

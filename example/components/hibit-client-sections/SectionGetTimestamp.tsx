@@ -1,5 +1,5 @@
-import { HibitClient } from '../../src/hibit-client';
-import Section from './Section';
+import { HibitClient } from '../../../src/hibit-client';
+import Section from '../Section';
 import { useState } from 'react';
 
 export default function SectionGetTimestamp({ client }: { client: HibitClient }) {

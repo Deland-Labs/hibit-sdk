@@ -1,27 +1,33 @@
-import { DepthIndex, GetMarketDepthInput, MarketDepth } from '../../src';
-import { HibitClient } from '../../src/hibit-client';
-import Section from './Section';
+import { GetMarketKlineInput, MarketKlineItem, PageResponse, TickSpace } from '../../../src';
+import { HibitClient } from '../../../src/hibit-client';
+import Section from '../Section';
 import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { object, number, string } from 'yup';
-import FormField from './FormField';
+import FormField from '../FormField';
 
 const schema = object({
-  index: number()
+  marketId: string().required(),
+  tickSpace: number()
     .oneOf(
-      Object.keys(DepthIndex)
+      Object.keys(TickSpace)
         .filter((v) => !isNaN(Number(v)))
         .map(Number)
     )
     .required(),
-  marketId: string().required(),
-  limit: number().required().min(1).max(100)
+  limit: number()
+    .nullable()
+    .transform((value, original) => (original === '' ? null : value)),
+  offset: number()
+    .nullable()
+    .transform((value, original) => (original === '' ? null : value)),
+  orderBy: string()
 });
 
-export default function SectionGetMarketDepth({ client }: { client: HibitClient }) {
+export default function SectionGetMarketKline({ client }: { client: HibitClient }) {
   const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState<MarketDepth | null>(null);
+  const [result, setResult] = useState<PageResponse<MarketKlineItem> | null>(null);
   const [error, setError] = useState<string>('');
 
   const {
@@ -30,9 +36,6 @@ export default function SectionGetMarketDepth({ client }: { client: HibitClient 
     handleSubmit,
     formState: { errors }
   } = useForm({
-    defaultValues: {
-      limit: 10
-    },
     resolver: yupResolver(schema)
   });
 
@@ -41,12 +44,14 @@ export default function SectionGetMarketDepth({ client }: { client: HibitClient 
     setResult(null);
     setError('');
     try {
-      const req: GetMarketDepthInput = {
-        index: input.index,
+      const req: GetMarketKlineInput = {
         marketId: BigInt(input.marketId),
-        limit: input.limit
+        tickSpace: input.tickSpace,
+        limit: input.limit ?? undefined,
+        offset: input.offset ?? undefined,
+        orderBy: input.orderBy || undefined
       };
-      setResult(await client.getMarketDepth(req));
+      setResult(await client.getMarketKline(req));
     } catch (e: any) {
       setError(e.message ?? JSON.stringify(e));
     } finally {
@@ -56,27 +61,30 @@ export default function SectionGetMarketDepth({ client }: { client: HibitClient 
 
   return (
     <Section
-      title="GetMarketDepth"
+      title="GetMarketKline"
       form={
         <div className="flex flex-col gap-2">
-          <FormField label="Index" error={errors.index} required>
+          <FormField label="MarketId" error={errors.marketId} required>
+            <input type="number" className="input" {...register('marketId')} />
+          </FormField>
+          <FormField label="TickSpace" error={errors.tickSpace} required>
             <Controller
-              name="index"
+              name="tickSpace"
               control={control}
               render={({ field }) => (
                 <div className="flex items-center gap-3 flex-wrap">
-                  {Object.keys(DepthIndex)
+                  {Object.keys(TickSpace)
                     .filter((v) => isNaN(Number(v)))
                     .map((key) => (
                       <label key={key} className="flex items-center gap-1">
                         <span>{key}</span>
                         <input
-                          name="getMarketDepth-index"
+                          name="getMarketKline-tickSpace"
                           type="radio"
-                          checked={field.value === Number(DepthIndex[key as any])}
+                          checked={field.value === Number(TickSpace[key as any])}
                           onChange={(ev) => {
                             if (ev.target.checked) {
-                              field.onChange(Number(DepthIndex[key as any]));
+                              field.onChange(Number(TickSpace[key as any]));
                             }
                           }}
                         />
@@ -86,11 +94,14 @@ export default function SectionGetMarketDepth({ client }: { client: HibitClient 
               )}
             />
           </FormField>
-          <FormField label="MarketId" error={errors.marketId} required>
-            <input type="number" className="input" {...register('marketId')} />
+          <FormField label="Limit" error={errors.limit}>
+            <input type="number" className="input" {...register('limit')} />
           </FormField>
-          <FormField label="Limit" error={errors.limit} required>
-            <input type="number" min={1} max={100} className="input" {...register('limit')} />
+          <FormField label="Offset" error={errors.offset}>
+            <input type="number" className="input" {...register('offset')} />
+          </FormField>
+          <FormField label="OrderBy" error={errors.orderBy}>
+            <input type="text" className="input" {...register('orderBy')} />
           </FormField>
           <button className="btn" onClick={submit} disabled={loading}>
             {loading ? 'Loading...' : 'Submit'}
