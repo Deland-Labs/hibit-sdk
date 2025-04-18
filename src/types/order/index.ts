@@ -91,11 +91,7 @@ export type GetOrderInput = {
  * Validates that exactly one identifier is provided in the GetOrderInput
  */
 export function validateGetOrderInput(input: GetOrderInput): boolean {
-  const providedIdentifiers = [
-    input.orderId !== undefined,
-    input.clientOrderId !== undefined,
-    input.txHash !== undefined
-  ].filter(Boolean).length;
+  const providedIdentifiers = [!!input.orderId, !!input.clientOrderId, !!input.txHash].filter(Boolean).length;
 
   return providedIdentifiers === 1;
 }
