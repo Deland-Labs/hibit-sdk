@@ -1,7 +1,7 @@
 import { Options } from '@hey-api/client-fetch';
 import {
-  Ex3ExchangeOpenApiAppServicesWalletOrderDto,
-  Ex3ExchangeOpenApiAppServicesWalletOrderTradeListItem,
+  Ex3ExchangeOpenApiAbstractionDtosWalletOrderDto,
+  Ex3ExchangeOpenApiAbstractionDtosWalletOrderTradeListItem,
   GetV1OrderData,
   GetV1OrdersData,
   GetV1OrderTradesData
@@ -355,7 +355,7 @@ export function mapGetOrderInput(input: GetOrderInput): Options<GetV1OrderData, 
   };
 }
 
-export function mapOrderInfo(data: Ex3ExchangeOpenApiAppServicesWalletOrderDto): OrderInfo {
+export function mapOrderInfo(data: Ex3ExchangeOpenApiAbstractionDtosWalletOrderDto): OrderInfo {
   return {
     id: data.id,
     marketId: BigInt(data.mid),
@@ -381,7 +381,7 @@ export function mapGetOrderTradesInput(orderId: string): Options<GetV1OrderTrade
   };
 }
 
-export function mapOrderTradeRecord(data: Ex3ExchangeOpenApiAppServicesWalletOrderTradeListItem): OrderTradeRecord {
+export function mapOrderTradeRecord(data: Ex3ExchangeOpenApiAbstractionDtosWalletOrderTradeListItem): OrderTradeRecord {
   return {
     tradeId: data.tid!,
     filledPrice: Number(data.fp),
