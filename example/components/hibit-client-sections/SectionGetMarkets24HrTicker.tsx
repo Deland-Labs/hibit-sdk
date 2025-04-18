@@ -56,12 +56,12 @@ export default function SectionGetMarkets24HrTicker({ client }: { client: HibitC
           <FormField label="MarketId" error={errors.marketId}>
             <input type="number" className="input" {...register('marketId')} />
           </FormField>
-          <ChainIdSelector selectedChainIds={selectedChainIds} onChange={setSelectedChainIds} error={errors.chainIds} />
-          <AssetTypeSelector
-            selectedAssetTypes={selectedAssetTypes}
-            onChange={setSelectedAssetTypes}
-            error={errors.chainAssetTypes}
-          />
+          <FormField label="ChainIds" labelDesc="select multiple chains" error={errors.chainIds}>
+            <ChainIdSelector selectedChainIds={selectedChainIds} onChange={setSelectedChainIds} />
+          </FormField>
+          <FormField label="ChainAssetTypes" labelDesc="select multiple types" error={errors.chainAssetTypes}>
+            <AssetTypeSelector selectedAssetTypes={selectedAssetTypes} onChange={setSelectedAssetTypes} />
+          </FormField>
           <button className="btn" onClick={submit} disabled={loading}>
             {loading ? 'Loading...' : 'Submit'}
           </button>

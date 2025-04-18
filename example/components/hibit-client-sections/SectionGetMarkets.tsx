@@ -65,12 +65,12 @@ export default function SectionGetMarkets({ client }: { client: HibitClient }) {
       title="GetMarkets"
       form={
         <div className="flex flex-col gap-2">
-          <ChainIdSelector selectedChainIds={selectedChainIds} onChange={setSelectedChainIds} error={errors.chainIds} />
-          <AssetTypeSelector
-            selectedAssetTypes={selectedAssetTypes}
-            onChange={setSelectedAssetTypes}
-            error={errors.chainAssetTypes}
-          />
+          <FormField label="ChainIds" labelDesc="select multiple chains" error={errors.chainIds}>
+            <ChainIdSelector selectedChainIds={selectedChainIds} onChange={setSelectedChainIds} />
+          </FormField>
+          <FormField label="ChainAssetTypes" labelDesc="select multiple types" error={errors.chainAssetTypes}>
+            <AssetTypeSelector selectedAssetTypes={selectedAssetTypes} onChange={setSelectedAssetTypes} />
+          </FormField>
           <FormField label="BaseAssetId" error={errors.baseAssetId}>
             <input type="number" className="input" {...register('baseAssetId')} />
           </FormField>

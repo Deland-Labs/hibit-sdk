@@ -61,12 +61,12 @@ export default function SectionGetAssets({ client }: { client: HibitClient }) {
       title="GetAssets"
       form={
         <div className="flex flex-col gap-2">
-          <ChainIdSelector selectedChainIds={selectedChainIds} onChange={setSelectedChainIds} error={errors.chainIds} />
-          <AssetTypeSelector
-            selectedAssetTypes={selectedAssetTypes}
-            onChange={setSelectedAssetTypes}
-            error={errors.chainAssetTypes}
-          />
+          <FormField label="ChainIds" labelDesc="select multiple chains" error={errors.chainIds}>
+            <ChainIdSelector selectedChainIds={selectedChainIds} onChange={setSelectedChainIds} />
+          </FormField>
+          <FormField label="ChainAssetTypes" labelDesc="select multiple types" error={errors.chainAssetTypes}>
+            <AssetTypeSelector selectedAssetTypes={selectedAssetTypes} onChange={setSelectedAssetTypes} />
+          </FormField>
           <FormField label="Limit" error={errors.limit}>
             <input type="number" className="input" {...register('limit')} />
           </FormField>
