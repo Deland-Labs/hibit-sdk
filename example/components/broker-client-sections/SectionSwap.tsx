@@ -1,6 +1,6 @@
-import { ChainId, SwapInput } from '../../../src';
+import { Chain, ChainAssetType, ChainId, HibitNetwork, SwapInput } from '../../../src';
 import Section from '../Section';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { number, object, string } from 'yup';
@@ -8,6 +8,7 @@ import FormField from '../FormField';
 import ChainIdSelector from '../ChainIdSelector';
 import { BrokerClient } from '../../../src/broker-client';
 import AssetTypeSelector from '../AssetTypeSelector';
+import { connect, transferKaspa, transferKrc20 } from '../../utils/kasware-wallet';
 
 const schema = object({
   hin: string().required(),
@@ -16,6 +17,7 @@ const schema = object({
   sourceChainId: string().required(),
   sourceAssetType: number(),
   sourceAsset: string(),
+  paymentAddress: string().required(),
   sourceVolume: number().required(),
   txRef: string().required(),
   targetChainId: string(),
@@ -43,8 +45,23 @@ export default function SectionGetPaymentAddress({ client }: { client: BrokerCli
   });
   const selectedSourceChainId = watch('sourceChainId');
   const selectedSourceAssetType = watch('sourceAssetType');
+  const sourceAsset = watch('sourceAsset');
+  const sourceVolume = watch('sourceVolume');
+  const paymentAddress = watch('paymentAddress');
   const selectedTargetChainId = watch('targetChainId');
   const selectedTargetAssetType = watch('targetAssetType');
+
+  const kaswareTransferable = useMemo(() => {
+    if (!selectedSourceChainId) {
+      return false;
+    }
+    const chainId = ChainId.fromString(selectedSourceChainId);
+    const assetType = selectedSourceAssetType;
+    const isKaspa = chainId.chain.equals(Chain.Kaspa);
+    const isNative = !assetType || assetType === ChainAssetType.Native;
+    const isKrc20 = assetType === ChainAssetType.KRC20;
+    return isKaspa && (isNative || isKrc20);
+  }, [selectedSourceChainId, selectedSourceAssetType]);
 
   const submit = handleSubmit(async (input) => {
     setLoading(true);
@@ -74,6 +91,42 @@ export default function SectionGetPaymentAddress({ client }: { client: BrokerCli
     }
   });
 
+  const connectKasware = async () => {
+    try {
+      const network = client.getOptions().network;
+      const { address, publicKey } = await connect(
+        network === HibitNetwork.Testnet ? 'kaspa_testnet_10' : 'kaspa_mainnet'
+      );
+      setValue('sourceWalletAddress', address);
+      setValue('sourceWalletPublicKey', publicKey);
+      trigger('sourceWalletAddress');
+      trigger('sourceWalletPublicKey');
+    } catch (e: any) {
+      alert(e.message ?? JSON.stringify(e));
+    }
+  };
+
+  const transferByKasware = async () => {
+    try {
+      let txRef = '';
+      if (selectedSourceAssetType === ChainAssetType.KRC20) {
+        if (!paymentAddress || !sourceAsset || !sourceVolume) {
+          throw new Error('paymentAddress, sourceAsset and sourceVolume are required for KRC20 transfer');
+        }
+        txRef = await transferKrc20(paymentAddress, sourceVolume, sourceAsset);
+      } else {
+        if (!paymentAddress || !sourceVolume) {
+          throw new Error('paymentAddress and sourceVolume are required for KAS transfer');
+        }
+        txRef = await transferKaspa(paymentAddress, sourceVolume);
+      }
+      setValue('txRef', txRef);
+      trigger('txRef');
+    } catch (e: any) {
+      alert(e.message ?? JSON.stringify(e));
+    }
+  };
+
   return (
     <Section
       title="Swap"
@@ -82,12 +135,19 @@ export default function SectionGetPaymentAddress({ client }: { client: BrokerCli
           <FormField label="HIN" error={errors.hin} required>
             <input type="number" className="input" {...register('hin')} />
           </FormField>
-          <FormField label="Source Wallet Public Key" error={errors.sourceWalletPublicKey} required>
-            <input type="text" className="input" {...register('sourceWalletPublicKey')} />
-          </FormField>
-          <FormField label="Source Wallet Address" error={errors.sourceWalletAddress} required>
-            <input type="text" className="input" {...register('sourceWalletAddress')} />
-          </FormField>
+
+          <div className="py-4 px-4 -mx-4 flex flex-col gap-2 bg-gray-100">
+            <FormField label="Source Wallet Public Key" error={errors.sourceWalletPublicKey} required>
+              <input type="text" className="input" {...register('sourceWalletPublicKey')} />
+            </FormField>
+            <FormField label="Source Wallet Address" error={errors.sourceWalletAddress} required>
+              <input type="text" className="input" {...register('sourceWalletAddress')} />
+            </FormField>
+            <button className="btn-outline text-green-500" onClick={connectKasware}>
+              Connect Kasware Wallet
+            </button>
+          </div>
+
           <FormField label="Source ChainId" error={errors.sourceChainId} required>
             <ChainIdSelector
               singleSelect
@@ -111,12 +171,22 @@ export default function SectionGetPaymentAddress({ client }: { client: BrokerCli
           <FormField label="Source Asset" error={errors.sourceAsset}>
             <input type="text" className="input" {...register('sourceAsset')} />
           </FormField>
+          <FormField label="Payment Address" error={errors.paymentAddress} required>
+            <input type="text" className="input" {...register('paymentAddress')} />
+          </FormField>
           <FormField label="Source Volume" error={errors.sourceVolume} required>
             <input type="number" className="input" {...register('sourceVolume')} />
           </FormField>
-          <FormField label="Transaction Reference" error={errors.txRef} required>
-            <input type="text" className="input" {...register('txRef')} />
-          </FormField>
+
+          <div className="py-4 px-4 -mx-4 flex flex-col gap-2 bg-gray-100">
+            <FormField label="Transaction Reference" error={errors.txRef} required>
+              <input type="text" className="input" {...register('txRef')} />
+            </FormField>
+            <button className="btn-outline text-green-500" onClick={transferByKasware} disabled={!kaswareTransferable}>
+              Transfer using Kasware Wallet
+            </button>
+          </div>
+
           <FormField label="Target ChainId" error={errors.targetChainId}>
             <ChainIdSelector
               singleSelect

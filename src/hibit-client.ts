@@ -270,6 +270,10 @@ export class HibitClient implements IHibitClient {
   //@ts-expect-error - no constructor
   private options: HibitApiOptions;
 
+  getOptions(): HibitApiOptions {
+    return this.options;
+  }
+
   setOptions(options: HibitApiOptions) {
     this.options = options;
 

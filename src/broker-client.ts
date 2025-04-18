@@ -29,7 +29,15 @@ export interface BrokerApiOptions {
 }
 
 export class BrokerClient implements IBrokerClient {
+  //@ts-expect-error - no constructor
+  private options: BrokerApiOptions;
+
+  getOptions(): BrokerApiOptions {
+    return this.options;
+  }
+
   setOptions(options: BrokerApiOptions): void {
+    this.options = options;
     client.setConfig({
       baseUrl: options.network === HibitNetwork.Testnet ? HIBIT_TESTNET_BROKER_API_ENDPOINT : HIBIT_BROKER_API_ENDPOINT
     });
