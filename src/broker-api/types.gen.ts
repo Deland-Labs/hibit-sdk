@@ -139,7 +139,7 @@ export type Ex3BrokerApiAppServicesDtosSwapOutput = {
   /**
    * A unique identifier for the agent that initiated the swap operation.
    */
-  agentOrderId?: string;
+  agentOrderId?: string | null;
 };
 
 /**
@@ -745,7 +745,7 @@ export type GetV1OrderData = {
     /**
      * Agent order id
      */
-    OrderId?: string;
+    AgentOrderId?: string;
   };
   url: '/v1/order';
 };

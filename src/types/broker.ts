@@ -222,24 +222,26 @@ export class SwapInput {
   }
 
   toJson(): string {
-    return JSON.stringify({
-      hin: this.hin.toString(),
-      sourceWalletPublicKey: this.sourceWalletPublicKey,
-      sourceWalletAddress: this.sourceWalletAddress,
-      txRef: this.txRef,
-      sourceChainId: this.sourceChainId.toString(),
-      sourceAssetType: this.sourceAssetType?.toString(),
-      sourceAsset: this.sourceAsset,
-      sourceVolume: this.sourceVolume.toString(),
-      targetChainId: this.targetChainId?.toString(),
-      targetWalletAddress: this.targetWalletAddress,
-      targetAssetType: this.targetAssetType?.toString(),
-      targetAsset: this.targetAsset,
-      targetVolume: this.targetVolume.toString(),
-      targetVolumeMin: this.targetVolumeMin.toString()
-    });
-  }
+    const obj: Record<string, string | undefined> = {};
 
+    // Only add properties that aren't undefined or null
+    if (this.hin !== undefined) obj.hin = this.hin.toString();
+    if (this.sourceWalletPublicKey) obj.sourceWalletPublicKey = this.sourceWalletPublicKey;
+    if (this.sourceWalletAddress) obj.sourceWalletAddress = this.sourceWalletAddress;
+    if (this.txRef) obj.txRef = this.txRef;
+    if (this.sourceChainId) obj.sourceChainId = this.sourceChainId.toString();
+    if (this.sourceAssetType !== undefined) obj.sourceAssetType = this.sourceAssetType.toString();
+    if (this.sourceAsset) obj.sourceAsset = this.sourceAsset;
+    if (this.sourceVolume !== undefined) obj.sourceVolume = this.sourceVolume.toString();
+    if (this.targetChainId) obj.targetChainId = this.targetChainId.toString();
+    if (this.targetWalletAddress) obj.targetWalletAddress = this.targetWalletAddress;
+    if (this.targetAssetType !== undefined) obj.targetAssetType = this.targetAssetType.toString();
+    if (this.targetAsset) obj.targetAsset = this.targetAsset;
+    if (this.targetVolume !== undefined) obj.targetVolume = this.targetVolume.toString();
+    if (this.targetVolumeMin !== undefined) obj.targetVolumeMin = this.targetVolumeMin.toString();
+
+    return JSON.stringify(obj);
+  }
   setSignature(signature: string, schema: WalletSignatureSchema): void {
     this.signature = signature;
     this.signatureSchema = schema;
@@ -327,6 +329,7 @@ export function mapSwapInput(input: SwapInput): Options<PostV1SwapData> {
       targetAsset: input.targetAsset,
       targetVolume: input.targetVolume.toString(),
       targetVolumeMin: input.targetVolumeMin.toString(),
+      signatureSchema: input.signatureSchema,
       signature: input.signature
     }
   };
@@ -335,7 +338,7 @@ export function mapSwapInput(input: SwapInput): Options<PostV1SwapData> {
 export function mapGetAgentOrderInput(agentOrderId: string): Options<GetV1OrderData> {
   return {
     query: {
-      OrderId: agentOrderId
+      AgentOrderId: agentOrderId
     }
   };
 }

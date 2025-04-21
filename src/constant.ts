@@ -26,4 +26,4 @@ export const HIBIT_BROKER_API_ENDPOINT = 'https://brokerapi.hibit.app';
  * The Broker API endpoint for the testnet environment.
  * This endpoint is used for testing and development purposes.
  */
-export const HIBIT_TESTNET_BROKER_API_ENDPOINT = 'https://testnetbrokerapi.hibit.app';
+export const HIBIT_TESTNET_BROKER_API_ENDPOINT = 'http://localhost:5630';

@@ -12,7 +12,6 @@
       "url": "https://brokerapi.hibit.app"
     }
   ],
-
   "paths": {
     "/v1/payment-address": {
       "get": {
@@ -394,12 +393,11 @@
         "summary": "Get order status",
         "parameters": [
           {
-            "name": "OrderId",
+            "name": "AgentOrderId",
             "in": "query",
             "description": "Agent order id",
             "schema": {
-              "type": "string",
-              "format": "string"
+              "type": "string"
             }
           }
         ],
@@ -881,7 +879,7 @@
           "agentOrderId": {
             "type": "string",
             "description": "A unique identifier for the agent that initiated the swap operation.",
-            "format": "string"
+            "nullable": true
           }
         },
         "additionalProperties": false,
