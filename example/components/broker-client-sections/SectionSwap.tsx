@@ -1,14 +1,14 @@
-import { Chain, ChainAssetType, ChainId, HibitNetwork, SwapInput } from '../../../src';
+import { Chain, ChainAssetType, ChainId, HibitNetwork, SwapInput, WalletSignatureSchema } from '../../../src';
 import Section from '../Section';
 import { useMemo, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { number, object, string } from 'yup';
 import FormField from '../FormField';
 import ChainIdSelector from '../ChainIdSelector';
 import { BrokerClient } from '../../../src/broker-client';
 import AssetTypeSelector from '../AssetTypeSelector';
-import { connect, transferKaspa, transferKrc20 } from '../../utils/kasware-wallet';
+import { connect, sign, transferKaspa, transferKrc20 } from '../../utils/kasware-wallet';
 
 const schema = object({
   hin: string().required(),
@@ -25,7 +25,9 @@ const schema = object({
   targetAssetType: number(),
   targetAsset: string(),
   targetVolume: number().required(),
-  targetVolumeMin: number().required()
+  targetVolumeMin: number().required(),
+  signatureSchema: number().required(),
+  signature: string().required()
 });
 
 export default function SectionGetPaymentAddress({ client }: { client: BrokerClient }) {
@@ -34,6 +36,7 @@ export default function SectionGetPaymentAddress({ client }: { client: BrokerCli
   const [error, setError] = useState<string>('');
 
   const {
+    control,
     setValue,
     trigger,
     watch,
@@ -43,46 +46,56 @@ export default function SectionGetPaymentAddress({ client }: { client: BrokerCli
   } = useForm({
     resolver: yupResolver(schema)
   });
-  const selectedSourceChainId = watch('sourceChainId');
-  const selectedSourceAssetType = watch('sourceAssetType');
-  const sourceAsset = watch('sourceAsset');
-  const sourceVolume = watch('sourceVolume');
-  const paymentAddress = watch('paymentAddress');
-  const selectedTargetChainId = watch('targetChainId');
-  const selectedTargetAssetType = watch('targetAssetType');
+  const values = watch();
 
   const kaswareTransferable = useMemo(() => {
-    if (!selectedSourceChainId) {
+    if (!values.sourceChainId) {
       return false;
     }
-    const chainId = ChainId.fromString(selectedSourceChainId);
-    const assetType = selectedSourceAssetType;
+    const chainId = ChainId.fromString(values.sourceChainId);
+    const assetType = values.sourceAssetType;
     const isKaspa = chainId.chain.equals(Chain.Kaspa);
     const isNative = !assetType || assetType === ChainAssetType.Native;
     const isKrc20 = assetType === ChainAssetType.KRC20;
     return isKaspa && (isNative || isKrc20);
-  }, [selectedSourceChainId, selectedSourceAssetType]);
+  }, [values.sourceChainId, values.sourceAssetType]);
+
+  const getInputReq = (input: any) => {
+    return new SwapInput({
+      hin: BigInt(input.hin),
+      sourceWalletPublicKey: input.sourceWalletPublicKey,
+      sourceWalletAddress: input.sourceWalletAddress,
+      txRef: input.txRef,
+      sourceChainId: ChainId.fromString(input.sourceChainId),
+      sourceAssetType: input.sourceAssetType,
+      sourceAsset: input.sourceAsset,
+      sourceVolume: BigInt(input.sourceVolume),
+      targetChainId: input.targetChainId ? ChainId.fromString(input.targetChainId) : undefined,
+      targetAssetType: input.targetAssetType,
+      targetAsset: input.targetAsset,
+      targetVolume: BigInt(input.targetVolume),
+      targetVolumeMin: BigInt(input.targetVolumeMin)
+    });
+  };
+
+  const copySignatureMessage = () => {
+    try {
+      const req = getInputReq(values);
+      const message = req.toJson();
+      navigator.clipboard.writeText(message);
+      alert('Signature message copied to clipboard');
+    } catch (e: any) {
+      alert(e.message ?? JSON.stringify(e));
+    }
+  };
 
   const submit = handleSubmit(async (input) => {
     setLoading(true);
     setResult(null);
     setError('');
     try {
-      const req = new SwapInput({
-        hin: BigInt(input.hin),
-        sourceWalletPublicKey: input.sourceWalletPublicKey,
-        sourceWalletAddress: input.sourceWalletAddress,
-        txRef: input.txRef,
-        sourceChainId: ChainId.fromString(input.sourceChainId),
-        sourceAssetType: input.sourceAssetType,
-        sourceAsset: input.sourceAsset,
-        sourceVolume: BigInt(input.sourceVolume),
-        targetChainId: input.targetChainId ? ChainId.fromString(input.targetChainId) : undefined,
-        targetAssetType: input.targetAssetType,
-        targetAsset: input.targetAsset,
-        targetVolume: BigInt(input.targetVolume),
-        targetVolumeMin: BigInt(input.targetVolumeMin)
-      });
+      const req = getInputReq(input);
+      req.setSignature(input.signature, input.signatureSchema);
       setResult(await client.swap(req));
     } catch (e: any) {
       setError(e.message ?? JSON.stringify(e));
@@ -109,19 +122,33 @@ export default function SectionGetPaymentAddress({ client }: { client: BrokerCli
   const transferByKasware = async () => {
     try {
       let txRef = '';
-      if (selectedSourceAssetType === ChainAssetType.KRC20) {
-        if (!paymentAddress || !sourceAsset || !sourceVolume) {
+      if (values.sourceAssetType === ChainAssetType.KRC20) {
+        if (!values.paymentAddress || !values.sourceAsset || !values.sourceVolume) {
           throw new Error('paymentAddress, sourceAsset and sourceVolume are required for KRC20 transfer');
         }
-        txRef = await transferKrc20(paymentAddress, sourceVolume, sourceAsset);
+        txRef = await transferKrc20(values.paymentAddress, values.sourceVolume, values.sourceAsset);
       } else {
-        if (!paymentAddress || !sourceVolume) {
+        if (!values.paymentAddress || !values.sourceVolume) {
           throw new Error('paymentAddress and sourceVolume are required for KAS transfer');
         }
-        txRef = await transferKaspa(paymentAddress, sourceVolume);
+        txRef = await transferKaspa(values.paymentAddress, values.sourceVolume);
       }
       setValue('txRef', txRef);
       trigger('txRef');
+    } catch (e: any) {
+      alert(e.message ?? JSON.stringify(e));
+    }
+  };
+
+  const signByKasware = async () => {
+    try {
+      const req = getInputReq(values);
+      const message = req.toJson();
+      const signature = await sign(message);
+      setValue('signature', signature);
+      setValue('signatureSchema', WalletSignatureSchema.KaspaSchnorr);
+      trigger('signature');
+      trigger('signatureSchema');
     } catch (e: any) {
       alert(e.message ?? JSON.stringify(e));
     }
@@ -151,7 +178,7 @@ export default function SectionGetPaymentAddress({ client }: { client: BrokerCli
           <FormField label="Source ChainId" error={errors.sourceChainId} required>
             <ChainIdSelector
               singleSelect
-              selectedChainIds={selectedSourceChainId ? [ChainId.fromString(selectedSourceChainId)] : []}
+              selectedChainIds={values.sourceChainId ? [ChainId.fromString(values.sourceChainId)] : []}
               onChange={(ids) => {
                 setValue('sourceChainId', ids[0]?.toString() ?? '');
                 trigger('sourceChainId');
@@ -161,7 +188,7 @@ export default function SectionGetPaymentAddress({ client }: { client: BrokerCli
           <FormField label="Source Asset Type" error={errors.sourceAssetType}>
             <AssetTypeSelector
               singleSelect
-              selectedAssetTypes={typeof selectedSourceAssetType === 'number' ? [selectedSourceAssetType] : []}
+              selectedAssetTypes={typeof values.sourceAssetType === 'number' ? [values.sourceAssetType] : []}
               onChange={(types) => {
                 setValue('sourceAssetType', types[0] ?? null);
                 trigger('sourceAssetType');
@@ -190,7 +217,7 @@ export default function SectionGetPaymentAddress({ client }: { client: BrokerCli
           <FormField label="Target ChainId" error={errors.targetChainId}>
             <ChainIdSelector
               singleSelect
-              selectedChainIds={selectedTargetChainId ? [ChainId.fromString(selectedTargetChainId)] : []}
+              selectedChainIds={values.targetChainId ? [ChainId.fromString(values.targetChainId)] : []}
               onChange={(ids) => {
                 setValue('targetChainId', ids[0]?.toString() ?? '');
                 trigger('targetChainId');
@@ -200,7 +227,7 @@ export default function SectionGetPaymentAddress({ client }: { client: BrokerCli
           <FormField label="Target Asset Type" error={errors.targetAssetType}>
             <AssetTypeSelector
               singleSelect
-              selectedAssetTypes={typeof selectedTargetAssetType === 'number' ? [selectedTargetAssetType] : []}
+              selectedAssetTypes={typeof values.targetAssetType === 'number' ? [values.targetAssetType] : []}
               onChange={(types) => {
                 setValue('targetAssetType', types[0] ?? null);
                 trigger('targetAssetType');
@@ -216,6 +243,47 @@ export default function SectionGetPaymentAddress({ client }: { client: BrokerCli
           <FormField label="Target Volume Min" error={errors.targetVolumeMin} required>
             <input type="number" className="input" {...register('targetVolumeMin')} />
           </FormField>
+
+          <div className="py-4 px-4 -mx-4 flex flex-col gap-2 bg-gray-100">
+            <FormField label="Signature Schema" error={errors.signatureSchema} required>
+              <Controller
+                name="signatureSchema"
+                control={control}
+                render={({ field }) => (
+                  <div className="flex items-center gap-3 flex-wrap">
+                    {Object.keys(WalletSignatureSchema)
+                      .filter((v) => isNaN(Number(v)))
+                      .map((key) => (
+                        <label key={key} className="flex items-center gap-1">
+                          <span>{key}</span>
+                          <input
+                            name="swap-signatureSchema"
+                            type="radio"
+                            checked={field.value === Number(WalletSignatureSchema[key as any])}
+                            onChange={(ev) => {
+                              if (ev.target.checked) {
+                                field.onChange(Number(WalletSignatureSchema[key as any]));
+                              }
+                            }}
+                          />
+                        </label>
+                      ))}
+                  </div>
+                )}
+              />
+            </FormField>
+            <FormField label="Signature" error={errors.signature} required>
+              <input type="text" className="input" {...register('signature')} />
+            </FormField>
+            <div className="flex items-center gap-4">
+              <button className="flex-1 btn-outline text-gray-500" onClick={copySignatureMessage}>
+                Copy message to sign
+              </button>
+              <button className="flex-1 btn-outline text-green-500" onClick={signByKasware}>
+                Sign using Kasware Wallet
+              </button>
+            </div>
+          </div>
 
           <button className="btn" onClick={submit} disabled={loading}>
             {loading ? 'Loading...' : 'Submit'}

@@ -30,6 +30,16 @@ export const connect = async (network: KaswareNetwork): Promise<KaswareAccount> 
   }
 };
 
+export const sign = async (message: string) => {
+  try {
+    const noAuxRand = true;
+    const signature: string = await window.kasware.signMessage(message, noAuxRand);
+    return `0x${signature}`;
+  } catch (e: any) {
+    throw new Error('KasWare sign: ' + (e.message ?? JSON.stringify(e)));
+  }
+};
+
 export const transferKaspa = async (toAddress: string, originalAmount: number) => {
   try {
     if (!toAddress || originalAmount <= 0) {
