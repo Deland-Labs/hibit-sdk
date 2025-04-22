@@ -272,7 +272,7 @@ export type AgentOrderData = {
   /**
    * The order executing transaction hash.
    */
-  txHash: string;
+  txHash?: string;
 };
 
 export function mapGetPaymentAddressInput(input: GetPaymentAddressInput): Options<GetV1PaymentAddressData> {
@@ -346,6 +346,6 @@ export function mapGetAgentOrderInput(agentOrderId: string): Options<GetV1OrderD
 export function mapGeAgentOrderOutput(result: Ex3BrokerApiAppServicesDtosGetOrderOutput): AgentOrderData {
   return {
     status: result.status as AgentOrderStatus,
-    txHash: result.txHash!
+    txHash: result.txHash || undefined
   };
 }

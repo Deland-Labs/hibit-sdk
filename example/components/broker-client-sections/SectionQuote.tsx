@@ -19,7 +19,7 @@ const schema = object({
   targetAsset: string()
 });
 
-export default function SectionGetPaymentAddress({ client }: { client: BrokerClient }) {
+export default function SectionQuote({ client }: { client: BrokerClient }) {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<QuoteResult | null>(null);
   const [error, setError] = useState<string>('');
