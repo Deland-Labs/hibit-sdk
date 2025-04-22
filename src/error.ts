@@ -1,28 +1,28 @@
-export class HibitClientError extends Error {
+export class HibitError extends Error {
   constructor(message: string) {
     super(message);
-    this.name = 'HibitApiError';
+    this.name = 'HibitError';
   }
 
   static throwBadRequestError(apiName: string, code?: number, message?: string | null) {
     if (code !== undefined && message !== undefined)
-      throw new HibitClientError(`Bad request: ${apiName} failed with code ${code} and message ${message}`);
+      throw new HibitError(`Bad request: ${apiName} failed with code ${code} and message ${message}`);
 
-    if (code !== undefined) throw new HibitClientError(`Bad request: ${apiName} failed with code ${code}`);
+    if (code !== undefined) throw new HibitError(`Bad request: ${apiName} failed with code ${code}`);
 
-    if (message !== undefined) throw new HibitClientError(`Bad request: ${apiName} failed with message ${message}`);
+    if (message !== undefined) throw new HibitError(`Bad request: ${apiName} failed with message ${message}`);
 
-    throw new HibitClientError(`Bad request: ${apiName}`);
+    throw new HibitError(`Bad request: ${apiName}`);
   }
 
   static throwInvalidResponseError(apiName: string) {
-    throw new HibitClientError(`Invalid response: ${apiName}`);
+    throw new HibitError(`Invalid response: ${apiName}`);
   }
 
   static throwRequiredHINError(apiName: string) {
-    throw new HibitClientError(`HIN is required: ${apiName}`);
+    throw new HibitError(`HIN is required: ${apiName}`);
   }
   static throwRequiredPrivKeyError(apiName: string) {
-    throw new HibitClientError(`Private key is required: ${apiName}`);
+    throw new HibitError(`Private key is required: ${apiName}`);
   }
 }
