@@ -32,8 +32,7 @@ export const connect = async (network: KaswareNetwork): Promise<KaswareAccount> 
 
 export const sign = async (message: string) => {
   try {
-    const noAuxRand = true;
-    const signature: string = await window.kasware.signMessage(message, noAuxRand);
+    const signature: string = await window.kasware.signMessage(message);
     return `0x${signature}`;
   } catch (e: any) {
     throw new Error('KasWare sign: ' + (e.message ?? JSON.stringify(e)));
@@ -49,7 +48,7 @@ export const transferKaspa = async (toAddress: string, originalAmount: number) =
     if (!accounts.length) {
       throw new Error('Wallet not connected.');
     }
-    const sompiAmount = new BigNumber(originalAmount).shiftedBy(SOMPI_DECIMALS).toNumber();
+    const sompiAmount = new BigNumber(originalAmount).toNumber();
     const balanceRes: GetBalanceResponse = await window.kasware.getBalance();
     if (balanceRes.total < sompiAmount) {
       throw new Error('Not enough KAS balance');
