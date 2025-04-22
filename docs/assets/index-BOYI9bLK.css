@@ -310,6 +310,9 @@
   .visible {
     visibility: visible;
   }
+  .absolute {
+    position: absolute;
+  }
   .relative {
     position: relative;
   }
@@ -517,6 +520,9 @@
   }
   .uppercase {
     text-transform: uppercase;
+  }
+  .italic {
+    font-style: italic;
   }
   .ordinal {
     --tw-ordinal: ordinal;
