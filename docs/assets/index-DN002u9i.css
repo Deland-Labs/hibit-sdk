@@ -518,27 +518,14 @@
   .lowercase {
     text-transform: lowercase;
   }
-  .uppercase {
-    text-transform: uppercase;
-  }
   .italic {
     font-style: italic;
-  }
-  .ordinal {
-    --tw-ordinal: ordinal;
-    font-variant-numeric: var(--tw-ordinal,) var(--tw-slashed-zero,) var(--tw-numeric-figure,)
-      var(--tw-numeric-spacing,) var(--tw-numeric-fraction,);
   }
   .underline {
     text-decoration-line: underline;
   }
   .blur {
     --tw-blur: blur(8px);
-    filter: var(--tw-blur,) var(--tw-brightness,) var(--tw-contrast,) var(--tw-grayscale,) var(--tw-hue-rotate,)
-      var(--tw-invert,) var(--tw-saturate,) var(--tw-sepia,) var(--tw-drop-shadow,);
-  }
-  .invert {
-    --tw-invert: invert(100%);
     filter: var(--tw-blur,) var(--tw-brightness,) var(--tw-contrast,) var(--tw-grayscale,) var(--tw-hue-rotate,)
       var(--tw-invert,) var(--tw-saturate,) var(--tw-sepia,) var(--tw-drop-shadow,);
   }
@@ -559,26 +546,6 @@ body,
   initial-value: solid;
 }
 @property --tw-font-weight {
-  syntax: '*';
-  inherits: false;
-}
-@property --tw-ordinal {
-  syntax: '*';
-  inherits: false;
-}
-@property --tw-slashed-zero {
-  syntax: '*';
-  inherits: false;
-}
-@property --tw-numeric-figure {
-  syntax: '*';
-  inherits: false;
-}
-@property --tw-numeric-spacing {
-  syntax: '*';
-  inherits: false;
-}
-@property --tw-numeric-fraction {
   syntax: '*';
   inherits: false;
 }
