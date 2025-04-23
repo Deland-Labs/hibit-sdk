@@ -8,7 +8,6 @@ export default defineConfig(({ mode }) => {
   const isExample = mode === 'example';
 
   return {
-    base: isExample ? '/hibit-sdk' : '/',
     publicDir: isExample ? 'example/public' : 'public',
     plugins: [tailwindcss()],
     resolve: {
