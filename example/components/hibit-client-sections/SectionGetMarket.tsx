@@ -1,18 +1,19 @@
-import { HibitClient } from '../../src/hibit-client';
-import Section from './Section';
+import { MarketInfo } from '../../../src';
+import { HibitClient } from '../../../src/hibit-client';
+import Section from '../Section';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { object, string } from 'yup';
-import FormField from './FormField';
+import FormField from '../FormField';
 
 const schema = object({
-  hin: string().required()
+  marketId: string().required()
 });
 
-export default function SectionGetNonce({ client }: { client: HibitClient }) {
+export default function SectionGetMarket({ client }: { client: HibitClient }) {
   const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState<bigint | null>(null);
+  const [result, setResult] = useState<MarketInfo | null>(null);
   const [error, setError] = useState<string>('');
 
   const {
@@ -28,8 +29,8 @@ export default function SectionGetNonce({ client }: { client: HibitClient }) {
     setResult(null);
     setError('');
     try {
-      const req = BigInt(input.hin);
-      setResult(await client.getNonce(req));
+      const req = BigInt(input.marketId);
+      setResult(await client.getMarket(req));
     } catch (e: any) {
       setError(e.message ?? JSON.stringify(e));
     } finally {
@@ -39,11 +40,11 @@ export default function SectionGetNonce({ client }: { client: HibitClient }) {
 
   return (
     <Section
-      title="GetNonce"
+      title="GetMarket"
       form={
         <div className="flex flex-col gap-2">
-          <FormField label="HIN(Hibit chain identity number)" error={errors.hin} required>
-            <input type="number" className="input" {...register('hin')} />
+          <FormField label="MarketId" error={errors.marketId} required>
+            <input type="number" className="input" {...register('marketId')} />
           </FormField>
           <button className="btn" onClick={submit} disabled={loading}>
             {loading ? 'Loading...' : 'Submit'}

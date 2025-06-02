@@ -1,8 +1,17 @@
 @import 'tailwindcss';
 
+html,
+body,
+#root {
+  @apply h-screen overflow-hidden;
+}
+
 @layer components {
   .btn {
-    @apply bg-blue-500 px-3 py-2 rounded text-white cursor-pointer disabled:opacity-50;
+    @apply bg-blue-500 px-3 py-2 rounded text-white cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+  .btn-outline {
+    @apply px-3 py-2 rounded outline outline-current bg-current/5 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed;
   }
 
   .input {

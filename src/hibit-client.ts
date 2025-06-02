@@ -81,7 +81,7 @@ import { TransactionManager } from './tx-manager';
 import { mapTransactionToApiRequest } from './types/tx';
 import { mapGetNonceInput, mapGetWalletBalancesInput } from './types/wallet';
 import { client } from './openapi/client.gen';
-import { HibitClientError } from './error';
+import { HibitError } from './error';
 import { mapCancelOrdersCborInput, mapSubmitSpotOrderCborInput } from './types/order/payload';
 import { HIBIT_MAINNET_API_ENDPOINT, HIBIT_TESTNET_API_ENDPOINT } from './constant';
 
@@ -274,7 +274,7 @@ export class HibitClient implements IHibitClient {
     this.ensureSuccess(apiName, response.data);
 
     if (!response.data?.data?.timestamp) {
-      HibitClientError.throwInvalidResponseError(apiName);
+      HibitError.throwInvalidResponseError(apiName);
     }
 
     return response.data!.data!.timestamp!;
@@ -424,7 +424,7 @@ export class HibitClient implements IHibitClient {
     const apiName = 'getOrder';
 
     if (!validateGetOrderInput(input)) {
-      HibitClientError.throwBadRequestError(
+      HibitError.throwBadRequestError(
         apiName,
         400,
         'Must have exactly one of the following properties set: `OrderId`, `ClientOrderId`, or `TxHash`'
@@ -513,20 +513,20 @@ export class HibitClient implements IHibitClient {
 
   private ensureSuccess<T extends HibitApiResponse>(apiName: string, response?: T) {
     if (response?.code != 200) {
-      HibitClientError.throwBadRequestError(apiName, response?.code, response?.message);
+      HibitError.throwBadRequestError(apiName, response?.code, response?.message);
     }
   }
 
   private ensurePrivateKey(apiName: string) {
     this.ensureHIN(apiName);
     if (!this.options.proxyKey) {
-      HibitClientError.throwRequiredPrivKeyError(apiName);
+      HibitError.throwRequiredPrivKeyError(apiName);
     }
   }
 
   private ensureHIN(apiName: string) {
     if (!this.options.hin) {
-      HibitClientError.throwRequiredHINError(apiName);
+      HibitError.throwRequiredHINError(apiName);
     }
   }
 }

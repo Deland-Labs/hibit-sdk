@@ -1,13 +1,13 @@
-import { ChainId, GetMarket24HrTickerInput, Market24HrTickerInfo } from '../../src';
-import { HibitClient } from '../../src/hibit-client';
-import Section from './Section';
+import { ChainId, GetMarket24HrTickerInput, Market24HrTickerInfo } from '../../../src';
+import { HibitClient } from '../../../src/hibit-client';
+import Section from '../Section';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { object, string } from 'yup';
-import FormField from './FormField';
-import ChainIdSelector from './ChainIdSelector.tsx';
-import AssetTypeSelector from './AssetTypeSelector.tsx';
+import FormField from '../FormField';
+import ChainIdSelector from '../ChainIdSelector';
+import AssetTypeSelector from '../AssetTypeSelector';
 
 const schema = object({
   marketId: string(),
@@ -56,12 +56,12 @@ export default function SectionGetMarkets24HrTicker({ client }: { client: HibitC
           <FormField label="MarketId" error={errors.marketId}>
             <input type="number" className="input" {...register('marketId')} />
           </FormField>
-          <ChainIdSelector selectedChainIds={selectedChainIds} onChange={setSelectedChainIds} error={errors.chainIds} />
-          <AssetTypeSelector
-            selectedAssetTypes={selectedAssetTypes}
-            onChange={setSelectedAssetTypes}
-            error={errors.chainAssetTypes}
-          />
+          <FormField label="ChainIds" labelDesc="select multiple chains" error={errors.chainIds}>
+            <ChainIdSelector selectedChainIds={selectedChainIds} onChange={setSelectedChainIds} />
+          </FormField>
+          <FormField label="ChainAssetTypes" labelDesc="select multiple types" error={errors.chainAssetTypes}>
+            <AssetTypeSelector selectedAssetTypes={selectedAssetTypes} onChange={setSelectedAssetTypes} />
+          </FormField>
           <button className="btn" onClick={submit} disabled={loading}>
             {loading ? 'Loading...' : 'Submit'}
           </button>

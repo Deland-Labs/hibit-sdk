@@ -1,11 +1,11 @@
-import { GetOrdersInput, OrderCategory, OrderInfo, OrderSide, OrderStatus, PageResponse } from '../../src';
-import { HibitClient } from '../../src/hibit-client';
-import Section from './Section';
+import { GetOrdersInput, OrderCategory, OrderInfo, OrderSide, OrderStatus, PageResponse } from '../../../src';
+import { HibitClient } from '../../../src/hibit-client';
+import Section from '../Section';
 import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { object, number, string, array } from 'yup';
-import FormField from './FormField';
+import FormField from '../FormField';
 import dayjs from 'dayjs';
 
 const schema = object({

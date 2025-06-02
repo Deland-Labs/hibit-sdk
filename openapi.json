@@ -12,6 +12,7 @@
       "url": "https://openapi.hibit.app"
     }
   ],
+
   "paths": {
     "/v1/timestamp": {
       "get": {
@@ -221,17 +222,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Volo.Abp.Application.Dtos.PagedResultDto`1[[Ex3.Exchange.OpenApi.AppServices.RootAssetInfoDto, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Volo.Abp.Ddd.Application.Contracts, Version=9.1.0.0, Culture=neutral, PublicKeyToken=null]]"
+                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Volo.Abp.Application.Dtos.PagedResultDto`1[[Ex3.Exchange.OpenApi.AppServices.RootAssetInfoDto, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Volo.Abp.Ddd.Application.Contracts, Version=9.1.1.0, Culture=neutral, PublicKeyToken=null]]"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Volo.Abp.Application.Dtos.PagedResultDto`1[[Ex3.Exchange.OpenApi.AppServices.RootAssetInfoDto, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Volo.Abp.Ddd.Application.Contracts, Version=9.1.0.0, Culture=neutral, PublicKeyToken=null]]"
+                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Volo.Abp.Application.Dtos.PagedResultDto`1[[Ex3.Exchange.OpenApi.AppServices.RootAssetInfoDto, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Volo.Abp.Ddd.Application.Contracts, Version=9.1.1.0, Culture=neutral, PublicKeyToken=null]]"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Volo.Abp.Application.Dtos.PagedResultDto`1[[Ex3.Exchange.OpenApi.AppServices.RootAssetInfoDto, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Volo.Abp.Ddd.Application.Contracts, Version=9.1.0.0, Culture=neutral, PublicKeyToken=null]]"
+                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Volo.Abp.Application.Dtos.PagedResultDto`1[[Ex3.Exchange.OpenApi.AppServices.RootAssetInfoDto, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Volo.Abp.Ddd.Application.Contracts, Version=9.1.1.0, Culture=neutral, PublicKeyToken=null]]"
                 }
               }
             }
@@ -1416,17 +1417,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Volo.Abp.Application.Dtos.PagedResultDto`1[[Ex3.Exchange.OpenApi.AppServices.KlineItem, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Volo.Abp.Ddd.Application.Contracts, Version=9.1.0.0, Culture=neutral, PublicKeyToken=null]]"
+                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Volo.Abp.Application.Dtos.PagedResultDto`1[[Ex3.Exchange.OpenApi.AppServices.KlineItem, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Volo.Abp.Ddd.Application.Contracts, Version=9.1.1.0, Culture=neutral, PublicKeyToken=null]]"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Volo.Abp.Application.Dtos.PagedResultDto`1[[Ex3.Exchange.OpenApi.AppServices.KlineItem, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Volo.Abp.Ddd.Application.Contracts, Version=9.1.0.0, Culture=neutral, PublicKeyToken=null]]"
+                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Volo.Abp.Application.Dtos.PagedResultDto`1[[Ex3.Exchange.OpenApi.AppServices.KlineItem, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Volo.Abp.Ddd.Application.Contracts, Version=9.1.1.0, Culture=neutral, PublicKeyToken=null]]"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Volo.Abp.Application.Dtos.PagedResultDto`1[[Ex3.Exchange.OpenApi.AppServices.KlineItem, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Volo.Abp.Ddd.Application.Contracts, Version=9.1.0.0, Culture=neutral, PublicKeyToken=null]]"
+                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Volo.Abp.Application.Dtos.PagedResultDto`1[[Ex3.Exchange.OpenApi.AppServices.KlineItem, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Volo.Abp.Ddd.Application.Contracts, Version=9.1.1.0, Culture=neutral, PublicKeyToken=null]]"
                 }
               }
             }
@@ -1619,17 +1620,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Volo.Abp.Application.Dtos.PagedResultDto`1[[Ex3.Exchange.OpenApi.AppServices.MarketTradingHistoryItem, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Volo.Abp.Ddd.Application.Contracts, Version=9.1.0.0, Culture=neutral, PublicKeyToken=null]]"
+                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Volo.Abp.Application.Dtos.PagedResultDto`1[[Ex3.Exchange.OpenApi.AppServices.MarketTradingHistoryItem, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Volo.Abp.Ddd.Application.Contracts, Version=9.1.1.0, Culture=neutral, PublicKeyToken=null]]"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Volo.Abp.Application.Dtos.PagedResultDto`1[[Ex3.Exchange.OpenApi.AppServices.MarketTradingHistoryItem, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Volo.Abp.Ddd.Application.Contracts, Version=9.1.0.0, Culture=neutral, PublicKeyToken=null]]"
+                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Volo.Abp.Application.Dtos.PagedResultDto`1[[Ex3.Exchange.OpenApi.AppServices.MarketTradingHistoryItem, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Volo.Abp.Ddd.Application.Contracts, Version=9.1.1.0, Culture=neutral, PublicKeyToken=null]]"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Volo.Abp.Application.Dtos.PagedResultDto`1[[Ex3.Exchange.OpenApi.AppServices.MarketTradingHistoryItem, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Volo.Abp.Ddd.Application.Contracts, Version=9.1.0.0, Culture=neutral, PublicKeyToken=null]]"
+                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Volo.Abp.Application.Dtos.PagedResultDto`1[[Ex3.Exchange.OpenApi.AppServices.MarketTradingHistoryItem, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Volo.Abp.Ddd.Application.Contracts, Version=9.1.1.0, Culture=neutral, PublicKeyToken=null]]"
                 }
               }
             }
@@ -1833,17 +1834,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Volo.Abp.Application.Dtos.PagedResultDto`1[[Ex3.Exchange.OpenApi.AppServices.MarketInfoItem, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Volo.Abp.Ddd.Application.Contracts, Version=9.1.0.0, Culture=neutral, PublicKeyToken=null]]"
+                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Volo.Abp.Application.Dtos.PagedResultDto`1[[Ex3.Exchange.OpenApi.AppServices.MarketInfoItem, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Volo.Abp.Ddd.Application.Contracts, Version=9.1.1.0, Culture=neutral, PublicKeyToken=null]]"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Volo.Abp.Application.Dtos.PagedResultDto`1[[Ex3.Exchange.OpenApi.AppServices.MarketInfoItem, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Volo.Abp.Ddd.Application.Contracts, Version=9.1.0.0, Culture=neutral, PublicKeyToken=null]]"
+                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Volo.Abp.Application.Dtos.PagedResultDto`1[[Ex3.Exchange.OpenApi.AppServices.MarketInfoItem, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Volo.Abp.Ddd.Application.Contracts, Version=9.1.1.0, Culture=neutral, PublicKeyToken=null]]"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Volo.Abp.Application.Dtos.PagedResultDto`1[[Ex3.Exchange.OpenApi.AppServices.MarketInfoItem, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Volo.Abp.Ddd.Application.Contracts, Version=9.1.0.0, Culture=neutral, PublicKeyToken=null]]"
+                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Volo.Abp.Application.Dtos.PagedResultDto`1[[Ex3.Exchange.OpenApi.AppServices.MarketInfoItem, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Volo.Abp.Ddd.Application.Contracts, Version=9.1.1.0, Culture=neutral, PublicKeyToken=null]]"
                 }
               }
             }
@@ -2400,17 +2401,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Volo.Abp.Application.Dtos.PagedResultDto`1[[Ex3.Exchange.OpenApi.AppServices.WalletOrderDto, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Volo.Abp.Ddd.Application.Contracts, Version=9.1.0.0, Culture=neutral, PublicKeyToken=null]]"
+                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Volo.Abp.Application.Dtos.PagedResultDto`1[[Ex3.Exchange.OpenApi.AppServices.WalletOrderDto, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Volo.Abp.Ddd.Application.Contracts, Version=9.1.1.0, Culture=neutral, PublicKeyToken=null]]"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Volo.Abp.Application.Dtos.PagedResultDto`1[[Ex3.Exchange.OpenApi.AppServices.WalletOrderDto, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Volo.Abp.Ddd.Application.Contracts, Version=9.1.0.0, Culture=neutral, PublicKeyToken=null]]"
+                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Volo.Abp.Application.Dtos.PagedResultDto`1[[Ex3.Exchange.OpenApi.AppServices.WalletOrderDto, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Volo.Abp.Ddd.Application.Contracts, Version=9.1.1.0, Culture=neutral, PublicKeyToken=null]]"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Volo.Abp.Application.Dtos.PagedResultDto`1[[Ex3.Exchange.OpenApi.AppServices.WalletOrderDto, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Volo.Abp.Ddd.Application.Contracts, Version=9.1.0.0, Culture=neutral, PublicKeyToken=null]]"
+                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Volo.Abp.Application.Dtos.PagedResultDto`1[[Ex3.Exchange.OpenApi.AppServices.WalletOrderDto, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Volo.Abp.Ddd.Application.Contracts, Version=9.1.1.0, Culture=neutral, PublicKeyToken=null]]"
                 }
               }
             }
@@ -3945,7 +3946,7 @@
         },
         "additionalProperties": false
       },
-      "Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Volo.Abp.Application.Dtos.PagedResultDto`1[[Ex3.Exchange.OpenApi.AppServices.KlineItem, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Volo.Abp.Ddd.Application.Contracts, Version=9.1.0.0, Culture=neutral, PublicKeyToken=null]]": {
+      "Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Volo.Abp.Application.Dtos.PagedResultDto`1[[Ex3.Exchange.OpenApi.AppServices.KlineItem, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Volo.Abp.Ddd.Application.Contracts, Version=9.1.1.0, Culture=neutral, PublicKeyToken=null]]": {
         "type": "object",
         "properties": {
           "code": {
@@ -3962,7 +3963,7 @@
         },
         "additionalProperties": false
       },
-      "Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Volo.Abp.Application.Dtos.PagedResultDto`1[[Ex3.Exchange.OpenApi.AppServices.MarketInfoItem, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Volo.Abp.Ddd.Application.Contracts, Version=9.1.0.0, Culture=neutral, PublicKeyToken=null]]": {
+      "Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Volo.Abp.Application.Dtos.PagedResultDto`1[[Ex3.Exchange.OpenApi.AppServices.MarketInfoItem, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Volo.Abp.Ddd.Application.Contracts, Version=9.1.1.0, Culture=neutral, PublicKeyToken=null]]": {
         "type": "object",
         "properties": {
           "code": {
@@ -3979,7 +3980,7 @@
         },
         "additionalProperties": false
       },
-      "Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Volo.Abp.Application.Dtos.PagedResultDto`1[[Ex3.Exchange.OpenApi.AppServices.MarketTradingHistoryItem, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Volo.Abp.Ddd.Application.Contracts, Version=9.1.0.0, Culture=neutral, PublicKeyToken=null]]": {
+      "Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Volo.Abp.Application.Dtos.PagedResultDto`1[[Ex3.Exchange.OpenApi.AppServices.MarketTradingHistoryItem, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Volo.Abp.Ddd.Application.Contracts, Version=9.1.1.0, Culture=neutral, PublicKeyToken=null]]": {
         "type": "object",
         "properties": {
           "code": {
@@ -3996,7 +3997,7 @@
         },
         "additionalProperties": false
       },
-      "Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Volo.Abp.Application.Dtos.PagedResultDto`1[[Ex3.Exchange.OpenApi.AppServices.RootAssetInfoDto, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Volo.Abp.Ddd.Application.Contracts, Version=9.1.0.0, Culture=neutral, PublicKeyToken=null]]": {
+      "Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Volo.Abp.Application.Dtos.PagedResultDto`1[[Ex3.Exchange.OpenApi.AppServices.RootAssetInfoDto, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Volo.Abp.Ddd.Application.Contracts, Version=9.1.1.0, Culture=neutral, PublicKeyToken=null]]": {
         "type": "object",
         "properties": {
           "code": {
@@ -4013,7 +4014,7 @@
         },
         "additionalProperties": false
       },
-      "Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Volo.Abp.Application.Dtos.PagedResultDto`1[[Ex3.Exchange.OpenApi.AppServices.WalletOrderDto, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Volo.Abp.Ddd.Application.Contracts, Version=9.1.0.0, Culture=neutral, PublicKeyToken=null]]": {
+      "Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Volo.Abp.Application.Dtos.PagedResultDto`1[[Ex3.Exchange.OpenApi.AppServices.WalletOrderDto, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Volo.Abp.Ddd.Application.Contracts, Version=9.1.1.0, Culture=neutral, PublicKeyToken=null]]": {
         "type": "object",
         "properties": {
           "code": {

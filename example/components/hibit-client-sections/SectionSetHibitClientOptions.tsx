@@ -1,10 +1,10 @@
-import { HibitNetwork } from '../../src';
-import { HibitApiOptions, HibitClient } from '../../src/hibit-client';
-import Section from './Section';
+import { HibitNetwork } from '../../../src';
+import { HibitApiOptions, HibitClient } from '../../../src/hibit-client';
+import Section from '../Section';
 import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { object, string } from 'yup';
-import FormField from './FormField';
+import FormField from '../FormField';
 import { useEffect } from 'react';
 
 const schema = object({
@@ -13,7 +13,7 @@ const schema = object({
   proxyKey: string().required()
 });
 
-export default function SectionSetOptions({
+export default function SectionSetHibitClientOptions({
   client,
   defaultOptions
 }: {
@@ -49,7 +49,7 @@ export default function SectionSetOptions({
 
   return (
     <Section
-      title="SDK Options Config"
+      title="Hibit Client Options Config"
       form={
         <div className="flex flex-col gap-2">
           <FormField label="Network" error={errors.network} required>

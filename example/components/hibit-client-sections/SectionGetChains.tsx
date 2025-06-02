@@ -1,6 +1,6 @@
-import { ChainInfo } from '../../src';
-import { HibitClient } from '../../src/hibit-client';
-import Section from './Section';
+import { ChainInfo } from '../../../src';
+import { HibitClient } from '../../../src/hibit-client';
+import Section from '../Section';
 import { useState } from 'react';
 
 export default function SectionGetChains({ client }: { client: HibitClient }) {

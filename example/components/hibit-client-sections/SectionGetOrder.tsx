@@ -1,11 +1,11 @@
-import { OrderInfo } from '../../src';
-import { HibitClient } from '../../src/hibit-client';
-import Section from './Section';
+import { OrderInfo } from '../../../src';
+import { HibitClient } from '../../../src/hibit-client';
+import Section from '../Section';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { object, string } from 'yup';
-import FormField from './FormField';
+import FormField from '../FormField';
 
 const schema = object({
   orderId: string(),

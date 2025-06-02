@@ -73,15 +73,15 @@ export type SubAssetInfo = {
 
 export type GetAssetsInput = {
   /**
-   * chain ids to filter the markets list.
+   * chain ids to filter the asset list.
    */
   chainIds?: Array<ChainId>;
   /**
-   * chain asset types to filter the markets list.
+   * chain asset types to filter the asset list.
    */
   chainAssetTypes?: Array<ChainAssetType>;
   /**
-   * maximum number of items to return. maximum value is 500.
+   * maximum number of items to return. Max value is 500.
    */
   limit?: number;
   /**

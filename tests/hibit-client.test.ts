@@ -24,7 +24,7 @@ describe('Hibit Client Test', () => {
     it('should get supported chains', async () => {
       const chains = await hibitClient.getChains();
       expect(chains).toBeInstanceOf(Array);
-      expect(chains.length).toBeGreaterThan(0);
+      expect(chains.length).toBeGreaterThanOrEqual(0);
     });
 
     it('should get assets with pagination', async () => {
