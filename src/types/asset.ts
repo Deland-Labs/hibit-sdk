@@ -3,6 +3,7 @@ import {
   Ex3ExchangeOpenApiAppServicesSubAssetInfoDto,
   type GetV1AssetData,
   GetV1AssetsData,
+  GetV1ChainBalancesData,
   Options
 } from '../openapi';
 import { ChainAssetType } from './enums';
@@ -100,6 +101,32 @@ export type GetAssetsInput = {
   orderBy?: string;
 };
 
+export type GetAssetInput = {
+  /**
+   * ID of the asset, represented as a bigint.
+   */
+  assetId?: string;
+
+  /**
+   * Address of the token contract.
+   */
+  tokenAddress?: string;
+};
+
+export type GetChainBalancesInput = {
+  /**
+   * ID of the asset, represented as a bigint.
+   */
+  assetId?: string;
+};
+
+export type GetAssetsOutput = {
+  /**
+   * list of assets
+   */
+  assets: Array<AssetInfo>;
+};
+
 export function mapAssetInfo(asset: Ex3ExchangeOpenApiAppServicesRootAssetInfoDto): AssetInfo {
   return {
     assetId: asset.assetId,
@@ -136,10 +163,19 @@ export function mapGetAssetsInput(input: GetAssetsInput): Options<GetV1AssetsDat
   };
 }
 
-export function mapGetAssetInput(assetId: bigint): Options<GetV1AssetData> {
+export function mapGetAssetInput(input: GetAssetInput): Options<GetV1AssetData> {
   return {
     query: {
-      AssetId: assetId.toString()
+      AssetId: input.assetId,
+      TokenAddress: input.tokenAddress
+    }
+  };
+}
+
+export function mapGetChainBalancesInput(input: GetChainBalancesInput): Options<GetV1ChainBalancesData> {
+  return {
+    query: {
+      AssetId: input.assetId?.toString()
     }
   };
 }
