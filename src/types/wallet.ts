@@ -1,4 +1,119 @@
-import { Options, GetV1WalletNonceData, GetV1WalletBalancesData } from '../openapi';
+import {
+  Options,
+  GetV1WalletNonceData,
+  GetV1WalletBalancesData,
+  PostV1WalletRegisterData,
+  GetV1WalletInfoData,
+  Ex3ExchangeOpenApiAppServicesWalletRegistrationInfo,
+  PostV1ProxyKeyData,
+  Ex3ExchangeOpenApiAppServicesProxyKeyResult
+} from '../openapi';
+import { Chain, ChainNetwork } from './chain';
+import { WalletSignatureSchema } from './enums';
+import { HexString } from './index';
+import { OriginWalletTransaction } from './tx.ts';
+
+/**
+ * Information about a registered wallet on the hibit chain.
+ * Contains the HIN (https://docs.hibit.app/glossary#hin)
+ */
+export type RegisteredWalletInfo = {
+  /** The HIN of the wallet */
+  hin: bigint;
+};
+
+/**
+ * Represents a proxy key pair.
+ * Contains both the private and public keys in hex string format.
+ */
+export type ProxyKeypair = {
+  /** The private key in hexadecimal format */
+  privateKey: HexString;
+  /** The public key in hexadecimal format */
+  publicKey: HexString;
+};
+
+/**
+ * Input parameters for registering a new wallet.
+ * Used to provide necessary information when creating a wallet registration.
+ */
+export type WalletRegisterInput = {
+  /** The blockchain type for the wallet */
+  chain: Chain;
+
+  /**
+   * The public key of the wallet in string format.
+   * This is used to identify the wallet on the blockchain,
+   * it is required if the signature cannot recover the public key.
+   */
+  publicKey?: string;
+
+  /** The signature schema used by the wallet */
+  SignatureSchema: WalletSignatureSchema;
+};
+
+export type GetRegisteredWalletInfoInput = {
+  /**
+   * The blockchain type of wallet.
+   */
+  chain: Chain;
+
+  /**
+   * Public key of the wallet, optional.
+   * At least one of publicKey or address must be provided.
+   */
+  publicKey: string;
+
+  /**
+   * The address of the wallet, optional.
+   * At least one of publicKey or address must be provided.
+   */
+  address?: string;
+};
+
+/**
+ * Input parameters for resetting a proxy key.
+ * Used to provide necessary information when resetting a proxy key for a wallet.
+ */
+export type ResetProxyKeyInput = {
+  /** The HIN (hibit chain identity number) of the wallet */
+  hin: bigint;
+
+  /** The current nonce value needed for the proxy key reset operation */
+  nonce: bigint;
+
+  /** The encrypted proxy key in hexadecimal format */
+  encryptedProxyKey: HexString;
+
+  /** The public key of the proxy in hexadecimal format */
+  ProxyPublicKey: HexString;
+};
+
+/**
+ * Input parameters for retrieving a proxy key.
+ * Used to provide necessary information when fetching a proxy key for a wallet.
+ */
+export type GetProxyKeyInput = {
+  /** The HIN (hibit chain identity number) of the wallet */
+  hin: bigint;
+
+  /** The signature schema used by the wallet */
+  signatureSchema: WalletSignatureSchema;
+
+  /** Timestamp of the request in milliseconds */
+  timestamp: number;
+};
+
+export type WithdrawInput = {
+  nonce: bigint;
+  targetChain: Chain;
+  targetChainNetwork: ChainNetwork;
+  address: string;
+  assetId: bigint;
+  assetDecimals: number;
+  amount: number;
+  fee: number;
+};
 
 /**
  * Input parameters for retrieving wallet balance information.
@@ -30,6 +145,81 @@ export type GetWalletBalancesInput = {
    */
   assetId?: bigint;
 };
+
+/**
+ * Maps a wallet transaction to the format required for the wallet registration API.
+ *
+ * @param originTx - The original wallet transaction containing chain, network, message, and signature data
+ * @returns An object formatted as required by the wallet registration API endpoint
+ */
+export function mapToWalletRegisterApiRequest(
+  originTx: OriginWalletTransaction
+): Options<PostV1WalletRegisterData, boolean> {
+  return {
+    body: {
+      chain: originTx.chain.toString(),
+      chainNetwork: originTx.chainNetwork.toString(),
+      message: originTx.message,
+      signature: originTx.signature
+    }
+  };
+}
+
+/**
+ * Maps a wallet transaction to the format required for the proxy key API request.
+ *
+ * @param originTx - The original wallet transaction containing chain, network, message, and signature data
+ * @returns An object formatted as required by the proxy key API endpoint
+ */
+export function mapToGetProxyKeyApiRequest(originTx: OriginWalletTransaction): Options<PostV1ProxyKeyData, boolean> {
+  return {
+    body: {
+      chain: originTx.chain.toString(),
+      chainNetwork: originTx.chainNetwork.toString(),
+      message: originTx.message,
+      signature: originTx.signature
+    }
+  };
+}
+
+export function mapGetProxyKeyOutput(data: Ex3ExchangeOpenApiAppServicesProxyKeyResult): ProxyKeypair {
+  return {
+    privateKey: data.ex3KeyPair?.privateKeyHex ?? '',
+    publicKey: data.ex3KeyPair?.publicKeyHex ?? ''
+  };
+}
+
+/**
+ * Maps wallet info query input to the format required for the registered wallet info API call.
+ *
+ * @param input - The registered wallet query parameters, including chain, public key, and optional address.
+ * @returns An object containing the query parameters for the API call.
+ */
+export function mapGetRegisteredWalletInfoInput(
+  input: GetRegisteredWalletInfoInput
+): Options<GetV1WalletInfoData, boolean> {
+  return {
+    query: {
+      Chain: input.chain.toString(),
+      PublicKey: input.publicKey,
+      Address: input.address
+    }
+  };
+}
+
+/**
+ * Maps the wallet registration information from the API response to the RegisteredWalletInfo type.
+ *
+ * @param data - The wallet registration information from the API response
+ * @returns A RegisteredWalletInfo object containing the wallet's HIN (hibit identity number)
+ */
+export function mapGetRegisteredWalletInfoOutput(
+  data: Ex3ExchangeOpenApiAppServicesWalletRegistrationInfo
+): RegisteredWalletInfo {
+  return {
+    hin: BigInt(data.hin!)
+  };
+}
 
 /**
  * Maps the HIN to the input format required for retrieving the wallet nonce.

@@ -11,12 +11,21 @@ import type {
   GetV1AssetData,
   GetV1AssetResponse,
   GetV1AssetError,
+  GetV1AssetWithdrawalFeeData,
+  GetV1AssetWithdrawalFeeResponse,
+  GetV1AssetWithdrawalFeeError,
   GetV1ChainsData,
   GetV1ChainsResponse,
   GetV1ChainsError,
   GetV1ChainBalancesData,
   GetV1ChainBalancesResponse,
   GetV1ChainBalancesError,
+  PostV1ProxyKeyData,
+  PostV1ProxyKeyResponse,
+  PostV1ProxyKeyError,
+  PostV1ProxyKeyResetData,
+  PostV1ProxyKeyResetResponse,
+  PostV1ProxyKeyResetError,
   GetV1MarketDepthData,
   GetV1MarketDepthResponse,
   GetV1MarketDepthError,
@@ -61,7 +70,13 @@ import type {
   GetV1WalletNonceError,
   GetV1WalletBalancesData,
   GetV1WalletBalancesResponse,
-  GetV1WalletBalancesError
+  GetV1WalletBalancesError,
+  PostV1WalletRegisterData,
+  PostV1WalletRegisterResponse,
+  PostV1WalletRegisterError,
+  GetV1WalletInfoData,
+  GetV1WalletInfoResponse,
+  GetV1WalletInfoError
 } from './types.gen';
 import { client as _heyApiClient } from './client.gen';
 
@@ -118,6 +133,22 @@ export const getV1Asset = <ThrowOnError extends boolean = false>(options?: Optio
 };
 
 /**
+ * Get withdrawal fee information for an asset
+ */
+export const getV1AssetWithdrawalFee = <ThrowOnError extends boolean = false>(
+  options?: Options<GetV1AssetWithdrawalFeeData, ThrowOnError>
+) => {
+  return (options?.client ?? _heyApiClient).get<
+    GetV1AssetWithdrawalFeeResponse,
+    GetV1AssetWithdrawalFeeError,
+    ThrowOnError
+  >({
+    url: '/v1/asset/withdrawal-fee',
+    ...options
+  });
+};
+
+/**
  * Get all supported chains
  */
 export const getV1Chains = <ThrowOnError extends boolean = false>(options?: Options<GetV1ChainsData, ThrowOnError>) => {
@@ -138,6 +169,38 @@ export const getV1ChainBalances = <ThrowOnError extends boolean = false>(
   return (options?.client ?? _heyApiClient).get<GetV1ChainBalancesResponse, GetV1ChainBalancesError, ThrowOnError>({
     url: '/v1/chain-balances',
     ...options
+  });
+};
+
+/**
+ * Get the proxy key
+ */
+export const postV1ProxyKey = <ThrowOnError extends boolean = false>(
+  options?: Options<PostV1ProxyKeyData, ThrowOnError>
+) => {
+  return (options?.client ?? _heyApiClient).post<PostV1ProxyKeyResponse, PostV1ProxyKeyError, ThrowOnError>({
+    url: '/v1/proxy-key',
+    ...options,
+    headers: {
+      'Content-Type': 'application/json',
+      ...options?.headers
+    }
+  });
+};
+
+/**
+ * Reset the proxy key
+ */
+export const postV1ProxyKeyReset = <ThrowOnError extends boolean = false>(
+  options?: Options<PostV1ProxyKeyResetData, ThrowOnError>
+) => {
+  return (options?.client ?? _heyApiClient).post<PostV1ProxyKeyResetResponse, PostV1ProxyKeyResetError, ThrowOnError>({
+    url: '/v1/proxy-key/reset',
+    ...options,
+    headers: {
+      'Content-Type': 'application/json',
+      ...options?.headers
+    }
   });
 };
 
@@ -332,6 +395,36 @@ export const getV1WalletBalances = <ThrowOnError extends boolean = false>(
 ) => {
   return (options?.client ?? _heyApiClient).get<GetV1WalletBalancesResponse, GetV1WalletBalancesError, ThrowOnError>({
     url: '/v1/wallet/balances',
+    ...options
+  });
+};
+
+/**
+ * Register wallet
+ */
+export const postV1WalletRegister = <ThrowOnError extends boolean = false>(
+  options?: Options<PostV1WalletRegisterData, ThrowOnError>
+) => {
+  return (options?.client ?? _heyApiClient).post<PostV1WalletRegisterResponse, PostV1WalletRegisterError, ThrowOnError>(
+    {
+      url: '/v1/wallet/register',
+      ...options,
+      headers: {
+        'Content-Type': 'application/json',
+        ...options?.headers
+      }
+    }
+  );
+};
+
+/**
+ * Get wallet registration info
+ */
+export const getV1WalletInfo = <ThrowOnError extends boolean = false>(
+  options?: Options<GetV1WalletInfoData, ThrowOnError>
+) => {
+  return (options?.client ?? _heyApiClient).get<GetV1WalletInfoResponse, GetV1WalletInfoError, ThrowOnError>({
+    url: '/v1/wallet/info',
     ...options
   });
 };
