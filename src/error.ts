@@ -25,4 +25,7 @@ export class HibitError extends Error {
   static throwRequiredPrivKeyError(apiName: string) {
     throw new HibitError(`Private key is required: ${apiName}`);
   }
+  static throwRequiredWalletApiError(apiName: string) {
+    throw new HibitError(`Wallet API is required: ${apiName}`);
+  }
 }

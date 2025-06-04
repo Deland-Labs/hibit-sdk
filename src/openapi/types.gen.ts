@@ -22,6 +22,32 @@ export type Ex3ExchangeIActorsEmptyResultBody = {
 };
 
 /**
+ * Asset withdrawal fee information
+ */
+export type Ex3ExchangeOpenApiAppServicesAssetWithdrawFeeInfoDto = {
+  /**
+   * Root ID of the asset
+   */
+  rootAssetId: string;
+  /**
+   * ID of the target asset
+   */
+  targetAssetId: string;
+  /**
+   * The rate used to calculate withdrawal fees
+   */
+  feeRate: string;
+  /**
+   * The decimal precision for the fee rate
+   */
+  rateDecimal: string;
+  /**
+   * The minimum fee amount that will be charged for withdrawals
+   */
+  minFee: string;
+};
+
+/**
  * chain information which is supported by the system
  */
 export type Ex3ExchangeOpenApiAppServicesChainInfoDto = {
@@ -271,6 +297,13 @@ export type Ex3ExchangeOpenApiAppServicesOpenApiResult1Ex3ExchangeIActorsEmptyRe
     data?: Ex3ExchangeIActorsEmptyResultBody;
   };
 
+export type Ex3ExchangeOpenApiAppServicesOpenApiResult1Ex3ExchangeOpenApiAppServicesAssetWithdrawFeeInfoDto_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null =
+  {
+    code?: number;
+    message?: string | null;
+    data?: Ex3ExchangeOpenApiAppServicesAssetWithdrawFeeInfoDto;
+  };
+
 export type Ex3ExchangeOpenApiAppServicesOpenApiResult1Ex3ExchangeOpenApiAppServicesGet24HrTickerOutput_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null =
   {
     code?: number;
@@ -306,6 +339,13 @@ export type Ex3ExchangeOpenApiAppServicesOpenApiResult1Ex3ExchangeOpenApiAppServ
     data?: Ex3ExchangeOpenApiAppServicesNonceResult;
   };
 
+export type Ex3ExchangeOpenApiAppServicesOpenApiResult1Ex3ExchangeOpenApiAppServicesProxyKeyResult_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null =
+  {
+    code?: number;
+    message?: string | null;
+    data?: Ex3ExchangeOpenApiAppServicesProxyKeyResult;
+  };
+
 export type Ex3ExchangeOpenApiAppServicesOpenApiResult1Ex3ExchangeOpenApiAppServicesRootAssetInfoDto_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null =
   {
     code?: number;
@@ -327,6 +367,20 @@ export type Ex3ExchangeOpenApiAppServicesOpenApiResult1Ex3ExchangeOpenApiAppServ
     data?: Ex3ExchangeOpenApiAppServicesWalletOrderDto;
   };
 
+export type Ex3ExchangeOpenApiAppServicesOpenApiResult1Ex3ExchangeOpenApiAppServicesWalletRegistrationInfo_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null =
+  {
+    code?: number;
+    message?: string | null;
+    data?: Ex3ExchangeOpenApiAppServicesWalletRegistrationInfo;
+  };
+
+export type Ex3ExchangeOpenApiAppServicesOpenApiResult1MicrosoftAspNetCoreMvcEmptyResult_MicrosoftAspNetCoreMvcCore_Version_9000_Culture_neutral_PublicKeyToken_adb9793829Ddae60 =
+  {
+    code?: number;
+    message?: string | null;
+    data?: MicrosoftAspNetCoreMvcEmptyResult;
+  };
+
 export type Ex3ExchangeOpenApiAppServicesOpenApiResult1SystemCollectionsGenericDictionary2Ex3ModelsAssetId_Ex3Models_Version_1000_Culture_neutral_PublicKeyToken_null__Ex3ModelsOpenApiNumber_Ex3Models_Version_1000_Culture_neutral_PublicKeyToken_null___SystemPrivateCoreLib_Version_9000_Culture_neutral_PublicKeyToken_7Cec85D7Bea7798E =
   {
     code?: number;
@@ -341,6 +395,16 @@ export type Ex3ExchangeOpenApiAppServicesOpenApiResult1SystemCollectionsGenericI
     code?: number;
     message?: string | null;
     data?: Array<Ex3ExchangeOpenApiAppServicesChainInfoDto> | null;
+  };
+
+export type Ex3ExchangeOpenApiAppServicesOpenApiResult1SystemNumericsBigInteger_SystemRuntimeNumerics_Version_9000_Culture_neutral_PublicKeyToken_b03F5F7F11D50A3A =
+  {
+    code?: number;
+    message?: string | null;
+    /**
+     * BigInt
+     */
+    data?: string;
   };
 
 export type Ex3ExchangeOpenApiAppServicesOpenApiResult1VoloAbpApplicationDtosPagedResultDto1Ex3ExchangeOpenApiAppServicesKlineItem_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null___VoloAbpDddApplicationContracts_Version_9110_Culture_neutral_PublicKeyToken_null =
@@ -377,6 +441,33 @@ export type Ex3ExchangeOpenApiAppServicesOpenApiResult1VoloAbpApplicationDtosPag
     message?: string | null;
     data?: VoloAbpApplicationDtosPagedResultDto1Ex3ExchangeOpenApiAppServicesWalletOrderDto_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null;
   };
+
+/**
+ * Represents a request signed by the origin wallet.
+ */
+export type Ex3ExchangeOpenApiAppServicesOriginWalletRequest = {
+  /**
+   * The block chain type of the wallet.
+   */
+  chain?: string;
+  /**
+   * The network of the block chain.
+   */
+  chainNetwork?: string;
+  /**
+   * The message content of the request, typically a plain text.
+   */
+  message?: string | null;
+  /**
+   * Gets or sets the cryptographic signature.
+   */
+  signature?: string | null;
+};
+
+export type Ex3ExchangeOpenApiAppServicesProxyKeyResult = {
+  ex3KeyPair?: Ex3ModelsEx3KeyPair;
+  userId?: string;
+};
 
 export type Ex3ExchangeOpenApiAppServicesRootAssetInfoDto = {
   /**
@@ -520,6 +611,16 @@ export type Ex3ExchangeOpenApiAppServicesWalletOrderTradeListItem = {
   t: unknown;
 };
 
+export type Ex3ExchangeOpenApiAppServicesWalletRegistrationInfo = {
+  hin?: string | null;
+};
+
+export type Ex3ModelsEx3KeyPair = {
+  privateKeyHex?: string;
+  publicKeyHex?: string;
+  schema?: Ex3ModelsSignaturesSchema;
+};
+
 export type Ex3ModelsKLineTickSpace = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
 
 /**
@@ -532,6 +633,8 @@ export type Ex3ModelsOrderCategory = 0 | 1;
  */
 export type Ex3ModelsOrderSide = 1 | 2;
 
+export type Ex3ModelsSignaturesSchema = 1;
+
 export type Ex3RepositoryHistoryEntitiesOrderStatus = 0 | 1 | 2;
 
 export type Ex3TransactionsL2Request = {
@@ -541,6 +644,10 @@ export type Ex3TransactionsL2Request = {
   message?: string;
   hash?: string;
   signature?: string;
+};
+
+export type MicrosoftAspNetCoreMvcEmptyResult = {
+  [key: string]: never;
 };
 
 export type VoloAbpApplicationDtosPagedResultDto1Ex3ExchangeOpenApiAppServicesKlineItem_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null =
@@ -766,6 +873,111 @@ export type GetV1AssetResponses = {
 
 export type GetV1AssetResponse = GetV1AssetResponses[keyof GetV1AssetResponses];
 
+export type GetV1AssetWithdrawalFeeData = {
+  body?: never;
+  path?: never;
+  query?: {
+    /**
+     * The identifier for the root asset to check withdrawal fees for
+     */
+    RootAssetId?: string;
+    /**
+     * The target blockchain type for the withdrawal
+     */
+    TargetChain?: string;
+    /**
+     * The specific network on the target blockchain for the withdrawal
+     */
+    TargetChainNetwork?: string;
+  };
+  url: '/v1/asset/withdrawal-fee';
+};
+
+export type GetV1AssetWithdrawalFeeErrors = {
+  /**
+   * Bad Request
+   */
+  400: VoloAbpHttpRemoteServiceErrorResponse;
+  /**
+   * Unauthorized
+   */
+  401: VoloAbpHttpRemoteServiceErrorResponse;
+  /**
+   * Forbidden
+   */
+  403: VoloAbpHttpRemoteServiceErrorResponse;
+  /**
+   * Not Found
+   */
+  404: VoloAbpHttpRemoteServiceErrorResponse;
+  /**
+   * Internal Server Error
+   */
+  500: VoloAbpHttpRemoteServiceErrorResponse;
+  /**
+   * Not Implemented
+   */
+  501: VoloAbpHttpRemoteServiceErrorResponse;
+};
+
+export type GetV1AssetWithdrawalFeeError = GetV1AssetWithdrawalFeeErrors[keyof GetV1AssetWithdrawalFeeErrors];
+
+export type GetV1AssetWithdrawalFeeResponses = {
+  /**
+   * OK
+   */
+  200: Ex3ExchangeOpenApiAppServicesOpenApiResult1Ex3ExchangeOpenApiAppServicesAssetWithdrawFeeInfoDto_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null;
+};
+
+export type GetV1AssetWithdrawalFeeResponse = GetV1AssetWithdrawalFeeResponses[keyof GetV1AssetWithdrawalFeeResponses];
+
+export type GetV1AssetChainBalanceData = {
+  body?: never;
+  path?: never;
+  query?: {
+    AssetId?: string;
+  };
+  url: '/v1/asset/chain-balance';
+};
+
+export type GetV1AssetChainBalanceErrors = {
+  /**
+   * Bad Request
+   */
+  400: VoloAbpHttpRemoteServiceErrorResponse;
+  /**
+   * Unauthorized
+   */
+  401: VoloAbpHttpRemoteServiceErrorResponse;
+  /**
+   * Forbidden
+   */
+  403: VoloAbpHttpRemoteServiceErrorResponse;
+  /**
+   * Not Found
+   */
+  404: VoloAbpHttpRemoteServiceErrorResponse;
+  /**
+   * Internal Server Error
+   */
+  500: VoloAbpHttpRemoteServiceErrorResponse;
+  /**
+   * Not Implemented
+   */
+  501: VoloAbpHttpRemoteServiceErrorResponse;
+};
+
+export type GetV1AssetChainBalanceError = GetV1AssetChainBalanceErrors[keyof GetV1AssetChainBalanceErrors];
+
+export type GetV1AssetChainBalanceResponses = {
+  /**
+   * OK
+   */
+  200: Ex3ExchangeOpenApiAppServicesOpenApiResult1SystemNumericsBigInteger_SystemRuntimeNumerics_Version_9000_Culture_neutral_PublicKeyToken_b03F5F7F11D50A3A;
+};
+
+export type GetV1AssetChainBalanceResponse = GetV1AssetChainBalanceResponses[keyof GetV1AssetChainBalanceResponses];
+
 export type GetV1ChainsData = {
   body?: never;
   path?: never;
@@ -810,6 +1022,96 @@ export type GetV1ChainsResponses = {
 };
 
 export type GetV1ChainsResponse = GetV1ChainsResponses[keyof GetV1ChainsResponses];
+
+export type PostV1ProxyKeyData = {
+  body?: Ex3ExchangeOpenApiAppServicesOriginWalletRequest;
+  path?: never;
+  query?: never;
+  url: '/v1/proxy-key';
+};
+
+export type PostV1ProxyKeyErrors = {
+  /**
+   * Bad Request
+   */
+  400: VoloAbpHttpRemoteServiceErrorResponse;
+  /**
+   * Unauthorized
+   */
+  401: VoloAbpHttpRemoteServiceErrorResponse;
+  /**
+   * Forbidden
+   */
+  403: VoloAbpHttpRemoteServiceErrorResponse;
+  /**
+   * Not Found
+   */
+  404: VoloAbpHttpRemoteServiceErrorResponse;
+  /**
+   * Internal Server Error
+   */
+  500: VoloAbpHttpRemoteServiceErrorResponse;
+  /**
+   * Not Implemented
+   */
+  501: VoloAbpHttpRemoteServiceErrorResponse;
+};
+
+export type PostV1ProxyKeyError = PostV1ProxyKeyErrors[keyof PostV1ProxyKeyErrors];
+
+export type PostV1ProxyKeyResponses = {
+  /**
+   * OK
+   */
+  200: Ex3ExchangeOpenApiAppServicesOpenApiResult1Ex3ExchangeOpenApiAppServicesProxyKeyResult_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null;
+};
+
+export type PostV1ProxyKeyResponse = PostV1ProxyKeyResponses[keyof PostV1ProxyKeyResponses];
+
+export type PostV1ProxyKeyResetData = {
+  body?: Ex3ExchangeOpenApiAppServicesOriginWalletRequest;
+  path?: never;
+  query?: never;
+  url: '/v1/proxy-key/reset';
+};
+
+export type PostV1ProxyKeyResetErrors = {
+  /**
+   * Bad Request
+   */
+  400: VoloAbpHttpRemoteServiceErrorResponse;
+  /**
+   * Unauthorized
+   */
+  401: VoloAbpHttpRemoteServiceErrorResponse;
+  /**
+   * Forbidden
+   */
+  403: VoloAbpHttpRemoteServiceErrorResponse;
+  /**
+   * Not Found
+   */
+  404: VoloAbpHttpRemoteServiceErrorResponse;
+  /**
+   * Internal Server Error
+   */
+  500: VoloAbpHttpRemoteServiceErrorResponse;
+  /**
+   * Not Implemented
+   */
+  501: VoloAbpHttpRemoteServiceErrorResponse;
+};
+
+export type PostV1ProxyKeyResetError = PostV1ProxyKeyResetErrors[keyof PostV1ProxyKeyResetErrors];
+
+export type PostV1ProxyKeyResetResponses = {
+  /**
+   * OK
+   */
+  200: Ex3ExchangeOpenApiAppServicesOpenApiResult1Ex3ExchangeOpenApiAppServicesProxyKeyResult_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null;
+};
+
+export type PostV1ProxyKeyResetResponse = PostV1ProxyKeyResetResponses[keyof PostV1ProxyKeyResetResponses];
 
 export type GetV1MarketDepthData = {
   body?: never;
@@ -1716,6 +2018,111 @@ export type GetV1WalletBalancesResponses = {
 };
 
 export type GetV1WalletBalancesResponse = GetV1WalletBalancesResponses[keyof GetV1WalletBalancesResponses];
+
+export type PostV1WalletRegisterData = {
+  body?: Ex3ExchangeOpenApiAppServicesOriginWalletRequest;
+  path?: never;
+  query?: never;
+  url: '/v1/wallet/register';
+};
+
+export type PostV1WalletRegisterErrors = {
+  /**
+   * Bad Request
+   */
+  400: VoloAbpHttpRemoteServiceErrorResponse;
+  /**
+   * Unauthorized
+   */
+  401: VoloAbpHttpRemoteServiceErrorResponse;
+  /**
+   * Forbidden
+   */
+  403: VoloAbpHttpRemoteServiceErrorResponse;
+  /**
+   * Not Found
+   */
+  404: VoloAbpHttpRemoteServiceErrorResponse;
+  /**
+   * Internal Server Error
+   */
+  500: VoloAbpHttpRemoteServiceErrorResponse;
+  /**
+   * Not Implemented
+   */
+  501: VoloAbpHttpRemoteServiceErrorResponse;
+};
+
+export type PostV1WalletRegisterError = PostV1WalletRegisterErrors[keyof PostV1WalletRegisterErrors];
+
+export type PostV1WalletRegisterResponses = {
+  /**
+   * OK
+   */
+  200: Ex3ExchangeOpenApiAppServicesOpenApiResult1MicrosoftAspNetCoreMvcEmptyResult_MicrosoftAspNetCoreMvcCore_Version_9000_Culture_neutral_PublicKeyToken_adb9793829Ddae60;
+};
+
+export type PostV1WalletRegisterResponse = PostV1WalletRegisterResponses[keyof PostV1WalletRegisterResponses];
+
+export type GetV1WalletInfoData = {
+  body?: never;
+  path?: never;
+  query?: {
+    /**
+     * The blockchain type of wallet.
+     */
+    Chain?: string;
+    /**
+     * Public key of the wallet, optional.
+     * <remarks>At least one of PublicKey or Address must be provided.</remarks>
+     */
+    PublicKey?: string;
+    /**
+     * The address of the wallet, optional.
+     * <remarks>At least one of PublicKey or Address must be provided.</remarks>
+     */
+    Address?: string;
+  };
+  url: '/v1/wallet/info';
+};
+
+export type GetV1WalletInfoErrors = {
+  /**
+   * Bad Request
+   */
+  400: VoloAbpHttpRemoteServiceErrorResponse;
+  /**
+   * Unauthorized
+   */
+  401: VoloAbpHttpRemoteServiceErrorResponse;
+  /**
+   * Forbidden
+   */
+  403: VoloAbpHttpRemoteServiceErrorResponse;
+  /**
+   * Not Found
+   */
+  404: VoloAbpHttpRemoteServiceErrorResponse;
+  /**
+   * Internal Server Error
+   */
+  500: VoloAbpHttpRemoteServiceErrorResponse;
+  /**
+   * Not Implemented
+   */
+  501: VoloAbpHttpRemoteServiceErrorResponse;
+};
+
+export type GetV1WalletInfoError = GetV1WalletInfoErrors[keyof GetV1WalletInfoErrors];
+
+export type GetV1WalletInfoResponses = {
+  /**
+   * OK
+   */
+  200: Ex3ExchangeOpenApiAppServicesOpenApiResult1Ex3ExchangeOpenApiAppServicesWalletRegistrationInfo_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null;
+};
+
+export type GetV1WalletInfoResponse = GetV1WalletInfoResponses[keyof GetV1WalletInfoResponses];
 
 export type ClientOptions = {
   baseUrl: 'https://testnetopenapi.hibit.app' | 'https://openapi.hibit.app' | (string & {});

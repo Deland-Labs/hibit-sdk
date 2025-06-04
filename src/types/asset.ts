@@ -1,13 +1,15 @@
 import {
+  Ex3ExchangeOpenApiAppServicesAssetWithdrawFeeInfoDto,
   Ex3ExchangeOpenApiAppServicesRootAssetInfoDto,
   Ex3ExchangeOpenApiAppServicesSubAssetInfoDto,
   type GetV1AssetData,
   GetV1AssetsData,
+  GetV1AssetWithdrawalFeeData,
   Options
 } from '../openapi';
 import { ChainAssetType } from './enums';
 import { toChainAssetType } from './enums/chain-asset-type';
-import { ChainId } from './chain';
+import { Chain, ChainId, ChainNetwork } from './chain';
 
 export type AssetInfo = {
   /**
@@ -69,6 +71,50 @@ export type SubAssetInfo = {
    * decimals
    */
   decimalPlaces: string;
+};
+
+export type GetWithdrawFeeInfoInput = {
+  /**
+   * Root asset ID for which the withdrawal fee information is requested.
+   */
+  rootAssetId: bigint;
+
+  /**
+   * The blockchain where the withdrawal will be processed
+   */
+  targetChain: Chain;
+
+  /**
+   * The network type (e.g., mainnet, testnet) for the blockchain
+   */
+  targetNetwork: ChainNetwork;
+};
+
+export type AssetWithdrawFeeInfo = {
+  /**
+   * Root ID of the asset
+   */
+  rootAssetId: bigint;
+
+  /**
+   * ID of the target asset
+   */
+  targetAssetId: bigint;
+
+  /**
+   * The rate used to calculate withdrawal fees
+   */
+  feeRate: bigint;
+
+  /**
+   * The decimal precision for the fee rate
+   */
+  rateDecimal: number;
+
+  /**
+   * The minimum fee amount that will be charged for withdrawals
+   */
+  minFee: bigint;
 };
 
 export type GetAssetsInput = {
@@ -141,5 +187,27 @@ export function mapGetAssetInput(assetId: bigint): Options<GetV1AssetData> {
     query: {
       AssetId: assetId.toString()
     }
+  };
+}
+
+export function mapGetWithdrawFeeInfoInput(input: GetWithdrawFeeInfoInput): Options<GetV1AssetWithdrawalFeeData> {
+  return {
+    query: {
+      RootAssetId: input.rootAssetId.toString(),
+      TargetChain: input.targetChain.toString(),
+      TargetChainNetwork: input.targetNetwork.toString()
+    }
+  };
+}
+
+export function mapAssetWithdrawFeeInfo(
+  input: Ex3ExchangeOpenApiAppServicesAssetWithdrawFeeInfoDto
+): AssetWithdrawFeeInfo {
+  return {
+    rootAssetId: BigInt(input.rootAssetId),
+    targetAssetId: BigInt(input.targetAssetId),
+    feeRate: BigInt(input.feeRate),
+    rateDecimal: Number(input.rateDecimal),
+    minFee: BigInt(input.minFee)
   };
 }

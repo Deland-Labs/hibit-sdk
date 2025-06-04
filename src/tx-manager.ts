@@ -40,7 +40,7 @@ export class TransactionManager {
    * );
    * ```
    */
-  static createTransaction<T>(
+  static createL2Transaction<T>(
     type: TransactionType,
     from: bigint,
     nonce: bigint,

@@ -82,6 +82,10 @@ export class Chain {
  * Represents a blockchain network with its chain-specific network identifier.
  * Provides static instances for common blockchain networks.
  */
+/**
+ * Represents a blockchain network with its chain-specific network identifier.
+ * Provides static instances for common blockchain networks.
+ */
 export class ChainNetwork {
   /**
    * The network identifier value
@@ -96,7 +100,9 @@ export class ChainNetwork {
     this.value = value;
   }
 
-  // Generic Networks
+  // Special Networks
+  /** Any network identifier */
+  static AnyNetwork = new ChainNetwork(-1n);
   /** Main network identifier */
   static MainNet = new ChainNetwork(1n);
   /** Test network identifier */
@@ -107,6 +113,8 @@ export class ChainNetwork {
   static BtcMainNet = new ChainNetwork(1n);
   /** Bitcoin testnet network */
   static BtcTestNet = new ChainNetwork(2n);
+  /** Bitcoin regtest network */
+  static BtcRegTest = new ChainNetwork(3n);
 
   // EVM Networks
   /** Ethereum mainnet (Chain ID: 1) */
@@ -116,41 +124,47 @@ export class ChainNetwork {
   /** BNB Smart Chain mainnet */
   static EvmBscNet = new ChainNetwork(0x38n);
   /** BNB Smart Chain testnet */
-  static EvmBscTestNet = new ChainNetwork(97n);
+  static EvmBscTestNet = new ChainNetwork(0x61n); // Updated to match C# value
   /** Base mainnet */
-  static EvmBaseNet = new ChainNetwork(8453n);
+  static EvmBaseNet = new ChainNetwork(0x2105n);
   /** Base Sepolia testnet */
-  static EvmBaseSepoliaNet = new ChainNetwork(84532n);
+  static EvmBaseSepoliaNet = new ChainNetwork(0x14a34n);
   /** Avalanche C-Chain */
-  static EvmAvalancheNet = new ChainNetwork(43114n);
+  static EvmAvalancheNet = new ChainNetwork(0xa86an);
   /** Avalanche Fuji testnet */
-  static EvmAvalancheFujiNet = new ChainNetwork(43113n);
+  static EvmAvalancheFujiNet = new ChainNetwork(0xa869n);
   /** Scroll mainnet */
-  static EvmScrollNet = new ChainNetwork(534352n);
+  static EvmScrollNet = new ChainNetwork(0x82750n);
   /** Scroll Sepolia testnet */
-  static EvmScrollSepoliaNet = new ChainNetwork(534351n);
+  static EvmScrollSepoliaNet = new ChainNetwork(0x8274fn);
   /** Bitlayer mainnet */
-  static EvmBitlayerNet = new ChainNetwork(200901n);
+  static EvmBitlayerNet = new ChainNetwork(0x310c5n);
   /** Bitlayer testnet */
-  static EvmBitlayerTestNet = new ChainNetwork(200810n);
+  static EvmBitlayerTestNet = new ChainNetwork(0x3106an);
   /** Swan mainnet */
-  static EvmSwanNet = new ChainNetwork(254n);
+  static EvmSwanNet = new ChainNetwork(0xfen);
   /** Swan testnet */
-  static EvmSwanTestNet = new ChainNetwork(20241133n);
+  static EvmSwanTestNet = new ChainNetwork(0x134daedn);
   /** Panta Network */
-  static EvmPantaNet = new ChainNetwork(331n);
+  static EvmPantaNet = new ChainNetwork(0x14bn);
+  /** NeoX mainnet */
+  static EvmNeoXNet = new ChainNetwork(0xba93n);
+  /** NeoX testnet */
+  static EvmNeoXTestNet = new ChainNetwork(0xba9304n);
 
   // Solana Networks
-  /** Solana mainnet */
-  static SolanaMainNet = new ChainNetwork(0x3n);
+  /** Solana devnet */
+  static SolanaDevNet = new ChainNetwork(0x1n);
   /** Solana testnet */
   static SolanaTestNet = new ChainNetwork(0x2n);
+  /** Solana mainnet */
+  static SolanaMainNet = new ChainNetwork(0x3n);
 
   // TON Networks
   /** TON mainnet */
-  static TonMainNet = new ChainNetwork(1n);
+  static TonMainNet = new ChainNetwork(0x1n);
   /** TON testnet */
-  static TonTestNet = new ChainNetwork(2n);
+  static TonTestNet = new ChainNetwork(0x2n);
 
   // TRON Networks
   /** TRON mainnet */
@@ -162,13 +176,13 @@ export class ChainNetwork {
 
   // Dfinity Networks
   /** Internet Computer mainnet */
-  static DfinityMainNet = new ChainNetwork(1n);
+  static DfinityMainNet = new ChainNetwork(0x1n);
 
   // Kaspa Networks
   /** Kaspa mainnet */
-  static KaspaMainNet = new ChainNetwork(0n);
+  static KaspaMainNet = new ChainNetwork(0x0n);
   /** Kaspa testnet */
-  static KaspaTestNet = new ChainNetwork(1n);
+  static KaspaTestNet = new ChainNetwork(0x1n);
 
   /**
    * Creates a ChainNetwork instance from a string value
