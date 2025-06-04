@@ -27,7 +27,18 @@ import {
   HibitNetwork,
   GetOrderInput,
   GetMarket24HrTickerInput,
-  Market24HrTickerExtendInfo
+  GetAssetInput,
+  GetChainBalancesInput,
+  Market24HrTickerExtendInfo,
+  WalletRegisterInput,
+  GetRegisteredWalletInfoInput,
+  RegisteredWalletInfo,
+  ResetProxyKeyInput,
+  ProxyKeypair,
+  GetProxyKeyInput,
+  ChainNetwork,
+  Chain,
+  WithdrawInput
 } from './types';
 import {
   getV1Assets,
@@ -48,10 +59,25 @@ import {
   postV1TxCancelSpotOrder,
   getV1Asset,
   getV1Order,
-  getV1MarketsTickerExtended
+  getV1MarketsTickerExtended,
+  getV1ChainBalances,
+  postV1WalletRegister,
+  getV1WalletInfo,
+  postV1ProxyKeyReset,
+  postV1ProxyKey,
+  getV1AssetWithdrawalFee
 } from './openapi';
 import { mapChainInfo } from './types/chain';
-import { mapAssetInfo, mapGetAssetInput, mapGetAssetsInput } from './types/asset';
+import {
+  AssetWithdrawFeeInfo,
+  GetWithdrawFeeInfoInput,
+  mapAssetInfo,
+  mapAssetWithdrawFeeInfo,
+  mapGetAssetInput,
+  mapGetAssetsInput,
+  mapGetWithdrawFeeInfoInput,
+  mapGetChainBalancesInput
+} from './types/asset';
 import {
   mapGetMarketDepthInput,
   mapGetMarketInput,
@@ -78,12 +104,21 @@ import {
   validateGetOrderInput
 } from './types/order';
 import { TransactionManager } from './tx-manager';
-import { mapTransactionToApiRequest } from './types/tx';
-import { mapGetNonceInput, mapGetWalletBalancesInput } from './types/wallet';
+import { mapTransactionToApiRequest, OriginWalletTransaction } from './types/tx';
+import {
+  mapGetNonceInput,
+  mapGetWalletBalancesInput,
+  mapToWalletRegisterApiRequest,
+  mapGetRegisteredWalletInfoInput,
+  mapGetRegisteredWalletInfoOutput,
+  mapToGetProxyKeyApiRequest,
+  mapGetProxyKeyOutput
+} from './types/wallet';
 import { client } from './openapi/client.gen';
 import { HibitError } from './error';
 import { mapCancelOrdersCborInput, mapSubmitSpotOrderCborInput } from './types/order/payload';
 import { HIBIT_MAINNET_API_ENDPOINT, HIBIT_TESTNET_API_ENDPOINT } from './constant';
+import { IWalletApi } from './wallet-api';
 
 /**
  * Interface representing the Hibit API.
@@ -121,10 +156,27 @@ export interface IHibitClient {
   /**
    * Get the asset information.
    *
-   * @param {bigint} assetId - The asset id to get the information for.
-   * @returns {Promise<AssetInfo>} A promise that resolves to the asset information.
+   * @param {GetAssetInput} input - The input parameters for getting asset information.
+   * @returns {Promise<AssetInfo[]>} A promise that resolves to the asset information.
    */
-  getAsset(assetId: bigint): Promise<AssetInfo>;
+  getAsset(input: GetAssetInput): Promise<AssetInfo[]>;
+
+  /**
+   * Retrieves the balances of assets on a specific chain.
+   *
+   * @param {GetChainBalancesInput} input - The input parameters for getting chain balances.
+   * @returns {Promise<Map<string, BigNumber>>} A promise that resolves to a map where the key is the asset ID (bigint)
+   * and the value is the balance (BigNumber).
+   */
+  getChainBalances(input: GetChainBalancesInput): Promise<Map<string, BigNumber>>;
+
+  /**
+   * Get the withdraw fee for an asset.
+   *
+   * @param {GetWithdrawFeeInfoInput} input - The input parameters for getting the withdraw fee information.
+   * @returns {Promise<AssetWithdrawFeeInfo>} A promise that resolves to the withdraw fee information for the asset.
+   */
+  getWithdrawFee(input: GetWithdrawFeeInfoInput): Promise<AssetWithdrawFeeInfo>;
 
   /**
    * Get the list of markets.
@@ -238,12 +290,52 @@ export interface IHibitClient {
   getOrderTrades(orderId: string): Promise<Array<OrderTradeRecord>>;
 
   /**
+   * Register a wallet on the Hibit platform.
+   *
+   * @param {WalletRegisterInput} input - The input parameters for registering a wallet.
+   * @returns {Promise<void>} A promise that resolves when the wallet is successfully registered.
+   */
+  walletRegister(input: WalletRegisterInput): Promise<void>;
+
+  /**
+   * Get information about a registered wallet.
+   *
+   * @param {GetRegisteredWalletInfoInput} input - The input parameters for retrieving wallet information.
+   * @returns {Promise<RegisteredWalletInfo>} A promise that resolves to the registered wallet information.
+   */
+  getRegisteredWalletInfo(input: GetRegisteredWalletInfoInput): Promise<RegisteredWalletInfo>;
+
+  /**
+   * Reset the proxy key associated with the wallet.
+   *
+   * @param {ResetProxyKeyInput} input - The input parameters for resetting the proxy key.
+   * @returns {Promise<ProxyKeypair>} A promise that resolves to the new proxy keypair.
+   */
+  resetProxyKey(input: ResetProxyKeyInput): Promise<void>;
+
+  /**
+   * Get the proxy keypair for the wallet.
+   *
+   * @param {GetProxyKeyInput} input - The input parameters for getting the proxy keypair.
+   * @returns {Promise<ProxyKeypair>} A promise that resolves to the proxy keypair.
+   */
+  getProxyKeypair(input: GetProxyKeyInput): Promise<ProxyKeypair>;
+
+  /**
    * Get the wallet balance.
    *
    * @param {GetWalletBalancesInput} input - The input parameters for getting the wallet balance.
    * @returns {Promise<Map<string, BigNumber>>} A promise that resolves to the wallet balance.
    */
   getWalletBalances(input: GetWalletBalancesInput): Promise<Map<string, BigNumber>>;
+
+  /**
+   * Withdraw assets from the Hibit platform.
+   *
+   * @param {WithdrawInput} input - The input parameters for the withdrawal.
+   * @returns {Promise<void>} A promise that resolves when the withdrawal is successfully initiated.
+   */
+  withdraw(input: WithdrawInput): Promise<void>;
 
   /**
    * Get the nonce.
@@ -257,6 +349,11 @@ export interface IHibitClient {
 export class HibitClient implements IHibitClient {
   //@ts-expect-error - no constructor
   private options: HibitApiOptions;
+  private walletApi?: IWalletApi;
+
+  getOptions(): HibitApiOptions {
+    return this.options;
+  }
 
   setOptions(options: HibitApiOptions) {
     this.options = options;
@@ -264,6 +361,10 @@ export class HibitClient implements IHibitClient {
     client.setConfig({
       baseUrl: options.network === HibitNetwork.Mainnet ? HIBIT_MAINNET_API_ENDPOINT : HIBIT_TESTNET_API_ENDPOINT
     });
+  }
+
+  setWalletApi(walletApi: IWalletApi) {
+    this.walletApi = walletApi;
   }
 
   /*-------------basic start----------------*/
@@ -301,13 +402,34 @@ export class HibitClient implements IHibitClient {
     } as PageResponse<AssetInfo>;
   }
 
-  async getAsset(assetId: bigint): Promise<AssetInfo> {
+  async getAsset(input: GetAssetInput): Promise<AssetInfo[]> {
     const apiName = 'getAsset';
-    const response = await getV1Asset(mapGetAssetInput(assetId));
+    const response = await getV1Asset(mapGetAssetInput(input));
+
+    this.ensureSuccess(apiName, response.data);
+    return response.data!.data!.map((asset) => mapAssetInfo(asset));
+  }
+
+  async getChainBalances(input: GetChainBalancesInput): Promise<Map<string, BigNumber>> {
+    const apiName = 'getChainBalances';
+    const response = await getV1ChainBalances(mapGetChainBalancesInput(input));
 
     this.ensureSuccess(apiName, response.data);
 
-    return mapAssetInfo(response.data!.data!);
+    const result = new Map<string, BigNumber>();
+    for (const [assetId, balance] of Object.entries(response!.data!.data as Record<string, string>)) {
+      result.set(assetId, BigNumber(balance));
+    }
+    return result;
+  }
+
+  async getWithdrawFee(input: GetWithdrawFeeInfoInput): Promise<AssetWithdrawFeeInfo> {
+    const apiName = 'getWithdrawFee';
+    const response = await getV1AssetWithdrawalFee(mapGetWithdrawFeeInfoInput(input));
+
+    this.ensureSuccess(apiName, response.data);
+
+    return mapAssetWithdrawFeeInfo(response.data!.data!);
   }
 
   /*-------------basic end----------------*/
@@ -453,7 +575,7 @@ export class HibitClient implements IHibitClient {
 
     const nonceBigInt = nonce ? BigInt(nonce) : await this.getNonce(this.options.hin!);
     const mappedInput = mapSubmitSpotOrderCborInput(input, decimalOptions);
-    const tx = TransactionManager.createTransaction(
+    const tx = TransactionManager.createL2Transaction(
       TransactionType.CreateSpotOrder,
       this.options.hin!,
       nonceBigInt | 0n,
@@ -475,7 +597,7 @@ export class HibitClient implements IHibitClient {
 
     const nonceBigInt = nonce ? BigInt(nonce) : await this.getNonce(this.options.hin!);
     const mappedInput = mapCancelOrdersCborInput(input);
-    const tx = TransactionManager.createTransaction(
+    const tx = TransactionManager.createL2Transaction(
       TransactionType.CancelSpotOrder,
       this.options.hin!,
       nonceBigInt | 0n,
@@ -489,6 +611,69 @@ export class HibitClient implements IHibitClient {
 
   /*-------------order end----------------*/
 
+  async walletRegister(input: WalletRegisterInput): Promise<void> {
+    const apiName = 'walletRegister';
+    this.ensureWalletApi(apiName);
+
+    const message = this.walletApi!.generateWalletRegistrationMessage(input);
+    const signature = await this.walletApi!.signMessage(message);
+    const originWalletRequest = new OriginWalletTransaction(input.chain, ChainNetwork.AnyNetwork, message, signature);
+    const resp = await postV1WalletRegister(mapToWalletRegisterApiRequest(originWalletRequest));
+
+    this.ensureSuccess(apiName, resp.data);
+  }
+
+  async getRegisteredWalletInfo(input: GetRegisteredWalletInfoInput): Promise<RegisteredWalletInfo> {
+    const apiName = 'getRegisteredWalletInfo';
+    this.ensureWalletApi(apiName);
+
+    const resp = await getV1WalletInfo(mapGetRegisteredWalletInfoInput(input));
+
+    this.ensureSuccess(apiName, resp.data);
+
+    return mapGetRegisteredWalletInfoOutput(resp.data!.data!);
+  }
+
+  async resetProxyKey(input: ResetProxyKeyInput): Promise<void> {
+    const apiName = 'resetProxyKey';
+    this.ensureWalletApi(apiName);
+
+    const message = this.walletApi!.generateWalletResetProxyKeyMessage(input);
+    const signature = await this.walletApi!.signMessage(message);
+    // this parameter is required bug ignored in the current implementation
+    const ignoredChainParam = Chain.Ethereum;
+    const originWalletRequest = new OriginWalletTransaction(
+      ignoredChainParam,
+      ChainNetwork.AnyNetwork,
+      message,
+      signature
+    );
+    const resp = await postV1ProxyKeyReset(mapToWalletRegisterApiRequest(originWalletRequest));
+
+    this.ensureSuccess(apiName, resp.data);
+  }
+
+  async getProxyKeypair(input: GetProxyKeyInput): Promise<ProxyKeypair> {
+    const apiName = 'getProxyKeypair';
+    this.ensureWalletApi(apiName);
+
+    const message = this.walletApi!.generateGetProxyKeyMessage(input);
+    const signature = await this.walletApi!.signMessage(message);
+    // this parameter is required bug ignored in the current implementation
+    const ignoredChainParam = Chain.Ethereum;
+    const originWalletRequest = new OriginWalletTransaction(
+      ignoredChainParam,
+      ChainNetwork.AnyNetwork,
+      message,
+      signature
+    );
+    const resp = await postV1ProxyKey(mapToGetProxyKeyApiRequest(originWalletRequest));
+
+    this.ensureSuccess(apiName, resp.data);
+
+    return mapGetProxyKeyOutput(resp.data!.data!);
+  }
+
   async getWalletBalances(input: GetWalletBalancesInput): Promise<Map<string, BigNumber>> {
     const apiName = 'getWalletBalances';
     const resp = await getV1WalletBalances(mapGetWalletBalancesInput(input));
@@ -500,6 +685,24 @@ export class HibitClient implements IHibitClient {
       result.set(assetId, BigNumber(balance));
     }
     return result;
+  }
+
+  async withdraw(input: WithdrawInput): Promise<void> {
+    const apiName = 'withdraw';
+    this.ensureHIN(apiName);
+    this.ensureWalletApi(apiName);
+
+    const message = this.walletApi!.generateWithdrawMessage(input, this.options.hin!);
+    const signature = await this.walletApi!.signMessage(message);
+    const originWalletRequest = new OriginWalletTransaction(
+      input.targetChain,
+      input.targetChainNetwork,
+      message,
+      signature
+    );
+    const resp = await postV1ProxyKey(mapToGetProxyKeyApiRequest(originWalletRequest));
+
+    this.ensureSuccess(apiName, resp.data);
   }
 
   async getNonce(hin: bigint): Promise<bigint> {
@@ -527,6 +730,12 @@ export class HibitClient implements IHibitClient {
   private ensureHIN(apiName: string) {
     if (!this.options.hin) {
       HibitError.throwRequiredHINError(apiName);
+    }
+  }
+
+  private ensureWalletApi(apiName: string) {
+    if (!this.walletApi) {
+      HibitError.throwRequiredWalletApiError(apiName);
     }
   }
 }

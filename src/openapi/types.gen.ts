@@ -21,6 +21,312 @@ export type Ex3ExchangeIActorsEmptyResultBody = {
   [key: string]: never;
 };
 
+export type Ex3ExchangeOpenApiAbstractionDtosDepthIndexEnum = 1 | 2 | 3 | 4 | 5 | 6;
+
+export type Ex3ExchangeOpenApiAbstractionDtosGet24HrTickerOutput = {
+  items: Array<Ex3ExchangeOpenApiAbstractionDtosMarket24HrTickerItem> | null;
+};
+
+export type Ex3ExchangeOpenApiAbstractionDtosGet24HrTickerOutputExtend = {
+  items: Array<Ex3ExchangeOpenApiAbstractionDtosMarket24HrTickerExtendItem> | null;
+};
+
+export type Ex3ExchangeOpenApiAbstractionDtosGetSwapOutput = {
+  items?: Array<Ex3ExchangeOpenApiAbstractionDtosGetSwapOutputItem> | null;
+};
+
+export type Ex3ExchangeOpenApiAbstractionDtosGetSwapOutputItem = {
+  marketId?: string;
+  poolAmount?: string;
+  poolVolume?: string;
+  /**
+   * BigInt
+   */
+  poolLiquidity?: string;
+};
+
+export type Ex3ExchangeOpenApiAbstractionDtosKlineItem = {
+  o: string;
+  h: string;
+  l: string;
+  c: string;
+  v: string;
+  a: string;
+  /**
+   * Unix timestamp in milliseconds
+   */
+  t: unknown;
+};
+
+export type Ex3ExchangeOpenApiAbstractionDtosMarket24HrTickerExtendItem = {
+  id?: string;
+  o?: string;
+  h?: string;
+  l?: string;
+  c?: string;
+  v?: string;
+  a?: string;
+  /**
+   * Unix timestamp in milliseconds
+   */
+  t?: unknown;
+  lpusd?: string;
+  ausd?: string;
+  bas?: string | null;
+  qas?: string | null;
+};
+
+export type Ex3ExchangeOpenApiAbstractionDtosMarket24HrTickerItem = {
+  id?: string;
+  o?: string;
+  h?: string;
+  l?: string;
+  c?: string;
+  v?: string;
+  a?: string;
+  /**
+   * Unix timestamp in milliseconds
+   */
+  t?: unknown;
+};
+
+export type Ex3ExchangeOpenApiAbstractionDtosMarketInfoItem = {
+  marketId: string;
+  marketSymbol: string;
+  baseAssetId: string;
+  quoteAssetId: string;
+  depthLevels?: Array<number> | null;
+};
+
+export type Ex3ExchangeOpenApiAbstractionDtosMarketTradingHistoryItem = {
+  maker?: string | null;
+  taker?: string;
+  takerSide: Ex3ModelsOrderSide;
+  p: string;
+  v: string;
+  a: string;
+  /**
+   * Unix timestamp in milliseconds
+   */
+  t: unknown;
+};
+
+export type Ex3ExchangeOpenApiAbstractionDtosWalletOrderDto = {
+  /**
+   * Order id
+   */
+  id: string;
+  mid: string;
+  hin: string;
+  cat: Ex3ModelsOrderCategory;
+  s: Ex3ModelsOrderSide;
+  fv: string;
+  fa: string;
+  tv: string;
+  ta: string;
+  fp: string;
+  p: string;
+  st: Ex3RepositoryHistoryEntitiesOrderStatus;
+  /**
+   * Unix timestamp in milliseconds
+   */
+  t: unknown;
+};
+
+export type Ex3ExchangeOpenApiAbstractionDtosWalletOrderTradeListItem = {
+  tid: string | null;
+  fp: string;
+  fv: string;
+  fa: string;
+  ts: Ex3ModelsOrderSide;
+  /**
+   * Unix timestamp in milliseconds
+   */
+  t: unknown;
+};
+
+export type Ex3ExchangeOpenApiAbstractionOpenApiResult1CollectionsPooledPooledList1Ex3ExchangeOpenApiAbstractionDtosWalletOrderTradeListItem_Ex3ExchangeOpenApiAbstraction_Version_1000_Culture_neutral_PublicKeyToken_null___CollectionsPooled_Version_10820_Culture_neutral_PublicKeyToken_null =
+  {
+    code?: number;
+    message?: string | null;
+    data?: Array<Ex3ExchangeOpenApiAbstractionDtosWalletOrderTradeListItem> | null;
+  };
+
+export type Ex3ExchangeOpenApiAbstractionOpenApiResult1Ex3CacheDepthManagerSpotMarketDepthDataDto_Ex3CacheDepthManager_Version_1000_Culture_neutral_PublicKeyToken_null =
+  {
+    code?: number;
+    message?: string | null;
+    data?: Ex3CacheDepthManagerSpotMarketDepthDataDto;
+  };
+
+export type Ex3ExchangeOpenApiAbstractionOpenApiResult1Ex3ExchangeIActorsEmptyResultBody_Ex3ExchangeIActorsModels_Version_1000_Culture_neutral_PublicKeyToken_null =
+  {
+    code?: number;
+    message?: string | null;
+    data?: Ex3ExchangeIActorsEmptyResultBody;
+  };
+
+export type Ex3ExchangeOpenApiAbstractionOpenApiResult1Ex3ExchangeOpenApiAbstractionDtosGet24HrTickerOutput_Ex3ExchangeOpenApiAbstraction_Version_1000_Culture_neutral_PublicKeyToken_null =
+  {
+    code?: number;
+    message?: string | null;
+    data?: Ex3ExchangeOpenApiAbstractionDtosGet24HrTickerOutput;
+  };
+
+export type Ex3ExchangeOpenApiAbstractionOpenApiResult1Ex3ExchangeOpenApiAbstractionDtosGet24HrTickerOutputExtend_Ex3ExchangeOpenApiAbstraction_Version_1000_Culture_neutral_PublicKeyToken_null =
+  {
+    code?: number;
+    message?: string | null;
+    data?: Ex3ExchangeOpenApiAbstractionDtosGet24HrTickerOutputExtend;
+  };
+
+export type Ex3ExchangeOpenApiAbstractionOpenApiResult1Ex3ExchangeOpenApiAbstractionDtosGetSwapOutput_Ex3ExchangeOpenApiAbstraction_Version_1000_Culture_neutral_PublicKeyToken_null =
+  {
+    code?: number;
+    message?: string | null;
+    data?: Ex3ExchangeOpenApiAbstractionDtosGetSwapOutput;
+  };
+
+export type Ex3ExchangeOpenApiAbstractionOpenApiResult1Ex3ExchangeOpenApiAbstractionDtosMarketInfoItem_Ex3ExchangeOpenApiAbstraction_Version_1000_Culture_neutral_PublicKeyToken_null =
+  {
+    code?: number;
+    message?: string | null;
+    data?: Ex3ExchangeOpenApiAbstractionDtosMarketInfoItem;
+  };
+
+export type Ex3ExchangeOpenApiAbstractionOpenApiResult1Ex3ExchangeOpenApiAbstractionDtosWalletOrderDto_Ex3ExchangeOpenApiAbstraction_Version_1000_Culture_neutral_PublicKeyToken_null =
+  {
+    code?: number;
+    message?: string | null;
+    data?: Ex3ExchangeOpenApiAbstractionDtosWalletOrderDto;
+  };
+
+export type Ex3ExchangeOpenApiAbstractionOpenApiResult1Ex3ExchangeOpenApiAppServicesAssetWithdrawFeeInfoDto_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null =
+  {
+    code?: number;
+    message?: string | null;
+    data?: Ex3ExchangeOpenApiAppServicesAssetWithdrawFeeInfoDto;
+  };
+
+export type Ex3ExchangeOpenApiAbstractionOpenApiResult1Ex3ExchangeOpenApiAppServicesNonceResult_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null =
+  {
+    code?: number;
+    message?: string | null;
+    data?: Ex3ExchangeOpenApiAppServicesNonceResult;
+  };
+
+export type Ex3ExchangeOpenApiAbstractionOpenApiResult1Ex3ExchangeOpenApiAppServicesProxyKeyResult_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null =
+  {
+    code?: number;
+    message?: string | null;
+    data?: Ex3ExchangeOpenApiAppServicesProxyKeyResult;
+  };
+
+export type Ex3ExchangeOpenApiAbstractionOpenApiResult1Ex3ExchangeOpenApiAppServicesSystemInfo_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null =
+  {
+    code?: number;
+    message?: string | null;
+    data?: Ex3ExchangeOpenApiAppServicesSystemInfo;
+  };
+
+export type Ex3ExchangeOpenApiAbstractionOpenApiResult1Ex3ExchangeOpenApiAppServicesWalletRegistrationInfo_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null =
+  {
+    code?: number;
+    message?: string | null;
+    data?: Ex3ExchangeOpenApiAppServicesWalletRegistrationInfo;
+  };
+
+export type Ex3ExchangeOpenApiAbstractionOpenApiResult1MicrosoftAspNetCoreMvcEmptyResult_MicrosoftAspNetCoreMvcCore_Version_9000_Culture_neutral_PublicKeyToken_adb9793829Ddae60 =
+  {
+    code?: number;
+    message?: string | null;
+    data?: MicrosoftAspNetCoreMvcEmptyResult;
+  };
+
+export type Ex3ExchangeOpenApiAbstractionOpenApiResult1SystemCollectionsGenericDictionary2Ex3ModelsAssetId_Ex3Models_Version_1000_Culture_neutral_PublicKeyToken_null__Ex3ModelsOpenApiNumber_Ex3Models_Version_1000_Culture_neutral_PublicKeyToken_null___SystemPrivateCoreLib_Version_9000_Culture_neutral_PublicKeyToken_7Cec85D7Bea7798E =
+  {
+    code?: number;
+    message?: string | null;
+    data?: {
+      [key: string]: string;
+    } | null;
+  };
+
+export type Ex3ExchangeOpenApiAbstractionOpenApiResult1SystemCollectionsGenericIEnumerable1Ex3ExchangeOpenApiAppServicesChainInfoDto_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null___SystemPrivateCoreLib_Version_9000_Culture_neutral_PublicKeyToken_7Cec85D7Bea7798E =
+  {
+    code?: number;
+    message?: string | null;
+    data?: Array<Ex3ExchangeOpenApiAppServicesChainInfoDto> | null;
+  };
+
+export type Ex3ExchangeOpenApiAbstractionOpenApiResult1SystemCollectionsGenericList1Ex3ExchangeOpenApiAppServicesRootAssetInfoDto_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null___SystemPrivateCoreLib_Version_9000_Culture_neutral_PublicKeyToken_7Cec85D7Bea7798E =
+  {
+    code?: number;
+    message?: string | null;
+    data?: Array<Ex3ExchangeOpenApiAppServicesRootAssetInfoDto> | null;
+  };
+
+export type Ex3ExchangeOpenApiAbstractionOpenApiResult1VoloAbpApplicationDtosPagedResultDto1Ex3ExchangeOpenApiAbstractionDtosKlineItem_Ex3ExchangeOpenApiAbstraction_Version_1000_Culture_neutral_PublicKeyToken_null___VoloAbpDddApplicationContracts_Version_9110_Culture_neutral_PublicKeyToken_null =
+  {
+    code?: number;
+    message?: string | null;
+    data?: VoloAbpApplicationDtosPagedResultDto1Ex3ExchangeOpenApiAbstractionDtosKlineItem_Ex3ExchangeOpenApiAbstraction_Version_1000_Culture_neutral_PublicKeyToken_null;
+  };
+
+export type Ex3ExchangeOpenApiAbstractionOpenApiResult1VoloAbpApplicationDtosPagedResultDto1Ex3ExchangeOpenApiAbstractionDtosMarketInfoItem_Ex3ExchangeOpenApiAbstraction_Version_1000_Culture_neutral_PublicKeyToken_null___VoloAbpDddApplicationContracts_Version_9110_Culture_neutral_PublicKeyToken_null =
+  {
+    code?: number;
+    message?: string | null;
+    data?: VoloAbpApplicationDtosPagedResultDto1Ex3ExchangeOpenApiAbstractionDtosMarketInfoItem_Ex3ExchangeOpenApiAbstraction_Version_1000_Culture_neutral_PublicKeyToken_null;
+  };
+
+export type Ex3ExchangeOpenApiAbstractionOpenApiResult1VoloAbpApplicationDtosPagedResultDto1Ex3ExchangeOpenApiAbstractionDtosMarketTradingHistoryItem_Ex3ExchangeOpenApiAbstraction_Version_1000_Culture_neutral_PublicKeyToken_null___VoloAbpDddApplicationContracts_Version_9110_Culture_neutral_PublicKeyToken_null =
+  {
+    code?: number;
+    message?: string | null;
+    data?: VoloAbpApplicationDtosPagedResultDto1Ex3ExchangeOpenApiAbstractionDtosMarketTradingHistoryItem_Ex3ExchangeOpenApiAbstraction_Version_1000_Culture_neutral_PublicKeyToken_null;
+  };
+
+export type Ex3ExchangeOpenApiAbstractionOpenApiResult1VoloAbpApplicationDtosPagedResultDto1Ex3ExchangeOpenApiAbstractionDtosWalletOrderDto_Ex3ExchangeOpenApiAbstraction_Version_1000_Culture_neutral_PublicKeyToken_null___VoloAbpDddApplicationContracts_Version_9110_Culture_neutral_PublicKeyToken_null =
+  {
+    code?: number;
+    message?: string | null;
+    data?: VoloAbpApplicationDtosPagedResultDto1Ex3ExchangeOpenApiAbstractionDtosWalletOrderDto_Ex3ExchangeOpenApiAbstraction_Version_1000_Culture_neutral_PublicKeyToken_null;
+  };
+
+export type Ex3ExchangeOpenApiAbstractionOpenApiResult1VoloAbpApplicationDtosPagedResultDto1Ex3ExchangeOpenApiAppServicesRootAssetInfoDto_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null___VoloAbpDddApplicationContracts_Version_9110_Culture_neutral_PublicKeyToken_null =
+  {
+    code?: number;
+    message?: string | null;
+    data?: VoloAbpApplicationDtosPagedResultDto1Ex3ExchangeOpenApiAppServicesRootAssetInfoDto_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null;
+  };
+
+/**
+ * Asset withdrawal fee information
+ */
+export type Ex3ExchangeOpenApiAppServicesAssetWithdrawFeeInfoDto = {
+  /**
+   * Root ID of the asset
+   */
+  rootAssetId: string;
+  /**
+   * ID of the target asset
+   */
+  targetAssetId: string;
+  /**
+   * The rate used to calculate withdrawal fees
+   */
+  feeRate: string;
+  /**
+   * The decimal precision for the fee rate
+   */
+  rateDecimal: string;
+  /**
+   * The minimum fee amount that will be charged for withdrawals
+   */
+  minFee: string;
+};
+
 /**
  * chain information which is supported by the system
  */
@@ -39,344 +345,21 @@ export type Ex3ExchangeOpenApiAppServicesChainInfoDto = {
   displayName: string | null;
 };
 
-export type Ex3ExchangeOpenApiAppServicesDepthIndexEnum = 1 | 2 | 3 | 4 | 5 | 6;
-
-export type Ex3ExchangeOpenApiAppServicesGet24HrTickerOutput = {
-  items: Array<Ex3ExchangeOpenApiAppServicesMarket24HrTickerItem> | null;
-};
-
-export type Ex3ExchangeOpenApiAppServicesGet24HrTickerOutputExtend = {
-  items: Array<Ex3ExchangeOpenApiAppServicesMarket24HrTickerExtendItem> | null;
-};
-
-export type Ex3ExchangeOpenApiAppServicesGetSwapOutput = {
-  items?: Array<Ex3ExchangeOpenApiAppServicesGetSwapOutputItem> | null;
-};
-
-/**
- * The input for getting liquidity information.
- */
-export type Ex3ExchangeOpenApiAppServicesGetSwapOutputItem = {
-  /**
-   * The market id for which the liquidity information is provided.
-   */
-  marketId?: string;
-  /**
-   * The total amount of liquidity in the pool.
-   */
-  poolAmount?: string;
-  /**
-   * The total volume of liquidity in the pool.
-   */
-  poolVolume?: string;
-  /**
-   * The liquidity information of the pool.
-   */
-  poolLiquidity?: string;
-};
-
-export type Ex3ExchangeOpenApiAppServicesKlineItem = {
-  /**
-   * The open price of the trading pair in the last 24 hours.
-   */
-  o: string;
-  /**
-   * The highest price of the trading pair in the last 24 hours.
-   */
-  h: string;
-  /**
-   * The lowest price of the trading pair in the last 24 hours.
-   */
-  l: string;
-  /**
-   * The close price of the trading pair in the last 24 hours.
-   */
-  c: string;
-  /**
-   * The volume of the trading pair in the last 24 hours.
-   */
-  v: string;
-  /**
-   * The amount of the trading pair in the last 24 hours.
-   */
-  a: string;
-  /**
-   * timestamp of kline
-   */
-  t: unknown;
-};
-
-export type Ex3ExchangeOpenApiAppServicesMarket24HrTickerExtendItem = {
-  /**
-   * the market id.
-   */
-  id?: string;
-  /**
-   * The open price of the trading pair in the last 24 hours.
-   */
-  o?: string;
-  /**
-   * The highest price of the trading pair in the last 24 hours.
-   */
-  h?: string;
-  /**
-   * The lowest price of the trading pair in the last 24 hours.
-   */
-  l?: string;
-  /**
-   * The close price of the trading pair in the last 24 hours.
-   */
-  c?: string;
-  /**
-   * The volume of the trading pair in the last 24 hours.
-   */
-  v?: string;
-  /**
-   * The amount of the trading pair in the last 24 hours.
-   */
-  a?: string;
-  /**
-   * time of the ticker update.
-   */
-  t?: unknown;
-  /**
-   * The last price converted to USD.
-   */
-  lpusd?: string;
-  /**
-   * The 24-hour trading volume in USD.
-   */
-  ausd?: string;
-  /**
-   * The base asset symbol.
-   */
-  bas?: string | null;
-  /**
-   * The quote asset symbol.
-   */
-  qas?: string | null;
-};
-
-export type Ex3ExchangeOpenApiAppServicesMarket24HrTickerItem = {
-  /**
-   * the market id.
-   */
-  id?: string;
-  /**
-   * The open price of the trading pair in the last 24 hours.
-   */
-  o?: string;
-  /**
-   * The highest price of the trading pair in the last 24 hours.
-   */
-  h?: string;
-  /**
-   * The lowest price of the trading pair in the last 24 hours.
-   */
-  l?: string;
-  /**
-   * The close price of the trading pair in the last 24 hours.
-   */
-  c?: string;
-  /**
-   * The volume of the trading pair in the last 24 hours.
-   */
-  v?: string;
-  /**
-   * The amount of the trading pair in the last 24 hours.
-   */
-  a?: string;
-  /**
-   * time of the ticker update.
-   */
-  t?: unknown;
-};
-
-export type Ex3ExchangeOpenApiAppServicesMarketInfoItem = {
-  /**
-   * The market id.
-   */
-  marketId: string;
-  /**
-   * Market symbol
-   */
-  marketSymbol: string;
-  /**
-   * The base asset id of the market.
-   */
-  baseAssetId: string;
-  /**
-   * The quote asset id of the market.
-   */
-  quoteAssetId: string;
-  /**
-   * values of the depth levels
-   */
-  depthLevels?: Array<number> | null;
-};
-
-/**
- * Represents the result of a trading history entry.
- */
-export type Ex3ExchangeOpenApiAppServicesMarketTradingHistoryItem = {
-  /**
-   * The display information of the maker wallet. if null, means the maker is swap pool.
-   */
-  maker?: string | null;
-  /**
-   * The display information of the taker wallet.
-   */
-  taker?: string;
-  takerSide: Ex3ModelsOrderSide;
-  /**
-   * The price at which the trade occurred.
-   */
-  p: string;
-  /**
-   * The volume of the trade.
-   */
-  v: string;
-  /**
-   * The total amount of the trade.
-   */
-  a: string;
-  /**
-   * The time at which the trade occurred in Unix time milliseconds.
-   */
-  t: unknown;
-};
-
 export type Ex3ExchangeOpenApiAppServicesNonceResult = {
   nonce?: string;
 };
 
-export type Ex3ExchangeOpenApiAppServicesOpenApiResult1CollectionsPooledPooledList1Ex3ExchangeOpenApiAppServicesWalletOrderTradeListItem_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null___CollectionsPooled_Version_10820_Culture_neutral_PublicKeyToken_null =
-  {
-    code?: number;
-    message?: string | null;
-    data?: Array<Ex3ExchangeOpenApiAppServicesWalletOrderTradeListItem> | null;
-  };
+export type Ex3ExchangeOpenApiAppServicesOriginWalletRequest = {
+  chain?: string;
+  chainNetwork?: string;
+  message?: string | null;
+  signature?: string | null;
+};
 
-export type Ex3ExchangeOpenApiAppServicesOpenApiResult1Ex3CacheDepthManagerSpotMarketDepthDataDto_Ex3CacheDepthManager_Version_1000_Culture_neutral_PublicKeyToken_null =
-  {
-    code?: number;
-    message?: string | null;
-    data?: Ex3CacheDepthManagerSpotMarketDepthDataDto;
-  };
-
-export type Ex3ExchangeOpenApiAppServicesOpenApiResult1Ex3ExchangeIActorsEmptyResultBody_Ex3ExchangeIActorsModels_Version_1000_Culture_neutral_PublicKeyToken_null =
-  {
-    code?: number;
-    message?: string | null;
-    data?: Ex3ExchangeIActorsEmptyResultBody;
-  };
-
-export type Ex3ExchangeOpenApiAppServicesOpenApiResult1Ex3ExchangeOpenApiAppServicesGet24HrTickerOutput_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null =
-  {
-    code?: number;
-    message?: string | null;
-    data?: Ex3ExchangeOpenApiAppServicesGet24HrTickerOutput;
-  };
-
-export type Ex3ExchangeOpenApiAppServicesOpenApiResult1Ex3ExchangeOpenApiAppServicesGet24HrTickerOutputExtend_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null =
-  {
-    code?: number;
-    message?: string | null;
-    data?: Ex3ExchangeOpenApiAppServicesGet24HrTickerOutputExtend;
-  };
-
-export type Ex3ExchangeOpenApiAppServicesOpenApiResult1Ex3ExchangeOpenApiAppServicesGetSwapOutput_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null =
-  {
-    code?: number;
-    message?: string | null;
-    data?: Ex3ExchangeOpenApiAppServicesGetSwapOutput;
-  };
-
-export type Ex3ExchangeOpenApiAppServicesOpenApiResult1Ex3ExchangeOpenApiAppServicesMarketInfoItem_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null =
-  {
-    code?: number;
-    message?: string | null;
-    data?: Ex3ExchangeOpenApiAppServicesMarketInfoItem;
-  };
-
-export type Ex3ExchangeOpenApiAppServicesOpenApiResult1Ex3ExchangeOpenApiAppServicesNonceResult_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null =
-  {
-    code?: number;
-    message?: string | null;
-    data?: Ex3ExchangeOpenApiAppServicesNonceResult;
-  };
-
-export type Ex3ExchangeOpenApiAppServicesOpenApiResult1Ex3ExchangeOpenApiAppServicesRootAssetInfoDto_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null =
-  {
-    code?: number;
-    message?: string | null;
-    data?: Ex3ExchangeOpenApiAppServicesRootAssetInfoDto;
-  };
-
-export type Ex3ExchangeOpenApiAppServicesOpenApiResult1Ex3ExchangeOpenApiAppServicesSystemInfo_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null =
-  {
-    code?: number;
-    message?: string | null;
-    data?: Ex3ExchangeOpenApiAppServicesSystemInfo;
-  };
-
-export type Ex3ExchangeOpenApiAppServicesOpenApiResult1Ex3ExchangeOpenApiAppServicesWalletOrderDto_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null =
-  {
-    code?: number;
-    message?: string | null;
-    data?: Ex3ExchangeOpenApiAppServicesWalletOrderDto;
-  };
-
-export type Ex3ExchangeOpenApiAppServicesOpenApiResult1SystemCollectionsGenericDictionary2Ex3ModelsAssetId_Ex3Models_Version_1000_Culture_neutral_PublicKeyToken_null__Ex3ModelsOpenApiNumber_Ex3Models_Version_1000_Culture_neutral_PublicKeyToken_null___SystemPrivateCoreLib_Version_9000_Culture_neutral_PublicKeyToken_7Cec85D7Bea7798E =
-  {
-    code?: number;
-    message?: string | null;
-    data?: {
-      [key: string]: string;
-    } | null;
-  };
-
-export type Ex3ExchangeOpenApiAppServicesOpenApiResult1SystemCollectionsGenericIEnumerable1Ex3ExchangeOpenApiAppServicesChainInfoDto_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null___SystemPrivateCoreLib_Version_9000_Culture_neutral_PublicKeyToken_7Cec85D7Bea7798E =
-  {
-    code?: number;
-    message?: string | null;
-    data?: Array<Ex3ExchangeOpenApiAppServicesChainInfoDto> | null;
-  };
-
-export type Ex3ExchangeOpenApiAppServicesOpenApiResult1VoloAbpApplicationDtosPagedResultDto1Ex3ExchangeOpenApiAppServicesKlineItem_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null___VoloAbpDddApplicationContracts_Version_9110_Culture_neutral_PublicKeyToken_null =
-  {
-    code?: number;
-    message?: string | null;
-    data?: VoloAbpApplicationDtosPagedResultDto1Ex3ExchangeOpenApiAppServicesKlineItem_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null;
-  };
-
-export type Ex3ExchangeOpenApiAppServicesOpenApiResult1VoloAbpApplicationDtosPagedResultDto1Ex3ExchangeOpenApiAppServicesMarketInfoItem_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null___VoloAbpDddApplicationContracts_Version_9110_Culture_neutral_PublicKeyToken_null =
-  {
-    code?: number;
-    message?: string | null;
-    data?: VoloAbpApplicationDtosPagedResultDto1Ex3ExchangeOpenApiAppServicesMarketInfoItem_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null;
-  };
-
-export type Ex3ExchangeOpenApiAppServicesOpenApiResult1VoloAbpApplicationDtosPagedResultDto1Ex3ExchangeOpenApiAppServicesMarketTradingHistoryItem_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null___VoloAbpDddApplicationContracts_Version_9110_Culture_neutral_PublicKeyToken_null =
-  {
-    code?: number;
-    message?: string | null;
-    data?: VoloAbpApplicationDtosPagedResultDto1Ex3ExchangeOpenApiAppServicesMarketTradingHistoryItem_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null;
-  };
-
-export type Ex3ExchangeOpenApiAppServicesOpenApiResult1VoloAbpApplicationDtosPagedResultDto1Ex3ExchangeOpenApiAppServicesRootAssetInfoDto_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null___VoloAbpDddApplicationContracts_Version_9110_Culture_neutral_PublicKeyToken_null =
-  {
-    code?: number;
-    message?: string | null;
-    data?: VoloAbpApplicationDtosPagedResultDto1Ex3ExchangeOpenApiAppServicesRootAssetInfoDto_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null;
-  };
-
-export type Ex3ExchangeOpenApiAppServicesOpenApiResult1VoloAbpApplicationDtosPagedResultDto1Ex3ExchangeOpenApiAppServicesWalletOrderDto_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null___VoloAbpDddApplicationContracts_Version_9110_Culture_neutral_PublicKeyToken_null =
-  {
-    code?: number;
-    message?: string | null;
-    data?: VoloAbpApplicationDtosPagedResultDto1Ex3ExchangeOpenApiAppServicesWalletOrderDto_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null;
-  };
+export type Ex3ExchangeOpenApiAppServicesProxyKeyResult = {
+  ex3KeyPair?: Ex3ModelsEx3KeyPair;
+  userId?: string;
+};
 
 export type Ex3ExchangeOpenApiAppServicesRootAssetInfoDto = {
   /**
@@ -450,74 +433,14 @@ export type Ex3ExchangeOpenApiAppServicesSystemInfo = {
   timestamp?: number;
 };
 
-export type Ex3ExchangeOpenApiAppServicesWalletOrderDto = {
-  /**
-   * order id
-   */
-  id: string;
-  /**
-   * market id
-   */
-  mid: string;
-  /**
-   * The HIN (Hibit chain identity number) of the wallet
-   */
-  hin: string;
-  cat: Ex3ModelsOrderCategory;
-  s: Ex3ModelsOrderSide;
-  /**
-   * volume of the order filled
-   */
-  fv: string;
-  /**
-   * amount of the order filled
-   */
-  fa: string;
-  /**
-   * total volume of the order
-   */
-  tv: string;
-  /**
-   * total amount of the order
-   */
-  ta: string;
-  /**
-   * price of the order filled
-   */
-  fp: string;
-  /**
-   * price of the order placed
-   */
-  p: string;
-  st: Ex3RepositoryHistoryEntitiesOrderStatus;
-  /**
-   * submitted time of the order
-   */
-  t: unknown;
+export type Ex3ExchangeOpenApiAppServicesWalletRegistrationInfo = {
+  hin?: string | null;
 };
 
-export type Ex3ExchangeOpenApiAppServicesWalletOrderTradeListItem = {
-  /**
-   * trade id
-   */
-  tid: string | null;
-  /**
-   * filled price
-   */
-  fp: string;
-  /**
-   * filled volume
-   */
-  fv: string;
-  /**
-   * filled amount
-   */
-  fa: string;
-  ts: Ex3ModelsOrderSide;
-  /**
-   * time of trade
-   */
-  t: unknown;
+export type Ex3ModelsEx3KeyPair = {
+  privateKeyHex?: string;
+  publicKeyHex?: string;
+  schema?: Ex3ModelsSignaturesSchema;
 };
 
 export type Ex3ModelsKLineTickSpace = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
@@ -532,6 +455,8 @@ export type Ex3ModelsOrderCategory = 0 | 1;
  */
 export type Ex3ModelsOrderSide = 1 | 2;
 
+export type Ex3ModelsSignaturesSchema = 1;
+
 export type Ex3RepositoryHistoryEntitiesOrderStatus = 0 | 1 | 2;
 
 export type Ex3TransactionsL2Request = {
@@ -543,33 +468,37 @@ export type Ex3TransactionsL2Request = {
   signature?: string;
 };
 
-export type VoloAbpApplicationDtosPagedResultDto1Ex3ExchangeOpenApiAppServicesKlineItem_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null =
+export type MicrosoftAspNetCoreMvcEmptyResult = {
+  [key: string]: never;
+};
+
+export type VoloAbpApplicationDtosPagedResultDto1Ex3ExchangeOpenApiAbstractionDtosKlineItem_Ex3ExchangeOpenApiAbstraction_Version_1000_Culture_neutral_PublicKeyToken_null =
   {
-    items?: Array<Ex3ExchangeOpenApiAppServicesKlineItem> | null;
+    items?: Array<Ex3ExchangeOpenApiAbstractionDtosKlineItem> | null;
     totalCount?: number;
   };
 
-export type VoloAbpApplicationDtosPagedResultDto1Ex3ExchangeOpenApiAppServicesMarketInfoItem_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null =
+export type VoloAbpApplicationDtosPagedResultDto1Ex3ExchangeOpenApiAbstractionDtosMarketInfoItem_Ex3ExchangeOpenApiAbstraction_Version_1000_Culture_neutral_PublicKeyToken_null =
   {
-    items?: Array<Ex3ExchangeOpenApiAppServicesMarketInfoItem> | null;
+    items?: Array<Ex3ExchangeOpenApiAbstractionDtosMarketInfoItem> | null;
     totalCount?: number;
   };
 
-export type VoloAbpApplicationDtosPagedResultDto1Ex3ExchangeOpenApiAppServicesMarketTradingHistoryItem_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null =
+export type VoloAbpApplicationDtosPagedResultDto1Ex3ExchangeOpenApiAbstractionDtosMarketTradingHistoryItem_Ex3ExchangeOpenApiAbstraction_Version_1000_Culture_neutral_PublicKeyToken_null =
   {
-    items?: Array<Ex3ExchangeOpenApiAppServicesMarketTradingHistoryItem> | null;
+    items?: Array<Ex3ExchangeOpenApiAbstractionDtosMarketTradingHistoryItem> | null;
+    totalCount?: number;
+  };
+
+export type VoloAbpApplicationDtosPagedResultDto1Ex3ExchangeOpenApiAbstractionDtosWalletOrderDto_Ex3ExchangeOpenApiAbstraction_Version_1000_Culture_neutral_PublicKeyToken_null =
+  {
+    items?: Array<Ex3ExchangeOpenApiAbstractionDtosWalletOrderDto> | null;
     totalCount?: number;
   };
 
 export type VoloAbpApplicationDtosPagedResultDto1Ex3ExchangeOpenApiAppServicesRootAssetInfoDto_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null =
   {
     items?: Array<Ex3ExchangeOpenApiAppServicesRootAssetInfoDto> | null;
-    totalCount?: number;
-  };
-
-export type VoloAbpApplicationDtosPagedResultDto1Ex3ExchangeOpenApiAppServicesWalletOrderDto_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null =
-  {
-    items?: Array<Ex3ExchangeOpenApiAppServicesWalletOrderDto> | null;
     totalCount?: number;
   };
 
@@ -642,7 +571,7 @@ export type GetV1TimestampResponses = {
   /**
    * OK
    */
-  200: Ex3ExchangeOpenApiAppServicesOpenApiResult1Ex3ExchangeOpenApiAppServicesSystemInfo_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null;
+  200: Ex3ExchangeOpenApiAbstractionOpenApiResult1Ex3ExchangeOpenApiAppServicesSystemInfo_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null;
 };
 
 export type GetV1TimestampResponse = GetV1TimestampResponses[keyof GetV1TimestampResponses];
@@ -651,13 +580,7 @@ export type GetV1AssetsData = {
   body?: never;
   path?: never;
   query?: {
-    /**
-     * chain ids to filter the assets list.
-     */
     ChainIds?: Array<string>;
-    /**
-     * chain asset types to filter the assets list.
-     */
     ChainAssetTypes?: Array<string>;
     /**
      * maximum number of items to return. maximum value is 500.
@@ -714,7 +637,7 @@ export type GetV1AssetsResponses = {
   /**
    * OK
    */
-  200: Ex3ExchangeOpenApiAppServicesOpenApiResult1VoloAbpApplicationDtosPagedResultDto1Ex3ExchangeOpenApiAppServicesRootAssetInfoDto_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null___VoloAbpDddApplicationContracts_Version_9110_Culture_neutral_PublicKeyToken_null;
+  200: Ex3ExchangeOpenApiAbstractionOpenApiResult1VoloAbpApplicationDtosPagedResultDto1Ex3ExchangeOpenApiAppServicesRootAssetInfoDto_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null___VoloAbpDddApplicationContracts_Version_9110_Culture_neutral_PublicKeyToken_null;
 };
 
 export type GetV1AssetsResponse = GetV1AssetsResponses[keyof GetV1AssetsResponses];
@@ -724,6 +647,7 @@ export type GetV1AssetData = {
   path?: never;
   query?: {
     AssetId?: string;
+    TokenAddress?: string;
   };
   url: '/v1/asset';
 };
@@ -761,10 +685,59 @@ export type GetV1AssetResponses = {
   /**
    * OK
    */
-  200: Ex3ExchangeOpenApiAppServicesOpenApiResult1Ex3ExchangeOpenApiAppServicesRootAssetInfoDto_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null;
+  200: Ex3ExchangeOpenApiAbstractionOpenApiResult1SystemCollectionsGenericList1Ex3ExchangeOpenApiAppServicesRootAssetInfoDto_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null___SystemPrivateCoreLib_Version_9000_Culture_neutral_PublicKeyToken_7Cec85D7Bea7798E;
 };
 
 export type GetV1AssetResponse = GetV1AssetResponses[keyof GetV1AssetResponses];
+
+export type GetV1AssetWithdrawalFeeData = {
+  body?: never;
+  path?: never;
+  query?: {
+    RootAssetId?: string;
+    TargetChain?: string;
+    TargetChainNetwork?: string;
+  };
+  url: '/v1/asset/withdrawal-fee';
+};
+
+export type GetV1AssetWithdrawalFeeErrors = {
+  /**
+   * Bad Request
+   */
+  400: VoloAbpHttpRemoteServiceErrorResponse;
+  /**
+   * Unauthorized
+   */
+  401: VoloAbpHttpRemoteServiceErrorResponse;
+  /**
+   * Forbidden
+   */
+  403: VoloAbpHttpRemoteServiceErrorResponse;
+  /**
+   * Not Found
+   */
+  404: VoloAbpHttpRemoteServiceErrorResponse;
+  /**
+   * Internal Server Error
+   */
+  500: VoloAbpHttpRemoteServiceErrorResponse;
+  /**
+   * Not Implemented
+   */
+  501: VoloAbpHttpRemoteServiceErrorResponse;
+};
+
+export type GetV1AssetWithdrawalFeeError = GetV1AssetWithdrawalFeeErrors[keyof GetV1AssetWithdrawalFeeErrors];
+
+export type GetV1AssetWithdrawalFeeResponses = {
+  /**
+   * OK
+   */
+  200: Ex3ExchangeOpenApiAbstractionOpenApiResult1Ex3ExchangeOpenApiAppServicesAssetWithdrawFeeInfoDto_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null;
+};
+
+export type GetV1AssetWithdrawalFeeResponse = GetV1AssetWithdrawalFeeResponses[keyof GetV1AssetWithdrawalFeeResponses];
 
 export type GetV1ChainsData = {
   body?: never;
@@ -806,29 +779,154 @@ export type GetV1ChainsResponses = {
   /**
    * OK
    */
-  200: Ex3ExchangeOpenApiAppServicesOpenApiResult1SystemCollectionsGenericIEnumerable1Ex3ExchangeOpenApiAppServicesChainInfoDto_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null___SystemPrivateCoreLib_Version_9000_Culture_neutral_PublicKeyToken_7Cec85D7Bea7798E;
+  200: Ex3ExchangeOpenApiAbstractionOpenApiResult1SystemCollectionsGenericIEnumerable1Ex3ExchangeOpenApiAppServicesChainInfoDto_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null___SystemPrivateCoreLib_Version_9000_Culture_neutral_PublicKeyToken_7Cec85D7Bea7798E;
 };
 
 export type GetV1ChainsResponse = GetV1ChainsResponses[keyof GetV1ChainsResponses];
+
+export type GetV1ChainBalancesData = {
+  body?: never;
+  path?: never;
+  query?: {
+    AssetId?: string;
+  };
+  url: '/v1/chain-balances';
+};
+
+export type GetV1ChainBalancesErrors = {
+  /**
+   * Bad Request
+   */
+  400: VoloAbpHttpRemoteServiceErrorResponse;
+  /**
+   * Unauthorized
+   */
+  401: VoloAbpHttpRemoteServiceErrorResponse;
+  /**
+   * Forbidden
+   */
+  403: VoloAbpHttpRemoteServiceErrorResponse;
+  /**
+   * Not Found
+   */
+  404: VoloAbpHttpRemoteServiceErrorResponse;
+  /**
+   * Internal Server Error
+   */
+  500: VoloAbpHttpRemoteServiceErrorResponse;
+  /**
+   * Not Implemented
+   */
+  501: VoloAbpHttpRemoteServiceErrorResponse;
+};
+
+export type GetV1ChainBalancesError = GetV1ChainBalancesErrors[keyof GetV1ChainBalancesErrors];
+
+export type GetV1ChainBalancesResponses = {
+  /**
+   * OK
+   */
+  200: Ex3ExchangeOpenApiAbstractionOpenApiResult1SystemCollectionsGenericDictionary2Ex3ModelsAssetId_Ex3Models_Version_1000_Culture_neutral_PublicKeyToken_null__Ex3ModelsOpenApiNumber_Ex3Models_Version_1000_Culture_neutral_PublicKeyToken_null___SystemPrivateCoreLib_Version_9000_Culture_neutral_PublicKeyToken_7Cec85D7Bea7798E;
+};
+
+export type GetV1ChainBalancesResponse = GetV1ChainBalancesResponses[keyof GetV1ChainBalancesResponses];
+
+export type PostV1ProxyKeyData = {
+  body?: Ex3ExchangeOpenApiAppServicesOriginWalletRequest;
+  path?: never;
+  query?: never;
+  url: '/v1/proxy-key';
+};
+
+export type PostV1ProxyKeyErrors = {
+  /**
+   * Bad Request
+   */
+  400: VoloAbpHttpRemoteServiceErrorResponse;
+  /**
+   * Unauthorized
+   */
+  401: VoloAbpHttpRemoteServiceErrorResponse;
+  /**
+   * Forbidden
+   */
+  403: VoloAbpHttpRemoteServiceErrorResponse;
+  /**
+   * Not Found
+   */
+  404: VoloAbpHttpRemoteServiceErrorResponse;
+  /**
+   * Internal Server Error
+   */
+  500: VoloAbpHttpRemoteServiceErrorResponse;
+  /**
+   * Not Implemented
+   */
+  501: VoloAbpHttpRemoteServiceErrorResponse;
+};
+
+export type PostV1ProxyKeyError = PostV1ProxyKeyErrors[keyof PostV1ProxyKeyErrors];
+
+export type PostV1ProxyKeyResponses = {
+  /**
+   * OK
+   */
+  200: Ex3ExchangeOpenApiAbstractionOpenApiResult1Ex3ExchangeOpenApiAppServicesProxyKeyResult_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null;
+};
+
+export type PostV1ProxyKeyResponse = PostV1ProxyKeyResponses[keyof PostV1ProxyKeyResponses];
+
+export type PostV1ProxyKeyResetData = {
+  body?: Ex3ExchangeOpenApiAppServicesOriginWalletRequest;
+  path?: never;
+  query?: never;
+  url: '/v1/proxy-key/reset';
+};
+
+export type PostV1ProxyKeyResetErrors = {
+  /**
+   * Bad Request
+   */
+  400: VoloAbpHttpRemoteServiceErrorResponse;
+  /**
+   * Unauthorized
+   */
+  401: VoloAbpHttpRemoteServiceErrorResponse;
+  /**
+   * Forbidden
+   */
+  403: VoloAbpHttpRemoteServiceErrorResponse;
+  /**
+   * Not Found
+   */
+  404: VoloAbpHttpRemoteServiceErrorResponse;
+  /**
+   * Internal Server Error
+   */
+  500: VoloAbpHttpRemoteServiceErrorResponse;
+  /**
+   * Not Implemented
+   */
+  501: VoloAbpHttpRemoteServiceErrorResponse;
+};
+
+export type PostV1ProxyKeyResetError = PostV1ProxyKeyResetErrors[keyof PostV1ProxyKeyResetErrors];
+
+export type PostV1ProxyKeyResetResponses = {
+  /**
+   * OK
+   */
+  200: Ex3ExchangeOpenApiAbstractionOpenApiResult1MicrosoftAspNetCoreMvcEmptyResult_MicrosoftAspNetCoreMvcCore_Version_9000_Culture_neutral_PublicKeyToken_adb9793829Ddae60;
+};
+
+export type PostV1ProxyKeyResetResponse = PostV1ProxyKeyResetResponses[keyof PostV1ProxyKeyResetResponses];
 
 export type GetV1MarketDepthData = {
   body?: never;
   path?: never;
   query?: {
-    /**
-     * The index of the depth.
-     * for example, if depth levels of market is 0.01, 0.1, 1, 10, 50, 100.
-     * then the index of 0.01 is 1, 0.1 is 2, 1 is 3, 10 is 4, 50 is 5, 100 is 6.
-     */
-    Index?: Ex3ExchangeOpenApiAppServicesDepthIndexEnum;
-    /**
-     * The market id.
-     */
+    Index?: Ex3ExchangeOpenApiAbstractionDtosDepthIndexEnum;
     MarketId?: string;
-    /**
-     * limit of the depth.
-     * <remarks> Range from 1 to 100. </remarks>
-     */
     Limit?: number;
   };
   url: '/v1/market/depth';
@@ -867,7 +965,7 @@ export type GetV1MarketDepthResponses = {
   /**
    * OK
    */
-  200: Ex3ExchangeOpenApiAppServicesOpenApiResult1Ex3CacheDepthManagerSpotMarketDepthDataDto_Ex3CacheDepthManager_Version_1000_Culture_neutral_PublicKeyToken_null;
+  200: Ex3ExchangeOpenApiAbstractionOpenApiResult1Ex3CacheDepthManagerSpotMarketDepthDataDto_Ex3CacheDepthManager_Version_1000_Culture_neutral_PublicKeyToken_null;
 };
 
 export type GetV1MarketDepthResponse = GetV1MarketDepthResponses[keyof GetV1MarketDepthResponses];
@@ -876,9 +974,6 @@ export type GetV1MarketsSwapData = {
   body?: never;
   path?: never;
   query?: {
-    /**
-     * The market id. This is an optional field that specifies the market for which liquidity information is requested.
-     */
     MarketId?: string;
   };
   url: '/v1/markets/swap';
@@ -917,7 +1012,7 @@ export type GetV1MarketsSwapResponses = {
   /**
    * OK
    */
-  200: Ex3ExchangeOpenApiAppServicesOpenApiResult1Ex3ExchangeOpenApiAppServicesGetSwapOutput_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null;
+  200: Ex3ExchangeOpenApiAbstractionOpenApiResult1Ex3ExchangeOpenApiAbstractionDtosGetSwapOutput_Ex3ExchangeOpenApiAbstraction_Version_1000_Culture_neutral_PublicKeyToken_null;
 };
 
 export type GetV1MarketsSwapResponse = GetV1MarketsSwapResponses[keyof GetV1MarketsSwapResponses];
@@ -926,17 +1021,8 @@ export type GetV1MarketsTickerData = {
   body?: never;
   path?: never;
   query?: {
-    /**
-     * The market id.
-     */
     MarketId?: string;
-    /**
-     * Filter markets by chain IDs (optional).
-     */
     ChainIds?: Array<string>;
-    /**
-     * Filter markets by chain asset types (optional).
-     */
     ChainAssetTypes?: Array<string>;
   };
   url: '/v1/markets/ticker';
@@ -975,7 +1061,7 @@ export type GetV1MarketsTickerResponses = {
   /**
    * OK
    */
-  200: Ex3ExchangeOpenApiAppServicesOpenApiResult1Ex3ExchangeOpenApiAppServicesGet24HrTickerOutput_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null;
+  200: Ex3ExchangeOpenApiAbstractionOpenApiResult1Ex3ExchangeOpenApiAbstractionDtosGet24HrTickerOutput_Ex3ExchangeOpenApiAbstraction_Version_1000_Culture_neutral_PublicKeyToken_null;
 };
 
 export type GetV1MarketsTickerResponse = GetV1MarketsTickerResponses[keyof GetV1MarketsTickerResponses];
@@ -984,17 +1070,8 @@ export type GetV1MarketsTickerExtendedData = {
   body?: never;
   path?: never;
   query?: {
-    /**
-     * The market id.
-     */
     MarketId?: string;
-    /**
-     * Filter markets by chain IDs (optional).
-     */
     ChainIds?: Array<string>;
-    /**
-     * Filter markets by chain asset types (optional).
-     */
     ChainAssetTypes?: Array<string>;
   };
   url: '/v1/markets/ticker/extended';
@@ -1033,7 +1110,7 @@ export type GetV1MarketsTickerExtendedResponses = {
   /**
    * OK
    */
-  200: Ex3ExchangeOpenApiAppServicesOpenApiResult1Ex3ExchangeOpenApiAppServicesGet24HrTickerOutputExtend_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null;
+  200: Ex3ExchangeOpenApiAbstractionOpenApiResult1Ex3ExchangeOpenApiAbstractionDtosGet24HrTickerOutputExtend_Ex3ExchangeOpenApiAbstraction_Version_1000_Culture_neutral_PublicKeyToken_null;
 };
 
 export type GetV1MarketsTickerExtendedResponse =
@@ -1043,13 +1120,7 @@ export type GetV1MarketKlineData = {
   body?: never;
   path?: never;
   query: {
-    /**
-     * The market id.
-     */
     MarketId: string;
-    /**
-     * The start time of the kline ticks.
-     */
     TickSpace: Ex3ModelsKLineTickSpace;
     /**
      * maximum number of items to return. maximum value is 500.
@@ -1106,7 +1177,7 @@ export type GetV1MarketKlineResponses = {
   /**
    * OK
    */
-  200: Ex3ExchangeOpenApiAppServicesOpenApiResult1VoloAbpApplicationDtosPagedResultDto1Ex3ExchangeOpenApiAppServicesKlineItem_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null___VoloAbpDddApplicationContracts_Version_9110_Culture_neutral_PublicKeyToken_null;
+  200: Ex3ExchangeOpenApiAbstractionOpenApiResult1VoloAbpApplicationDtosPagedResultDto1Ex3ExchangeOpenApiAbstractionDtosKlineItem_Ex3ExchangeOpenApiAbstraction_Version_1000_Culture_neutral_PublicKeyToken_null___VoloAbpDddApplicationContracts_Version_9110_Culture_neutral_PublicKeyToken_null;
 };
 
 export type GetV1MarketKlineResponse = GetV1MarketKlineResponses[keyof GetV1MarketKlineResponses];
@@ -1115,17 +1186,8 @@ export type GetV1MarketTradeData = {
   body?: never;
   path?: never;
   query: {
-    /**
-     * The market id for which the trade list is requested.
-     */
     MarketId: string;
-    /**
-     * The start date and time for the trade list.
-     */
     TradedAtStart?: number;
-    /**
-     * The end date and time for the trade list.
-     */
     TradedAtEnd?: number;
     /**
      * maximum number of items to return. maximum value is 500.
@@ -1182,7 +1244,7 @@ export type GetV1MarketTradeResponses = {
   /**
    * OK
    */
-  200: Ex3ExchangeOpenApiAppServicesOpenApiResult1VoloAbpApplicationDtosPagedResultDto1Ex3ExchangeOpenApiAppServicesMarketTradingHistoryItem_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null___VoloAbpDddApplicationContracts_Version_9110_Culture_neutral_PublicKeyToken_null;
+  200: Ex3ExchangeOpenApiAbstractionOpenApiResult1VoloAbpApplicationDtosPagedResultDto1Ex3ExchangeOpenApiAbstractionDtosMarketTradingHistoryItem_Ex3ExchangeOpenApiAbstraction_Version_1000_Culture_neutral_PublicKeyToken_null___VoloAbpDddApplicationContracts_Version_9110_Culture_neutral_PublicKeyToken_null;
 };
 
 export type GetV1MarketTradeResponse = GetV1MarketTradeResponses[keyof GetV1MarketTradeResponses];
@@ -1191,21 +1253,9 @@ export type GetV1MarketsData = {
   body?: never;
   path?: never;
   query?: {
-    /**
-     * chain ids to filter the markets list.
-     */
     ChainIds?: Array<string>;
-    /**
-     * chain asset types to filter the markets list.
-     */
     ChainAssetTypes?: Array<string>;
-    /**
-     * The base asset id. This is an optional field that specifies the base asset for which the market list is requested.
-     */
     BaseAssetId?: string;
-    /**
-     * The quote asset id. This is an optional field that specifies the quote asset for which the market list is requested.
-     */
     QuoteAssetId?: string;
     /**
      * maximum number of items to return. maximum value is 500.
@@ -1262,7 +1312,7 @@ export type GetV1MarketsResponses = {
   /**
    * OK
    */
-  200: Ex3ExchangeOpenApiAppServicesOpenApiResult1VoloAbpApplicationDtosPagedResultDto1Ex3ExchangeOpenApiAppServicesMarketInfoItem_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null___VoloAbpDddApplicationContracts_Version_9110_Culture_neutral_PublicKeyToken_null;
+  200: Ex3ExchangeOpenApiAbstractionOpenApiResult1VoloAbpApplicationDtosPagedResultDto1Ex3ExchangeOpenApiAbstractionDtosMarketInfoItem_Ex3ExchangeOpenApiAbstraction_Version_1000_Culture_neutral_PublicKeyToken_null___VoloAbpDddApplicationContracts_Version_9110_Culture_neutral_PublicKeyToken_null;
 };
 
 export type GetV1MarketsResponse = GetV1MarketsResponses[keyof GetV1MarketsResponses];
@@ -1271,9 +1321,6 @@ export type GetV1MarketData = {
   body?: never;
   path?: never;
   query?: {
-    /**
-     * The market id.
-     */
     MarketId?: string;
   };
   url: '/v1/market';
@@ -1312,7 +1359,7 @@ export type GetV1MarketResponses = {
   /**
    * OK
    */
-  200: Ex3ExchangeOpenApiAppServicesOpenApiResult1Ex3ExchangeOpenApiAppServicesMarketInfoItem_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null;
+  200: Ex3ExchangeOpenApiAbstractionOpenApiResult1Ex3ExchangeOpenApiAbstractionDtosMarketInfoItem_Ex3ExchangeOpenApiAbstraction_Version_1000_Culture_neutral_PublicKeyToken_null;
 };
 
 export type GetV1MarketResponse = GetV1MarketResponses[keyof GetV1MarketResponses];
@@ -1322,7 +1369,7 @@ export type GetV1OrderTradesData = {
   path?: never;
   query?: {
     /**
-     * order id
+     * Order id
      */
     OrderId?: string;
   };
@@ -1362,7 +1409,7 @@ export type GetV1OrderTradesResponses = {
   /**
    * OK
    */
-  200: Ex3ExchangeOpenApiAppServicesOpenApiResult1CollectionsPooledPooledList1Ex3ExchangeOpenApiAppServicesWalletOrderTradeListItem_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null___CollectionsPooled_Version_10820_Culture_neutral_PublicKeyToken_null;
+  200: Ex3ExchangeOpenApiAbstractionOpenApiResult1CollectionsPooledPooledList1Ex3ExchangeOpenApiAbstractionDtosWalletOrderTradeListItem_Ex3ExchangeOpenApiAbstraction_Version_1000_Culture_neutral_PublicKeyToken_null___CollectionsPooled_Version_10820_Culture_neutral_PublicKeyToken_null;
 };
 
 export type GetV1OrderTradesResponse = GetV1OrderTradesResponses[keyof GetV1OrderTradesResponses];
@@ -1371,38 +1418,19 @@ export type GetV1OrdersData = {
   body?: never;
   path?: never;
   query?: {
-    /**
-     * HIN (hibit chain identity number)
-     */
     HIN?: string;
-    /**
-     * status to filter the orders, if null, means all statuses.
-     */
     Status?: Array<Ex3RepositoryHistoryEntitiesOrderStatus>;
-    /**
-     * marketId, if null, means all markets
-     */
     MarketId?: string;
-    /**
-     * order ids, if null, means not filter by order ids.
-     * Max length is 20, if more than 20, return error.
-     */
     OrderIds?: Array<string>;
     /**
-     * order category, if null, means all categories.
+     * Order category
      */
     OrderCategory?: Ex3ModelsOrderCategory;
     /**
-     * order side, if null, means all sides.
+     * Order side
      */
     OrderSide?: Ex3ModelsOrderSide;
-    /**
-     * order created at after this time
-     */
     CreatedAtStart?: number;
-    /**
-     * order created at before this time
-     */
     CreatedAtEnd?: number;
     /**
      * maximum number of items to return. maximum value is 500.
@@ -1459,7 +1487,7 @@ export type GetV1OrdersResponses = {
   /**
    * OK
    */
-  200: Ex3ExchangeOpenApiAppServicesOpenApiResult1VoloAbpApplicationDtosPagedResultDto1Ex3ExchangeOpenApiAppServicesWalletOrderDto_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null___VoloAbpDddApplicationContracts_Version_9110_Culture_neutral_PublicKeyToken_null;
+  200: Ex3ExchangeOpenApiAbstractionOpenApiResult1VoloAbpApplicationDtosPagedResultDto1Ex3ExchangeOpenApiAbstractionDtosWalletOrderDto_Ex3ExchangeOpenApiAbstraction_Version_1000_Culture_neutral_PublicKeyToken_null___VoloAbpDddApplicationContracts_Version_9110_Culture_neutral_PublicKeyToken_null;
 };
 
 export type GetV1OrdersResponse = GetV1OrdersResponses[keyof GetV1OrdersResponses];
@@ -1469,17 +1497,10 @@ export type GetV1OrderData = {
   path?: never;
   query?: {
     /**
-     * order id
+     * Order id
      */
     OrderId?: string;
-    /**
-     * Client order id. Format: "${HIN}_${nonce}".
-     * Example: "10001_123"
-     */
     ClientOrderId?: string;
-    /**
-     * tx hash
-     */
     TxHash?: string;
   };
   url: '/v1/order';
@@ -1518,7 +1539,7 @@ export type GetV1OrderResponses = {
   /**
    * OK
    */
-  200: Ex3ExchangeOpenApiAppServicesOpenApiResult1Ex3ExchangeOpenApiAppServicesWalletOrderDto_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null;
+  200: Ex3ExchangeOpenApiAbstractionOpenApiResult1Ex3ExchangeOpenApiAbstractionDtosWalletOrderDto_Ex3ExchangeOpenApiAbstraction_Version_1000_Culture_neutral_PublicKeyToken_null;
 };
 
 export type GetV1OrderResponse = GetV1OrderResponses[keyof GetV1OrderResponses];
@@ -1563,7 +1584,7 @@ export type PostV1TxSubmitSpotOrderResponses = {
   /**
    * OK
    */
-  200: Ex3ExchangeOpenApiAppServicesOpenApiResult1Ex3ExchangeIActorsEmptyResultBody_Ex3ExchangeIActorsModels_Version_1000_Culture_neutral_PublicKeyToken_null;
+  200: Ex3ExchangeOpenApiAbstractionOpenApiResult1Ex3ExchangeIActorsEmptyResultBody_Ex3ExchangeIActorsModels_Version_1000_Culture_neutral_PublicKeyToken_null;
 };
 
 export type PostV1TxSubmitSpotOrderResponse = PostV1TxSubmitSpotOrderResponses[keyof PostV1TxSubmitSpotOrderResponses];
@@ -1608,7 +1629,7 @@ export type PostV1TxCancelSpotOrderResponses = {
   /**
    * OK
    */
-  200: Ex3ExchangeOpenApiAppServicesOpenApiResult1Ex3ExchangeIActorsEmptyResultBody_Ex3ExchangeIActorsModels_Version_1000_Culture_neutral_PublicKeyToken_null;
+  200: Ex3ExchangeOpenApiAbstractionOpenApiResult1Ex3ExchangeIActorsEmptyResultBody_Ex3ExchangeIActorsModels_Version_1000_Culture_neutral_PublicKeyToken_null;
 };
 
 export type PostV1TxCancelSpotOrderResponse = PostV1TxCancelSpotOrderResponses[keyof PostV1TxCancelSpotOrderResponses];
@@ -1617,9 +1638,6 @@ export type GetV1WalletNonceData = {
   body?: never;
   path?: never;
   query?: {
-    /**
-     * HIN, hibit chain identity number
-     */
     HIN?: string;
   };
   url: '/v1/wallet/nonce';
@@ -1658,7 +1676,7 @@ export type GetV1WalletNonceResponses = {
   /**
    * OK
    */
-  200: Ex3ExchangeOpenApiAppServicesOpenApiResult1Ex3ExchangeOpenApiAppServicesNonceResult_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null;
+  200: Ex3ExchangeOpenApiAbstractionOpenApiResult1Ex3ExchangeOpenApiAppServicesNonceResult_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null;
 };
 
 export type GetV1WalletNonceResponse = GetV1WalletNonceResponses[keyof GetV1WalletNonceResponses];
@@ -1667,13 +1685,7 @@ export type GetV1WalletBalancesData = {
   body?: never;
   path?: never;
   query?: {
-    /**
-     * HIN, hibit chain identity number
-     */
     HIN?: string;
-    /**
-     * Asset Id (optional), if not provided, return all assets
-     */
     AssetId?: string;
   };
   url: '/v1/wallet/balances';
@@ -1712,10 +1724,104 @@ export type GetV1WalletBalancesResponses = {
   /**
    * OK
    */
-  200: Ex3ExchangeOpenApiAppServicesOpenApiResult1SystemCollectionsGenericDictionary2Ex3ModelsAssetId_Ex3Models_Version_1000_Culture_neutral_PublicKeyToken_null__Ex3ModelsOpenApiNumber_Ex3Models_Version_1000_Culture_neutral_PublicKeyToken_null___SystemPrivateCoreLib_Version_9000_Culture_neutral_PublicKeyToken_7Cec85D7Bea7798E;
+  200: Ex3ExchangeOpenApiAbstractionOpenApiResult1SystemCollectionsGenericDictionary2Ex3ModelsAssetId_Ex3Models_Version_1000_Culture_neutral_PublicKeyToken_null__Ex3ModelsOpenApiNumber_Ex3Models_Version_1000_Culture_neutral_PublicKeyToken_null___SystemPrivateCoreLib_Version_9000_Culture_neutral_PublicKeyToken_7Cec85D7Bea7798E;
 };
 
 export type GetV1WalletBalancesResponse = GetV1WalletBalancesResponses[keyof GetV1WalletBalancesResponses];
+
+export type PostV1WalletRegisterData = {
+  body?: Ex3ExchangeOpenApiAppServicesOriginWalletRequest;
+  path?: never;
+  query?: never;
+  url: '/v1/wallet/register';
+};
+
+export type PostV1WalletRegisterErrors = {
+  /**
+   * Bad Request
+   */
+  400: VoloAbpHttpRemoteServiceErrorResponse;
+  /**
+   * Unauthorized
+   */
+  401: VoloAbpHttpRemoteServiceErrorResponse;
+  /**
+   * Forbidden
+   */
+  403: VoloAbpHttpRemoteServiceErrorResponse;
+  /**
+   * Not Found
+   */
+  404: VoloAbpHttpRemoteServiceErrorResponse;
+  /**
+   * Internal Server Error
+   */
+  500: VoloAbpHttpRemoteServiceErrorResponse;
+  /**
+   * Not Implemented
+   */
+  501: VoloAbpHttpRemoteServiceErrorResponse;
+};
+
+export type PostV1WalletRegisterError = PostV1WalletRegisterErrors[keyof PostV1WalletRegisterErrors];
+
+export type PostV1WalletRegisterResponses = {
+  /**
+   * OK
+   */
+  200: Ex3ExchangeOpenApiAbstractionOpenApiResult1MicrosoftAspNetCoreMvcEmptyResult_MicrosoftAspNetCoreMvcCore_Version_9000_Culture_neutral_PublicKeyToken_adb9793829Ddae60;
+};
+
+export type PostV1WalletRegisterResponse = PostV1WalletRegisterResponses[keyof PostV1WalletRegisterResponses];
+
+export type GetV1WalletInfoData = {
+  body?: never;
+  path?: never;
+  query?: {
+    Chain?: string;
+    PublicKey?: string;
+    Address?: string;
+  };
+  url: '/v1/wallet/info';
+};
+
+export type GetV1WalletInfoErrors = {
+  /**
+   * Bad Request
+   */
+  400: VoloAbpHttpRemoteServiceErrorResponse;
+  /**
+   * Unauthorized
+   */
+  401: VoloAbpHttpRemoteServiceErrorResponse;
+  /**
+   * Forbidden
+   */
+  403: VoloAbpHttpRemoteServiceErrorResponse;
+  /**
+   * Not Found
+   */
+  404: VoloAbpHttpRemoteServiceErrorResponse;
+  /**
+   * Internal Server Error
+   */
+  500: VoloAbpHttpRemoteServiceErrorResponse;
+  /**
+   * Not Implemented
+   */
+  501: VoloAbpHttpRemoteServiceErrorResponse;
+};
+
+export type GetV1WalletInfoError = GetV1WalletInfoErrors[keyof GetV1WalletInfoErrors];
+
+export type GetV1WalletInfoResponses = {
+  /**
+   * OK
+   */
+  200: Ex3ExchangeOpenApiAbstractionOpenApiResult1Ex3ExchangeOpenApiAppServicesWalletRegistrationInfo_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null;
+};
+
+export type GetV1WalletInfoResponse = GetV1WalletInfoResponses[keyof GetV1WalletInfoResponses];
 
 export type ClientOptions = {
   baseUrl: 'https://testnetopenapi.hibit.app' | 'https://openapi.hibit.app' | (string & {});

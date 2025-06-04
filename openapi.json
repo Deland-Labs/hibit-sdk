@@ -12,29 +12,28 @@
       "url": "https://openapi.hibit.app"
     }
   ],
-
   "paths": {
     "/v1/timestamp": {
       "get": {
         "tags": ["Basic"],
-        "summary": "get system timestamp",
+        "summary": "Get system timestamp",
         "responses": {
           "200": {
             "description": "OK",
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Ex3.Exchange.OpenApi.AppServices.SystemInfo, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[Ex3.Exchange.OpenApi.AppServices.SystemInfo, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Ex3.Exchange.OpenApi.AppServices.SystemInfo, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[Ex3.Exchange.OpenApi.AppServices.SystemInfo, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Ex3.Exchange.OpenApi.AppServices.SystemInfo, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[Ex3.Exchange.OpenApi.AppServices.SystemInfo, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
                 }
               }
             }
@@ -165,12 +164,11 @@
     "/v1/assets": {
       "get": {
         "tags": ["Basic"],
-        "summary": "get assets supported by Hibit",
+        "summary": "Get supported assets",
         "parameters": [
           {
             "name": "ChainIds",
             "in": "query",
-            "description": "chain ids to filter the assets list.",
             "schema": {
               "type": "array",
               "items": {
@@ -181,7 +179,6 @@
           {
             "name": "ChainAssetTypes",
             "in": "query",
-            "description": "chain asset types to filter the assets list.",
             "schema": {
               "type": "array",
               "items": {
@@ -222,17 +219,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Volo.Abp.Application.Dtos.PagedResultDto`1[[Ex3.Exchange.OpenApi.AppServices.RootAssetInfoDto, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Volo.Abp.Ddd.Application.Contracts, Version=9.1.1.0, Culture=neutral, PublicKeyToken=null]]"
+                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[Volo.Abp.Application.Dtos.PagedResultDto`1[[Ex3.Exchange.OpenApi.AppServices.RootAssetInfoDto, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Volo.Abp.Ddd.Application.Contracts, Version=9.1.1.0, Culture=neutral, PublicKeyToken=null]]"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Volo.Abp.Application.Dtos.PagedResultDto`1[[Ex3.Exchange.OpenApi.AppServices.RootAssetInfoDto, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Volo.Abp.Ddd.Application.Contracts, Version=9.1.1.0, Culture=neutral, PublicKeyToken=null]]"
+                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[Volo.Abp.Application.Dtos.PagedResultDto`1[[Ex3.Exchange.OpenApi.AppServices.RootAssetInfoDto, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Volo.Abp.Ddd.Application.Contracts, Version=9.1.1.0, Culture=neutral, PublicKeyToken=null]]"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Volo.Abp.Application.Dtos.PagedResultDto`1[[Ex3.Exchange.OpenApi.AppServices.RootAssetInfoDto, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Volo.Abp.Ddd.Application.Contracts, Version=9.1.1.0, Culture=neutral, PublicKeyToken=null]]"
+                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[Volo.Abp.Application.Dtos.PagedResultDto`1[[Ex3.Exchange.OpenApi.AppServices.RootAssetInfoDto, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Volo.Abp.Ddd.Application.Contracts, Version=9.1.1.0, Culture=neutral, PublicKeyToken=null]]"
                 }
               }
             }
@@ -363,10 +360,18 @@
     "/v1/asset": {
       "get": {
         "tags": ["Basic"],
-        "summary": "Get asset information by asset id",
+        "summary": "Get asset information",
+        "description": "In most cases, this endpoint returns a single asset regardless of whether you filter by asset ID or token contract address.\r\nHowever, since the system supports multiple chains, the same token contract address might exist on different chains,\r\npotentially resulting in multiple assets being returned when filtering by token contract address.",
         "parameters": [
           {
             "name": "AssetId",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "TokenAddress",
             "in": "query",
             "schema": {
               "type": "string"
@@ -379,17 +384,188 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Ex3.Exchange.OpenApi.AppServices.RootAssetInfoDto, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[System.Collections.Generic.List`1[[Ex3.Exchange.OpenApi.AppServices.RootAssetInfoDto, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Ex3.Exchange.OpenApi.AppServices.RootAssetInfoDto, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[System.Collections.Generic.List`1[[Ex3.Exchange.OpenApi.AppServices.RootAssetInfoDto, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Ex3.Exchange.OpenApi.AppServices.RootAssetInfoDto, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[System.Collections.Generic.List`1[[Ex3.Exchange.OpenApi.AppServices.RootAssetInfoDto, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              }
+            }
+          },
+          "501": {
+            "description": "Not Implemented",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/asset/withdrawal-fee": {
+      "get": {
+        "tags": ["Basic"],
+        "summary": "Get withdrawal fee information for an asset",
+        "parameters": [
+          {
+            "name": "RootAssetId",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "TargetChain",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "TargetChainNetwork",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[Ex3.Exchange.OpenApi.AppServices.AssetWithdrawFeeInfoDto, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[Ex3.Exchange.OpenApi.AppServices.AssetWithdrawFeeInfoDto, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[Ex3.Exchange.OpenApi.AppServices.AssetWithdrawFeeInfoDto, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
                 }
               }
             }
@@ -520,24 +696,516 @@
     "/v1/chains": {
       "get": {
         "tags": ["Basic"],
-        "summary": "get all chains supported by Hibit",
+        "summary": "Get all supported chains",
         "responses": {
           "200": {
             "description": "OK",
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[System.Collections.Generic.IEnumerable`1[[Ex3.Exchange.OpenApi.AppServices.ChainInfoDto, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]"
+                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[System.Collections.Generic.IEnumerable`1[[Ex3.Exchange.OpenApi.AppServices.ChainInfoDto, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[System.Collections.Generic.IEnumerable`1[[Ex3.Exchange.OpenApi.AppServices.ChainInfoDto, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]"
+                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[System.Collections.Generic.IEnumerable`1[[Ex3.Exchange.OpenApi.AppServices.ChainInfoDto, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[System.Collections.Generic.IEnumerable`1[[Ex3.Exchange.OpenApi.AppServices.ChainInfoDto, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]"
+                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[System.Collections.Generic.IEnumerable`1[[Ex3.Exchange.OpenApi.AppServices.ChainInfoDto, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              }
+            }
+          },
+          "501": {
+            "description": "Not Implemented",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/chain-balances": {
+      "get": {
+        "tags": ["Basic"],
+        "summary": "Get asset chain balance",
+        "description": "This endpoint retrieves the balance of a specific asset on the chain.\r\nIf the asset id not provided, the balance of all assets will be returned.",
+        "parameters": [
+          {
+            "name": "AssetId",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[System.Collections.Generic.Dictionary`2[[Ex3.Models.AssetId, Ex3.Models, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[Ex3.Models.OpenApiNumber, Ex3.Models, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[System.Collections.Generic.Dictionary`2[[Ex3.Models.AssetId, Ex3.Models, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[Ex3.Models.OpenApiNumber, Ex3.Models, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[System.Collections.Generic.Dictionary`2[[Ex3.Models.AssetId, Ex3.Models, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[Ex3.Models.OpenApiNumber, Ex3.Models, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              }
+            }
+          },
+          "501": {
+            "description": "Not Implemented",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/proxy-key": {
+      "post": {
+        "tags": ["Key"],
+        "summary": "Get the proxy key",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.OriginWalletRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.OriginWalletRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.OriginWalletRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[Ex3.Exchange.OpenApi.AppServices.ProxyKeyResult, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[Ex3.Exchange.OpenApi.AppServices.ProxyKeyResult, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[Ex3.Exchange.OpenApi.AppServices.ProxyKeyResult, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              }
+            }
+          },
+          "501": {
+            "description": "Not Implemented",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/proxy-key/reset": {
+      "post": {
+        "tags": ["Key"],
+        "summary": "Reset the proxy key",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.OriginWalletRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.OriginWalletRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.OriginWalletRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[Microsoft.AspNetCore.Mvc.EmptyResult, Microsoft.AspNetCore.Mvc.Core, Version=9.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60]]"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[Microsoft.AspNetCore.Mvc.EmptyResult, Microsoft.AspNetCore.Mvc.Core, Version=9.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60]]"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[Microsoft.AspNetCore.Mvc.EmptyResult, Microsoft.AspNetCore.Mvc.Core, Version=9.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60]]"
                 }
               }
             }
@@ -668,21 +1336,19 @@
     "/v1/market/depth": {
       "get": {
         "tags": ["Markets"],
-        "summary": "get the depth of the market",
+        "summary": "Get market depth",
         "description": "it is a combination of the orderbook and the swap liquidity.",
         "parameters": [
           {
             "name": "Index",
             "in": "query",
-            "description": "The index of the depth.\r\nfor example, if depth levels of market is 0.01, 0.1, 1, 10, 50, 100.\r\nthen the index of 0.01 is 1, 0.1 is 2, 1 is 3, 10 is 4, 50 is 5, 100 is 6.",
             "schema": {
-              "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.DepthIndexEnum"
+              "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.Abstraction.Dtos.DepthIndexEnum"
             }
           },
           {
             "name": "MarketId",
             "in": "query",
-            "description": "The market id.",
             "schema": {
               "type": "string"
             }
@@ -690,7 +1356,6 @@
           {
             "name": "Limit",
             "in": "query",
-            "description": "limit of the depth.\r\n<remarks> Range from 1 to 100. </remarks>",
             "schema": {
               "maximum": 100,
               "minimum": 1,
@@ -705,17 +1370,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Ex3.Cache.DepthManager.SpotMarketDepthDataDto, Ex3.Cache.DepthManager, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[Ex3.Cache.DepthManager.SpotMarketDepthDataDto, Ex3.Cache.DepthManager, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Ex3.Cache.DepthManager.SpotMarketDepthDataDto, Ex3.Cache.DepthManager, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[Ex3.Cache.DepthManager.SpotMarketDepthDataDto, Ex3.Cache.DepthManager, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Ex3.Cache.DepthManager.SpotMarketDepthDataDto, Ex3.Cache.DepthManager, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[Ex3.Cache.DepthManager.SpotMarketDepthDataDto, Ex3.Cache.DepthManager, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
                 }
               }
             }
@@ -846,12 +1511,11 @@
     "/v1/markets/swap": {
       "get": {
         "tags": ["Markets"],
-        "summary": "get the swap information of the market",
+        "summary": "Get market swap info",
         "parameters": [
           {
             "name": "MarketId",
             "in": "query",
-            "description": "The market id. This is an optional field that specifies the market for which liquidity information is requested.",
             "schema": {
               "type": "string"
             }
@@ -863,17 +1527,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Ex3.Exchange.OpenApi.AppServices.GetSwapOutput, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[Ex3.Exchange.OpenApi.Abstraction.Dtos.GetSwapOutput, Ex3.Exchange.OpenApi.Abstraction, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Ex3.Exchange.OpenApi.AppServices.GetSwapOutput, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[Ex3.Exchange.OpenApi.Abstraction.Dtos.GetSwapOutput, Ex3.Exchange.OpenApi.Abstraction, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Ex3.Exchange.OpenApi.AppServices.GetSwapOutput, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[Ex3.Exchange.OpenApi.Abstraction.Dtos.GetSwapOutput, Ex3.Exchange.OpenApi.Abstraction, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
                 }
               }
             }
@@ -1004,12 +1668,11 @@
     "/v1/markets/ticker": {
       "get": {
         "tags": ["Markets"],
-        "summary": "Gets the 24-hour ticker info for markets",
+        "summary": "Get 24hr market tickers",
         "parameters": [
           {
             "name": "MarketId",
             "in": "query",
-            "description": "The market id.",
             "schema": {
               "type": "string"
             }
@@ -1017,7 +1680,6 @@
           {
             "name": "ChainIds",
             "in": "query",
-            "description": "Filter markets by chain IDs (optional).",
             "schema": {
               "type": "array",
               "items": {
@@ -1028,7 +1690,6 @@
           {
             "name": "ChainAssetTypes",
             "in": "query",
-            "description": "Filter markets by chain asset types (optional).",
             "schema": {
               "type": "array",
               "items": {
@@ -1043,17 +1704,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Ex3.Exchange.OpenApi.AppServices.Get24HrTickerOutput, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[Ex3.Exchange.OpenApi.Abstraction.Dtos.Get24HrTickerOutput, Ex3.Exchange.OpenApi.Abstraction, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Ex3.Exchange.OpenApi.AppServices.Get24HrTickerOutput, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[Ex3.Exchange.OpenApi.Abstraction.Dtos.Get24HrTickerOutput, Ex3.Exchange.OpenApi.Abstraction, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Ex3.Exchange.OpenApi.AppServices.Get24HrTickerOutput, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[Ex3.Exchange.OpenApi.Abstraction.Dtos.Get24HrTickerOutput, Ex3.Exchange.OpenApi.Abstraction, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
                 }
               }
             }
@@ -1184,12 +1845,11 @@
     "/v1/markets/ticker/extended": {
       "get": {
         "tags": ["Markets"],
-        "summary": "Gets the extended 24-hour ticker info for markets",
+        "summary": "Get extended 24hr market tickers",
         "parameters": [
           {
             "name": "MarketId",
             "in": "query",
-            "description": "The market id.",
             "schema": {
               "type": "string"
             }
@@ -1197,7 +1857,6 @@
           {
             "name": "ChainIds",
             "in": "query",
-            "description": "Filter markets by chain IDs (optional).",
             "schema": {
               "type": "array",
               "items": {
@@ -1208,7 +1867,6 @@
           {
             "name": "ChainAssetTypes",
             "in": "query",
-            "description": "Filter markets by chain asset types (optional).",
             "schema": {
               "type": "array",
               "items": {
@@ -1223,17 +1881,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Ex3.Exchange.OpenApi.AppServices.Get24HrTickerOutputExtend, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[Ex3.Exchange.OpenApi.Abstraction.Dtos.Get24HrTickerOutputExtend, Ex3.Exchange.OpenApi.Abstraction, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Ex3.Exchange.OpenApi.AppServices.Get24HrTickerOutputExtend, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[Ex3.Exchange.OpenApi.Abstraction.Dtos.Get24HrTickerOutputExtend, Ex3.Exchange.OpenApi.Abstraction, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Ex3.Exchange.OpenApi.AppServices.Get24HrTickerOutputExtend, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[Ex3.Exchange.OpenApi.Abstraction.Dtos.Get24HrTickerOutputExtend, Ex3.Exchange.OpenApi.Abstraction, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
                 }
               }
             }
@@ -1364,12 +2022,11 @@
     "/v1/market/kline": {
       "get": {
         "tags": ["Markets"],
-        "summary": "get the kline of the market",
+        "summary": "Get market kline",
         "parameters": [
           {
             "name": "MarketId",
             "in": "query",
-            "description": "The market id.",
             "required": true,
             "schema": {
               "type": "string"
@@ -1378,7 +2035,6 @@
           {
             "name": "TickSpace",
             "in": "query",
-            "description": "The start time of the kline ticks.",
             "required": true,
             "schema": {
               "$ref": "#/components/schemas/Ex3.Models.KLine.TickSpace"
@@ -1417,17 +2073,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Volo.Abp.Application.Dtos.PagedResultDto`1[[Ex3.Exchange.OpenApi.AppServices.KlineItem, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Volo.Abp.Ddd.Application.Contracts, Version=9.1.1.0, Culture=neutral, PublicKeyToken=null]]"
+                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[Volo.Abp.Application.Dtos.PagedResultDto`1[[Ex3.Exchange.OpenApi.Abstraction.Dtos.KlineItem, Ex3.Exchange.OpenApi.Abstraction, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Volo.Abp.Ddd.Application.Contracts, Version=9.1.1.0, Culture=neutral, PublicKeyToken=null]]"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Volo.Abp.Application.Dtos.PagedResultDto`1[[Ex3.Exchange.OpenApi.AppServices.KlineItem, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Volo.Abp.Ddd.Application.Contracts, Version=9.1.1.0, Culture=neutral, PublicKeyToken=null]]"
+                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[Volo.Abp.Application.Dtos.PagedResultDto`1[[Ex3.Exchange.OpenApi.Abstraction.Dtos.KlineItem, Ex3.Exchange.OpenApi.Abstraction, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Volo.Abp.Ddd.Application.Contracts, Version=9.1.1.0, Culture=neutral, PublicKeyToken=null]]"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Volo.Abp.Application.Dtos.PagedResultDto`1[[Ex3.Exchange.OpenApi.AppServices.KlineItem, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Volo.Abp.Ddd.Application.Contracts, Version=9.1.1.0, Culture=neutral, PublicKeyToken=null]]"
+                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[Volo.Abp.Application.Dtos.PagedResultDto`1[[Ex3.Exchange.OpenApi.Abstraction.Dtos.KlineItem, Ex3.Exchange.OpenApi.Abstraction, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Volo.Abp.Ddd.Application.Contracts, Version=9.1.1.0, Culture=neutral, PublicKeyToken=null]]"
                 }
               }
             }
@@ -1558,12 +2214,11 @@
     "/v1/market/trade": {
       "get": {
         "tags": ["Markets"],
-        "summary": "get the trade history of the market",
+        "summary": "Get market trade history",
         "parameters": [
           {
             "name": "MarketId",
             "in": "query",
-            "description": "The market id for which the trade list is requested.",
             "required": true,
             "schema": {
               "type": "string"
@@ -1572,7 +2227,6 @@
           {
             "name": "TradedAtStart",
             "in": "query",
-            "description": "The start date and time for the trade list.",
             "schema": {
               "type": "integer",
               "format": "int64"
@@ -1581,7 +2235,6 @@
           {
             "name": "TradedAtEnd",
             "in": "query",
-            "description": "The end date and time for the trade list.",
             "schema": {
               "type": "integer",
               "format": "int64"
@@ -1620,17 +2273,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Volo.Abp.Application.Dtos.PagedResultDto`1[[Ex3.Exchange.OpenApi.AppServices.MarketTradingHistoryItem, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Volo.Abp.Ddd.Application.Contracts, Version=9.1.1.0, Culture=neutral, PublicKeyToken=null]]"
+                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[Volo.Abp.Application.Dtos.PagedResultDto`1[[Ex3.Exchange.OpenApi.Abstraction.Dtos.MarketTradingHistoryItem, Ex3.Exchange.OpenApi.Abstraction, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Volo.Abp.Ddd.Application.Contracts, Version=9.1.1.0, Culture=neutral, PublicKeyToken=null]]"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Volo.Abp.Application.Dtos.PagedResultDto`1[[Ex3.Exchange.OpenApi.AppServices.MarketTradingHistoryItem, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Volo.Abp.Ddd.Application.Contracts, Version=9.1.1.0, Culture=neutral, PublicKeyToken=null]]"
+                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[Volo.Abp.Application.Dtos.PagedResultDto`1[[Ex3.Exchange.OpenApi.Abstraction.Dtos.MarketTradingHistoryItem, Ex3.Exchange.OpenApi.Abstraction, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Volo.Abp.Ddd.Application.Contracts, Version=9.1.1.0, Culture=neutral, PublicKeyToken=null]]"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Volo.Abp.Application.Dtos.PagedResultDto`1[[Ex3.Exchange.OpenApi.AppServices.MarketTradingHistoryItem, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Volo.Abp.Ddd.Application.Contracts, Version=9.1.1.0, Culture=neutral, PublicKeyToken=null]]"
+                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[Volo.Abp.Application.Dtos.PagedResultDto`1[[Ex3.Exchange.OpenApi.Abstraction.Dtos.MarketTradingHistoryItem, Ex3.Exchange.OpenApi.Abstraction, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Volo.Abp.Ddd.Application.Contracts, Version=9.1.1.0, Culture=neutral, PublicKeyToken=null]]"
                 }
               }
             }
@@ -1761,12 +2414,11 @@
     "/v1/markets": {
       "get": {
         "tags": ["Markets"],
-        "summary": "get the market list",
+        "summary": "Get market list",
         "parameters": [
           {
             "name": "ChainIds",
             "in": "query",
-            "description": "chain ids to filter the markets list.",
             "schema": {
               "type": "array",
               "items": {
@@ -1777,7 +2429,6 @@
           {
             "name": "ChainAssetTypes",
             "in": "query",
-            "description": "chain asset types to filter the markets list.",
             "schema": {
               "type": "array",
               "items": {
@@ -1788,7 +2439,6 @@
           {
             "name": "BaseAssetId",
             "in": "query",
-            "description": "The base asset id. This is an optional field that specifies the base asset for which the market list is requested.",
             "schema": {
               "type": "string"
             }
@@ -1796,7 +2446,6 @@
           {
             "name": "QuoteAssetId",
             "in": "query",
-            "description": "The quote asset id. This is an optional field that specifies the quote asset for which the market list is requested.",
             "schema": {
               "type": "string"
             }
@@ -1834,17 +2483,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Volo.Abp.Application.Dtos.PagedResultDto`1[[Ex3.Exchange.OpenApi.AppServices.MarketInfoItem, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Volo.Abp.Ddd.Application.Contracts, Version=9.1.1.0, Culture=neutral, PublicKeyToken=null]]"
+                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[Volo.Abp.Application.Dtos.PagedResultDto`1[[Ex3.Exchange.OpenApi.Abstraction.Dtos.MarketInfoItem, Ex3.Exchange.OpenApi.Abstraction, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Volo.Abp.Ddd.Application.Contracts, Version=9.1.1.0, Culture=neutral, PublicKeyToken=null]]"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Volo.Abp.Application.Dtos.PagedResultDto`1[[Ex3.Exchange.OpenApi.AppServices.MarketInfoItem, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Volo.Abp.Ddd.Application.Contracts, Version=9.1.1.0, Culture=neutral, PublicKeyToken=null]]"
+                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[Volo.Abp.Application.Dtos.PagedResultDto`1[[Ex3.Exchange.OpenApi.Abstraction.Dtos.MarketInfoItem, Ex3.Exchange.OpenApi.Abstraction, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Volo.Abp.Ddd.Application.Contracts, Version=9.1.1.0, Culture=neutral, PublicKeyToken=null]]"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Volo.Abp.Application.Dtos.PagedResultDto`1[[Ex3.Exchange.OpenApi.AppServices.MarketInfoItem, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Volo.Abp.Ddd.Application.Contracts, Version=9.1.1.0, Culture=neutral, PublicKeyToken=null]]"
+                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[Volo.Abp.Application.Dtos.PagedResultDto`1[[Ex3.Exchange.OpenApi.Abstraction.Dtos.MarketInfoItem, Ex3.Exchange.OpenApi.Abstraction, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Volo.Abp.Ddd.Application.Contracts, Version=9.1.1.0, Culture=neutral, PublicKeyToken=null]]"
                 }
               }
             }
@@ -1975,12 +2624,11 @@
     "/v1/market": {
       "get": {
         "tags": ["Markets"],
-        "summary": "get the market by market id",
+        "summary": "Get market details",
         "parameters": [
           {
             "name": "MarketId",
             "in": "query",
-            "description": "The market id.",
             "schema": {
               "type": "string"
             }
@@ -1992,17 +2640,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Ex3.Exchange.OpenApi.AppServices.MarketInfoItem, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[Ex3.Exchange.OpenApi.Abstraction.Dtos.MarketInfoItem, Ex3.Exchange.OpenApi.Abstraction, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Ex3.Exchange.OpenApi.AppServices.MarketInfoItem, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[Ex3.Exchange.OpenApi.Abstraction.Dtos.MarketInfoItem, Ex3.Exchange.OpenApi.Abstraction, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Ex3.Exchange.OpenApi.AppServices.MarketInfoItem, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[Ex3.Exchange.OpenApi.Abstraction.Dtos.MarketInfoItem, Ex3.Exchange.OpenApi.Abstraction, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
                 }
               }
             }
@@ -2133,14 +2781,15 @@
     "/v1/order/trades": {
       "get": {
         "tags": ["Orders"],
-        "summary": "get trades of the order",
+        "summary": "Get order trades",
         "parameters": [
           {
             "name": "OrderId",
             "in": "query",
-            "description": "order id",
+            "description": "Order id",
             "schema": {
               "type": "string",
+              "description": "Order id",
               "format": "string"
             }
           }
@@ -2151,17 +2800,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Collections.Pooled.PooledList`1[[Ex3.Exchange.OpenApi.AppServices.WalletOrderTradeListItem, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Collections.Pooled, Version=1.0.82.0, Culture=neutral, PublicKeyToken=null]]"
+                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[Collections.Pooled.PooledList`1[[Ex3.Exchange.OpenApi.Abstraction.Dtos.WalletOrderTradeListItem, Ex3.Exchange.OpenApi.Abstraction, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Collections.Pooled, Version=1.0.82.0, Culture=neutral, PublicKeyToken=null]]"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Collections.Pooled.PooledList`1[[Ex3.Exchange.OpenApi.AppServices.WalletOrderTradeListItem, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Collections.Pooled, Version=1.0.82.0, Culture=neutral, PublicKeyToken=null]]"
+                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[Collections.Pooled.PooledList`1[[Ex3.Exchange.OpenApi.Abstraction.Dtos.WalletOrderTradeListItem, Ex3.Exchange.OpenApi.Abstraction, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Collections.Pooled, Version=1.0.82.0, Culture=neutral, PublicKeyToken=null]]"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Collections.Pooled.PooledList`1[[Ex3.Exchange.OpenApi.AppServices.WalletOrderTradeListItem, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Collections.Pooled, Version=1.0.82.0, Culture=neutral, PublicKeyToken=null]]"
+                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[Collections.Pooled.PooledList`1[[Ex3.Exchange.OpenApi.Abstraction.Dtos.WalletOrderTradeListItem, Ex3.Exchange.OpenApi.Abstraction, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Collections.Pooled, Version=1.0.82.0, Culture=neutral, PublicKeyToken=null]]"
                 }
               }
             }
@@ -2292,12 +2941,11 @@
     "/v1/orders": {
       "get": {
         "tags": ["Orders"],
-        "summary": "get orders of wallet",
+        "summary": "Get orders",
         "parameters": [
           {
             "name": "HIN",
             "in": "query",
-            "description": "HIN (hibit chain identity number)",
             "schema": {
               "type": "string"
             }
@@ -2305,7 +2953,6 @@
           {
             "name": "Status",
             "in": "query",
-            "description": "status to filter the orders, if null, means all statuses.",
             "schema": {
               "type": "array",
               "items": {
@@ -2316,7 +2963,6 @@
           {
             "name": "MarketId",
             "in": "query",
-            "description": "marketId, if null, means all markets",
             "schema": {
               "type": "string"
             }
@@ -2324,7 +2970,6 @@
           {
             "name": "OrderIds",
             "in": "query",
-            "description": "order ids, if null, means not filter by order ids.\r\nMax length is 20, if more than 20, return error.",
             "schema": {
               "type": "array",
               "items": {
@@ -2337,7 +2982,7 @@
           {
             "name": "OrderCategory",
             "in": "query",
-            "description": "order category, if null, means all categories.",
+            "description": "Order category",
             "schema": {
               "$ref": "#/components/schemas/Ex3.Models.OrderCategory"
             }
@@ -2345,7 +2990,7 @@
           {
             "name": "OrderSide",
             "in": "query",
-            "description": "order side, if null, means all sides.",
+            "description": "Order side",
             "schema": {
               "$ref": "#/components/schemas/Ex3.Models.OrderSide"
             }
@@ -2353,7 +2998,6 @@
           {
             "name": "CreatedAtStart",
             "in": "query",
-            "description": "order created at after this time",
             "schema": {
               "type": "integer",
               "format": "int64"
@@ -2362,7 +3006,6 @@
           {
             "name": "CreatedAtEnd",
             "in": "query",
-            "description": "order created at before this time",
             "schema": {
               "type": "integer",
               "format": "int64"
@@ -2401,17 +3044,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Volo.Abp.Application.Dtos.PagedResultDto`1[[Ex3.Exchange.OpenApi.AppServices.WalletOrderDto, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Volo.Abp.Ddd.Application.Contracts, Version=9.1.1.0, Culture=neutral, PublicKeyToken=null]]"
+                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[Volo.Abp.Application.Dtos.PagedResultDto`1[[Ex3.Exchange.OpenApi.Abstraction.Dtos.WalletOrderDto, Ex3.Exchange.OpenApi.Abstraction, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Volo.Abp.Ddd.Application.Contracts, Version=9.1.1.0, Culture=neutral, PublicKeyToken=null]]"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Volo.Abp.Application.Dtos.PagedResultDto`1[[Ex3.Exchange.OpenApi.AppServices.WalletOrderDto, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Volo.Abp.Ddd.Application.Contracts, Version=9.1.1.0, Culture=neutral, PublicKeyToken=null]]"
+                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[Volo.Abp.Application.Dtos.PagedResultDto`1[[Ex3.Exchange.OpenApi.Abstraction.Dtos.WalletOrderDto, Ex3.Exchange.OpenApi.Abstraction, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Volo.Abp.Ddd.Application.Contracts, Version=9.1.1.0, Culture=neutral, PublicKeyToken=null]]"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Volo.Abp.Application.Dtos.PagedResultDto`1[[Ex3.Exchange.OpenApi.AppServices.WalletOrderDto, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Volo.Abp.Ddd.Application.Contracts, Version=9.1.1.0, Culture=neutral, PublicKeyToken=null]]"
+                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[Volo.Abp.Application.Dtos.PagedResultDto`1[[Ex3.Exchange.OpenApi.Abstraction.Dtos.WalletOrderDto, Ex3.Exchange.OpenApi.Abstraction, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Volo.Abp.Ddd.Application.Contracts, Version=9.1.1.0, Culture=neutral, PublicKeyToken=null]]"
                 }
               }
             }
@@ -2542,21 +3185,21 @@
     "/v1/order": {
       "get": {
         "tags": ["Orders"],
-        "summary": "get order detail",
+        "summary": "Get order detail",
         "parameters": [
           {
             "name": "OrderId",
             "in": "query",
-            "description": "order id",
+            "description": "Order id",
             "schema": {
               "type": "string",
+              "description": "Order id",
               "format": "string"
             }
           },
           {
             "name": "ClientOrderId",
             "in": "query",
-            "description": "Client order id. Format: \"${HIN}_${nonce}\".\r\nExample: \"10001_123\"",
             "schema": {
               "type": "string"
             }
@@ -2564,7 +3207,6 @@
           {
             "name": "TxHash",
             "in": "query",
-            "description": "tx hash",
             "schema": {
               "type": "string"
             }
@@ -2576,17 +3218,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Ex3.Exchange.OpenApi.AppServices.WalletOrderDto, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[Ex3.Exchange.OpenApi.Abstraction.Dtos.WalletOrderDto, Ex3.Exchange.OpenApi.Abstraction, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Ex3.Exchange.OpenApi.AppServices.WalletOrderDto, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[Ex3.Exchange.OpenApi.Abstraction.Dtos.WalletOrderDto, Ex3.Exchange.OpenApi.Abstraction, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Ex3.Exchange.OpenApi.AppServices.WalletOrderDto, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[Ex3.Exchange.OpenApi.Abstraction.Dtos.WalletOrderDto, Ex3.Exchange.OpenApi.Abstraction, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
                 }
               }
             }
@@ -2717,7 +3359,7 @@
     "/v1/tx/submit-spot-order": {
       "post": {
         "tags": ["Tx"],
-        "summary": "Submit a spot order",
+        "summary": "Submit spot order",
         "requestBody": {
           "content": {
             "application/json": {
@@ -2743,17 +3385,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Ex3.Exchange.IActors.EmptyResultBody, Ex3.Exchange.IActors.Models, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[Ex3.Exchange.IActors.EmptyResultBody, Ex3.Exchange.IActors.Models, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Ex3.Exchange.IActors.EmptyResultBody, Ex3.Exchange.IActors.Models, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[Ex3.Exchange.IActors.EmptyResultBody, Ex3.Exchange.IActors.Models, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Ex3.Exchange.IActors.EmptyResultBody, Ex3.Exchange.IActors.Models, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[Ex3.Exchange.IActors.EmptyResultBody, Ex3.Exchange.IActors.Models, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
                 }
               }
             }
@@ -2884,7 +3526,7 @@
     "/v1/tx/cancel-spot-order": {
       "post": {
         "tags": ["Tx"],
-        "summary": "Cancel a spot order",
+        "summary": "Cancel spot order",
         "requestBody": {
           "content": {
             "application/json": {
@@ -2910,17 +3552,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Ex3.Exchange.IActors.EmptyResultBody, Ex3.Exchange.IActors.Models, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[Ex3.Exchange.IActors.EmptyResultBody, Ex3.Exchange.IActors.Models, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Ex3.Exchange.IActors.EmptyResultBody, Ex3.Exchange.IActors.Models, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[Ex3.Exchange.IActors.EmptyResultBody, Ex3.Exchange.IActors.Models, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Ex3.Exchange.IActors.EmptyResultBody, Ex3.Exchange.IActors.Models, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[Ex3.Exchange.IActors.EmptyResultBody, Ex3.Exchange.IActors.Models, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
                 }
               }
             }
@@ -3051,12 +3693,11 @@
     "/v1/wallet/nonce": {
       "get": {
         "tags": ["Wallet"],
-        "summary": "get nonce of wallet",
+        "summary": "Get wallet nonce",
         "parameters": [
           {
             "name": "HIN",
             "in": "query",
-            "description": "HIN, hibit chain identity number",
             "schema": {
               "type": "string"
             }
@@ -3068,17 +3709,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Ex3.Exchange.OpenApi.AppServices.NonceResult, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[Ex3.Exchange.OpenApi.AppServices.NonceResult, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Ex3.Exchange.OpenApi.AppServices.NonceResult, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[Ex3.Exchange.OpenApi.AppServices.NonceResult, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Ex3.Exchange.OpenApi.AppServices.NonceResult, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[Ex3.Exchange.OpenApi.AppServices.NonceResult, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
                 }
               }
             }
@@ -3209,12 +3850,11 @@
     "/v1/wallet/balances": {
       "get": {
         "tags": ["Wallet"],
-        "summary": "get balance of wallet",
+        "summary": "Get wallet balances",
         "parameters": [
           {
             "name": "HIN",
             "in": "query",
-            "description": "HIN, hibit chain identity number",
             "schema": {
               "type": "string"
             }
@@ -3222,7 +3862,6 @@
           {
             "name": "AssetId",
             "in": "query",
-            "description": "Asset Id (optional), if not provided, return all assets",
             "schema": {
               "type": "string"
             }
@@ -3234,17 +3873,355 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[System.Collections.Generic.Dictionary`2[[Ex3.Models.AssetId, Ex3.Models, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[Ex3.Models.OpenApiNumber, Ex3.Models, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]"
+                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[System.Collections.Generic.Dictionary`2[[Ex3.Models.AssetId, Ex3.Models, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[Ex3.Models.OpenApiNumber, Ex3.Models, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[System.Collections.Generic.Dictionary`2[[Ex3.Models.AssetId, Ex3.Models, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[Ex3.Models.OpenApiNumber, Ex3.Models, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]"
+                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[System.Collections.Generic.Dictionary`2[[Ex3.Models.AssetId, Ex3.Models, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[Ex3.Models.OpenApiNumber, Ex3.Models, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[System.Collections.Generic.Dictionary`2[[Ex3.Models.AssetId, Ex3.Models, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[Ex3.Models.OpenApiNumber, Ex3.Models, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]"
+                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[System.Collections.Generic.Dictionary`2[[Ex3.Models.AssetId, Ex3.Models, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[Ex3.Models.OpenApiNumber, Ex3.Models, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              }
+            }
+          },
+          "501": {
+            "description": "Not Implemented",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/wallet/register": {
+      "post": {
+        "tags": ["Wallet"],
+        "summary": "Register wallet",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.OriginWalletRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.OriginWalletRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.OriginWalletRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[Microsoft.AspNetCore.Mvc.EmptyResult, Microsoft.AspNetCore.Mvc.Core, Version=9.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60]]"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[Microsoft.AspNetCore.Mvc.EmptyResult, Microsoft.AspNetCore.Mvc.Core, Version=9.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60]]"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[Microsoft.AspNetCore.Mvc.EmptyResult, Microsoft.AspNetCore.Mvc.Core, Version=9.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60]]"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              }
+            }
+          },
+          "501": {
+            "description": "Not Implemented",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/wallet/info": {
+      "get": {
+        "tags": ["Wallet"],
+        "summary": "Get wallet registration info",
+        "parameters": [
+          {
+            "name": "Chain",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "PublicKey",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Address",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[Ex3.Exchange.OpenApi.AppServices.WalletRegistrationInfo, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[Ex3.Exchange.OpenApi.AppServices.WalletRegistrationInfo, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[Ex3.Exchange.OpenApi.AppServices.WalletRegistrationInfo, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
                 }
               }
             }
@@ -3408,6 +4385,739 @@
         "type": "object",
         "additionalProperties": false
       },
+      "Ex3.Exchange.OpenApi.Abstraction.Dtos.DepthIndexEnum": {
+        "enum": [1, 2, 3, 4, 5, 6],
+        "type": "integer",
+        "format": "int32",
+        "x-enumNames": ["L1", "L2", "L3", "L4", "L5", "L6"],
+        "x-enum-varnames": ["L1", "L2", "L3", "L4", "L5", "L6"],
+        "x-enumDescriptions": [null, "L1", "L2", "L3", "L4", "L5", "L6"]
+      },
+      "Ex3.Exchange.OpenApi.Abstraction.Dtos.Get24HrTickerOutput": {
+        "required": ["items"],
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.Abstraction.Dtos.Market24HrTickerItem"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Ex3.Exchange.OpenApi.Abstraction.Dtos.Get24HrTickerOutputExtend": {
+        "required": ["items"],
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.Abstraction.Dtos.Market24HrTickerExtendItem"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Ex3.Exchange.OpenApi.Abstraction.Dtos.GetSwapOutput": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.Abstraction.Dtos.GetSwapOutputItem"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Ex3.Exchange.OpenApi.Abstraction.Dtos.GetSwapOutputItem": {
+        "type": "object",
+        "properties": {
+          "marketId": {
+            "type": "string"
+          },
+          "poolAmount": {
+            "type": "string"
+          },
+          "poolVolume": {
+            "type": "string"
+          },
+          "poolLiquidity": {
+            "type": "string",
+            "description": "BigInt",
+            "format": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Ex3.Exchange.OpenApi.Abstraction.Dtos.KlineItem": {
+        "required": ["a", "c", "h", "l", "o", "t", "v"],
+        "type": "object",
+        "properties": {
+          "o": {
+            "type": "string"
+          },
+          "h": {
+            "type": "string"
+          },
+          "l": {
+            "type": "string"
+          },
+          "c": {
+            "type": "string"
+          },
+          "v": {
+            "type": "string"
+          },
+          "a": {
+            "type": "string"
+          },
+          "t": {
+            "type": "int64",
+            "description": "Unix timestamp in milliseconds",
+            "format": "int64"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Ex3.Exchange.OpenApi.Abstraction.Dtos.Market24HrTickerExtendItem": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "o": {
+            "type": "string"
+          },
+          "h": {
+            "type": "string"
+          },
+          "l": {
+            "type": "string"
+          },
+          "c": {
+            "type": "string"
+          },
+          "v": {
+            "type": "string"
+          },
+          "a": {
+            "type": "string"
+          },
+          "t": {
+            "type": "int64",
+            "description": "Unix timestamp in milliseconds",
+            "format": "int64"
+          },
+          "lpusd": {
+            "type": "string"
+          },
+          "ausd": {
+            "type": "string"
+          },
+          "bas": {
+            "type": "string",
+            "nullable": true
+          },
+          "qas": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Ex3.Exchange.OpenApi.Abstraction.Dtos.Market24HrTickerItem": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "o": {
+            "type": "string"
+          },
+          "h": {
+            "type": "string"
+          },
+          "l": {
+            "type": "string"
+          },
+          "c": {
+            "type": "string"
+          },
+          "v": {
+            "type": "string"
+          },
+          "a": {
+            "type": "string"
+          },
+          "t": {
+            "type": "int64",
+            "description": "Unix timestamp in milliseconds",
+            "format": "int64"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Ex3.Exchange.OpenApi.Abstraction.Dtos.MarketInfoItem": {
+        "required": ["baseAssetId", "marketId", "marketSymbol", "quoteAssetId"],
+        "type": "object",
+        "properties": {
+          "marketId": {
+            "type": "string"
+          },
+          "marketSymbol": {
+            "type": "string"
+          },
+          "baseAssetId": {
+            "type": "string"
+          },
+          "quoteAssetId": {
+            "type": "string"
+          },
+          "depthLevels": {
+            "type": "array",
+            "items": {
+              "type": "number",
+              "format": "double"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Ex3.Exchange.OpenApi.Abstraction.Dtos.MarketTradingHistoryItem": {
+        "required": ["a", "p", "t", "takerSide", "v"],
+        "type": "object",
+        "properties": {
+          "maker": {
+            "type": "string",
+            "nullable": true
+          },
+          "taker": {
+            "type": "string"
+          },
+          "takerSide": {
+            "$ref": "#/components/schemas/Ex3.Models.OrderSide"
+          },
+          "p": {
+            "type": "string"
+          },
+          "v": {
+            "type": "string"
+          },
+          "a": {
+            "type": "string"
+          },
+          "t": {
+            "type": "int64",
+            "description": "Unix timestamp in milliseconds",
+            "format": "int64"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Ex3.Exchange.OpenApi.Abstraction.Dtos.WalletOrderDto": {
+        "required": ["cat", "fa", "fp", "fv", "hin", "id", "mid", "p", "s", "st", "t", "ta", "tv"],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Order id",
+            "format": "string"
+          },
+          "mid": {
+            "type": "string"
+          },
+          "hin": {
+            "type": "string"
+          },
+          "cat": {
+            "$ref": "#/components/schemas/Ex3.Models.OrderCategory"
+          },
+          "s": {
+            "$ref": "#/components/schemas/Ex3.Models.OrderSide"
+          },
+          "fv": {
+            "type": "string"
+          },
+          "fa": {
+            "type": "string"
+          },
+          "tv": {
+            "type": "string"
+          },
+          "ta": {
+            "type": "string"
+          },
+          "fp": {
+            "type": "string"
+          },
+          "p": {
+            "type": "string"
+          },
+          "st": {
+            "$ref": "#/components/schemas/Ex3.Repository.History.Entities.OrderStatus"
+          },
+          "t": {
+            "type": "int64",
+            "description": "Unix timestamp in milliseconds",
+            "format": "int64"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Ex3.Exchange.OpenApi.Abstraction.Dtos.WalletOrderTradeListItem": {
+        "required": ["fa", "fp", "fv", "t", "tid", "ts"],
+        "type": "object",
+        "properties": {
+          "tid": {
+            "type": "string",
+            "nullable": true
+          },
+          "fp": {
+            "type": "string"
+          },
+          "fv": {
+            "type": "string"
+          },
+          "fa": {
+            "type": "string"
+          },
+          "ts": {
+            "$ref": "#/components/schemas/Ex3.Models.OrderSide"
+          },
+          "t": {
+            "type": "int64",
+            "description": "Unix timestamp in milliseconds",
+            "format": "int64"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[Collections.Pooled.PooledList`1[[Ex3.Exchange.OpenApi.Abstraction.Dtos.WalletOrderTradeListItem, Ex3.Exchange.OpenApi.Abstraction, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Collections.Pooled, Version=1.0.82.0, Culture=neutral, PublicKeyToken=null]]": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.Abstraction.Dtos.WalletOrderTradeListItem"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[Ex3.Cache.DepthManager.SpotMarketDepthDataDto, Ex3.Cache.DepthManager, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/Ex3.Cache.DepthManager.SpotMarketDepthDataDto"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[Ex3.Exchange.IActors.EmptyResultBody, Ex3.Exchange.IActors.Models, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/Ex3.Exchange.IActors.EmptyResultBody"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[Ex3.Exchange.OpenApi.Abstraction.Dtos.Get24HrTickerOutput, Ex3.Exchange.OpenApi.Abstraction, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.Abstraction.Dtos.Get24HrTickerOutput"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[Ex3.Exchange.OpenApi.Abstraction.Dtos.Get24HrTickerOutputExtend, Ex3.Exchange.OpenApi.Abstraction, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.Abstraction.Dtos.Get24HrTickerOutputExtend"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[Ex3.Exchange.OpenApi.Abstraction.Dtos.GetSwapOutput, Ex3.Exchange.OpenApi.Abstraction, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.Abstraction.Dtos.GetSwapOutput"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[Ex3.Exchange.OpenApi.Abstraction.Dtos.MarketInfoItem, Ex3.Exchange.OpenApi.Abstraction, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.Abstraction.Dtos.MarketInfoItem"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[Ex3.Exchange.OpenApi.Abstraction.Dtos.WalletOrderDto, Ex3.Exchange.OpenApi.Abstraction, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.Abstraction.Dtos.WalletOrderDto"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[Ex3.Exchange.OpenApi.AppServices.AssetWithdrawFeeInfoDto, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.AssetWithdrawFeeInfoDto"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[Ex3.Exchange.OpenApi.AppServices.NonceResult, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.NonceResult"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[Ex3.Exchange.OpenApi.AppServices.ProxyKeyResult, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.ProxyKeyResult"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[Ex3.Exchange.OpenApi.AppServices.SystemInfo, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.SystemInfo"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[Ex3.Exchange.OpenApi.AppServices.WalletRegistrationInfo, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.WalletRegistrationInfo"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[Microsoft.AspNetCore.Mvc.EmptyResult, Microsoft.AspNetCore.Mvc.Core, Version=9.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60]]": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/Microsoft.AspNetCore.Mvc.EmptyResult"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[System.Collections.Generic.Dictionary`2[[Ex3.Models.AssetId, Ex3.Models, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[Ex3.Models.OpenApiNumber, Ex3.Models, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "data": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[System.Collections.Generic.IEnumerable`1[[Ex3.Exchange.OpenApi.AppServices.ChainInfoDto, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.ChainInfoDto"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[System.Collections.Generic.List`1[[Ex3.Exchange.OpenApi.AppServices.RootAssetInfoDto, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.RootAssetInfoDto"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[Volo.Abp.Application.Dtos.PagedResultDto`1[[Ex3.Exchange.OpenApi.Abstraction.Dtos.KlineItem, Ex3.Exchange.OpenApi.Abstraction, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Volo.Abp.Ddd.Application.Contracts, Version=9.1.1.0, Culture=neutral, PublicKeyToken=null]]": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/Volo.Abp.Application.Dtos.PagedResultDto`1[[Ex3.Exchange.OpenApi.Abstraction.Dtos.KlineItem, Ex3.Exchange.OpenApi.Abstraction, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[Volo.Abp.Application.Dtos.PagedResultDto`1[[Ex3.Exchange.OpenApi.Abstraction.Dtos.MarketInfoItem, Ex3.Exchange.OpenApi.Abstraction, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Volo.Abp.Ddd.Application.Contracts, Version=9.1.1.0, Culture=neutral, PublicKeyToken=null]]": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/Volo.Abp.Application.Dtos.PagedResultDto`1[[Ex3.Exchange.OpenApi.Abstraction.Dtos.MarketInfoItem, Ex3.Exchange.OpenApi.Abstraction, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[Volo.Abp.Application.Dtos.PagedResultDto`1[[Ex3.Exchange.OpenApi.Abstraction.Dtos.MarketTradingHistoryItem, Ex3.Exchange.OpenApi.Abstraction, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Volo.Abp.Ddd.Application.Contracts, Version=9.1.1.0, Culture=neutral, PublicKeyToken=null]]": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/Volo.Abp.Application.Dtos.PagedResultDto`1[[Ex3.Exchange.OpenApi.Abstraction.Dtos.MarketTradingHistoryItem, Ex3.Exchange.OpenApi.Abstraction, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[Volo.Abp.Application.Dtos.PagedResultDto`1[[Ex3.Exchange.OpenApi.Abstraction.Dtos.WalletOrderDto, Ex3.Exchange.OpenApi.Abstraction, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Volo.Abp.Ddd.Application.Contracts, Version=9.1.1.0, Culture=neutral, PublicKeyToken=null]]": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/Volo.Abp.Application.Dtos.PagedResultDto`1[[Ex3.Exchange.OpenApi.Abstraction.Dtos.WalletOrderDto, Ex3.Exchange.OpenApi.Abstraction, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[Volo.Abp.Application.Dtos.PagedResultDto`1[[Ex3.Exchange.OpenApi.AppServices.RootAssetInfoDto, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Volo.Abp.Ddd.Application.Contracts, Version=9.1.1.0, Culture=neutral, PublicKeyToken=null]]": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/Volo.Abp.Application.Dtos.PagedResultDto`1[[Ex3.Exchange.OpenApi.AppServices.RootAssetInfoDto, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Ex3.Exchange.OpenApi.AppServices.AssetWithdrawFeeInfoDto": {
+        "required": ["feeRate", "minFee", "rateDecimal", "rootAssetId", "targetAssetId"],
+        "type": "object",
+        "properties": {
+          "rootAssetId": {
+            "type": "string",
+            "description": "Root ID of the asset"
+          },
+          "targetAssetId": {
+            "type": "string",
+            "description": "ID of the target asset"
+          },
+          "feeRate": {
+            "type": "string",
+            "description": "The rate used to calculate withdrawal fees",
+            "format": "string"
+          },
+          "rateDecimal": {
+            "type": "string",
+            "description": "The decimal precision for the fee rate"
+          },
+          "minFee": {
+            "type": "string",
+            "description": "The minimum fee amount that will be charged for withdrawals",
+            "format": "string"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Asset withdrawal fee information"
+      },
       "Ex3.Exchange.OpenApi.AppServices.ChainInfoDto": {
         "required": ["chainId", "depositAddress", "displayName"],
         "type": "object",
@@ -3430,280 +5140,6 @@
         "additionalProperties": false,
         "description": "chain information which is supported by the system"
       },
-      "Ex3.Exchange.OpenApi.AppServices.DepthIndexEnum": {
-        "enum": [1, 2, 3, 4, 5, 6],
-        "type": "integer",
-        "format": "int32",
-        "x-enumNames": ["L1", "L2", "L3", "L4", "L5", "L6"],
-        "x-enum-varnames": ["L1", "L2", "L3", "L4", "L5", "L6"],
-        "x-enumDescriptions": [null, "L1", "L2", "L3", "L4", "L5", "L6"]
-      },
-      "Ex3.Exchange.OpenApi.AppServices.Get24HrTickerOutput": {
-        "required": ["items"],
-        "type": "object",
-        "properties": {
-          "items": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.Market24HrTickerItem"
-            },
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "Ex3.Exchange.OpenApi.AppServices.Get24HrTickerOutputExtend": {
-        "required": ["items"],
-        "type": "object",
-        "properties": {
-          "items": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.Market24HrTickerExtendItem"
-            },
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "Ex3.Exchange.OpenApi.AppServices.GetSwapOutput": {
-        "type": "object",
-        "properties": {
-          "items": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.GetSwapOutputItem"
-            },
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "Ex3.Exchange.OpenApi.AppServices.GetSwapOutputItem": {
-        "type": "object",
-        "properties": {
-          "marketId": {
-            "type": "string",
-            "description": "The market id for which the liquidity information is provided."
-          },
-          "poolAmount": {
-            "type": "string",
-            "description": "The total amount of liquidity in the pool."
-          },
-          "poolVolume": {
-            "type": "string",
-            "description": "The total volume of liquidity in the pool."
-          },
-          "poolLiquidity": {
-            "type": "string",
-            "description": "The liquidity information of the pool.",
-            "format": "string"
-          }
-        },
-        "additionalProperties": false,
-        "description": "The input for getting liquidity information."
-      },
-      "Ex3.Exchange.OpenApi.AppServices.KlineItem": {
-        "required": ["a", "c", "h", "l", "o", "t", "v"],
-        "type": "object",
-        "properties": {
-          "o": {
-            "type": "string",
-            "description": "The open price of the trading pair in the last 24 hours."
-          },
-          "h": {
-            "type": "string",
-            "description": "The highest price of the trading pair in the last 24 hours."
-          },
-          "l": {
-            "type": "string",
-            "description": "The lowest price of the trading pair in the last 24 hours."
-          },
-          "c": {
-            "type": "string",
-            "description": "The close price of the trading pair in the last 24 hours."
-          },
-          "v": {
-            "type": "string",
-            "description": "The volume of the trading pair in the last 24 hours."
-          },
-          "a": {
-            "type": "string",
-            "description": "The amount of the trading pair in the last 24 hours."
-          },
-          "t": {
-            "type": "int64",
-            "description": "timestamp of kline",
-            "format": "int64"
-          }
-        },
-        "additionalProperties": false
-      },
-      "Ex3.Exchange.OpenApi.AppServices.Market24HrTickerExtendItem": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "description": "the market id."
-          },
-          "o": {
-            "type": "string",
-            "description": "The open price of the trading pair in the last 24 hours."
-          },
-          "h": {
-            "type": "string",
-            "description": "The highest price of the trading pair in the last 24 hours."
-          },
-          "l": {
-            "type": "string",
-            "description": "The lowest price of the trading pair in the last 24 hours."
-          },
-          "c": {
-            "type": "string",
-            "description": "The close price of the trading pair in the last 24 hours."
-          },
-          "v": {
-            "type": "string",
-            "description": "The volume of the trading pair in the last 24 hours."
-          },
-          "a": {
-            "type": "string",
-            "description": "The amount of the trading pair in the last 24 hours."
-          },
-          "t": {
-            "type": "int64",
-            "description": "time of the ticker update.",
-            "format": "int64"
-          },
-          "lpusd": {
-            "type": "string",
-            "description": "The last price converted to USD."
-          },
-          "ausd": {
-            "type": "string",
-            "description": "The 24-hour trading volume in USD."
-          },
-          "bas": {
-            "type": "string",
-            "description": "The base asset symbol.",
-            "nullable": true
-          },
-          "qas": {
-            "type": "string",
-            "description": "The quote asset symbol.",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "Ex3.Exchange.OpenApi.AppServices.Market24HrTickerItem": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "description": "the market id."
-          },
-          "o": {
-            "type": "string",
-            "description": "The open price of the trading pair in the last 24 hours."
-          },
-          "h": {
-            "type": "string",
-            "description": "The highest price of the trading pair in the last 24 hours."
-          },
-          "l": {
-            "type": "string",
-            "description": "The lowest price of the trading pair in the last 24 hours."
-          },
-          "c": {
-            "type": "string",
-            "description": "The close price of the trading pair in the last 24 hours."
-          },
-          "v": {
-            "type": "string",
-            "description": "The volume of the trading pair in the last 24 hours."
-          },
-          "a": {
-            "type": "string",
-            "description": "The amount of the trading pair in the last 24 hours."
-          },
-          "t": {
-            "type": "int64",
-            "description": "time of the ticker update.",
-            "format": "int64"
-          }
-        },
-        "additionalProperties": false
-      },
-      "Ex3.Exchange.OpenApi.AppServices.MarketInfoItem": {
-        "required": ["baseAssetId", "marketId", "marketSymbol", "quoteAssetId"],
-        "type": "object",
-        "properties": {
-          "marketId": {
-            "type": "string",
-            "description": "The market id."
-          },
-          "marketSymbol": {
-            "type": "string",
-            "description": "Market symbol"
-          },
-          "baseAssetId": {
-            "type": "string",
-            "description": "The base asset id of the market."
-          },
-          "quoteAssetId": {
-            "type": "string",
-            "description": "The quote asset id of the market."
-          },
-          "depthLevels": {
-            "type": "array",
-            "items": {
-              "type": "number",
-              "format": "double"
-            },
-            "description": "values of the depth levels",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "Ex3.Exchange.OpenApi.AppServices.MarketTradingHistoryItem": {
-        "required": ["a", "p", "t", "takerSide", "v"],
-        "type": "object",
-        "properties": {
-          "maker": {
-            "type": "string",
-            "description": "The display information of the maker wallet. if null, means the maker is swap pool.",
-            "nullable": true
-          },
-          "taker": {
-            "type": "string",
-            "description": "The display information of the taker wallet."
-          },
-          "takerSide": {
-            "$ref": "#/components/schemas/Ex3.Models.OrderSide"
-          },
-          "p": {
-            "type": "string",
-            "description": "The price at which the trade occurred."
-          },
-          "v": {
-            "type": "string",
-            "description": "The volume of the trade."
-          },
-          "a": {
-            "type": "string",
-            "description": "The total amount of the trade."
-          },
-          "t": {
-            "type": "int64",
-            "description": "The time at which the trade occurred in Unix time milliseconds.",
-            "format": "int64"
-          }
-        },
-        "additionalProperties": false,
-        "description": "Represents the result of a trading history entry."
-      },
       "Ex3.Exchange.OpenApi.AppServices.NonceResult": {
         "type": "object",
         "properties": {
@@ -3713,320 +5149,34 @@
         },
         "additionalProperties": false
       },
-      "Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Collections.Pooled.PooledList`1[[Ex3.Exchange.OpenApi.AppServices.WalletOrderTradeListItem, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Collections.Pooled, Version=1.0.82.0, Culture=neutral, PublicKeyToken=null]]": {
+      "Ex3.Exchange.OpenApi.AppServices.OriginWalletRequest": {
         "type": "object",
         "properties": {
-          "code": {
-            "type": "integer",
-            "format": "int32"
+          "chain": {
+            "type": "string"
+          },
+          "chainNetwork": {
+            "type": "string"
           },
           "message": {
             "type": "string",
             "nullable": true
           },
-          "data": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.WalletOrderTradeListItem"
-            },
+          "signature": {
+            "type": "string",
             "nullable": true
           }
         },
         "additionalProperties": false
       },
-      "Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Ex3.Cache.DepthManager.SpotMarketDepthDataDto, Ex3.Cache.DepthManager, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]": {
+      "Ex3.Exchange.OpenApi.AppServices.ProxyKeyResult": {
         "type": "object",
         "properties": {
-          "code": {
-            "type": "integer",
-            "format": "int32"
+          "ex3KeyPair": {
+            "$ref": "#/components/schemas/Ex3.Models.Ex3KeyPair"
           },
-          "message": {
-            "type": "string",
-            "nullable": true
-          },
-          "data": {
-            "$ref": "#/components/schemas/Ex3.Cache.DepthManager.SpotMarketDepthDataDto"
-          }
-        },
-        "additionalProperties": false
-      },
-      "Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Ex3.Exchange.IActors.EmptyResultBody, Ex3.Exchange.IActors.Models, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]": {
-        "type": "object",
-        "properties": {
-          "code": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "message": {
-            "type": "string",
-            "nullable": true
-          },
-          "data": {
-            "$ref": "#/components/schemas/Ex3.Exchange.IActors.EmptyResultBody"
-          }
-        },
-        "additionalProperties": false
-      },
-      "Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Ex3.Exchange.OpenApi.AppServices.Get24HrTickerOutput, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]": {
-        "type": "object",
-        "properties": {
-          "code": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "message": {
-            "type": "string",
-            "nullable": true
-          },
-          "data": {
-            "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.Get24HrTickerOutput"
-          }
-        },
-        "additionalProperties": false
-      },
-      "Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Ex3.Exchange.OpenApi.AppServices.Get24HrTickerOutputExtend, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]": {
-        "type": "object",
-        "properties": {
-          "code": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "message": {
-            "type": "string",
-            "nullable": true
-          },
-          "data": {
-            "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.Get24HrTickerOutputExtend"
-          }
-        },
-        "additionalProperties": false
-      },
-      "Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Ex3.Exchange.OpenApi.AppServices.GetSwapOutput, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]": {
-        "type": "object",
-        "properties": {
-          "code": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "message": {
-            "type": "string",
-            "nullable": true
-          },
-          "data": {
-            "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.GetSwapOutput"
-          }
-        },
-        "additionalProperties": false
-      },
-      "Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Ex3.Exchange.OpenApi.AppServices.MarketInfoItem, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]": {
-        "type": "object",
-        "properties": {
-          "code": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "message": {
-            "type": "string",
-            "nullable": true
-          },
-          "data": {
-            "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.MarketInfoItem"
-          }
-        },
-        "additionalProperties": false
-      },
-      "Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Ex3.Exchange.OpenApi.AppServices.NonceResult, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]": {
-        "type": "object",
-        "properties": {
-          "code": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "message": {
-            "type": "string",
-            "nullable": true
-          },
-          "data": {
-            "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.NonceResult"
-          }
-        },
-        "additionalProperties": false
-      },
-      "Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Ex3.Exchange.OpenApi.AppServices.RootAssetInfoDto, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]": {
-        "type": "object",
-        "properties": {
-          "code": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "message": {
-            "type": "string",
-            "nullable": true
-          },
-          "data": {
-            "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.RootAssetInfoDto"
-          }
-        },
-        "additionalProperties": false
-      },
-      "Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Ex3.Exchange.OpenApi.AppServices.SystemInfo, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]": {
-        "type": "object",
-        "properties": {
-          "code": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "message": {
-            "type": "string",
-            "nullable": true
-          },
-          "data": {
-            "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.SystemInfo"
-          }
-        },
-        "additionalProperties": false
-      },
-      "Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Ex3.Exchange.OpenApi.AppServices.WalletOrderDto, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]": {
-        "type": "object",
-        "properties": {
-          "code": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "message": {
-            "type": "string",
-            "nullable": true
-          },
-          "data": {
-            "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.WalletOrderDto"
-          }
-        },
-        "additionalProperties": false
-      },
-      "Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[System.Collections.Generic.Dictionary`2[[Ex3.Models.AssetId, Ex3.Models, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[Ex3.Models.OpenApiNumber, Ex3.Models, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]": {
-        "type": "object",
-        "properties": {
-          "code": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "message": {
-            "type": "string",
-            "nullable": true
-          },
-          "data": {
-            "type": "object",
-            "additionalProperties": {
-              "type": "string"
-            },
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[System.Collections.Generic.IEnumerable`1[[Ex3.Exchange.OpenApi.AppServices.ChainInfoDto, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]": {
-        "type": "object",
-        "properties": {
-          "code": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "message": {
-            "type": "string",
-            "nullable": true
-          },
-          "data": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.ChainInfoDto"
-            },
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Volo.Abp.Application.Dtos.PagedResultDto`1[[Ex3.Exchange.OpenApi.AppServices.KlineItem, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Volo.Abp.Ddd.Application.Contracts, Version=9.1.1.0, Culture=neutral, PublicKeyToken=null]]": {
-        "type": "object",
-        "properties": {
-          "code": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "message": {
-            "type": "string",
-            "nullable": true
-          },
-          "data": {
-            "$ref": "#/components/schemas/Volo.Abp.Application.Dtos.PagedResultDto`1[[Ex3.Exchange.OpenApi.AppServices.KlineItem, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
-          }
-        },
-        "additionalProperties": false
-      },
-      "Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Volo.Abp.Application.Dtos.PagedResultDto`1[[Ex3.Exchange.OpenApi.AppServices.MarketInfoItem, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Volo.Abp.Ddd.Application.Contracts, Version=9.1.1.0, Culture=neutral, PublicKeyToken=null]]": {
-        "type": "object",
-        "properties": {
-          "code": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "message": {
-            "type": "string",
-            "nullable": true
-          },
-          "data": {
-            "$ref": "#/components/schemas/Volo.Abp.Application.Dtos.PagedResultDto`1[[Ex3.Exchange.OpenApi.AppServices.MarketInfoItem, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
-          }
-        },
-        "additionalProperties": false
-      },
-      "Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Volo.Abp.Application.Dtos.PagedResultDto`1[[Ex3.Exchange.OpenApi.AppServices.MarketTradingHistoryItem, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Volo.Abp.Ddd.Application.Contracts, Version=9.1.1.0, Culture=neutral, PublicKeyToken=null]]": {
-        "type": "object",
-        "properties": {
-          "code": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "message": {
-            "type": "string",
-            "nullable": true
-          },
-          "data": {
-            "$ref": "#/components/schemas/Volo.Abp.Application.Dtos.PagedResultDto`1[[Ex3.Exchange.OpenApi.AppServices.MarketTradingHistoryItem, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
-          }
-        },
-        "additionalProperties": false
-      },
-      "Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Volo.Abp.Application.Dtos.PagedResultDto`1[[Ex3.Exchange.OpenApi.AppServices.RootAssetInfoDto, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Volo.Abp.Ddd.Application.Contracts, Version=9.1.1.0, Culture=neutral, PublicKeyToken=null]]": {
-        "type": "object",
-        "properties": {
-          "code": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "message": {
-            "type": "string",
-            "nullable": true
-          },
-          "data": {
-            "$ref": "#/components/schemas/Volo.Abp.Application.Dtos.PagedResultDto`1[[Ex3.Exchange.OpenApi.AppServices.RootAssetInfoDto, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
-          }
-        },
-        "additionalProperties": false
-      },
-      "Ex3.Exchange.OpenApi.AppServices.OpenApiResult`1[[Volo.Abp.Application.Dtos.PagedResultDto`1[[Ex3.Exchange.OpenApi.AppServices.WalletOrderDto, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Volo.Abp.Ddd.Application.Contracts, Version=9.1.1.0, Culture=neutral, PublicKeyToken=null]]": {
-        "type": "object",
-        "properties": {
-          "code": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "message": {
-            "type": "string",
-            "nullable": true
-          },
-          "data": {
-            "$ref": "#/components/schemas/Volo.Abp.Application.Dtos.PagedResultDto`1[[Ex3.Exchange.OpenApi.AppServices.WalletOrderDto, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+          "userId": {
+            "type": "string"
           }
         },
         "additionalProperties": false
@@ -4126,92 +5276,27 @@
         "additionalProperties": false,
         "description": "system information"
       },
-      "Ex3.Exchange.OpenApi.AppServices.WalletOrderDto": {
-        "required": ["cat", "fa", "fp", "fv", "hin", "id", "mid", "p", "s", "st", "t", "ta", "tv"],
+      "Ex3.Exchange.OpenApi.AppServices.WalletRegistrationInfo": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "string",
-            "description": "order id",
-            "format": "string"
-          },
-          "mid": {
-            "type": "string",
-            "description": "market id"
-          },
           "hin": {
             "type": "string",
-            "description": "The HIN (Hibit chain identity number) of the wallet"
-          },
-          "cat": {
-            "$ref": "#/components/schemas/Ex3.Models.OrderCategory"
-          },
-          "s": {
-            "$ref": "#/components/schemas/Ex3.Models.OrderSide"
-          },
-          "fv": {
-            "type": "string",
-            "description": "volume of the order filled"
-          },
-          "fa": {
-            "type": "string",
-            "description": "amount of the order filled"
-          },
-          "tv": {
-            "type": "string",
-            "description": "total volume of the order"
-          },
-          "ta": {
-            "type": "string",
-            "description": "total amount of the order"
-          },
-          "fp": {
-            "type": "string",
-            "description": "price of the order filled"
-          },
-          "p": {
-            "type": "string",
-            "description": "price of the order placed"
-          },
-          "st": {
-            "$ref": "#/components/schemas/Ex3.Repository.History.Entities.OrderStatus"
-          },
-          "t": {
-            "type": "int64",
-            "description": "submitted time of the order",
-            "format": "int64"
+            "nullable": true
           }
         },
         "additionalProperties": false
       },
-      "Ex3.Exchange.OpenApi.AppServices.WalletOrderTradeListItem": {
-        "required": ["fa", "fp", "fv", "t", "tid", "ts"],
+      "Ex3.Models.Ex3KeyPair": {
         "type": "object",
         "properties": {
-          "tid": {
-            "type": "string",
-            "description": "trade id",
-            "nullable": true
+          "privateKeyHex": {
+            "type": "string"
           },
-          "fp": {
-            "type": "string",
-            "description": "filled price"
+          "publicKeyHex": {
+            "type": "string"
           },
-          "fv": {
-            "type": "string",
-            "description": "filled volume"
-          },
-          "fa": {
-            "type": "string",
-            "description": "filled amount"
-          },
-          "ts": {
-            "$ref": "#/components/schemas/Ex3.Models.OrderSide"
-          },
-          "t": {
-            "type": "int64",
-            "description": "time of trade",
-            "format": "int64"
+          "schema": {
+            "$ref": "#/components/schemas/Ex3.Models.SignaturesSchema"
           }
         },
         "additionalProperties": false
@@ -4273,6 +5358,14 @@
         "x-enum-varnames": ["Ask", "Bid"],
         "x-enumDescriptions": [null, "Ask", "Bid"]
       },
+      "Ex3.Models.SignaturesSchema": {
+        "enum": [1],
+        "type": "integer",
+        "format": "int32",
+        "x-enumNames": ["Secp256k1"],
+        "x-enum-varnames": ["Secp256k1"],
+        "x-enumDescriptions": [null, "Secp256k1"]
+      },
       "Ex3.Repository.History.Entities.OrderStatus": {
         "enum": [0, 1, 2],
         "type": "integer",
@@ -4305,13 +5398,17 @@
         },
         "additionalProperties": false
       },
-      "Volo.Abp.Application.Dtos.PagedResultDto`1[[Ex3.Exchange.OpenApi.AppServices.KlineItem, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]": {
+      "Microsoft.AspNetCore.Mvc.EmptyResult": {
+        "type": "object",
+        "additionalProperties": false
+      },
+      "Volo.Abp.Application.Dtos.PagedResultDto`1[[Ex3.Exchange.OpenApi.Abstraction.Dtos.KlineItem, Ex3.Exchange.OpenApi.Abstraction, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]": {
         "type": "object",
         "properties": {
           "items": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.KlineItem"
+              "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.Abstraction.Dtos.KlineItem"
             },
             "nullable": true
           },
@@ -4322,13 +5419,13 @@
         },
         "additionalProperties": false
       },
-      "Volo.Abp.Application.Dtos.PagedResultDto`1[[Ex3.Exchange.OpenApi.AppServices.MarketInfoItem, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]": {
+      "Volo.Abp.Application.Dtos.PagedResultDto`1[[Ex3.Exchange.OpenApi.Abstraction.Dtos.MarketInfoItem, Ex3.Exchange.OpenApi.Abstraction, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]": {
         "type": "object",
         "properties": {
           "items": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.MarketInfoItem"
+              "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.Abstraction.Dtos.MarketInfoItem"
             },
             "nullable": true
           },
@@ -4339,13 +5436,30 @@
         },
         "additionalProperties": false
       },
-      "Volo.Abp.Application.Dtos.PagedResultDto`1[[Ex3.Exchange.OpenApi.AppServices.MarketTradingHistoryItem, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]": {
+      "Volo.Abp.Application.Dtos.PagedResultDto`1[[Ex3.Exchange.OpenApi.Abstraction.Dtos.MarketTradingHistoryItem, Ex3.Exchange.OpenApi.Abstraction, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]": {
         "type": "object",
         "properties": {
           "items": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.MarketTradingHistoryItem"
+              "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.Abstraction.Dtos.MarketTradingHistoryItem"
+            },
+            "nullable": true
+          },
+          "totalCount": {
+            "type": "integer",
+            "format": "int64"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Volo.Abp.Application.Dtos.PagedResultDto`1[[Ex3.Exchange.OpenApi.Abstraction.Dtos.WalletOrderDto, Ex3.Exchange.OpenApi.Abstraction, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.Abstraction.Dtos.WalletOrderDto"
             },
             "nullable": true
           },
@@ -4363,23 +5477,6 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.RootAssetInfoDto"
-            },
-            "nullable": true
-          },
-          "totalCount": {
-            "type": "integer",
-            "format": "int64"
-          }
-        },
-        "additionalProperties": false
-      },
-      "Volo.Abp.Application.Dtos.PagedResultDto`1[[Ex3.Exchange.OpenApi.AppServices.WalletOrderDto, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]": {
-        "type": "object",
-        "properties": {
-          "items": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.WalletOrderDto"
             },
             "nullable": true
           },

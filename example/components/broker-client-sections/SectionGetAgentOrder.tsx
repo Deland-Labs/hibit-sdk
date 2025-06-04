@@ -1,20 +1,19 @@
-import { AssetInfo, GetAssetInput } from '../../../src';
-import { HibitClient } from '../../../src/hibit-client';
+import { AgentOrderData } from '../../../src';
 import Section from '../Section';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { object, string } from 'yup';
 import FormField from '../FormField';
+import { BrokerClient } from '../../../src/broker-client';
 
 const schema = object({
-  assetId: string(),
-  tokenAddress: string()
+  agentOrderId: string().required()
 });
 
-export default function SectionGetAsset({ client }: { client: HibitClient }) {
+export default function SectionGetAgentOrder({ client }: { client: BrokerClient }) {
   const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState<AssetInfo[] | null>(null);
+  const [result, setResult] = useState<AgentOrderData | null>(null);
   const [error, setError] = useState<string>('');
 
   const {
@@ -30,11 +29,8 @@ export default function SectionGetAsset({ client }: { client: HibitClient }) {
     setResult(null);
     setError('');
     try {
-      const req: GetAssetInput = {
-        assetId: input.assetId,
-        tokenAddress: input.tokenAddress
-      };
-      setResult(await client.getAsset(req));
+      const req = input.agentOrderId;
+      setResult(await client.getAgentOrder(req));
     } catch (e: any) {
       setError(e.message ?? JSON.stringify(e));
     } finally {
@@ -44,14 +40,11 @@ export default function SectionGetAsset({ client }: { client: HibitClient }) {
 
   return (
     <Section
-      title="GetAsset"
+      title="GetAgentOrder"
       form={
         <div className="flex flex-col gap-2">
-          <FormField label="AssetId" error={errors.assetId}>
-            <input type="number" className="input" {...register('assetId')} />
-          </FormField>
-          <FormField label="TokenAddress" error={errors.tokenAddress}>
-            <input type="text" className="input" {...register('tokenAddress')} />
+          <FormField label="Agent Order ID" error={errors.agentOrderId} required>
+            <input type="text" className="input" {...register('agentOrderId')} />
           </FormField>
           <button className="btn" onClick={submit} disabled={loading}>
             {loading ? 'Loading...' : 'Submit'}

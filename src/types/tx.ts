@@ -1,14 +1,56 @@
 import { TransactionType, Version } from './enums';
 import { hmac } from '@noble/hashes/hmac';
 import { sha256 } from '@noble/hashes/sha256';
-//@ts-ignore
+//@ts-expect-error no types for borc
 import cbor from 'borc';
 import * as secp from '@noble/secp256k1';
-import { HexString } from './index';
+import { Chain, ChainNetwork, HexString } from './index';
 import { Buffer } from 'buffer';
 import { PostV1TxSubmitSpotOrderData } from '../openapi';
 import { Options } from '@hey-api/client-fetch';
 import BigNumber from 'bignumber.js';
+import { Keypair } from '../Keypair.ts';
+
+/**
+ * Represents a transaction with the original signature.
+ * Used for wallet operations that require signature verification.
+ */
+export class OriginWalletTransaction {
+  /**
+   * The blockchain type of the wallet.
+   */
+  chain: Chain;
+
+  /**
+   * The network of the blockchain.
+   */
+  chainNetwork: ChainNetwork;
+
+  /**
+   * The message content of the request, typically a plain text.
+   */
+  message: string;
+
+  /**
+   * The cryptographic signature.
+   */
+  signature: string;
+
+  /**
+   * Creates a new OriginWalletTransaction instance.
+   *
+   * @param chain - The blockchain type of the wallet
+   * @param chainNetwork - The network of the blockchain
+   * @param message - The message content of the request
+   * @param signature - The cryptographic signature (optional)
+   */
+  constructor(chain: Chain, chainNetwork: ChainNetwork, message: string, signature?: string) {
+    this.chain = chain;
+    this.chainNetwork = chainNetwork;
+    this.message = message;
+    this.signature = signature || '';
+  }
+}
 
 // Set the hmacSha256Sync function
 secp.etc.hmacSha256Sync = (key, ...msgs) => hmac(sha256, key, secp.etc.concatBytes(...msgs));
@@ -111,10 +153,9 @@ export class Transaction {
    * ```
    */
   sign(privateKey: HexString): Transaction {
-    const signature = secp.sign(this.hash(), Buffer.from(privateKey, 'hex'));
-
-    // concat recId to signature
-    this.signature = Buffer.concat([signature.toCompactRawBytes(), Buffer.from([signature.recovery])]);
+    // Create a keypair from the private key and use it to sign the hash
+    const keypair = new Keypair(privateKey);
+    this.signature = keypair.sign(this.hash());
     return this;
   }
 

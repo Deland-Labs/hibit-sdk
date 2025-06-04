@@ -11,9 +11,21 @@ import type {
   GetV1AssetData,
   GetV1AssetResponse,
   GetV1AssetError,
+  GetV1AssetWithdrawalFeeData,
+  GetV1AssetWithdrawalFeeResponse,
+  GetV1AssetWithdrawalFeeError,
   GetV1ChainsData,
   GetV1ChainsResponse,
   GetV1ChainsError,
+  GetV1ChainBalancesData,
+  GetV1ChainBalancesResponse,
+  GetV1ChainBalancesError,
+  PostV1ProxyKeyData,
+  PostV1ProxyKeyResponse,
+  PostV1ProxyKeyError,
+  PostV1ProxyKeyResetData,
+  PostV1ProxyKeyResetResponse,
+  PostV1ProxyKeyResetError,
   GetV1MarketDepthData,
   GetV1MarketDepthResponse,
   GetV1MarketDepthError,
@@ -58,7 +70,13 @@ import type {
   GetV1WalletNonceError,
   GetV1WalletBalancesData,
   GetV1WalletBalancesResponse,
-  GetV1WalletBalancesError
+  GetV1WalletBalancesError,
+  PostV1WalletRegisterData,
+  PostV1WalletRegisterResponse,
+  PostV1WalletRegisterError,
+  GetV1WalletInfoData,
+  GetV1WalletInfoResponse,
+  GetV1WalletInfoError
 } from './types.gen';
 import { client as _heyApiClient } from './client.gen';
 
@@ -80,7 +98,7 @@ export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends 
 };
 
 /**
- * get system timestamp
+ * Get system timestamp
  */
 export const getV1Timestamp = <ThrowOnError extends boolean = false>(
   options?: Options<GetV1TimestampData, ThrowOnError>
@@ -92,7 +110,7 @@ export const getV1Timestamp = <ThrowOnError extends boolean = false>(
 };
 
 /**
- * get assets supported by Hibit
+ * Get supported assets
  */
 export const getV1Assets = <ThrowOnError extends boolean = false>(options?: Options<GetV1AssetsData, ThrowOnError>) => {
   return (options?.client ?? _heyApiClient).get<GetV1AssetsResponse, GetV1AssetsError, ThrowOnError>({
@@ -102,7 +120,10 @@ export const getV1Assets = <ThrowOnError extends boolean = false>(options?: Opti
 };
 
 /**
- * Get asset information by asset id
+ * Get asset information
+ * In most cases, this endpoint returns a single asset regardless of whether you filter by asset ID or token contract address.
+ * However, since the system supports multiple chains, the same token contract address might exist on different chains,
+ * potentially resulting in multiple assets being returned when filtering by token contract address.
  */
 export const getV1Asset = <ThrowOnError extends boolean = false>(options?: Options<GetV1AssetData, ThrowOnError>) => {
   return (options?.client ?? _heyApiClient).get<GetV1AssetResponse, GetV1AssetError, ThrowOnError>({
@@ -112,7 +133,23 @@ export const getV1Asset = <ThrowOnError extends boolean = false>(options?: Optio
 };
 
 /**
- * get all chains supported by Hibit
+ * Get withdrawal fee information for an asset
+ */
+export const getV1AssetWithdrawalFee = <ThrowOnError extends boolean = false>(
+  options?: Options<GetV1AssetWithdrawalFeeData, ThrowOnError>
+) => {
+  return (options?.client ?? _heyApiClient).get<
+    GetV1AssetWithdrawalFeeResponse,
+    GetV1AssetWithdrawalFeeError,
+    ThrowOnError
+  >({
+    url: '/v1/asset/withdrawal-fee',
+    ...options
+  });
+};
+
+/**
+ * Get all supported chains
  */
 export const getV1Chains = <ThrowOnError extends boolean = false>(options?: Options<GetV1ChainsData, ThrowOnError>) => {
   return (options?.client ?? _heyApiClient).get<GetV1ChainsResponse, GetV1ChainsError, ThrowOnError>({
@@ -122,7 +159,53 @@ export const getV1Chains = <ThrowOnError extends boolean = false>(options?: Opti
 };
 
 /**
- * get the depth of the market
+ * Get asset chain balance
+ * This endpoint retrieves the balance of a specific asset on the chain.
+ * If the asset id not provided, the balance of all assets will be returned.
+ */
+export const getV1ChainBalances = <ThrowOnError extends boolean = false>(
+  options?: Options<GetV1ChainBalancesData, ThrowOnError>
+) => {
+  return (options?.client ?? _heyApiClient).get<GetV1ChainBalancesResponse, GetV1ChainBalancesError, ThrowOnError>({
+    url: '/v1/chain-balances',
+    ...options
+  });
+};
+
+/**
+ * Get the proxy key
+ */
+export const postV1ProxyKey = <ThrowOnError extends boolean = false>(
+  options?: Options<PostV1ProxyKeyData, ThrowOnError>
+) => {
+  return (options?.client ?? _heyApiClient).post<PostV1ProxyKeyResponse, PostV1ProxyKeyError, ThrowOnError>({
+    url: '/v1/proxy-key',
+    ...options,
+    headers: {
+      'Content-Type': 'application/json',
+      ...options?.headers
+    }
+  });
+};
+
+/**
+ * Reset the proxy key
+ */
+export const postV1ProxyKeyReset = <ThrowOnError extends boolean = false>(
+  options?: Options<PostV1ProxyKeyResetData, ThrowOnError>
+) => {
+  return (options?.client ?? _heyApiClient).post<PostV1ProxyKeyResetResponse, PostV1ProxyKeyResetError, ThrowOnError>({
+    url: '/v1/proxy-key/reset',
+    ...options,
+    headers: {
+      'Content-Type': 'application/json',
+      ...options?.headers
+    }
+  });
+};
+
+/**
+ * Get market depth
  * it is a combination of the orderbook and the swap liquidity.
  */
 export const getV1MarketDepth = <ThrowOnError extends boolean = false>(
@@ -135,7 +218,7 @@ export const getV1MarketDepth = <ThrowOnError extends boolean = false>(
 };
 
 /**
- * get the swap information of the market
+ * Get market swap info
  */
 export const getV1MarketsSwap = <ThrowOnError extends boolean = false>(
   options?: Options<GetV1MarketsSwapData, ThrowOnError>
@@ -147,7 +230,7 @@ export const getV1MarketsSwap = <ThrowOnError extends boolean = false>(
 };
 
 /**
- * Gets the 24-hour ticker info for markets
+ * Get 24hr market tickers
  */
 export const getV1MarketsTicker = <ThrowOnError extends boolean = false>(
   options?: Options<GetV1MarketsTickerData, ThrowOnError>
@@ -159,7 +242,7 @@ export const getV1MarketsTicker = <ThrowOnError extends boolean = false>(
 };
 
 /**
- * Gets the extended 24-hour ticker info for markets
+ * Get extended 24hr market tickers
  */
 export const getV1MarketsTickerExtended = <ThrowOnError extends boolean = false>(
   options?: Options<GetV1MarketsTickerExtendedData, ThrowOnError>
@@ -175,7 +258,7 @@ export const getV1MarketsTickerExtended = <ThrowOnError extends boolean = false>
 };
 
 /**
- * get the kline of the market
+ * Get market kline
  */
 export const getV1MarketKline = <ThrowOnError extends boolean = false>(
   options: Options<GetV1MarketKlineData, ThrowOnError>
@@ -187,7 +270,7 @@ export const getV1MarketKline = <ThrowOnError extends boolean = false>(
 };
 
 /**
- * get the trade history of the market
+ * Get market trade history
  */
 export const getV1MarketTrade = <ThrowOnError extends boolean = false>(
   options: Options<GetV1MarketTradeData, ThrowOnError>
@@ -199,7 +282,7 @@ export const getV1MarketTrade = <ThrowOnError extends boolean = false>(
 };
 
 /**
- * get the market list
+ * Get market list
  */
 export const getV1Markets = <ThrowOnError extends boolean = false>(
   options?: Options<GetV1MarketsData, ThrowOnError>
@@ -211,7 +294,7 @@ export const getV1Markets = <ThrowOnError extends boolean = false>(
 };
 
 /**
- * get the market by market id
+ * Get market details
  */
 export const getV1Market = <ThrowOnError extends boolean = false>(options?: Options<GetV1MarketData, ThrowOnError>) => {
   return (options?.client ?? _heyApiClient).get<GetV1MarketResponse, GetV1MarketError, ThrowOnError>({
@@ -221,7 +304,7 @@ export const getV1Market = <ThrowOnError extends boolean = false>(options?: Opti
 };
 
 /**
- * get trades of the order
+ * Get order trades
  */
 export const getV1OrderTrades = <ThrowOnError extends boolean = false>(
   options?: Options<GetV1OrderTradesData, ThrowOnError>
@@ -233,7 +316,7 @@ export const getV1OrderTrades = <ThrowOnError extends boolean = false>(
 };
 
 /**
- * get orders of wallet
+ * Get orders
  */
 export const getV1Orders = <ThrowOnError extends boolean = false>(options?: Options<GetV1OrdersData, ThrowOnError>) => {
   return (options?.client ?? _heyApiClient).get<GetV1OrdersResponse, GetV1OrdersError, ThrowOnError>({
@@ -243,7 +326,7 @@ export const getV1Orders = <ThrowOnError extends boolean = false>(options?: Opti
 };
 
 /**
- * get order detail
+ * Get order detail
  */
 export const getV1Order = <ThrowOnError extends boolean = false>(options?: Options<GetV1OrderData, ThrowOnError>) => {
   return (options?.client ?? _heyApiClient).get<GetV1OrderResponse, GetV1OrderError, ThrowOnError>({
@@ -253,7 +336,7 @@ export const getV1Order = <ThrowOnError extends boolean = false>(options?: Optio
 };
 
 /**
- * Submit a spot order
+ * Submit spot order
  */
 export const postV1TxSubmitSpotOrder = <ThrowOnError extends boolean = false>(
   options?: Options<PostV1TxSubmitSpotOrderData, ThrowOnError>
@@ -273,7 +356,7 @@ export const postV1TxSubmitSpotOrder = <ThrowOnError extends boolean = false>(
 };
 
 /**
- * Cancel a spot order
+ * Cancel spot order
  */
 export const postV1TxCancelSpotOrder = <ThrowOnError extends boolean = false>(
   options?: Options<PostV1TxCancelSpotOrderData, ThrowOnError>
@@ -293,7 +376,7 @@ export const postV1TxCancelSpotOrder = <ThrowOnError extends boolean = false>(
 };
 
 /**
- * get nonce of wallet
+ * Get wallet nonce
  */
 export const getV1WalletNonce = <ThrowOnError extends boolean = false>(
   options?: Options<GetV1WalletNonceData, ThrowOnError>
@@ -305,13 +388,43 @@ export const getV1WalletNonce = <ThrowOnError extends boolean = false>(
 };
 
 /**
- * get balance of wallet
+ * Get wallet balances
  */
 export const getV1WalletBalances = <ThrowOnError extends boolean = false>(
   options?: Options<GetV1WalletBalancesData, ThrowOnError>
 ) => {
   return (options?.client ?? _heyApiClient).get<GetV1WalletBalancesResponse, GetV1WalletBalancesError, ThrowOnError>({
     url: '/v1/wallet/balances',
+    ...options
+  });
+};
+
+/**
+ * Register wallet
+ */
+export const postV1WalletRegister = <ThrowOnError extends boolean = false>(
+  options?: Options<PostV1WalletRegisterData, ThrowOnError>
+) => {
+  return (options?.client ?? _heyApiClient).post<PostV1WalletRegisterResponse, PostV1WalletRegisterError, ThrowOnError>(
+    {
+      url: '/v1/wallet/register',
+      ...options,
+      headers: {
+        'Content-Type': 'application/json',
+        ...options?.headers
+      }
+    }
+  );
+};
+
+/**
+ * Get wallet registration info
+ */
+export const getV1WalletInfo = <ThrowOnError extends boolean = false>(
+  options?: Options<GetV1WalletInfoData, ThrowOnError>
+) => {
+  return (options?.client ?? _heyApiClient).get<GetV1WalletInfoResponse, GetV1WalletInfoError, ThrowOnError>({
+    url: '/v1/wallet/info',
     ...options
   });
 };

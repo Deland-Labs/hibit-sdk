@@ -1,5 +1,7 @@
 import { FC } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, Route, Routes } from 'react-router-dom';
+import HibitClientPage from './pages/HibitClient';
+import BrokerClientPage from './pages/BrokerClient';
 
 const App: FC = () => {
   return (
@@ -16,9 +18,23 @@ const App: FC = () => {
                 HibitClient
               </NavLink>
             </li>
+            <li>
+              <NavLink
+                to="/broker"
+                className={({ isActive }) => `font-bold underline ${isActive ? 'text-blue-500' : 'text-gray-500'}`}
+              >
+                BrokerClient
+              </NavLink>
+            </li>
           </ul>
         </nav>
       </header>
+      <div className="p-6 flex-1 overflow-auto">
+        <Routes>
+          <Route path="/" element={<HibitClientPage />} />
+          <Route path="/broker" element={<BrokerClientPage />} />
+        </Routes>
+      </div>
     </main>
   );
 };
