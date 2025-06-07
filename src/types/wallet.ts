@@ -49,7 +49,7 @@ export type WalletRegisterInput = {
   publicKey?: string;
 
   /** The signature schema used by the wallet */
-  SignatureSchema: WalletSignatureSchema;
+  signatureSchema: WalletSignatureSchema;
 };
 
 export type GetRegisteredWalletInfoInput = {
@@ -81,6 +81,9 @@ export type ResetProxyKeyInput = {
 
   /** The current nonce value needed for the proxy key reset operation */
   nonce: bigint;
+
+  /** The signature schema used by the wallet */
+  signatureSchema: WalletSignatureSchema;
 
   /** The proxy private key in hex format */
   proxyPrivateKey: HexString;

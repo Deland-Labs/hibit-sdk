@@ -93,7 +93,7 @@ export default function SectionWalletRegister() {
       const req: WalletRegisterInput = {
         chain: selectedChain,
         publicKey: input.publicKey || undefined,
-        SignatureSchema: input.signatureSchema
+        signatureSchema: input.signatureSchema
       };
 
       await client.walletRegister(req);

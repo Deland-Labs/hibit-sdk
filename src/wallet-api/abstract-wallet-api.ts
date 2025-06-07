@@ -42,7 +42,20 @@ export abstract class AbstractWalletApi implements IWalletApi {
 
   abstract signMessage(message: string): Promise<HexString>;
 
+  /**
+   * Validates that the input signature schema matches the wallet's signature schema
+   * @param inputSignatureSchema - The signature schema from the input
+   * @throws Error if the signature schemas don't match
+   */
+  private validateSignatureSchema(inputSignatureSchema: WalletSignatureSchema): void {
+    if (inputSignatureSchema !== this.signatureSchema) {
+      throw new Error(`Signature schema mismatch: expected ${this.signatureSchema}, but got ${inputSignatureSchema}`);
+    }
+  }
+
   generateGetProxyKeyMessage(input: GetProxyKeyInput, hin: bigint): string {
+    this.validateSignatureSchema(input.signatureSchema);
+
     // Convert hin (wallet ID) to a hex string
     const walletIdHex = hin.toString(16);
 
@@ -50,7 +63,7 @@ export abstract class AbstractWalletApi implements IWalletApi {
     const payload = [
       `subject: retrieve encrypted proxy key`,
       `wallet_id: ${walletIdHex}`,
-      `sign_schema: 0x${this.signatureSchema.toString(16)}`,
+      `sign_schema: 0x${input.signatureSchema.toString(16)}`,
       `timestamp: ${input.timestamp}`
     ].join('\n');
 
@@ -58,6 +71,8 @@ export abstract class AbstractWalletApi implements IWalletApi {
   }
 
   generateWalletRegistrationMessage(input: WalletRegisterInput): string {
+    this.validateSignatureSchema(input.signatureSchema);
+
     // Use the public key from input if provided
     const pubKey = input.publicKey || '';
 
@@ -65,7 +80,7 @@ export abstract class AbstractWalletApi implements IWalletApi {
     const payload = [
       'subject: wallet registration',
       `chain: 0x${input.chain.value.toString(16)}`,
-      `sign_schema: 0x${this.signatureSchema.toString(16)}`,
+      `sign_schema: 0x${input.signatureSchema.toString(16)}`,
       `pub_key: ${pubKey}`
     ].join('\n');
 
@@ -73,6 +88,8 @@ export abstract class AbstractWalletApi implements IWalletApi {
   }
 
   generateWalletResetProxyKeyMessage(input: ResetProxyKeyInput, hin: bigint): string {
+    this.validateSignatureSchema(input.signatureSchema);
+
     // Convert hin and nonce to hex strings
     const walletIdHex = hin.toString(16);
     const nonceHex = input.nonce.toString(16);
@@ -82,7 +99,7 @@ export abstract class AbstractWalletApi implements IWalletApi {
       'subject: main secret reset',
       `wallet_id: ${walletIdHex}`,
       `nonce: ${nonceHex}`,
-      `sign_schema: 0x${this.signatureSchema.toString(16)}`,
+      `sign_schema: 0x${input.signatureSchema.toString(16)}`,
       `data.encrypted_pri_key: 0x${input.proxyPrivateKey.toLowerCase()}`,
       `data.l2_pub_key: 0x${input.proxyPublicKey.toLowerCase()}`
     ].join('\n');

@@ -1,9 +1,9 @@
-import { ResetProxyKeyInput, Chain, Keypair } from '../../../src';
+import { ResetProxyKeyInput, Chain, Keypair, WalletSignatureSchema } from '../../../src';
 import Section from '../Section';
 import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { object, string } from 'yup';
+import { object, string, number } from 'yup';
 import FormField from '../FormField';
 import ChainSelector from '../ChainSelector';
 import { useWalletConnection } from '../../context/WalletConnectionContext';
@@ -15,6 +15,7 @@ import { useClientContext } from '../../context/ClientContext';
 const schema = object({
   chain: object().nullable(),
   nonce: string().required('Nonce is required'),
+  signatureSchema: number().required('Signature schema is required'),
   proxyPrivateKey: string().required('Proxy private key is required'),
   proxyPublicKey: string().required('Proxy public key is required')
 });
@@ -41,17 +42,25 @@ export default function SectionResetProxyKey() {
   // Auto-fill fields when wallet is connected
   useEffect(() => {
     if (isConnected && walletType) {
-      // Auto-fill chain based on wallet type
+      // Auto-fill chain and signature schema based on wallet type
       let autoChain: Chain | undefined;
+      let autoSignatureSchema: WalletSignatureSchema | undefined;
+
       if (walletType === 'MetaMask') {
         autoChain = Chain.Ethereum;
+        autoSignatureSchema = WalletSignatureSchema.EvmEcdsa;
       } else if (walletType === 'Kaspa') {
         autoChain = Chain.Kaspa;
+        autoSignatureSchema = WalletSignatureSchema.KaspaSchnorr;
       }
 
       if (autoChain) {
         setSelectedChain(autoChain);
         setValue('chain', autoChain);
+      }
+
+      if (autoSignatureSchema !== undefined) {
+        setValue('signatureSchema', autoSignatureSchema);
       }
     }
   }, [isConnected, walletType, setValue]);
@@ -81,6 +90,7 @@ export default function SectionResetProxyKey() {
       const req: ResetProxyKeyInput = {
         chain: selectedChain,
         nonce: BigInt(input.nonce),
+        signatureSchema: input.signatureSchema,
         proxyPrivateKey: input.proxyPrivateKey,
         proxyPublicKey: input.proxyPublicKey
       };
@@ -158,6 +168,18 @@ export default function SectionResetProxyKey() {
                     {loadingNonce ? 'Loading...' : 'Get'}
                   </button>
                 </div>
+              </FormField>
+              <FormField label="Signature Schema" error={errors.signatureSchema} required>
+                <select className="input" {...register('signatureSchema')} disabled={true}>
+                  <option value="">Auto-filled from wallet type</option>
+                  {Object.keys(WalletSignatureSchema)
+                    .filter((v) => isNaN(Number(v)))
+                    .map((key) => (
+                      <option key={key} value={WalletSignatureSchema[key as keyof typeof WalletSignatureSchema]}>
+                        {key}
+                      </option>
+                    ))}
+                </select>
               </FormField>
               <FormField label="Proxy Private Key" error={errors.proxyPrivateKey} required>
                 <div className="flex gap-2">
