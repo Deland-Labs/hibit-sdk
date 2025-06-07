@@ -10,7 +10,7 @@ export const PROXY_KEY_ENCRYPT_SOURCE_MSG = 'hello hibit';
  * The API endpoint for the testnet environment.
  * This endpoint is used for testing and development purposes.
  */
-export const HIBIT_TESTNET_API_ENDPOINT = 'http://localhost:5333';
+export const HIBIT_TESTNET_API_ENDPOINT = 'https://testnetopenapi.hibit.app';
 
 /**
  * The API endpoint for the mainnet environment.
