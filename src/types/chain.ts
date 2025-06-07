@@ -76,6 +76,36 @@ export class Chain {
     }
     return this.value === other.value;
   }
+
+  /**
+   * Retrieves all supported blockchain chains.
+   *
+   * @returns An array containing all available Chain enum values including Bitcoin, Ethereum, Solana, Dfinity, Ton, Tron, and Kaspa.
+   */
+  static getAllChains(): Chain[] {
+    return [Chain.Bitcoin, Chain.Ethereum, Chain.Solana, Chain.Dfinity, Chain.Ton, Chain.Tron, Chain.Kaspa];
+  }
+
+  get name(): string {
+    switch (this.value) {
+      case Chain.Bitcoin.value:
+        return 'Bitcoin';
+      case Chain.Ethereum.value:
+        return 'Ethereum';
+      case Chain.Solana.value:
+        return 'Solana';
+      case Chain.Dfinity.value:
+        return 'Internet Computer';
+      case Chain.Ton.value:
+        return 'TON';
+      case Chain.Tron.value:
+        return 'Tron';
+      case Chain.Kaspa.value:
+        return 'Kaspa';
+      default:
+        return `Unknown Chain (${this.value})`;
+    }
+  }
 }
 
 /**

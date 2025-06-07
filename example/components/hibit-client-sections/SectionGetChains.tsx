@@ -1,9 +1,10 @@
 import { ChainInfo } from '../../../src';
-import { HibitClient } from '../../../src/hibit-client';
 import Section from '../Section';
 import { useState } from 'react';
+import { useClientContext } from '../../context/ClientContext';
 
-export default function SectionGetChains({ client }: { client: HibitClient }) {
+export default function SectionGetChains() {
+  const { client } = useClientContext();
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<Array<ChainInfo> | null>(null);
   const [error, setError] = useState<string>('');

@@ -1,5 +1,4 @@
 import { ChainId, GetMarket24HrTickerInput, Market24HrTickerInfo } from '../../../src';
-import { HibitClient } from '../../../src/hibit-client';
 import Section from '../Section';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -8,6 +7,7 @@ import { object, string } from 'yup';
 import FormField from '../FormField';
 import ChainIdSelector from '../ChainIdSelector';
 import AssetTypeSelector from '../AssetTypeSelector';
+import { useClientContext } from '../../context/ClientContext';
 
 const schema = object({
   marketId: string(),
@@ -15,7 +15,8 @@ const schema = object({
   chainAssetTypes: object().nullable()
 });
 
-export default function SectionGetMarkets24HrTicker({ client }: { client: HibitClient }) {
+export default function SectionGetMarkets24HrTicker() {
+  const { client } = useClientContext();
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<Array<Market24HrTickerInfo> | null>(null);
   const [error, setError] = useState<string>('');

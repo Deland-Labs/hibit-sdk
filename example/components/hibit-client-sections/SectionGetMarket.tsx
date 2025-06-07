@@ -1,17 +1,18 @@
 import { MarketInfo } from '../../../src';
-import { HibitClient } from '../../../src/hibit-client';
 import Section from '../Section';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { object, string } from 'yup';
 import FormField from '../FormField';
+import { useClientContext } from '../../context/ClientContext';
 
 const schema = object({
   marketId: string().required()
 });
 
-export default function SectionGetMarket({ client }: { client: HibitClient }) {
+export default function SectionGetMarket() {
+  const { client } = useClientContext();
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<MarketInfo | null>(null);
   const [error, setError] = useState<string>('');

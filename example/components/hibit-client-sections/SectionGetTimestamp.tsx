@@ -1,8 +1,9 @@
-import { HibitClient } from '../../../src/hibit-client';
+import { useClientContext } from '../../context/ClientContext';
 import Section from '../Section';
 import { useState } from 'react';
 
-export default function SectionGetTimestamp({ client }: { client: HibitClient }) {
+export default function SectionGetTimestamp() {
+  const { client } = useClientContext();
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<number | null>(null);
   const [error, setError] = useState<string>('');

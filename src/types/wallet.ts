@@ -62,7 +62,7 @@ export type GetRegisteredWalletInfoInput = {
    * Public key of the wallet, optional.
    * At least one of publicKey or address must be provided.
    */
-  publicKey: string;
+  publicKey?: string;
 
   /**
    * The address of the wallet, optional.
@@ -76,17 +76,17 @@ export type GetRegisteredWalletInfoInput = {
  * Used to provide necessary information when resetting a proxy key for a wallet.
  */
 export type ResetProxyKeyInput = {
-  /** The HIN (hibit chain identity number) of the wallet */
-  hin: bigint;
+  /** The chain on which the wallet operates */
+  chain: Chain;
 
   /** The current nonce value needed for the proxy key reset operation */
   nonce: bigint;
 
-  /** The encrypted proxy key in hexadecimal format */
-  encryptedProxyKey: HexString;
+  /** The proxy private key in hex format */
+  proxyPrivateKey: HexString;
 
-  /** The public key of the proxy in hexadecimal format */
-  ProxyPublicKey: HexString;
+  /** The public key of the proxy in hex format */
+  proxyPublicKey: HexString;
 };
 
 /**
@@ -94,8 +94,8 @@ export type ResetProxyKeyInput = {
  * Used to provide necessary information when fetching a proxy key for a wallet.
  */
 export type GetProxyKeyInput = {
-  /** The HIN (hibit chain identity number) of the wallet */
-  hin: bigint;
+  /** The chain on which the wallet operates */
+  chain: Chain;
 
   /** The signature schema used by the wallet */
   signatureSchema: WalletSignatureSchema;
@@ -158,7 +158,6 @@ export function mapToWalletRegisterApiRequest(
   return {
     body: {
       chain: originTx.chain.toString(),
-      chainNetwork: originTx.chainNetwork.toString(),
       message: originTx.message,
       signature: originTx.signature
     }
@@ -175,7 +174,6 @@ export function mapToGetProxyKeyApiRequest(originTx: OriginWalletTransaction): O
   return {
     body: {
       chain: originTx.chain.toString(),
-      chainNetwork: originTx.chainNetwork.toString(),
       message: originTx.message,
       signature: originTx.signature
     }

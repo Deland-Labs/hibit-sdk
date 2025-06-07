@@ -1,5 +1,4 @@
 import { GetOrdersInput, OrderCategory, OrderInfo, OrderSide, OrderStatus, PageResponse } from '../../../src';
-import { HibitClient } from '../../../src/hibit-client';
 import Section from '../Section';
 import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
@@ -7,6 +6,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { object, number, string, array } from 'yup';
 import FormField from '../FormField';
 import dayjs from 'dayjs';
+import { useClientContext } from '../../context/ClientContext';
 
 const schema = object({
   hin: string().required(),
@@ -46,7 +46,8 @@ const schema = object({
   orderBy: string()
 });
 
-export default function SectionGetOrders({ client }: { client: HibitClient }) {
+export default function SectionGetOrders() {
+  const { client } = useClientContext();
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<PageResponse<OrderInfo> | null>(null);
   const [error, setError] = useState<string>('');

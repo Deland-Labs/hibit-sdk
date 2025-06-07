@@ -65,6 +65,9 @@ import type {
   PostV1TxCancelSpotOrderData,
   PostV1TxCancelSpotOrderResponse,
   PostV1TxCancelSpotOrderError,
+  PostV1TxWithdrawData,
+  PostV1TxWithdrawResponse,
+  PostV1TxWithdrawError,
   GetV1WalletNonceData,
   GetV1WalletNonceResponse,
   GetV1WalletNonceError,
@@ -367,6 +370,22 @@ export const postV1TxCancelSpotOrder = <ThrowOnError extends boolean = false>(
     ThrowOnError
   >({
     url: '/v1/tx/cancel-spot-order',
+    ...options,
+    headers: {
+      'Content-Type': 'application/json',
+      ...options?.headers
+    }
+  });
+};
+
+/**
+ * Withdraw
+ */
+export const postV1TxWithdraw = <ThrowOnError extends boolean = false>(
+  options?: Options<PostV1TxWithdrawData, ThrowOnError>
+) => {
+  return (options?.client ?? _heyApiClient).post<PostV1TxWithdrawResponse, PostV1TxWithdrawError, ThrowOnError>({
+    url: '/v1/tx/withdraw',
     ...options,
     headers: {
       'Content-Type': 'application/json',

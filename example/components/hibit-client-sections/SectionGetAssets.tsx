@@ -1,5 +1,4 @@
 import { AssetInfo, ChainId, GetAssetsInput, PageResponse } from '../../../src';
-import { HibitClient } from '../../../src/hibit-client';
 import Section from '../Section';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -8,6 +7,7 @@ import { object, number, string } from 'yup';
 import FormField from '../FormField';
 import ChainIdSelector from '../ChainIdSelector';
 import AssetTypeSelector from '../AssetTypeSelector';
+import { useClientContext } from '../../context/ClientContext';
 
 const schema = object({
   chainIds: object().nullable(),
@@ -21,7 +21,8 @@ const schema = object({
   orderBy: string()
 });
 
-export default function SectionGetAssets({ client }: { client: HibitClient }) {
+export default function SectionGetAssets() {
+  const { client } = useClientContext();
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<PageResponse<AssetInfo> | null>(null);
   const [error, setError] = useState<string>('');

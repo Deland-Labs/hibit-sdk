@@ -36,8 +36,6 @@ import {
   ResetProxyKeyInput,
   ProxyKeypair,
   GetProxyKeyInput,
-  ChainNetwork,
-  Chain,
   WithdrawInput
 } from './types';
 import {
@@ -65,7 +63,8 @@ import {
   getV1WalletInfo,
   postV1ProxyKeyReset,
   postV1ProxyKey,
-  getV1AssetWithdrawalFee
+  getV1AssetWithdrawalFee,
+  postV1TxWithdraw
 } from './openapi';
 import { mapChainInfo } from './types/chain';
 import {
@@ -117,8 +116,9 @@ import {
 import { client } from './openapi/client.gen';
 import { HibitError } from './error';
 import { mapCancelOrdersCborInput, mapSubmitSpotOrderCborInput } from './types/order/payload';
-import { HIBIT_MAINNET_API_ENDPOINT, HIBIT_TESTNET_API_ENDPOINT } from './constant';
+import { HIBIT_MAINNET_API_ENDPOINT, HIBIT_TESTNET_API_ENDPOINT, PROXY_KEY_ENCRYPT_SOURCE_MSG } from './constant';
 import { IWalletApi } from './wallet-api';
+import { Keypair } from './Keypair';
 
 /**
  * Interface representing the Hibit API.
@@ -617,7 +617,7 @@ export class HibitClient implements IHibitClient {
 
     const message = this.walletApi!.generateWalletRegistrationMessage(input);
     const signature = await this.walletApi!.signMessage(message);
-    const originWalletRequest = new OriginWalletTransaction(input.chain, ChainNetwork.AnyNetwork, message, signature);
+    const originWalletRequest = new OriginWalletTransaction(input.chain, message, undefined, signature);
     const resp = await postV1WalletRegister(mapToWalletRegisterApiRequest(originWalletRequest));
 
     this.ensureSuccess(apiName, resp.data);
@@ -638,16 +638,12 @@ export class HibitClient implements IHibitClient {
     const apiName = 'resetProxyKey';
     this.ensureWalletApi(apiName);
 
-    const message = this.walletApi!.generateWalletResetProxyKeyMessage(input);
+    const aseKey = await this.walletApi!.signMessage(PROXY_KEY_ENCRYPT_SOURCE_MSG);
+    const encryptedProxyKey = Keypair.encryptPrivateKey(input.proxyPrivateKey!, aseKey);
+    input.proxyPrivateKey = encryptedProxyKey;
+    const message = this.walletApi!.generateWalletResetProxyKeyMessage(input, this.options.hin!);
     const signature = await this.walletApi!.signMessage(message);
-    // this parameter is required bug ignored in the current implementation
-    const ignoredChainParam = Chain.Ethereum;
-    const originWalletRequest = new OriginWalletTransaction(
-      ignoredChainParam,
-      ChainNetwork.AnyNetwork,
-      message,
-      signature
-    );
+    const originWalletRequest = new OriginWalletTransaction(input.chain, message, undefined, signature);
     const resp = await postV1ProxyKeyReset(mapToWalletRegisterApiRequest(originWalletRequest));
 
     this.ensureSuccess(apiName, resp.data);
@@ -657,16 +653,9 @@ export class HibitClient implements IHibitClient {
     const apiName = 'getProxyKeypair';
     this.ensureWalletApi(apiName);
 
-    const message = this.walletApi!.generateGetProxyKeyMessage(input);
+    const message = this.walletApi!.generateGetProxyKeyMessage(input, this.options.hin!);
     const signature = await this.walletApi!.signMessage(message);
-    // this parameter is required bug ignored in the current implementation
-    const ignoredChainParam = Chain.Ethereum;
-    const originWalletRequest = new OriginWalletTransaction(
-      ignoredChainParam,
-      ChainNetwork.AnyNetwork,
-      message,
-      signature
-    );
+    const originWalletRequest = new OriginWalletTransaction(input.chain, message, undefined, signature);
     const resp = await postV1ProxyKey(mapToGetProxyKeyApiRequest(originWalletRequest));
 
     this.ensureSuccess(apiName, resp.data);
@@ -696,11 +685,11 @@ export class HibitClient implements IHibitClient {
     const signature = await this.walletApi!.signMessage(message);
     const originWalletRequest = new OriginWalletTransaction(
       input.targetChain,
-      input.targetChainNetwork,
       message,
+      input.targetChainNetwork,
       signature
     );
-    const resp = await postV1ProxyKey(mapToGetProxyKeyApiRequest(originWalletRequest));
+    const resp = await postV1TxWithdraw(mapToGetProxyKeyApiRequest(originWalletRequest));
 
     this.ensureSuccess(apiName, resp.data);
   }

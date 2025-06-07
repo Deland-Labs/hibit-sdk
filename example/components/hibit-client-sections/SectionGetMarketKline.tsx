@@ -1,5 +1,5 @@
 import { GetMarketKlineInput, MarketKlineItem, PageResponse, TickSpace } from '../../../src';
-import { HibitClient } from '../../../src/hibit-client';
+import { useClientContext } from '../../context/ClientContext';
 import Section from '../Section';
 import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
@@ -25,7 +25,8 @@ const schema = object({
   orderBy: string()
 });
 
-export default function SectionGetMarketKline({ client }: { client: HibitClient }) {
+export default function SectionGetMarketKline() {
+  const { client } = useClientContext();
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<PageResponse<MarketKlineItem> | null>(null);
   const [error, setError] = useState<string>('');

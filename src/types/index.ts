@@ -1,5 +1,5 @@
 export type HexString = string;
-export type { AssetInfo, SubAssetInfo, GetAssetsInput, GetAssetInput, GetChainBalancesInput } from './asset';
+export type * from './asset';
 export { Chain, ChainNetwork, ChainId, type ChainInfo } from './chain';
 export * from './enums';
 export type * from './market';
