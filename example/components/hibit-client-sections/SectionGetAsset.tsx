@@ -1,18 +1,19 @@
 import { AssetInfo, GetAssetInput } from '../../../src';
-import { HibitClient } from '../../../src/hibit-client';
 import Section from '../Section';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { object, string } from 'yup';
 import FormField from '../FormField';
+import { useClientContext } from '../../context/ClientContext';
 
 const schema = object({
   assetId: string(),
   tokenAddress: string()
 });
 
-export default function SectionGetAsset({ client }: { client: HibitClient }) {
+export default function SectionGetAsset() {
+  const { client } = useClientContext();
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<AssetInfo[] | null>(null);
   const [error, setError] = useState<string>('');
@@ -31,7 +32,7 @@ export default function SectionGetAsset({ client }: { client: HibitClient }) {
     setError('');
     try {
       const req: GetAssetInput = {
-        assetId: input.assetId,
+        assetId: input.assetId ? BigInt(input.assetId) : undefined,
         tokenAddress: input.tokenAddress
       };
       setResult(await client.getAsset(req));

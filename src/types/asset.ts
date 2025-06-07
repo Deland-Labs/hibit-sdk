@@ -151,7 +151,7 @@ export type GetAssetInput = {
   /**
    * ID of the asset, represented as a bigint.
    */
-  assetId?: string;
+  assetId?: bigint;
 
   /**
    * Address of the token contract.
@@ -205,7 +205,7 @@ export function mapGetAssetsInput(input: GetAssetsInput): Options<GetV1AssetsDat
 export function mapGetAssetInput(input: GetAssetInput): Options<GetV1AssetData> {
   return {
     query: {
-      AssetId: input.assetId,
+      AssetId: input.assetId?.toString(),
       TokenAddress: input.tokenAddress
     }
   };

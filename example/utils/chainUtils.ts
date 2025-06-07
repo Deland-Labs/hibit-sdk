@@ -3,7 +3,7 @@ import { Chain, ChainNetwork } from '../../src';
 export const chainNetworkMap = [
   {
     chain: Chain.Bitcoin,
-    name: 'Bitcoin',
+    name: Chain.Bitcoin.name,
     networks: [
       { network: ChainNetwork.BtcMainNet, name: 'MainNet' },
       { network: ChainNetwork.BtcTestNet, name: 'TestNet' }
@@ -11,7 +11,7 @@ export const chainNetworkMap = [
   },
   {
     chain: Chain.Ethereum,
-    name: 'Ethereum',
+    name: Chain.Ethereum.name,
     networks: [
       { network: ChainNetwork.EvmMainNet, name: 'MainNet' },
       { network: ChainNetwork.EvmSepoliaNet, name: 'Sepolia' }
@@ -19,7 +19,7 @@ export const chainNetworkMap = [
   },
   {
     chain: Chain.Solana,
-    name: 'Solana',
+    name: Chain.Solana.name,
     networks: [
       { network: ChainNetwork.SolanaMainNet, name: 'MainNet' },
       { network: ChainNetwork.SolanaTestNet, name: 'TestNet' }
@@ -27,12 +27,12 @@ export const chainNetworkMap = [
   },
   {
     chain: Chain.Dfinity,
-    name: 'Internet Computer',
+    name: Chain.Dfinity.name,
     networks: [{ network: ChainNetwork.DfinityMainNet, name: 'MainNet' }]
   },
   {
     chain: Chain.Ton,
-    name: 'TON',
+    name: Chain.Ton.name,
     networks: [
       { network: ChainNetwork.TonMainNet, name: 'MainNet' },
       { network: ChainNetwork.TonTestNet, name: 'TestNet' }
@@ -40,7 +40,7 @@ export const chainNetworkMap = [
   },
   {
     chain: Chain.Tron,
-    name: 'TRON',
+    name: Chain.Tron.name,
     networks: [
       { network: ChainNetwork.TronMainNet, name: 'MainNet' },
       { network: ChainNetwork.TronShastaTestNet, name: 'Shasta TestNet' },
@@ -49,7 +49,7 @@ export const chainNetworkMap = [
   },
   {
     chain: Chain.Kaspa,
-    name: 'Kaspa',
+    name: Chain.Kaspa.name,
     networks: [
       { network: ChainNetwork.KaspaMainNet, name: 'MainNet' },
       { network: ChainNetwork.KaspaTestNet, name: 'TestNet' }

@@ -277,5 +277,7 @@ dist
 .history
 .ionide
 
+# macOS system files
+.DS_Store
 # End of https://www.toptal.com/developers/gitignore/api/visualstudiocode,node,jetbrains,turbo
 

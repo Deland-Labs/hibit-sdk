@@ -1,5 +1,4 @@
-import { ChainId, GetMarket24HrTickerInput, Market24HrTickerExtendInfo } from '../../../src';
-import { HibitClient } from '../../../src/hibit-client';
+import { GetMarket24HrTickerInput, Market24HrTickerExtendInfo, ChainId } from '../../../src';
 import Section from '../Section';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -8,6 +7,7 @@ import { object, string } from 'yup';
 import FormField from '../FormField';
 import ChainIdSelector from '../ChainIdSelector';
 import AssetTypeSelector from '../AssetTypeSelector';
+import { useClientContext } from '../../context/ClientContext';
 
 const schema = object({
   marketId: string(),
@@ -15,12 +15,13 @@ const schema = object({
   chainAssetTypes: object().nullable()
 });
 
-export default function SectionGetMarkets24HrTickerExtended({ client }: { client: HibitClient }) {
+export default function SectionGetMarkets24HrTickerExtended() {
+  const { client } = useClientContext();
   const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState<Array<Market24HrTickerExtendInfo> | null>(null);
+  const [result, setResult] = useState<Market24HrTickerExtendInfo[] | null>(null);
   const [error, setError] = useState<string>('');
-  const [selectedAssetTypes, setSelectedAssetTypes] = useState<number[]>([]);
   const [selectedChainIds, setSelectedChainIds] = useState<ChainId[]>([]);
+  const [selectedAssetTypes, setSelectedAssetTypes] = useState<number[]>([]);
 
   const {
     register,
@@ -53,13 +54,13 @@ export default function SectionGetMarkets24HrTickerExtended({ client }: { client
       title="GetMarkets24HrTickerExtended"
       form={
         <div className="flex flex-col gap-2">
-          <FormField label="MarketId" error={errors.marketId}>
-            <input type="number" className="input" {...register('marketId')} />
+          <FormField label="Market ID" error={errors.marketId}>
+            <input type="number" className="input" {...register('marketId')} placeholder="Optional market ID" />
           </FormField>
-          <FormField label="ChainIds" labelDesc="select multiple chains" error={errors.chainIds}>
+          <FormField label="Chain IDs" labelDesc="select multiple chains">
             <ChainIdSelector selectedChainIds={selectedChainIds} onChange={setSelectedChainIds} />
           </FormField>
-          <FormField label="ChainAssetTypes" labelDesc="select multiple types" error={errors.chainAssetTypes}>
+          <FormField label="Chain Asset Types" labelDesc="select multiple types">
             <AssetTypeSelector selectedAssetTypes={selectedAssetTypes} onChange={setSelectedAssetTypes} />
           </FormField>
           <button className="btn" onClick={submit} disabled={loading}>

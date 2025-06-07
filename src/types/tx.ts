@@ -24,7 +24,7 @@ export class OriginWalletTransaction {
   /**
    * The network of the blockchain.
    */
-  chainNetwork: ChainNetwork;
+  chainNetwork?: ChainNetwork;
 
   /**
    * The message content of the request, typically a plain text.
@@ -40,11 +40,11 @@ export class OriginWalletTransaction {
    * Creates a new OriginWalletTransaction instance.
    *
    * @param chain - The blockchain type of the wallet
-   * @param chainNetwork - The network of the blockchain
    * @param message - The message content of the request
+   * @param chainNetwork - The network of the blockchain
    * @param signature - The cryptographic signature (optional)
    */
-  constructor(chain: Chain, chainNetwork: ChainNetwork, message: string, signature?: string) {
+  constructor(chain: Chain, message: string, chainNetwork?: ChainNetwork, signature?: string) {
     this.chain = chain;
     this.chainNetwork = chainNetwork;
     this.message = message;

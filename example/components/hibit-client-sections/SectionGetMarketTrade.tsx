@@ -1,5 +1,4 @@
 import { GetMarketTradeInput, PageResponse, Trade } from '../../../src';
-import { HibitClient } from '../../../src/hibit-client';
 import Section from '../Section';
 import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
@@ -7,6 +6,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { object, number, string } from 'yup';
 import FormField from '../FormField';
 import dayjs from 'dayjs';
+import { useClientContext } from '../../context/ClientContext';
 
 const schema = object({
   marketId: string().required(),
@@ -25,7 +25,8 @@ const schema = object({
   orderBy: string()
 });
 
-export default function SectionGetMarketTrade({ client }: { client: HibitClient }) {
+export default function SectionGetMarketTrade() {
+  const { client } = useClientContext();
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<PageResponse<Trade> | null>(null);
   const [error, setError] = useState<string>('');

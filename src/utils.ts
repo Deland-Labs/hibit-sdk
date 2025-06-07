@@ -19,3 +19,23 @@ export function toSmallestUnit(amount: number, decimals: number): bigint {
   const decimalsBN = new BigNumber(10).pow(decimals);
   return BigInt(amountBN.multipliedBy(decimalsBN).toFixed(0));
 }
+
+/**
+ * Convert value from the smallest unit back to decimal format based on decimals
+ * @param {bigint | string} smallestUnitAmount - Smallest unit value to convert
+ * @param {number} decimals - Number of decimals
+ * @returns {number} - Decimal value as number
+ *
+ * Example:
+ * ```typescript
+ * const smallestUnitAmount = BigInt("1500000000000000000");  // 1.5 ETH in wei
+ * const decimals = 18;  // ETH decimals
+ * const amount = fromSmallestUnit(smallestUnitAmount, decimals);
+ * console.log(`${smallestUnitAmount} smallest unit converts to ${amount}`); // 1.5
+ * ```
+ */
+export function fromSmallestUnit(smallestUnitAmount: bigint | string, decimals: number): number {
+  const amountBN = new BigNumber(smallestUnitAmount.toString());
+  const decimalsBN = new BigNumber(10).pow(decimals);
+  return amountBN.dividedBy(decimalsBN).toNumber();
+}

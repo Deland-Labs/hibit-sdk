@@ -1,20 +1,21 @@
-import { OrderTradeRecord } from '../../../src';
+import { GetChainBalancesInput } from '../../../src';
 import Section from '../Section';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { object, string } from 'yup';
 import FormField from '../FormField';
+import BigNumber from 'bignumber.js';
 import { useClientContext } from '../../context/ClientContext';
 
 const schema = object({
-  orderId: string().required()
+  assetId: string()
 });
 
-export default function SectionGetOrderTrades() {
+export default function SectionGetChainBalances() {
   const { client } = useClientContext();
   const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState<Array<OrderTradeRecord> | null>(null);
+  const [result, setResult] = useState<Map<string, BigNumber> | null>(null);
   const [error, setError] = useState<string>('');
 
   const {
@@ -30,8 +31,10 @@ export default function SectionGetOrderTrades() {
     setResult(null);
     setError('');
     try {
-      const req = input.orderId;
-      setResult(await client.getOrderTrades(req));
+      const req: GetChainBalancesInput = {
+        assetId: input.assetId || undefined
+      };
+      setResult(await client.getChainBalances(req));
     } catch (e: any) {
       setError(e.message ?? JSON.stringify(e));
     } finally {
@@ -41,19 +44,23 @@ export default function SectionGetOrderTrades() {
 
   return (
     <Section
-      title="GetOrderTrades"
+      title="GetChainBalances"
       form={
         <div className="flex flex-col gap-2">
-          <FormField label="OrderId" error={errors.orderId} required>
-            <input type="text" className="input" {...register('orderId')} />
+          <FormField label="Asset ID (optional)" error={errors.assetId}>
+            <input
+              type="text"
+              className="input"
+              {...register('assetId')}
+              placeholder="Leave empty to get all balances"
+            />
           </FormField>
           <button className="btn" onClick={submit} disabled={loading}>
             {loading ? 'Loading...' : 'Submit'}
           </button>
         </div>
       }
-      loading={loading}
-      result={result}
+      result={result ? Object.fromEntries(result) : null}
       error={error}
     />
   );

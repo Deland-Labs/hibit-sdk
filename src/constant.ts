@@ -4,6 +4,8 @@
  */
 export const PRICE_DECIMALS = 32;
 
+export const PROXY_KEY_ENCRYPT_SOURCE_MSG = 'hello hibit';
+
 /**
  * The API endpoint for the testnet environment.
  * This endpoint is used for testing and development purposes.

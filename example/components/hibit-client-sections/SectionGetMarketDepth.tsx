@@ -1,11 +1,11 @@
 import { DepthIndex, GetMarketDepthInput, MarketDepth } from '../../../src';
-import { HibitClient } from '../../../src/hibit-client';
 import Section from '../Section';
 import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { object, number, string } from 'yup';
 import FormField from '../FormField';
+import { useClientContext } from '../../context/ClientContext';
 
 const schema = object({
   index: number()
@@ -19,7 +19,8 @@ const schema = object({
   limit: number().required().min(1).max(100)
 });
 
-export default function SectionGetMarketDepth({ client }: { client: HibitClient }) {
+export default function SectionGetMarketDepth() {
+  const { client } = useClientContext();
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<MarketDepth | null>(null);
   const [error, setError] = useState<string>('');
