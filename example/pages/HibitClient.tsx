@@ -31,6 +31,7 @@ import { HibitNetwork } from '../../src';
 import SectionSetHibitClientOptions from '../components/hibit-client-sections/SectionSetHibitClientOptions';
 import { WalletConnectionProvider } from '../context/WalletConnectionContext';
 import { ClientProvider } from '../context/ClientContext';
+import SectionTrySwap from '../components/hibit-client-sections/SectionTrySwap';
 
 const OPTIONS = {
   network: HibitNetwork.Testnet,
@@ -74,6 +75,7 @@ const HibitClientPage: FC = () => {
           <SectionGetMarketDepth />
           <SectionGetMarketKline />
           <SectionGetMarketTrade />
+          <SectionTrySwap />
 
           {/* Order APIs */}
           <SectionSubmitSpotOrderLimit />

@@ -111,6 +111,41 @@ export type Ex3ExchangeOpenApiAbstractionDtosMarketTradingHistoryItem = {
   t: unknown;
 };
 
+export type Ex3ExchangeOpenApiAbstractionDtosTrySwapInput = {
+  marketId?: string;
+  exactTokensType?: Ex3TransactionsSwapV2ExactTokensType;
+  /**
+   * BigInt
+   */
+  exactTokens?: string;
+  side?: Ex3ModelsOrderSide;
+  /**
+   * BigInt
+   */
+  minOut?: string | null;
+  /**
+   * BigInt
+   */
+  minIn?: string | null;
+};
+
+export type Ex3ExchangeOpenApiAbstractionDtosTrySwapResult = {
+  /**
+   * BigInt
+   */
+  inputAmount?: string;
+  /**
+   * BigInt
+   */
+  outputAmount?: string;
+  priceImpactPercentage?: number;
+  /**
+   * BigInt
+   */
+  swapFee?: string;
+  executionPrice?: string;
+};
+
 export type Ex3ExchangeOpenApiAbstractionDtosWalletOrderDto = {
   /**
    * Order id
@@ -192,6 +227,13 @@ export type Ex3ExchangeOpenApiAbstractionOpenApiResult1Ex3ExchangeOpenApiAbstrac
     code?: number;
     message?: string | null;
     data?: Ex3ExchangeOpenApiAbstractionDtosMarketInfoItem;
+  };
+
+export type Ex3ExchangeOpenApiAbstractionOpenApiResult1Ex3ExchangeOpenApiAbstractionDtosTrySwapResult_Ex3ExchangeOpenApiAbstraction_Version_1000_Culture_neutral_PublicKeyToken_null =
+  {
+    code?: number;
+    message?: string | null;
+    data?: Ex3ExchangeOpenApiAbstractionDtosTrySwapResult;
   };
 
 export type Ex3ExchangeOpenApiAbstractionOpenApiResult1Ex3ExchangeOpenApiAbstractionDtosWalletOrderDto_Ex3ExchangeOpenApiAbstraction_Version_1000_Culture_neutral_PublicKeyToken_null =
@@ -467,6 +509,8 @@ export type Ex3TransactionsL2Request = {
   hash?: string;
   signature?: string;
 };
+
+export type Ex3TransactionsSwapV2ExactTokensType = 0 | 1;
 
 export type MicrosoftAspNetCoreMvcEmptyResult = {
   [key: string]: never;
@@ -1363,6 +1407,51 @@ export type GetV1MarketResponses = {
 };
 
 export type GetV1MarketResponse = GetV1MarketResponses[keyof GetV1MarketResponses];
+
+export type PostV1MarketTrySwapData = {
+  body?: Ex3ExchangeOpenApiAbstractionDtosTrySwapInput;
+  path?: never;
+  query?: never;
+  url: '/v1/market/try-swap';
+};
+
+export type PostV1MarketTrySwapErrors = {
+  /**
+   * Bad Request
+   */
+  400: VoloAbpHttpRemoteServiceErrorResponse;
+  /**
+   * Unauthorized
+   */
+  401: VoloAbpHttpRemoteServiceErrorResponse;
+  /**
+   * Forbidden
+   */
+  403: VoloAbpHttpRemoteServiceErrorResponse;
+  /**
+   * Not Found
+   */
+  404: VoloAbpHttpRemoteServiceErrorResponse;
+  /**
+   * Internal Server Error
+   */
+  500: VoloAbpHttpRemoteServiceErrorResponse;
+  /**
+   * Not Implemented
+   */
+  501: VoloAbpHttpRemoteServiceErrorResponse;
+};
+
+export type PostV1MarketTrySwapError = PostV1MarketTrySwapErrors[keyof PostV1MarketTrySwapErrors];
+
+export type PostV1MarketTrySwapResponses = {
+  /**
+   * OK
+   */
+  200: Ex3ExchangeOpenApiAbstractionOpenApiResult1Ex3ExchangeOpenApiAbstractionDtosTrySwapResult_Ex3ExchangeOpenApiAbstraction_Version_1000_Culture_neutral_PublicKeyToken_null;
+};
+
+export type PostV1MarketTrySwapResponse = PostV1MarketTrySwapResponses[keyof PostV1MarketTrySwapResponses];
 
 export type GetV1OrderTradesData = {
   body?: never;

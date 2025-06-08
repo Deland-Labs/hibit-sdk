@@ -50,6 +50,9 @@ import type {
   GetV1MarketData,
   GetV1MarketResponse,
   GetV1MarketError,
+  PostV1MarketTrySwapData,
+  PostV1MarketTrySwapResponse,
+  PostV1MarketTrySwapError,
   GetV1OrderTradesData,
   GetV1OrderTradesResponse,
   GetV1OrderTradesError,
@@ -303,6 +306,30 @@ export const getV1Market = <ThrowOnError extends boolean = false>(options?: Opti
   return (options?.client ?? _heyApiClient).get<GetV1MarketResponse, GetV1MarketError, ThrowOnError>({
     url: '/v1/market',
     ...options
+  });
+};
+
+/**
+ * Try swap simulation
+ * Order side determination:
+ * - When exactToken is base and source type: ask (consuming base token)
+ * - When exactToken is base and target type: bid (consuming quota token)
+ * - When exactToken is quota and source type: bid (consuming quota token)
+ * - When exactToken is quota and target type: ask (consuming base token)
+ *
+ * Source type means the exactTokens parameter specifies what you're providing.
+ * Target type means the exactTokens parameter specifies what you want to receive.
+ */
+export const postV1MarketTrySwap = <ThrowOnError extends boolean = false>(
+  options?: Options<PostV1MarketTrySwapData, ThrowOnError>
+) => {
+  return (options?.client ?? _heyApiClient).post<PostV1MarketTrySwapResponse, PostV1MarketTrySwapError, ThrowOnError>({
+    url: '/v1/market/try-swap',
+    ...options,
+    headers: {
+      'Content-Type': 'application/json',
+      ...options?.headers
+    }
   });
 };
 

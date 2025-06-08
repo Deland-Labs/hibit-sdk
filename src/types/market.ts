@@ -1,21 +1,24 @@
 import {
-  Ex3ExchangeOpenApiAppServicesMarketInfoItem,
   GetV1MarketsData,
   GetV1MarketsTickerData,
   Options,
-  Ex3ExchangeOpenApiAppServicesMarket24HrTickerItem,
-  Ex3ExchangeOpenApiAppServicesKlineItem,
-  Ex3ExchangeOpenApiAppServicesMarketTradingHistoryItem,
-  Ex3ExchangeOpenApiAppServicesGetSwapOutputItem,
   Ex3CacheDepthManagerSpotMarketDepthDataDto,
   GetV1MarketKlineData,
   GetV1MarketTradeData,
   GetV1MarketDepthData,
   GetV1MarketData,
   GetV1MarketsSwapData,
-  Ex3ExchangeOpenApiAppServicesMarket24HrTickerExtendItem
+  Ex3ExchangeOpenApiAbstractionDtosTrySwapResult,
+  PostV1MarketTrySwapData,
+  Ex3TransactionsSwapV2ExactTokensType,
+  Ex3ExchangeOpenApiAbstractionDtosMarket24HrTickerExtendItem,
+  Ex3ExchangeOpenApiAbstractionDtosMarket24HrTickerItem,
+  Ex3ExchangeOpenApiAbstractionDtosMarketInfoItem,
+  Ex3ExchangeOpenApiAbstractionDtosKlineItem,
+  Ex3ExchangeOpenApiAbstractionDtosMarketTradingHistoryItem,
+  Ex3ExchangeOpenApiAbstractionDtosGetSwapOutputItem
 } from '../openapi';
-import { ChainAssetType, DepthIndex, OrderSide, TickSpace } from './enums';
+import { ChainAssetType, DepthIndex, OrderSide, SwapV2ExactTokensType, TickSpace } from './enums';
 import { ChainId } from './chain';
 
 export type GetMarketsInput = {
@@ -328,6 +331,56 @@ export type MarketDepth = {
   bids: Array<MarketDepthItem>;
 };
 
+export type TrySwapInput = {
+  /**
+   * The market id for the swap.
+   */
+  marketId: bigint;
+  /**
+   * Specifies whether exactTokens represents what you're providing (Source) or what you want to receive (Target).
+   */
+  exactTokensType: SwapV2ExactTokensType;
+  /**
+   * The exact amount of tokens for the swap.
+   */
+  exactTokens: bigint;
+  /**
+   * The order side for the swap.
+   */
+  side: OrderSide;
+  /**
+   * The minimum output amount (optional).
+   */
+  minOut?: bigint;
+  /**
+   * The minimum input amount (optional).
+   */
+  minIn?: bigint;
+};
+
+export type TrySwapResult = {
+  /**
+   * The input amount for the swap.
+   */
+  inputAmount: bigint;
+  /**
+   * The output amount for the swap.
+   */
+  outputAmount: bigint;
+  /**
+   * The price impact percentage.
+   */
+  priceImpactPercentage: number;
+  /**
+   * The swap fee amount.
+   */
+  swapFee: bigint;
+  /**
+   * The execution price.
+   */
+  executionPrice: number;
+};
+
 /**
  * Maps the input parameters for the GetMarkets API call to the required options format.
  *
@@ -356,7 +409,7 @@ export function mapGetMarketInput(marketId: bigint): Options<GetV1MarketData> {
   };
 }
 
-export function mapMarketInfo(market: Ex3ExchangeOpenApiAppServicesMarketInfoItem): MarketInfo {
+export function mapMarketInfo(market: Ex3ExchangeOpenApiAbstractionDtosMarketInfoItem): MarketInfo {
   return {
     marketId: BigInt(market.marketId),
     marketSymbol: market.marketSymbol,
@@ -384,7 +437,9 @@ export function mapGetMarkets24HrTickerInput(input: GetMarket24HrTickerInput): O
   };
 }
 
-export function mapMarket24HrTickerInfo(data: Ex3ExchangeOpenApiAppServicesMarket24HrTickerItem): Market24HrTickerInfo {
+export function mapMarket24HrTickerInfo(
+  data: Ex3ExchangeOpenApiAbstractionDtosMarket24HrTickerItem
+): Market24HrTickerInfo {
   return {
     id: BigInt(data.id!),
     open: Number(data.o),
@@ -398,7 +453,7 @@ export function mapMarket24HrTickerInfo(data: Ex3ExchangeOpenApiAppServicesMarke
 }
 
 export function mapMarket24HrTickerExtendInfo(
-  data: Ex3ExchangeOpenApiAppServicesMarket24HrTickerExtendItem
+  data: Ex3ExchangeOpenApiAbstractionDtosMarket24HrTickerExtendItem
 ): Market24HrTickerExtendInfo {
   return {
     id: BigInt(data.id!),
@@ -428,7 +483,7 @@ export function mapGetMarketKlineInput(input: GetMarketKlineInput): Options<GetV
   };
 }
 
-export function mapMarketKlineInfo(data: Ex3ExchangeOpenApiAppServicesKlineItem): MarketKlineItem {
+export function mapMarketKlineInfo(data: Ex3ExchangeOpenApiAbstractionDtosKlineItem): MarketKlineItem {
   return {
     open: Number(data.o),
     high: Number(data.h),
@@ -453,7 +508,7 @@ export function mapGetMarketTradeInput(input: GetMarketTradeInput): Options<GetV
   };
 }
 
-export function mapMarketTradeInfo(data: Ex3ExchangeOpenApiAppServicesMarketTradingHistoryItem): Trade {
+export function mapMarketTradeInfo(data: Ex3ExchangeOpenApiAbstractionDtosMarketTradingHistoryItem): Trade {
   return {
     maker: data.maker || null,
     taker: data.taker,
@@ -475,7 +530,7 @@ export function mapGetMarketsSwapInfoInput(marketId?: bigint): Options<GetV1Mark
   };
 }
 
-export function mapMarketSwapInfo(data: Ex3ExchangeOpenApiAppServicesGetSwapOutputItem): MarketSwapInfo {
+export function mapMarketSwapInfo(data: Ex3ExchangeOpenApiAbstractionDtosGetSwapOutputItem): MarketSwapInfo {
   return {
     marketId: BigInt(data.marketId!),
     poolAmount: Number(data.poolAmount),
@@ -504,5 +559,28 @@ export function mapMarketDepth(data: Ex3CacheDepthManagerSpotMarketDepthDataDto)
       price: Number(item[0]),
       volume: Number(item[1])
     }))
+  };
+}
+
+export function mapTrySwapInput(input: TrySwapInput): Options<PostV1MarketTrySwapData> {
+  return {
+    body: {
+      marketId: String(input.marketId),
+      exactTokensType: input.exactTokensType as Ex3TransactionsSwapV2ExactTokensType,
+      exactTokens: String(input.exactTokens),
+      side: input.side,
+      minOut: input.minOut ? String(input.minOut) : undefined,
+      minIn: input.minIn ? String(input.minIn) : undefined
+    }
+  };
+}
+
+export function mapTrySwapResult(data: Ex3ExchangeOpenApiAbstractionDtosTrySwapResult): TrySwapResult {
+  return {
+    inputAmount: BigInt(data.inputAmount!),
+    outputAmount: BigInt(data.outputAmount!),
+    priceImpactPercentage: data.priceImpactPercentage!,
+    swapFee: BigInt(data.swapFee!),
+    executionPrice: Number(data.executionPrice!)
   };
 }
