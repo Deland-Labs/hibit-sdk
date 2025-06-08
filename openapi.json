@@ -2778,6 +2778,174 @@
         }
       }
     },
+    "/v1/market/try-swap": {
+      "post": {
+        "tags": ["Markets"],
+        "summary": "Try swap simulation",
+        "description": "Order side determination:\r\n- When exactToken is base and source type: ask (consuming base token)\r\n- When exactToken is base and target type: bid (consuming quota token)\r\n- When exactToken is quota and source type: bid (consuming quota token)\r\n- When exactToken is quota and target type: ask (consuming base token)\r\n            \r\nSource type means the exactTokens parameter specifies what you're providing.\r\nTarget type means the exactTokens parameter specifies what you want to receive.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.Abstraction.Dtos.TrySwapInput"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.Abstraction.Dtos.TrySwapInput"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.Abstraction.Dtos.TrySwapInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[Ex3.Exchange.OpenApi.Abstraction.Dtos.TrySwapResult, Ex3.Exchange.OpenApi.Abstraction, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[Ex3.Exchange.OpenApi.Abstraction.Dtos.TrySwapResult, Ex3.Exchange.OpenApi.Abstraction, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[Ex3.Exchange.OpenApi.Abstraction.Dtos.TrySwapResult, Ex3.Exchange.OpenApi.Abstraction, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              }
+            }
+          },
+          "501": {
+            "description": "Not Implemented",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Volo.Abp.Http.RemoteServiceErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/v1/order/trades": {
       "get": {
         "tags": ["Orders"],
@@ -4787,6 +4955,66 @@
         },
         "additionalProperties": false
       },
+      "Ex3.Exchange.OpenApi.Abstraction.Dtos.TrySwapInput": {
+        "type": "object",
+        "properties": {
+          "marketId": {
+            "type": "string"
+          },
+          "exactTokensType": {
+            "$ref": "#/components/schemas/Ex3.Transactions.SwapV2ExactTokensType"
+          },
+          "exactTokens": {
+            "type": "string",
+            "description": "BigInt",
+            "format": "string"
+          },
+          "side": {
+            "$ref": "#/components/schemas/Ex3.Models.OrderSide"
+          },
+          "minOut": {
+            "type": "string",
+            "description": "BigInt",
+            "format": "string",
+            "nullable": true
+          },
+          "minIn": {
+            "type": "string",
+            "description": "BigInt",
+            "format": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Ex3.Exchange.OpenApi.Abstraction.Dtos.TrySwapResult": {
+        "type": "object",
+        "properties": {
+          "inputAmount": {
+            "type": "string",
+            "description": "BigInt",
+            "format": "string"
+          },
+          "outputAmount": {
+            "type": "string",
+            "description": "BigInt",
+            "format": "string"
+          },
+          "priceImpactPercentage": {
+            "type": "number",
+            "format": "double"
+          },
+          "swapFee": {
+            "type": "string",
+            "description": "BigInt",
+            "format": "string"
+          },
+          "executionPrice": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
       "Ex3.Exchange.OpenApi.Abstraction.Dtos.WalletOrderDto": {
         "required": ["cat", "fa", "fp", "fv", "hin", "id", "mid", "p", "s", "st", "t", "ta", "tv"],
         "type": "object",
@@ -4984,6 +5212,23 @@
           },
           "data": {
             "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.Abstraction.Dtos.MarketInfoItem"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[Ex3.Exchange.OpenApi.Abstraction.Dtos.TrySwapResult, Ex3.Exchange.OpenApi.Abstraction, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.Abstraction.Dtos.TrySwapResult"
           }
         },
         "additionalProperties": false
@@ -5565,6 +5810,14 @@
           }
         },
         "additionalProperties": false
+      },
+      "Ex3.Transactions.SwapV2ExactTokensType": {
+        "enum": [0, 1],
+        "type": "integer",
+        "format": "int32",
+        "x-enumNames": ["Source", "Target"],
+        "x-enum-varnames": ["Source", "Target"],
+        "x-enumDescriptions": ["Source", "Target"]
       },
       "Microsoft.AspNetCore.Mvc.EmptyResult": {
         "type": "object",

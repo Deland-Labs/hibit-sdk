@@ -1,70 +1,73 @@
 import BigNumber from 'bignumber.js';
 import {
   AssetInfo,
+  CancelSpotOrderInput,
   ChainInfo,
+  DecimalOptions,
+  GetAssetInput,
   GetAssetsInput,
-  HexString,
-  HibitApiResponse,
-  PageResponse,
-  TransactionType,
+  GetChainBalancesInput,
+  GetMarket24HrTickerInput,
   GetMarketDepthInput,
   GetMarketKlineInput,
   GetMarketsInput,
   GetMarketTradeInput,
+  GetOrderInput,
+  GetOrdersInput,
+  GetProxyKeyInput,
+  GetRegisteredWalletInfoInput,
+  GetWalletBalancesInput,
+  HexString,
+  HibitApiResponse,
+  HibitNetwork,
+  Market24HrTickerExtendInfo,
+  Market24HrTickerInfo,
   MarketDepth,
   MarketInfo,
   MarketKlineItem,
   MarketSwapInfo,
-  Market24HrTickerInfo,
-  Trade,
-  CancelSpotOrderInput,
-  GetOrdersInput,
   OrderInfo,
   OrderTradeRecord,
-  SubmitSpotOrderInput,
-  GetWalletBalancesInput,
-  DecimalOptions,
-  HibitNetwork,
-  GetOrderInput,
-  GetMarket24HrTickerInput,
-  GetAssetInput,
-  GetChainBalancesInput,
-  Market24HrTickerExtendInfo,
-  WalletRegisterInput,
-  GetRegisteredWalletInfoInput,
+  PageResponse,
+  ProxyKeypair,
   RegisteredWalletInfo,
   ResetProxyKeyInput,
-  ProxyKeypair,
-  GetProxyKeyInput,
+  SubmitSpotOrderInput,
+  Trade,
+  TransactionType,
+  TrySwapInput,
+  TrySwapResult,
+  WalletRegisterInput,
   WithdrawInput
 } from './types';
 import {
+  getV1Asset,
   getV1Assets,
+  getV1AssetWithdrawalFee,
+  getV1ChainBalances,
   getV1Chains,
-  getV1Markets,
-  getV1Timestamp,
-  getV1WalletNonce,
-  postV1TxSubmitSpotOrder,
-  getV1MarketsTicker,
-  getV1MarketKline,
+  getV1Market,
   getV1MarketDepth,
+  getV1MarketKline,
+  getV1Markets,
   getV1MarketsSwap,
+  getV1MarketsTicker,
+  getV1MarketsTickerExtended,
   getV1MarketTrade,
+  getV1Order,
   getV1Orders,
   getV1OrderTrades,
+  getV1Timestamp,
   getV1WalletBalances,
-  getV1Market,
-  postV1TxCancelSpotOrder,
-  getV1Asset,
-  getV1Order,
-  getV1MarketsTickerExtended,
-  getV1ChainBalances,
-  postV1WalletRegister,
   getV1WalletInfo,
-  postV1ProxyKeyReset,
+  getV1WalletNonce,
+  postV1MarketTrySwap,
   postV1ProxyKey,
-  getV1AssetWithdrawalFee,
-  postV1TxWithdraw
+  postV1ProxyKeyReset,
+  postV1TxCancelSpotOrder,
+  postV1TxSubmitSpotOrder,
+  postV1TxWithdraw,
+  postV1WalletRegister
 } from './openapi';
 import { mapChainInfo } from './types/chain';
 import {
@@ -74,44 +77,46 @@ import {
   mapAssetWithdrawFeeInfo,
   mapGetAssetInput,
   mapGetAssetsInput,
-  mapGetWithdrawFeeInfoInput,
-  mapGetChainBalancesInput
+  mapGetChainBalancesInput,
+  mapGetWithdrawFeeInfoInput
 } from './types/asset';
 import {
   mapGetMarketDepthInput,
   mapGetMarketInput,
   mapGetMarketKlineInput,
+  mapGetMarkets24HrTickerInput,
   mapGetMarketsInput,
   mapGetMarketsSwapInfoInput,
   mapGetMarketsTickerInput,
   mapGetMarketTradeInput,
+  mapMarket24HrTickerExtendInfo,
+  mapMarket24HrTickerInfo,
   mapMarketDepth,
   mapMarketInfo,
   mapMarketKlineInfo,
   mapMarketSwapInfo,
-  mapMarket24HrTickerInfo,
   mapMarketTradeInfo,
-  mapGetMarkets24HrTickerInput,
-  mapMarket24HrTickerExtendInfo
+  mapTrySwapInput,
+  mapTrySwapResult
 } from './types/market';
 import {
+  mapGetOrderInput,
   mapGetOrdersInput,
   mapGetOrderTradesInput,
   mapOrderInfo,
   mapOrderTradeRecord,
-  mapGetOrderInput,
   validateGetOrderInput
 } from './types/order';
 import { TransactionManager } from './tx-manager';
 import { mapTransactionToApiRequest, OriginWalletTransaction } from './types/tx';
 import {
   mapGetNonceInput,
-  mapGetWalletBalancesInput,
-  mapToWalletRegisterApiRequest,
+  mapGetProxyKeyOutput,
   mapGetRegisteredWalletInfoInput,
   mapGetRegisteredWalletInfoOutput,
+  mapGetWalletBalancesInput,
   mapToGetProxyKeyApiRequest,
-  mapGetProxyKeyOutput
+  mapToWalletRegisterApiRequest
 } from './types/wallet';
 import { client } from './openapi/client.gen';
 import { HibitError } from './error';
@@ -344,6 +349,13 @@ export interface IHibitClient {
    * @returns {Promise<bigint>} A promise that resolves to the nonce.
    */
   getNonce(hin: bigint): Promise<bigint>;
+
+  /**
+   * Try swap simulation to estimate swap results.
+   * @param input - The swap simulation input parameters
+   * @returns A promise that resolves to the swap simulation result
+   */
+  trySwap(input: TrySwapInput): Promise<TrySwapResult>;
 }
 
 export class HibitClient implements IHibitClient {
@@ -639,8 +651,7 @@ export class HibitClient implements IHibitClient {
     this.ensureWalletApi(apiName);
 
     const aseKey = await this.walletApi!.signMessage(PROXY_KEY_ENCRYPT_SOURCE_MSG);
-    const encryptedProxyKey = Keypair.encryptPrivateKey(input.proxyPrivateKey!, aseKey);
-    input.proxyPrivateKey = encryptedProxyKey;
+    input.proxyPrivateKey = Keypair.encryptPrivateKey(input.proxyPrivateKey!, aseKey);
     const message = this.walletApi!.generateWalletResetProxyKeyMessage(input, this.options.hin!);
     const signature = await this.walletApi!.signMessage(message);
     const originWalletRequest = new OriginWalletTransaction(input.chain, message, undefined, signature);
@@ -701,6 +712,15 @@ export class HibitClient implements IHibitClient {
     this.ensureSuccess(apiName, response.data);
 
     return BigInt(response.data!.data!.nonce!);
+  }
+
+  async trySwap(input: TrySwapInput): Promise<TrySwapResult> {
+    const apiName = 'trySwap';
+    const resp = await postV1MarketTrySwap(mapTrySwapInput(input));
+
+    this.ensureSuccess(apiName, resp.data);
+
+    return mapTrySwapResult(resp.data!.data!);
   }
 
   private ensureSuccess<T extends HibitApiResponse>(apiName: string, response?: T) {
