@@ -731,13 +731,43 @@
         "type": "object",
         "properties": {
           "status": {
+            "$ref": "#/components/schemas/Ex3.Broker.Repository.Entities.AgentOrderStatus"
+          },
+          "orderExecutionTxHash": {
             "type": "string",
-            "description": "Order status, such as \"Pending\", \"Success\", \"Rejected\"",
+            "description": "The transaction hash for the order execution.",
             "nullable": true
           },
-          "txHash": {
+          "refundTxHash": {
             "type": "string",
-            "description": "The order executing transaction hash.",
+            "description": "The transaction hash for the payback operation, if applicable.",
+            "nullable": true
+          },
+          "refundAmount": {
+            "type": "string",
+            "description": "The amount paid back in the payback transaction.",
+            "format": "string",
+            "nullable": true
+          },
+          "refundAsset": {
+            "type": "string",
+            "description": "The asset address for the payback transaction.",
+            "nullable": true
+          },
+          "transferredTxHash": {
+            "type": "string",
+            "description": "The transaction hash for the transfer operation.",
+            "nullable": true
+          },
+          "transferredAmount": {
+            "type": "string",
+            "description": "The amount transferred to the user on successful transaction.",
+            "format": "string",
+            "nullable": true
+          },
+          "transferredAsset": {
+            "type": "string",
+            "description": "The asset address for the successful transaction.",
             "nullable": true
           }
         },
@@ -964,6 +994,47 @@
         },
         "additionalProperties": false,
         "description": "result of open api"
+      },
+      "Ex3.Broker.Repository.Entities.AgentOrderStatus": {
+        "enum": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+        "type": "integer",
+        "format": "int32",
+        "x-enumNames": [
+          "Accepted",
+          "PaymentConfirmed",
+          "PendingExecution",
+          "Executed",
+          "Succeeded",
+          "Cancelled",
+          "PendingWithdraw",
+          "Withdrawn",
+          "PendingRefund",
+          "Refunded"
+        ],
+        "x-enum-varnames": [
+          "Accepted",
+          "PaymentConfirmed",
+          "PendingExecution",
+          "Executed",
+          "Succeeded",
+          "Cancelled",
+          "PendingWithdraw",
+          "Withdrawn",
+          "PendingRefund",
+          "Refunded"
+        ],
+        "x-enumDescriptions": [
+          "Accepted",
+          "PaymentConfirmed",
+          "PendingExecution",
+          "Executed",
+          "Succeeded",
+          "Cancelled",
+          "PendingWithdraw",
+          "Withdrawn",
+          "PendingRefund",
+          "Refunded"
+        ]
       },
       "Ex3.Models.WalletSignatureSchema": {
         "enum": [1000, 1001, 1002, 2000, 2010, 2020, 3000, 3010],

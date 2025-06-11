@@ -8,14 +8,35 @@ export type Ex3BrokerApiAppServicesDtosGetFundReceiverOutput = {
 };
 
 export type Ex3BrokerApiAppServicesDtosGetOrderOutput = {
+  status: Ex3BrokerRepositoryEntitiesAgentOrderStatus;
   /**
-   * Order status, such as "Pending", "Success", "Rejected"
+   * The transaction hash for the order execution.
    */
-  status: string | null;
+  orderExecutionTxHash?: string | null;
   /**
-   * The order executing transaction hash.
+   * The transaction hash for the payback operation, if applicable.
    */
-  txHash?: string | null;
+  refundTxHash?: string | null;
+  /**
+   * The amount paid back in the payback transaction.
+   */
+  refundAmount?: string | null;
+  /**
+   * The asset address for the payback transaction.
+   */
+  refundAsset?: string | null;
+  /**
+   * The transaction hash for the transfer operation.
+   */
+  transferredTxHash?: string | null;
+  /**
+   * The amount transferred to the user on successful transaction.
+   */
+  transferredAmount?: string | null;
+  /**
+   * The asset address for the successful transaction.
+   */
+  transferredAsset?: string | null;
 };
 
 export type Ex3BrokerApiAppServicesDtosQuoteResult = {
@@ -205,6 +226,8 @@ export type Ex3BrokerApiOpenApiResult1Ex3BrokerApiAppServicesDtosSwapOutput_Ex3B
     message?: string | null;
     data?: Ex3BrokerApiAppServicesDtosSwapOutput;
   };
+
+export type Ex3BrokerRepositoryEntitiesAgentOrderStatus = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
 
 /**
  * Represents the schema of a wallet signature.

@@ -8,7 +8,7 @@ import {
   GetV1QuoteData,
   PostV1SwapData
 } from '../broker-api';
-import { ChainAssetType, WalletSignatureSchema } from './enums';
+import { AgentOrderStatus, ChainAssetType, WalletSignatureSchema } from './enums';
 
 export type GetPaymentAddressInput = {
   /**
@@ -248,21 +248,6 @@ export class SwapInput {
   }
 }
 
-export enum AgentOrderStatus {
-  /**
-   * The order is pending and has not yet been processed.
-   */
-  Pending = 'Pending',
-  /**
-   * The order was successfully executed.
-   */
-  Success = 'Success',
-  /**
-   * The order was rejected or failed.
-   */
-  Rejected = 'Rejected'
-}
-
 export type AgentOrderData = {
   /**
    * Agent order status
@@ -270,9 +255,39 @@ export type AgentOrderData = {
   status: AgentOrderStatus;
 
   /**
-   * The order executing transaction hash.
+   * The transaction hash for the order execution.
    */
-  txHash?: string;
+  orderExecutionTxHash?: string;
+
+  /**
+   * The transaction hash for the payback operation, if applicable.
+   */
+  refundTxHash?: string;
+
+  /**
+   * The amount paid back in the payback transaction.
+   */
+  refundAmount?: bigint;
+
+  /**
+   * The asset address for the payback transaction.
+   */
+  refundAssetAddress?: string;
+
+  /**
+   * The transaction hash for the transfer operation.
+   */
+  transferredTxHash?: string;
+
+  /**
+   * The amount transferred to the user on successful transaction.
+   */
+  transferredAmount?: bigint;
+
+  /**
+   * The asset address for the successful transaction.
+   */
+  transferredAssetAddress?: string;
 };
 
 export function mapGetPaymentAddressInput(input: GetPaymentAddressInput): Options<GetV1PaymentAddressData> {
@@ -344,8 +359,17 @@ export function mapGetAgentOrderInput(agentOrderId: string): Options<GetV1OrderD
 }
 
 export function mapGeAgentOrderOutput(result: Ex3BrokerApiAppServicesDtosGetOrderOutput): AgentOrderData {
-  return {
+  const obj = {
     status: result.status as AgentOrderStatus,
-    txHash: result.txHash || undefined
+    orderExecutionTxHash: result.orderExecutionTxHash || undefined,
+    refundTxHash: result.refundTxHash || undefined,
+    refundAmount: result.refundAmount ? BigInt(result.refundAmount!) : undefined,
+    refundAssetAddress: result.refundAsset || undefined,
+    transferredTxHash: result.transferredTxHash || undefined,
+    transferredAmount: result.transferredAmount ? BigInt(result.transferredAmount!) : undefined,
+    transferredAssetAddress: result.transferredAsset || undefined
   };
+
+  // remove undefined properties
+  return Object.fromEntries(Object.entries(obj).filter(([_, value]) => value !== undefined)) as AgentOrderData;
 }

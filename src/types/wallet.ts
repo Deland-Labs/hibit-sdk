@@ -8,7 +8,7 @@ import {
   PostV1ProxyKeyData,
   Ex3ExchangeOpenApiAppServicesProxyKeyResult
 } from '../openapi';
-import { Chain, ChainNetwork } from './chain';
+import { Chain } from './chain';
 import { WalletSignatureSchema } from './enums';
 import { HexString } from './index';
 import { OriginWalletTransaction } from './tx.ts';
@@ -105,17 +105,6 @@ export type GetProxyKeyInput = {
 
   /** Timestamp of the request in milliseconds */
   timestamp: number;
-};
-
-export type WithdrawInput = {
-  nonce: bigint;
-  targetChain: Chain;
-  targetChainNetwork: ChainNetwork;
-  address: string;
-  assetId: bigint;
-  assetDecimals: number;
-  amount: number;
-  fee: number;
 };
 
 /**

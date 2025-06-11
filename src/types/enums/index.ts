@@ -9,6 +9,8 @@ export { OrderStatus } from './order-status';
 export { TransactionType } from './tx-type';
 export { HibitNetwork } from './hibit-network';
 export { WalletSignatureSchema } from './wallet-sign-schema';
+export { AgentOrderStatus } from './agent-order-status';
+export { WithdrawalStatus } from './withdraw-status';
 
 export enum Version {
   V0 = 0

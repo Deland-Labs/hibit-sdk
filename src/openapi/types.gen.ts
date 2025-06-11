@@ -180,6 +180,24 @@ export type Ex3ExchangeOpenApiAbstractionDtosWalletOrderTradeListItem = {
   t: unknown;
 };
 
+export type Ex3ExchangeOpenApiAbstractionDtosWithdrawDetailsOutput = {
+  txHash?: string | null;
+  status?: Ex3RepositoryWithdrawalStatus;
+  chain?: string;
+  network?: string;
+  assetType?: string;
+  token?: string;
+  originChainTxHash?: string | null;
+  /**
+   * BigInt
+   */
+  volume?: string;
+  /**
+   * BigInt
+   */
+  fee?: string;
+};
+
 export type Ex3ExchangeOpenApiAbstractionOpenApiResult1CollectionsPooledPooledList1Ex3ExchangeOpenApiAbstractionDtosWalletOrderTradeListItem_Ex3ExchangeOpenApiAbstraction_Version_1000_Culture_neutral_PublicKeyToken_null___CollectionsPooled_Version_10820_Culture_neutral_PublicKeyToken_null =
   {
     code?: number;
@@ -243,6 +261,13 @@ export type Ex3ExchangeOpenApiAbstractionOpenApiResult1Ex3ExchangeOpenApiAbstrac
     data?: Ex3ExchangeOpenApiAbstractionDtosWalletOrderDto;
   };
 
+export type Ex3ExchangeOpenApiAbstractionOpenApiResult1Ex3ExchangeOpenApiAbstractionDtosWithdrawDetailsOutput_Ex3ExchangeOpenApiAbstraction_Version_1000_Culture_neutral_PublicKeyToken_null =
+  {
+    code?: number;
+    message?: string | null;
+    data?: Ex3ExchangeOpenApiAbstractionDtosWithdrawDetailsOutput;
+  };
+
 export type Ex3ExchangeOpenApiAbstractionOpenApiResult1Ex3ExchangeOpenApiAppServicesAssetWithdrawFeeInfoDto_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null =
   {
     code?: number;
@@ -276,6 +301,13 @@ export type Ex3ExchangeOpenApiAbstractionOpenApiResult1Ex3ExchangeOpenApiAppServ
     code?: number;
     message?: string | null;
     data?: Ex3ExchangeOpenApiAppServicesWalletRegistrationInfo;
+  };
+
+export type Ex3ExchangeOpenApiAbstractionOpenApiResult1Ex3ExchangeOpenApiAppServicesWithdrawOutput_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null =
+  {
+    code?: number;
+    message?: string | null;
+    data?: Ex3ExchangeOpenApiAppServicesWithdrawOutput;
   };
 
 export type Ex3ExchangeOpenApiAbstractionOpenApiResult1MicrosoftAspNetCoreMvcEmptyResult_MicrosoftAspNetCoreMvcCore_Version_9000_Culture_neutral_PublicKeyToken_adb9793829Ddae60 =
@@ -479,6 +511,16 @@ export type Ex3ExchangeOpenApiAppServicesWalletRegistrationInfo = {
   hin?: string | null;
 };
 
+/**
+ * Output model for a withdrawal operation.
+ */
+export type Ex3ExchangeOpenApiAppServicesWithdrawOutput = {
+  /**
+   * The transaction hash of the withdrawal.
+   */
+  txHash?: string | null;
+};
+
 export type Ex3ModelsEx3KeyPair = {
   privateKeyHex?: string;
   publicKeyHex?: string;
@@ -500,6 +542,8 @@ export type Ex3ModelsOrderSide = 1 | 2;
 export type Ex3ModelsSignaturesSchema = 1;
 
 export type Ex3RepositoryHistoryEntitiesOrderStatus = 0 | 1 | 2;
+
+export type Ex3RepositoryWithdrawalStatus = 0 | 1;
 
 export type Ex3TransactionsL2Request = {
   type?: string;
@@ -1723,51 +1767,6 @@ export type PostV1TxCancelSpotOrderResponses = {
 
 export type PostV1TxCancelSpotOrderResponse = PostV1TxCancelSpotOrderResponses[keyof PostV1TxCancelSpotOrderResponses];
 
-export type PostV1TxWithdrawData = {
-  body?: Ex3ExchangeOpenApiAppServicesOriginWalletRequest;
-  path?: never;
-  query?: never;
-  url: '/v1/tx/withdraw';
-};
-
-export type PostV1TxWithdrawErrors = {
-  /**
-   * Bad Request
-   */
-  400: VoloAbpHttpRemoteServiceErrorResponse;
-  /**
-   * Unauthorized
-   */
-  401: VoloAbpHttpRemoteServiceErrorResponse;
-  /**
-   * Forbidden
-   */
-  403: VoloAbpHttpRemoteServiceErrorResponse;
-  /**
-   * Not Found
-   */
-  404: VoloAbpHttpRemoteServiceErrorResponse;
-  /**
-   * Internal Server Error
-   */
-  500: VoloAbpHttpRemoteServiceErrorResponse;
-  /**
-   * Not Implemented
-   */
-  501: VoloAbpHttpRemoteServiceErrorResponse;
-};
-
-export type PostV1TxWithdrawError = PostV1TxWithdrawErrors[keyof PostV1TxWithdrawErrors];
-
-export type PostV1TxWithdrawResponses = {
-  /**
-   * OK
-   */
-  200: Ex3ExchangeOpenApiAbstractionOpenApiResult1Ex3ExchangeIActorsEmptyResultBody_Ex3ExchangeIActorsModels_Version_1000_Culture_neutral_PublicKeyToken_null;
-};
-
-export type PostV1TxWithdrawResponse = PostV1TxWithdrawResponses[keyof PostV1TxWithdrawResponses];
-
 export type GetV1WalletNonceData = {
   body?: never;
   path?: never;
@@ -1956,6 +1955,98 @@ export type GetV1WalletInfoResponses = {
 };
 
 export type GetV1WalletInfoResponse = GetV1WalletInfoResponses[keyof GetV1WalletInfoResponses];
+
+export type PostV1WithdrawData = {
+  body?: Ex3ExchangeOpenApiAppServicesOriginWalletRequest;
+  path?: never;
+  query?: never;
+  url: '/v1/withdraw';
+};
+
+export type PostV1WithdrawErrors = {
+  /**
+   * Bad Request
+   */
+  400: VoloAbpHttpRemoteServiceErrorResponse;
+  /**
+   * Unauthorized
+   */
+  401: VoloAbpHttpRemoteServiceErrorResponse;
+  /**
+   * Forbidden
+   */
+  403: VoloAbpHttpRemoteServiceErrorResponse;
+  /**
+   * Not Found
+   */
+  404: VoloAbpHttpRemoteServiceErrorResponse;
+  /**
+   * Internal Server Error
+   */
+  500: VoloAbpHttpRemoteServiceErrorResponse;
+  /**
+   * Not Implemented
+   */
+  501: VoloAbpHttpRemoteServiceErrorResponse;
+};
+
+export type PostV1WithdrawError = PostV1WithdrawErrors[keyof PostV1WithdrawErrors];
+
+export type PostV1WithdrawResponses = {
+  /**
+   * OK
+   */
+  200: Ex3ExchangeOpenApiAbstractionOpenApiResult1Ex3ExchangeOpenApiAppServicesWithdrawOutput_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null;
+};
+
+export type PostV1WithdrawResponse = PostV1WithdrawResponses[keyof PostV1WithdrawResponses];
+
+export type GetV1WithdrawDetailsData = {
+  body?: never;
+  path?: never;
+  query?: {
+    TxHash?: string;
+  };
+  url: '/v1/withdraw-details';
+};
+
+export type GetV1WithdrawDetailsErrors = {
+  /**
+   * Bad Request
+   */
+  400: VoloAbpHttpRemoteServiceErrorResponse;
+  /**
+   * Unauthorized
+   */
+  401: VoloAbpHttpRemoteServiceErrorResponse;
+  /**
+   * Forbidden
+   */
+  403: VoloAbpHttpRemoteServiceErrorResponse;
+  /**
+   * Not Found
+   */
+  404: VoloAbpHttpRemoteServiceErrorResponse;
+  /**
+   * Internal Server Error
+   */
+  500: VoloAbpHttpRemoteServiceErrorResponse;
+  /**
+   * Not Implemented
+   */
+  501: VoloAbpHttpRemoteServiceErrorResponse;
+};
+
+export type GetV1WithdrawDetailsError = GetV1WithdrawDetailsErrors[keyof GetV1WithdrawDetailsErrors];
+
+export type GetV1WithdrawDetailsResponses = {
+  /**
+   * OK
+   */
+  200: Ex3ExchangeOpenApiAbstractionOpenApiResult1Ex3ExchangeOpenApiAbstractionDtosWithdrawDetailsOutput_Ex3ExchangeOpenApiAbstraction_Version_1000_Culture_neutral_PublicKeyToken_null;
+};
+
+export type GetV1WithdrawDetailsResponse = GetV1WithdrawDetailsResponses[keyof GetV1WithdrawDetailsResponses];
 
 export type ClientOptions = {
   baseUrl: 'https://testnetopenapi.hibit.app' | 'https://openapi.hibit.app' | (string & {});

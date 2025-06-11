@@ -38,7 +38,8 @@ import {
   TrySwapInput,
   TrySwapResult,
   WalletRegisterInput,
-  WithdrawInput
+  WithdrawInput,
+  WithdrawDetailsInfo
 } from './types';
 import {
   getV1Asset,
@@ -61,12 +62,13 @@ import {
   getV1WalletBalances,
   getV1WalletInfo,
   getV1WalletNonce,
+  getV1WithdrawDetails,
   postV1MarketTrySwap,
   postV1ProxyKey,
   postV1ProxyKeyReset,
   postV1TxCancelSpotOrder,
   postV1TxSubmitSpotOrder,
-  postV1TxWithdraw,
+  postV1Withdraw,
   postV1WalletRegister
 } from './openapi';
 import { mapChainInfo } from './types/chain';
@@ -118,6 +120,7 @@ import {
   mapToGetProxyKeyApiRequest,
   mapToWalletRegisterApiRequest
 } from './types/wallet';
+import { mapGetWithdrawDetailsInput, mapWithdrawDetailsInfo } from './types/withdraw';
 import { client } from './openapi/client.gen';
 import { HibitError } from './error';
 import { mapCancelOrdersCborInput, mapSubmitSpotOrderCborInput } from './types/order/payload';
@@ -356,6 +359,14 @@ export interface IHibitClient {
    * @returns A promise that resolves to the swap simulation result
    */
   trySwap(input: TrySwapInput): Promise<TrySwapResult>;
+
+  /**
+   * Get withdrawal details by transaction hash.
+   *
+   * @param {string} txHash - The transaction hash of the withdrawal.
+   * @returns {Promise<WithdrawDetailsInfo>} A promise that resolves to the withdrawal details information.
+   */
+  getWithdrawDetails(txHash: string): Promise<WithdrawDetailsInfo>;
 }
 
 export class HibitClient implements IHibitClient {
@@ -700,7 +711,7 @@ export class HibitClient implements IHibitClient {
       input.targetChainNetwork,
       signature
     );
-    const resp = await postV1TxWithdraw(mapToGetProxyKeyApiRequest(originWalletRequest));
+    const resp = await postV1Withdraw(mapToGetProxyKeyApiRequest(originWalletRequest));
 
     this.ensureSuccess(apiName, resp.data);
   }
@@ -721,6 +732,15 @@ export class HibitClient implements IHibitClient {
     this.ensureSuccess(apiName, resp.data);
 
     return mapTrySwapResult(resp.data!.data!);
+  }
+
+  async getWithdrawDetails(txHash: string): Promise<WithdrawDetailsInfo> {
+    const apiName = 'getWithdrawDetails';
+    const response = await getV1WithdrawDetails(mapGetWithdrawDetailsInput(txHash));
+
+    this.ensureSuccess(apiName, response.data);
+
+    return mapWithdrawDetailsInfo(response.data!.data!);
   }
 
   private ensureSuccess<T extends HibitApiResponse>(apiName: string, response?: T) {
