@@ -272,7 +272,7 @@ export type AgentOrderData = {
   /**
    * The asset address for the payback transaction.
    */
-  refundAssetAddress?: string;
+  refundAsset?: string;
 
   /**
    * The transaction hash for the transfer operation.
@@ -287,7 +287,7 @@ export type AgentOrderData = {
   /**
    * The asset address for the successful transaction.
    */
-  transferredAssetAddress?: string;
+  transferredAsset?: string;
 };
 
 export function mapGetPaymentAddressInput(input: GetPaymentAddressInput): Options<GetV1PaymentAddressData> {
@@ -364,12 +364,12 @@ export function mapGeAgentOrderOutput(result: Ex3BrokerApiAppServicesDtosGetOrde
     orderExecutionTxHash: result.orderExecutionTxHash || undefined,
     refundTxHash: result.refundTxHash || undefined,
     refundAmount: result.refundAmount ? BigInt(result.refundAmount!) : undefined,
-    refundAssetAddress: result.refundAsset || undefined,
+    refundAsset: result.refundAsset || undefined,
     transferredTxHash: result.transferredTxHash || undefined,
     transferredAmount: result.transferredAmount ? BigInt(result.transferredAmount!) : undefined,
-    transferredAssetAddress: result.transferredAsset || undefined
+    transferredAsset: result.transferredAsset || undefined
   };
 
   // remove undefined properties
-  return Object.fromEntries(Object.entries(obj).filter(([_, value]) => value !== undefined)) as AgentOrderData;
+  return Object.fromEntries(Object.entries(obj).filter(([, value]) => value !== undefined)) as AgentOrderData;
 }
