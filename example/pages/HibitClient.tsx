@@ -26,6 +26,7 @@ import SectionResetProxyKey from '../components/hibit-client-sections/SectionRes
 import SectionGetProxyKeypair from '../components/hibit-client-sections/SectionGetProxyKeypair';
 import SectionGetWalletBalances from '../components/hibit-client-sections/SectionGetWalletBalances';
 import SectionWithdraw from '../components/hibit-client-sections/SectionWithdraw';
+import SectionGetWithdrawDetails from '../components/hibit-client-sections/SectionGetWithdrawDetails';
 import SectionGetNonce from '../components/hibit-client-sections/SectionGetNonce';
 import { HibitNetwork } from '../../src';
 import SectionSetHibitClientOptions from '../components/hibit-client-sections/SectionSetHibitClientOptions';
@@ -92,6 +93,7 @@ const HibitClientPage: FC = () => {
           <SectionGetProxyKeypair />
           <SectionGetWalletBalances />
           <SectionWithdraw />
+          <SectionGetWithdrawDetails />
           <SectionGetNonce />
         </div>
       </ClientProvider>

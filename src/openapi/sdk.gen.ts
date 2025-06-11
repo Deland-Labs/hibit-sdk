@@ -68,9 +68,6 @@ import type {
   PostV1TxCancelSpotOrderData,
   PostV1TxCancelSpotOrderResponse,
   PostV1TxCancelSpotOrderError,
-  PostV1TxWithdrawData,
-  PostV1TxWithdrawResponse,
-  PostV1TxWithdrawError,
   GetV1WalletNonceData,
   GetV1WalletNonceResponse,
   GetV1WalletNonceError,
@@ -82,7 +79,13 @@ import type {
   PostV1WalletRegisterError,
   GetV1WalletInfoData,
   GetV1WalletInfoResponse,
-  GetV1WalletInfoError
+  GetV1WalletInfoError,
+  PostV1WithdrawData,
+  PostV1WithdrawResponse,
+  PostV1WithdrawError,
+  GetV1WithdrawDetailsData,
+  GetV1WithdrawDetailsResponse,
+  GetV1WithdrawDetailsError
 } from './types.gen';
 import { client as _heyApiClient } from './client.gen';
 
@@ -406,22 +409,6 @@ export const postV1TxCancelSpotOrder = <ThrowOnError extends boolean = false>(
 };
 
 /**
- * Withdraw
- */
-export const postV1TxWithdraw = <ThrowOnError extends boolean = false>(
-  options?: Options<PostV1TxWithdrawData, ThrowOnError>
-) => {
-  return (options?.client ?? _heyApiClient).post<PostV1TxWithdrawResponse, PostV1TxWithdrawError, ThrowOnError>({
-    url: '/v1/tx/withdraw',
-    ...options,
-    headers: {
-      'Content-Type': 'application/json',
-      ...options?.headers
-    }
-  });
-};
-
-/**
  * Get wallet nonce
  */
 export const getV1WalletNonce = <ThrowOnError extends boolean = false>(
@@ -471,6 +458,34 @@ export const getV1WalletInfo = <ThrowOnError extends boolean = false>(
 ) => {
   return (options?.client ?? _heyApiClient).get<GetV1WalletInfoResponse, GetV1WalletInfoError, ThrowOnError>({
     url: '/v1/wallet/info',
+    ...options
+  });
+};
+
+/**
+ * Withdraw
+ */
+export const postV1Withdraw = <ThrowOnError extends boolean = false>(
+  options?: Options<PostV1WithdrawData, ThrowOnError>
+) => {
+  return (options?.client ?? _heyApiClient).post<PostV1WithdrawResponse, PostV1WithdrawError, ThrowOnError>({
+    url: '/v1/withdraw',
+    ...options,
+    headers: {
+      'Content-Type': 'application/json',
+      ...options?.headers
+    }
+  });
+};
+
+/**
+ * Get withdrawal details by transaction hash
+ */
+export const getV1WithdrawDetails = <ThrowOnError extends boolean = false>(
+  options?: Options<GetV1WithdrawDetailsData, ThrowOnError>
+) => {
+  return (options?.client ?? _heyApiClient).get<GetV1WithdrawDetailsResponse, GetV1WithdrawDetailsError, ThrowOnError>({
+    url: '/v1/withdraw-details',
     ...options
   });
 };
