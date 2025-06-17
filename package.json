@@ -3,6 +3,8 @@
   "private": false,
   "type": "module",
   "version": "3.0.0",
+  "repository": "https://github.com/Deland-Labs/hibit-sdk",
+  "author": "Deland Labs Dev Team",
   "files": [
     "dist"
   ],
