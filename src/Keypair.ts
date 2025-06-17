@@ -3,7 +3,7 @@ import { sha256 } from '@noble/hashes/sha256';
 import { hmac } from '@noble/hashes/hmac';
 import { Buffer } from 'buffer';
 import { HexString } from './types';
-import { AES } from 'crypto-js';
+import CryptoJS from 'crypto-js';
 
 // Configure secp256k1 to use the correct HMAC function
 secp.etc.hmacSha256Sync = (key, ...msgs) => hmac(sha256, key, secp.etc.concatBytes(...msgs));
@@ -55,7 +55,7 @@ export class Keypair {
    * @returns The encrypted private key as a string
    */
   static encryptPrivateKey(privateKey: HexString, password: string): HexString {
-    return Buffer.from(AES.encrypt(privateKey, password).toString()).toString('hex');
+    return Buffer.from(CryptoJS.AES.encrypt(privateKey, password).toString()).toString('hex');
   }
 
   /**
@@ -67,7 +67,9 @@ export class Keypair {
    * @throws {Error} If decryption fails
    */
   private static decryptPrivateKey(encryptedPrivateKey: string, password: string): string {
-    const bytes = CryptoJS.AES.decrypt(encryptedPrivateKey, password);
+    // Convert hex back to base64 string
+    const base64String = Buffer.from(encryptedPrivateKey, 'hex').toString();
+    const bytes = CryptoJS.AES.decrypt(base64String, password);
     const decrypted = bytes.toString(CryptoJS.enc.Utf8);
 
     if (!decrypted) {
