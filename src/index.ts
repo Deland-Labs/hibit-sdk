@@ -5,5 +5,5 @@ export { hibitClient, HibitClient } from './hibit-client';
 export { TransactionManager } from './tx-manager';
 export { HibitError } from './error';
 export { Keypair } from './Keypair';
-export type { IWalletApi, MetaMaskWalletApi, KaswareWalletApi } from './wallet-api';
+export type { IWalletApi, AbstractWalletApi, MetaMaskWalletApi, KaswareWalletApi } from './wallet-api';
 export { brokerClient, BrokerClient } from './broker-client';
