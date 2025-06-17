@@ -19,7 +19,7 @@ import { OriginWalletTransaction } from './tx.ts';
  */
 export type RegisteredWalletInfo = {
   /** The HIN of the wallet */
-  hin: bigint;
+  hin?: bigint;
 };
 
 /**
@@ -207,7 +207,7 @@ export function mapGetRegisteredWalletInfoOutput(
   data: Ex3ExchangeOpenApiAppServicesWalletRegistrationInfo
 ): RegisteredWalletInfo {
   return {
-    hin: BigInt(data.hin!)
+    hin: data.hin ? BigInt(data.hin!) : undefined
   };
 }
 

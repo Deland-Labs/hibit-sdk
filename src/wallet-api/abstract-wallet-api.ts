@@ -74,7 +74,7 @@ export abstract class AbstractWalletApi implements IWalletApi {
     this.validateSignatureSchema(input.signatureSchema);
 
     // Use the public key from input if provided
-    const pubKey = input.publicKey || '';
+    const pubKey = input.publicKey ? `0x${input.publicKey}` : '0x00';
 
     // Format the payload with all required fields
     const payload = [
