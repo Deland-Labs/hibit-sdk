@@ -6,3 +6,4 @@ export * from './error';
 export * from './Keypair';
 export * from './wallet-api';
 export * from './broker-client';
+export * from './constant';
