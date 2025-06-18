@@ -2,7 +2,7 @@
   "name": "@delandlabs/hibit-sdk",
   "private": false,
   "type": "module",
-  "version": "3.0.6",
+  "version": "3.0.7",
   "repository": "https://github.com/Deland-Labs/hibit-sdk",
   "author": "Deland Labs Dev Team",
   "files": [
