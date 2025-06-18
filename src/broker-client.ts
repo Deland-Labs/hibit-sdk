@@ -74,11 +74,6 @@ export class BrokerClient implements IBrokerClient {
     const apiName = 'swap';
     this.validateSwapInput(apiName, input);
 
-    // Ensure hin is set (use provided hin or fallback to options hin)
-    if (!input.hin) {
-      input.hin = this.ensureHin(apiName);
-    }
-
     const response = await postV1Swap(mapSwapInput(input));
 
     this.ensureSuccess(apiName, response.data);
@@ -141,9 +136,8 @@ export class BrokerClient implements IBrokerClient {
     if (!input) {
       HibitError.throwMissingRequiredParameterError(apiName, 'input');
     }
-    // Use provided hin or fall back to options hin
     if (!input.hin) {
-      this.ensureHin(apiName);
+      HibitError.throwMissingRequiredParameterError(apiName, 'hin');
     }
     if (!input.sourceWalletPublicKey) {
       HibitError.throwMissingRequiredParameterError(apiName, 'sourceWalletPublicKey');
