@@ -83,29 +83,31 @@ describe('Broker Client Test', () => {
         );
       });
 
-      it('should work when hin is provided in input', async () => {
-        // This should not throw hin validation error, but may throw API error
-        try {
-          await brokerClient.getPaymentAddress({
+      it('should pass validation when hin is provided in input', () => {
+        // Test just the validation logic, not the API call
+        expect(() => {
+          const client = new BrokerClient();
+          client.setOptions({ network: HibitNetwork.Testnet, hin: 10005n });
+          // This should not throw during validation
+          const mockValidate = (client as any).validateGetPaymentAddressInput;
+          mockValidate.call(client, 'getPaymentAddress', {
             hin: 123n,
             chainId: new ChainId(Chain.Kaspa, ChainNetwork.KaspaTestNet)
           });
-        } catch (error: any) {
-          // Should not be a hin validation error
-          expect(error.message).not.toContain("Missing required parameter 'hin'");
-        }
+        }).not.toThrow();
       });
 
-      it('should work when hin is not provided in input but exists in options', async () => {
-        // This should not throw hin validation error, but may throw API error
-        try {
-          await brokerClient.getPaymentAddress({
+      it('should pass validation when hin is not provided in input but exists in options', () => {
+        // Test just the validation logic, not the API call
+        expect(() => {
+          const client = new BrokerClient();
+          client.setOptions({ network: HibitNetwork.Testnet, hin: 10005n });
+          // This should not throw during validation
+          const mockValidate = (client as any).validateGetPaymentAddressInput;
+          mockValidate.call(client, 'getPaymentAddress', {
             chainId: new ChainId(Chain.Kaspa, ChainNetwork.KaspaTestNet)
           });
-        } catch (error: any) {
-          // Should not be a hin validation error
-          expect(error.message).not.toContain("Missing required parameter 'hin'");
-        }
+        }).not.toThrow();
       });
 
       it('should throw error when hin is not in input and not in options', async () => {
@@ -211,46 +213,49 @@ describe('Broker Client Test', () => {
           brokerClient.swap({ ...baseInput, sourceWalletPublicKey: 'test', sourceWalletAddress: 'test' } as any)
         ).rejects.toThrow("Missing required parameter 'txRef' in swap");
       });
+      it('should pass validation when hin is provided in input', () => {
+        // Test just the validation logic, not the API call
+        expect(() => {
+          const client = new BrokerClient();
+          client.setOptions({ network: HibitNetwork.Testnet, hin: 10005n });
 
-      it('should work when hin is provided in input', async () => {
-        const inputWithHin = new SwapInput({
-          hin: 123n,
-          sourceWalletPublicKey: 'test-key',
-          sourceWalletAddress: 'test-address',
-          txRef: 'test-tx',
-          sourceChainId: new ChainId(Chain.Kaspa, ChainNetwork.KaspaTestNet),
-          sourceVolume: 1000n,
-          targetVolume: 900n,
-          targetVolumeMin: 850n
-        });
+          const inputWithHin = new SwapInput({
+            hin: 123n,
+            sourceWalletPublicKey: 'test-key',
+            sourceWalletAddress: 'test-address',
+            txRef: 'test-tx',
+            sourceChainId: new ChainId(Chain.Kaspa, ChainNetwork.KaspaTestNet),
+            sourceVolume: 1000n,
+            targetVolume: 900n,
+            targetVolumeMin: 850n
+          });
 
-        // This should not throw hin validation error, but may throw API error
-        try {
-          await brokerClient.swap(inputWithHin);
-        } catch (error: any) {
-          // Should not be a hin validation error
-          expect(error.message).not.toContain("Missing required parameter 'hin'");
-        }
+          // This should not throw during validation
+          const mockValidate = (client as any).validateSwapInput;
+          mockValidate.call(client, 'swap', inputWithHin);
+        }).not.toThrow();
       });
 
-      it('should work when hin is not provided in input but exists in options', async () => {
-        const inputWithoutHin = new SwapInput({
-          sourceWalletPublicKey: 'test-key',
-          sourceWalletAddress: 'test-address',
-          txRef: 'test-tx',
-          sourceChainId: new ChainId(Chain.Kaspa, ChainNetwork.KaspaTestNet),
-          sourceVolume: 1000n,
-          targetVolume: 900n,
-          targetVolumeMin: 850n
-        });
+      it('should pass validation when hin is not provided in input but exists in options', () => {
+        // Test just the validation logic, not the API call
+        expect(() => {
+          const client = new BrokerClient();
+          client.setOptions({ network: HibitNetwork.Testnet, hin: 10005n });
 
-        // This should not throw hin validation error, but may throw API error
-        try {
-          await brokerClient.swap(inputWithoutHin);
-        } catch (error: any) {
-          // Should not be a hin validation error
-          expect(error.message).not.toContain("Missing required parameter 'hin'");
-        }
+          const inputWithoutHin = new SwapInput({
+            sourceWalletPublicKey: 'test-key',
+            sourceWalletAddress: 'test-address',
+            txRef: 'test-tx',
+            sourceChainId: new ChainId(Chain.Kaspa, ChainNetwork.KaspaTestNet),
+            sourceVolume: 1000n,
+            targetVolume: 900n,
+            targetVolumeMin: 850n
+          });
+
+          // This should not throw during validation
+          const mockValidate = (client as any).validateSwapInput;
+          mockValidate.call(client, 'swap', inputWithoutHin);
+        }).not.toThrow();
       });
 
       it('should throw error when hin is not in input and not in options', async () => {
