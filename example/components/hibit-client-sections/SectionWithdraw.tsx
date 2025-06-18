@@ -121,7 +121,8 @@ export default function SectionWithdraw() {
 
     setLoadingNonce(true);
     try {
-      const nonce = await client.getNonce(currentOptions.hin);
+      // Use client's default HIN
+      const nonce = await client.getNonce();
       setValue('nonce', nonce.toString());
     } catch (e: any) {
       setErrorState(e.message ?? JSON.stringify(e));

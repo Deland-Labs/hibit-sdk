@@ -8,8 +8,8 @@ import FormField from '../FormField';
 import { useClientContext } from '../../context/ClientContext';
 
 const schema = object({
-  assetId: string(),
-  tokenAddress: string()
+  assetId: string().optional(),
+  tokenAddress: string().optional()
 });
 
 export default function SectionGetAsset() {
@@ -33,7 +33,7 @@ export default function SectionGetAsset() {
     try {
       const req: GetAssetInput = {
         assetId: input.assetId ? BigInt(input.assetId) : undefined,
-        tokenAddress: input.tokenAddress
+        tokenAddress: input.tokenAddress || undefined
       };
       setResult(await client.getAsset(req));
     } catch (e: any) {
@@ -48,11 +48,12 @@ export default function SectionGetAsset() {
       title="GetAsset"
       form={
         <div className="flex flex-col gap-2">
+          <div className="text-sm text-gray-600 mb-2">Please provide at least one of the following:</div>
           <FormField label="AssetId" error={errors.assetId}>
-            <input type="number" className="input" {...register('assetId')} />
+            <input type="number" className="input" {...register('assetId')} placeholder="Asset ID (numeric)" />
           </FormField>
           <FormField label="TokenAddress" error={errors.tokenAddress}>
-            <input type="text" className="input" {...register('tokenAddress')} />
+            <input type="text" className="input" {...register('tokenAddress')} placeholder="Token contract address" />
           </FormField>
           <button className="btn" onClick={submit} disabled={loading}>
             {loading ? 'Loading...' : 'Submit'}

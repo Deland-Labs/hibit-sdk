@@ -9,7 +9,7 @@ import ChainIdSelector from '../ChainIdSelector';
 import { BrokerClient } from '../../../src/broker-client';
 
 const schema = object({
-  hin: string().required(),
+  hin: string().optional(),
   chainId: string().required()
 });
 
@@ -36,7 +36,7 @@ export default function SectionGetPaymentAddress({ client }: { client: BrokerCli
     setError('');
     try {
       const req: GetPaymentAddressInput = {
-        hin: BigInt(input.hin),
+        ...(input.hin && { hin: BigInt(input.hin) }),
         chainId: ChainId.fromString(input.chainId)
       };
       setResult(await client.getPaymentAddress(req));
@@ -52,8 +52,8 @@ export default function SectionGetPaymentAddress({ client }: { client: BrokerCli
       title="GetPaymentAddress"
       form={
         <div className="flex flex-col gap-2">
-          <FormField label="HIN" error={errors.hin} required>
-            <input type="number" className="input" {...register('hin')} />
+          <FormField label="HIN (optional - uses client option if not provided)" error={errors.hin}>
+            <input type="number" className="input" placeholder="Leave empty to use client HIN" {...register('hin')} />
           </FormField>
           <FormField label="ChainId" error={errors.chainId} required>
             <ChainIdSelector

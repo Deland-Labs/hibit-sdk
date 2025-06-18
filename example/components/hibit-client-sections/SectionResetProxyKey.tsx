@@ -113,7 +113,8 @@ export default function SectionResetProxyKey() {
 
     setLoadingNonce(true);
     try {
-      const nonce = await client.getNonce(currentOptions.hin);
+      // Use client's default HIN
+      const nonce = await client.getNonce();
       setValue('nonce', nonce.toString());
     } catch (e: any) {
       setError(e.message ?? JSON.stringify(e));

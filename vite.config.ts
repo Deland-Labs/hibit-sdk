@@ -62,6 +62,11 @@ export default defineConfig(({ mode }) => {
     },
     server: {
       port: 3000
+    },
+    test: {
+      watch: false,
+      testTimeout: 10000,
+      environment: 'node'
     }
   };
 });

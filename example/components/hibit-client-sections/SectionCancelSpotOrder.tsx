@@ -8,14 +8,16 @@ import FormField from '../FormField';
 import { useClientContext } from '../../context/ClientContext';
 
 const schema = object({
-  marketId: string(),
-  orderId: string(),
-  orderSide: number().oneOf(
-    Object.keys(OrderSide)
-      .filter((v) => !isNaN(Number(v)))
-      .map(Number)
-  ),
-  isCancelAll: boolean()
+  marketId: string().optional(),
+  orderId: string().optional(),
+  orderSide: number()
+    .oneOf(
+      Object.keys(OrderSide)
+        .filter((v) => !isNaN(Number(v)))
+        .map(Number)
+    )
+    .optional(),
+  isCancelAll: boolean().optional()
 });
 
 export default function SectionCancelSpotOrder() {
@@ -61,13 +63,21 @@ export default function SectionCancelSpotOrder() {
       title="CancelSpotOrder"
       form={
         <div className="flex flex-col gap-2">
-          <FormField label="MarketId" error={errors.marketId}>
-            <input type="number" className="input" {...register('marketId')} />
+          <div className="text-sm text-gray-600 mb-2">
+            Choose one cancellation method:
+            <ul className="list-disc ml-5 mt-1">
+              <li>Cancel by Order ID only</li>
+              <li>Cancel by Market ID + Order Side</li>
+              <li>Cancel all by Market ID + Cancel All flag</li>
+            </ul>
+          </div>
+          <FormField label="OrderId (for single order cancellation)" error={errors.orderId}>
+            <input type="text" className="input" {...register('orderId')} placeholder="Order ID to cancel" />
           </FormField>
-          <FormField label="OrderId" error={errors.orderId}>
-            <input type="text" className="input" {...register('orderId')} />
+          <FormField label="MarketId (for market-based cancellation)" error={errors.marketId}>
+            <input type="number" className="input" {...register('marketId')} placeholder="Market ID" />
           </FormField>
-          <FormField label="OrderSide" error={errors.orderSide}>
+          <FormField label="OrderSide (when cancelling by market + side)" error={errors.orderSide}>
             <Controller
               name="orderSide"
               control={control}
@@ -95,9 +105,9 @@ export default function SectionCancelSpotOrder() {
               )}
             />
           </FormField>
-          <FormField label="isCancelAll" error={errors.isCancelAll}>
+          <FormField label="Cancel All (when cancelling all orders in market)" error={errors.isCancelAll}>
             <label className="flex items-center gap-1">
-              <span>IsCancelAll</span>
+              <span>Cancel All Orders</span>
               <input type="checkbox" className="input" {...register('isCancelAll')} />
             </label>
           </FormField>

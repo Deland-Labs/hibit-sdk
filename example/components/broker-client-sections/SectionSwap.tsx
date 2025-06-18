@@ -11,7 +11,7 @@ import AssetTypeSelector from '../AssetTypeSelector';
 import { connect, sign, transferKaspa, transferKrc20 } from '../../utils/kasware-wallet';
 
 const schema = object({
-  hin: string().required(),
+  hin: string().optional(),
   sourceWalletPublicKey: string().required(),
   sourceWalletAddress: string().required(),
   sourceChainId: string().required(),
@@ -62,7 +62,7 @@ export default function SectionGetPaymentAddress({ client }: { client: BrokerCli
 
   const getInputReq = (input: any) => {
     return new SwapInput({
-      hin: BigInt(input.hin),
+      ...(input.hin && { hin: BigInt(input.hin) }),
       sourceWalletPublicKey: input.sourceWalletPublicKey,
       sourceWalletAddress: input.sourceWalletAddress,
       txRef: input.txRef,
@@ -159,8 +159,8 @@ export default function SectionGetPaymentAddress({ client }: { client: BrokerCli
       title="Swap"
       form={
         <div className="flex flex-col gap-2">
-          <FormField label="HIN" error={errors.hin} required>
-            <input type="number" className="input" {...register('hin')} />
+          <FormField label="HIN (optional - uses client option if not provided)" error={errors.hin}>
+            <input type="number" className="input" placeholder="Leave empty to use client HIN" {...register('hin')} />
           </FormField>
 
           <div className="py-4 px-4 -mx-4 flex flex-col gap-2 bg-gray-100">

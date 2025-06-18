@@ -14,7 +14,7 @@ export type GetPaymentAddressInput = {
   /**
    * The HIN of the broker agent.
    */
-  hin: bigint;
+  hin?: bigint;
   /**
    * The chain of the payment address.
    */
@@ -104,7 +104,7 @@ export class SwapInput {
   /**
    * The HIN of the agent that initiated the swap operation.
    */
-  hin: bigint;
+  hin?: bigint;
 
   /**
    * The public key of the wallet that initiated the swap operation.
@@ -190,7 +190,7 @@ export class SwapInput {
   signature?: string;
 
   constructor(params: {
-    hin: bigint;
+    hin?: bigint;
     sourceWalletPublicKey: string;
     sourceWalletAddress: string;
     txRef: string;
@@ -293,7 +293,7 @@ export type AgentOrderData = {
 export function mapGetPaymentAddressInput(input: GetPaymentAddressInput): Options<GetV1PaymentAddressData> {
   return {
     query: {
-      HIN: input.hin.toString(),
+      HIN: input.hin!.toString(), // hin is guaranteed to be present when this function is called
       ChainId: input.chainId.toString()
     }
   };
@@ -330,7 +330,7 @@ export function mapQuoteResult(result: Ex3BrokerApiAppServicesDtosQuoteResult): 
 export function mapSwapInput(input: SwapInput): Options<PostV1SwapData> {
   return {
     body: {
-      hin: input.hin.toString(),
+      hin: input.hin!.toString(), // hin is guaranteed to be present when this function is called
       sourceWalletPublicKey: input.sourceWalletPublicKey,
       sourceWalletAddress: input.sourceWalletAddress,
       txRef: input.txRef,

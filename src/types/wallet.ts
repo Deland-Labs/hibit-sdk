@@ -127,8 +127,8 @@ export type GetProxyKeyInput = {
  * ```
  */
 export type GetWalletBalancesInput = {
-  /** The HIN(hibit chain identity number) of the wallet to query */
-  hin: bigint;
+  /** The HIN(hibit chain identity number) of the wallet to query. If not provided, will use the HIN from client options. */
+  hin?: bigint;
 
   /**
    * Optional asset ID to filter the balance query.

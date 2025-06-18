@@ -10,9 +10,10 @@ import { OrderCategory, OrderSide, OrderStatus, SwapV2ExactTokensType } from '..
 
 export type GetOrdersInput = {
   /**
-   * The HIN(hibit chain identity number) of orders
+   * The HIN(hibit chain identity number) of orders.
+   * If not provided, will use the HIN from client options.
    */
-  hin: bigint;
+  hin?: bigint;
   /**
    * status to filter the orders, if null, means all statuses.
    */
