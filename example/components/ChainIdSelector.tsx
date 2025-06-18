@@ -13,9 +13,19 @@ interface ChainIdSelectorProps {
    * Placeholder text when no selection is made
    */
   placeholder?: string;
+  /**
+   * Unique name for radio button group (required when singleSelect is true)
+   */
+  name?: string;
 }
 
-function ChainIdSelector({ selectedChainIds, onChange, singleSelect = false, placeholder }: ChainIdSelectorProps) {
+function ChainIdSelector({
+  selectedChainIds,
+  onChange,
+  singleSelect = false,
+  placeholder,
+  name
+}: ChainIdSelectorProps) {
   const isChainIdSelected = (chain: Chain, network: ChainNetwork) => {
     return selectedChainIds.some((chainId) => chainId.chain.equals(chain) && chainId.network.equals(network));
   };
@@ -50,7 +60,7 @@ function ChainIdSelector({ selectedChainIds, onChange, singleSelect = false, pla
                 <label key={networkItem.network.toString()} className="flex items-center gap-2">
                   <input
                     type={singleSelect ? 'radio' : 'checkbox'}
-                    name={singleSelect ? 'chainId' : undefined}
+                    name={singleSelect ? name : undefined}
                     checked={isChainIdSelected(chainItem.chain, networkItem.network)}
                     onChange={() => handleChainIdChange(chainItem.chain, networkItem.network)}
                   />

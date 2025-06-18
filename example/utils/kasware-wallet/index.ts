@@ -76,7 +76,7 @@ export const transferKrc20 = async (toAddress: string, originalAmount: number, t
     if (!tickBalance) {
       throw new Error(`Not enough KRC20(${tokenAddress}) balance`);
     }
-    const amount = new BigNumber(originalAmount).shiftedBy(Number(tickBalance.dec)).toNumber();
+    const amount = new BigNumber(originalAmount).toNumber();
     if (Number(tickBalance.balance) < amount) {
       throw new Error(`Not enough KRC20(${tokenAddress}) balance`);
     }
@@ -94,5 +94,16 @@ export const transferKrc20 = async (toAddress: string, originalAmount: number, t
     return res.revealId;
   } catch (e: any) {
     throw new Error('KasWare transferKrc20: ' + (e.message ?? JSON.stringify(e)));
+  }
+};
+
+export const getKrc20Decimals = async (tokenAddress: string): Promise<number> => {
+  try {
+    const balanceRes: GetKrc20BalanceResponse = await window.kasware.getKRC20Balance();
+    const tickBalance = balanceRes.find((item) => item.tick.toUpperCase() === tokenAddress.toUpperCase());
+    return tickBalance ? Number(tickBalance.dec) : 0;
+  } catch (e: any) {
+    console.warn('Failed to get KRC20 decimals:', e);
+    return 0;
   }
 };
