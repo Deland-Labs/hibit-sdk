@@ -2,7 +2,7 @@ import { FC, PropsWithChildren } from 'react';
 import { FieldError, Merge } from 'react-hook-form';
 
 export type FormFieldProps = {
-  label: string;
+  label: string | React.ReactNode;
   labelDesc?: string;
   error?: FieldError | Merge<FieldError, (FieldError | undefined)[]>;
   required?: boolean;

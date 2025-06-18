@@ -1,6 +1,6 @@
 import { Chain, ChainAssetType, ChainId, HibitNetwork, SwapInput, WalletSignatureSchema } from '../../../src';
 import Section from '../Section';
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { number, object, string } from 'yup';
@@ -9,6 +9,7 @@ import ChainIdSelector from '../ChainIdSelector';
 import { BrokerClient } from '../../../src/broker-client';
 import AssetTypeSelector from '../AssetTypeSelector';
 import { connect, sign, transferKaspa, transferKrc20 } from '../../utils/kasware-wallet';
+import { getTokenInfo, calculateActualAmount } from '../../utils/evm-wallet';
 
 const schema = object({
   hin: string().optional(),
@@ -34,6 +35,17 @@ export default function SectionGetPaymentAddress({ client }: { client: BrokerCli
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<string | null>(null);
   const [error, setError] = useState<string>('');
+
+  // Unified actual amount state
+  const [actualAmounts, setActualAmounts] = useState<{
+    source: { amount: string; symbol: string };
+    target: { amount: string; symbol: string };
+    targetMin: { amount: string; symbol: string };
+  }>({
+    source: { amount: '', symbol: '' },
+    target: { amount: '', symbol: '' },
+    targetMin: { amount: '', symbol: '' }
+  });
 
   const {
     control,
@@ -79,6 +91,77 @@ export default function SectionGetPaymentAddress({ client }: { client: BrokerCli
     return isKaspa && (isNative || isKrc20);
   }, [values.sourceChainId, values.sourceAssetType]);
 
+  // Calculate actual amounts for all fields using unified approach
+  useEffect(() => {
+    const calculateAllActualAmounts = async () => {
+      const newActualAmounts = {
+        source: { amount: '', symbol: '' },
+        target: { amount: '', symbol: '' },
+        targetMin: { amount: '', symbol: '' }
+      };
+
+      // Calculate source actual amount
+      if (values.sourceChainId && values.sourceAssetType !== undefined && values.sourceVolume) {
+        const sourceAmount = await calculateActualAmount(
+          values.sourceVolume,
+          values.sourceChainId,
+          values.sourceAssetType,
+          values.sourceAsset
+        );
+        const sourceTokenInfo = await getTokenInfo(values.sourceChainId, values.sourceAssetType, values.sourceAsset);
+        newActualAmounts.source = {
+          amount: sourceAmount,
+          symbol: sourceTokenInfo?.symbol || ''
+        };
+      }
+
+      // Calculate target actual amount
+      if (values.targetChainId && values.targetAssetType !== undefined && values.targetVolume) {
+        const targetAmount = await calculateActualAmount(
+          values.targetVolume,
+          values.targetChainId,
+          values.targetAssetType,
+          values.targetAsset
+        );
+        const targetTokenInfo = await getTokenInfo(values.targetChainId, values.targetAssetType, values.targetAsset);
+        newActualAmounts.target = {
+          amount: targetAmount,
+          symbol: targetTokenInfo?.symbol || ''
+        };
+      }
+
+      // Calculate target min actual amount
+      if (values.targetChainId && values.targetAssetType !== undefined && values.targetVolumeMin) {
+        const targetMinAmount = await calculateActualAmount(
+          values.targetVolumeMin,
+          values.targetChainId,
+          values.targetAssetType,
+          values.targetAsset
+        );
+        const targetTokenInfo = await getTokenInfo(values.targetChainId, values.targetAssetType, values.targetAsset);
+        newActualAmounts.targetMin = {
+          amount: targetMinAmount,
+          symbol: targetTokenInfo?.symbol || ''
+        };
+      }
+
+      setActualAmounts(newActualAmounts);
+    };
+
+    calculateAllActualAmounts();
+  }, [
+    values.sourceChainId,
+    values.sourceAssetType,
+    values.sourceAsset,
+    values.sourceVolume,
+    values.targetChainId,
+    values.targetAssetType,
+    values.targetAsset,
+    values.targetVolume,
+    values.targetVolumeMin
+  ]);
+
+  // Calculate EVM actual amounts
   const getInputReq = (input: any) => {
     // Use input hin if provided, otherwise use client's default hin
     const hinToUse = input.hin ? BigInt(input.hin) : client.getOptions()?.hin;
@@ -205,6 +288,7 @@ export default function SectionGetPaymentAddress({ client }: { client: BrokerCli
           <FormField label="Source ChainId" error={errors.sourceChainId} required>
             <ChainIdSelector
               singleSelect
+              name="sourceChainId"
               selectedChainIds={values.sourceChainId ? [ChainId.fromString(values.sourceChainId)] : []}
               onChange={(ids) => {
                 setValue('sourceChainId', ids[0]?.toString() ?? '');
@@ -215,6 +299,8 @@ export default function SectionGetPaymentAddress({ client }: { client: BrokerCli
           <FormField label="Source Asset Type" error={errors.sourceAssetType}>
             <AssetTypeSelector
               singleSelect
+              name="sourceAssetType"
+              selectedChainId={values.sourceChainId}
               selectedAssetTypes={typeof values.sourceAssetType === 'number' ? [values.sourceAssetType] : []}
               onChange={(types) => {
                 setValue('sourceAssetType', types[0] ?? null);
@@ -228,7 +314,21 @@ export default function SectionGetPaymentAddress({ client }: { client: BrokerCli
           <FormField label="Payment Address" error={errors.paymentAddress} required>
             <input type="text" className="input" {...register('paymentAddress')} />
           </FormField>
-          <FormField label="Source Volume" error={errors.sourceVolume} required>
+          <FormField
+            label={
+              <span>
+                Source Volume
+                {actualAmounts.source.amount && actualAmounts.source.symbol && (
+                  <span className="text-blue-500">
+                    {' '}
+                    (Actual: {actualAmounts.source.amount} {actualAmounts.source.symbol})
+                  </span>
+                )}
+              </span>
+            }
+            error={errors.sourceVolume}
+            required
+          >
             <input type="number" className="input" {...register('sourceVolume')} />
           </FormField>
 
@@ -244,6 +344,7 @@ export default function SectionGetPaymentAddress({ client }: { client: BrokerCli
           <FormField label="Target ChainId" error={errors.targetChainId}>
             <ChainIdSelector
               singleSelect
+              name="targetChainId"
               selectedChainIds={values.targetChainId ? [ChainId.fromString(values.targetChainId)] : []}
               onChange={(ids) => {
                 setValue('targetChainId', ids[0]?.toString() ?? '');
@@ -254,6 +355,8 @@ export default function SectionGetPaymentAddress({ client }: { client: BrokerCli
           <FormField label="Target Asset Type" error={errors.targetAssetType}>
             <AssetTypeSelector
               singleSelect
+              name="targetAssetType"
+              selectedChainId={values.targetChainId}
               selectedAssetTypes={typeof values.targetAssetType === 'number' ? [values.targetAssetType] : []}
               onChange={(types) => {
                 setValue('targetAssetType', types[0] ?? null);
@@ -264,10 +367,38 @@ export default function SectionGetPaymentAddress({ client }: { client: BrokerCli
           <FormField label="Target Asset" error={errors.targetAsset}>
             <input type="text" className="input" {...register('targetAsset')} />
           </FormField>
-          <FormField label="Target Volume" error={errors.targetVolume} required>
+          <FormField
+            label={
+              <span>
+                Target Volume
+                {actualAmounts.target.amount && actualAmounts.target.symbol && (
+                  <span className="text-blue-500">
+                    {' '}
+                    (Actual: {actualAmounts.target.amount} {actualAmounts.target.symbol})
+                  </span>
+                )}
+              </span>
+            }
+            error={errors.targetVolume}
+            required
+          >
             <input type="number" className="input" {...register('targetVolume')} />
           </FormField>
-          <FormField label="Target Volume Min" error={errors.targetVolumeMin} required>
+          <FormField
+            label={
+              <span>
+                Target Volume Min
+                {actualAmounts.targetMin.amount && actualAmounts.targetMin.symbol && (
+                  <span className="text-blue-500">
+                    {' '}
+                    (Actual: {actualAmounts.targetMin.amount} {actualAmounts.targetMin.symbol})
+                  </span>
+                )}
+              </span>
+            }
+            error={errors.targetVolumeMin}
+            required
+          >
             <input type="number" className="input" {...register('targetVolumeMin')} />
           </FormField>
 

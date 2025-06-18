@@ -1,6 +1,6 @@
 import { ChainId, QuoteInput, QuoteResult } from '../../../src';
 import Section from '../Section';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { number, object, string } from 'yup';
@@ -8,6 +8,7 @@ import FormField from '../FormField';
 import ChainIdSelector from '../ChainIdSelector';
 import { BrokerClient } from '../../../src/broker-client';
 import AssetTypeSelector from '../AssetTypeSelector';
+import { getTokenInfo, calculateActualAmount } from '../../utils/evm-wallet';
 
 const schema = object({
   sourceChainId: string().required(),
@@ -23,6 +24,12 @@ export default function SectionQuote({ client }: { client: BrokerClient }) {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<QuoteResult | null>(null);
   const [error, setError] = useState<string>('');
+
+  // Unified actual amount state
+  const [sourceActualAmount, setSourceActualAmount] = useState<{
+    amount: string;
+    symbol: string;
+  }>({ amount: '', symbol: '' });
 
   const {
     setValue,
@@ -47,6 +54,30 @@ export default function SectionQuote({ client }: { client: BrokerClient }) {
   const selectedSourceAssetType = watch('sourceAssetType');
   const selectedTargetChainId = watch('targetChainId');
   const selectedTargetAssetType = watch('targetAssetType');
+  const values = watch();
+
+  // Calculate source actual amount using unified approach
+  useEffect(() => {
+    const calculateSourceActualAmount = async () => {
+      if (values.sourceChainId && values.sourceAssetType !== undefined && values.sourceVolume) {
+        const actualAmount = await calculateActualAmount(
+          values.sourceVolume,
+          values.sourceChainId,
+          values.sourceAssetType,
+          values.sourceAsset
+        );
+        const tokenInfo = await getTokenInfo(values.sourceChainId, values.sourceAssetType, values.sourceAsset);
+        setSourceActualAmount({
+          amount: actualAmount,
+          symbol: tokenInfo?.symbol || ''
+        });
+      } else {
+        setSourceActualAmount({ amount: '', symbol: '' });
+      }
+    };
+
+    calculateSourceActualAmount();
+  }, [values.sourceChainId, values.sourceAssetType, values.sourceAsset, values.sourceVolume]);
 
   const submit = handleSubmit(async (input) => {
     setLoading(true);
@@ -78,6 +109,7 @@ export default function SectionQuote({ client }: { client: BrokerClient }) {
           <FormField label="Source ChainId" error={errors.sourceChainId} required>
             <ChainIdSelector
               singleSelect
+              name="quote-sourceChainId"
               selectedChainIds={selectedSourceChainId ? [ChainId.fromString(selectedSourceChainId)] : []}
               onChange={(ids) => {
                 setValue('sourceChainId', ids[0]?.toString() ?? '');
@@ -88,6 +120,8 @@ export default function SectionQuote({ client }: { client: BrokerClient }) {
           <FormField label="Source Asset Type" error={errors.sourceAssetType} required>
             <AssetTypeSelector
               singleSelect
+              name="quote-sourceAssetType"
+              selectedChainId={selectedSourceChainId}
               selectedAssetTypes={typeof selectedSourceAssetType === 'number' ? [selectedSourceAssetType] : []}
               onChange={(types) => {
                 setValue('sourceAssetType', types[0] ?? null);
@@ -98,12 +132,27 @@ export default function SectionQuote({ client }: { client: BrokerClient }) {
           <FormField label="Source Asset" error={errors.sourceAsset}>
             <input type="text" className="input" {...register('sourceAsset')} />
           </FormField>
-          <FormField label="Source Volume" error={errors.sourceVolume} required>
+          <FormField
+            label={
+              <span>
+                Source Volume
+                {sourceActualAmount.amount && sourceActualAmount.symbol && (
+                  <span className="text-blue-500">
+                    {' '}
+                    (Actual: {sourceActualAmount.amount} {sourceActualAmount.symbol})
+                  </span>
+                )}
+              </span>
+            }
+            error={errors.sourceVolume}
+            required
+          >
             <input type="number" className="input" {...register('sourceVolume')} />
           </FormField>
           <FormField label="Target ChainId" error={errors.targetChainId}>
             <ChainIdSelector
               singleSelect
+              name="quote-targetChainId"
               selectedChainIds={selectedTargetChainId ? [ChainId.fromString(selectedTargetChainId)] : []}
               onChange={(ids) => {
                 setValue('targetChainId', ids[0]?.toString() ?? '');
@@ -114,6 +163,8 @@ export default function SectionQuote({ client }: { client: BrokerClient }) {
           <FormField label="Target Asset Type" error={errors.targetAssetType} required>
             <AssetTypeSelector
               singleSelect
+              name="quote-targetAssetType"
+              selectedChainId={selectedTargetChainId}
               selectedAssetTypes={typeof selectedTargetAssetType === 'number' ? [selectedTargetAssetType] : []}
               onChange={(types) => {
                 setValue('targetAssetType', types[0] ?? null);
