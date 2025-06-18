@@ -197,6 +197,7 @@ describe('Broker Client Test', () => {
 
       it('should throw error when required string fields are missing', async () => {
         const baseInput = {
+          hin: 123n, // Add hin so we can test other required fields
           sourceChainId: new ChainId(Chain.Kaspa, ChainNetwork.KaspaTestNet),
           sourceVolume: 1000n,
           targetVolume: 900n,
@@ -236,33 +237,13 @@ describe('Broker Client Test', () => {
         }).not.toThrow();
       });
 
-      it('should pass validation when hin is not provided in input but exists in options', () => {
-        // Test just the validation logic, not the API call
-        expect(() => {
-          const client = new BrokerClient();
-          client.setOptions({ network: HibitNetwork.Testnet, hin: 10005n });
+      it('should throw error when hin is missing', async () => {
+        // Since SwapInput constructor now requires hin, we test validation directly
+        const client = new BrokerClient();
+        client.setOptions({ network: HibitNetwork.Testnet });
 
-          const inputWithoutHin = new SwapInput({
-            sourceWalletPublicKey: 'test-key',
-            sourceWalletAddress: 'test-address',
-            txRef: 'test-tx',
-            sourceChainId: new ChainId(Chain.Kaspa, ChainNetwork.KaspaTestNet),
-            sourceVolume: 1000n,
-            targetVolume: 900n,
-            targetVolumeMin: 850n
-          });
-
-          // This should not throw during validation
-          const mockValidate = (client as any).validateSwapInput;
-          mockValidate.call(client, 'swap', inputWithoutHin);
-        }).not.toThrow();
-      });
-
-      it('should throw error when hin is not in input and not in options', async () => {
-        const clientWithoutHin = new BrokerClient();
-        clientWithoutHin.setOptions({ network: HibitNetwork.Testnet });
-
-        const inputWithoutHin = new SwapInput({
+        const inputWithHin = new SwapInput({
+          hin: 0n, // Invalid hin value
           sourceWalletPublicKey: 'test-key',
           sourceWalletAddress: 'test-address',
           txRef: 'test-tx',
@@ -272,13 +253,15 @@ describe('Broker Client Test', () => {
           targetVolumeMin: 850n
         });
 
-        await expect(clientWithoutHin.swap(inputWithoutHin)).rejects.toThrow(
-          "Missing required parameter 'hin (please set it in broker client options)' in swap"
-        );
+        // Manually set hin to falsy value to test validation
+        (inputWithHin as any).hin = null;
+
+        await expect(client.swap(inputWithHin)).rejects.toThrow("Missing required parameter 'hin' in swap");
       });
 
       it('should throw error when volume fields are invalid', async () => {
         const baseParams = {
+          hin: 123n,
           sourceWalletPublicKey: 'test-key',
           sourceWalletAddress: 'test-address',
           txRef: 'test-tx',
@@ -306,6 +289,7 @@ describe('Broker Client Test', () => {
         await expect(
           brokerClient.swap(
             new SwapInput({
+              hin: 123n,
               sourceWalletPublicKey: 'test-key',
               sourceWalletAddress: 'test-address',
               txRef: 'test-tx',

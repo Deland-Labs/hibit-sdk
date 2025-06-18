@@ -104,7 +104,7 @@ export class SwapInput {
   /**
    * The HIN of the agent that initiated the swap operation.
    */
-  hin?: bigint;
+  hin: bigint;
 
   /**
    * The public key of the wallet that initiated the swap operation.
@@ -190,7 +190,7 @@ export class SwapInput {
   signature?: string;
 
   constructor(params: {
-    hin?: bigint;
+    hin: bigint;
     sourceWalletPublicKey: string;
     sourceWalletAddress: string;
     txRef: string;

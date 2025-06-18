@@ -61,8 +61,16 @@ export default function SectionGetPaymentAddress({ client }: { client: BrokerCli
   }, [values.sourceChainId, values.sourceAssetType]);
 
   const getInputReq = (input: any) => {
+    // Use input hin if provided, otherwise use client's default hin
+    const hinToUse = input.hin ? BigInt(input.hin) : client.getOptions()?.hin;
+
+    // hin is required for SwapInput - must be provided either via input or client options
+    if (!hinToUse) {
+      throw new Error('HIN is required for swap operation. Please provide it in the form or set it in client options.');
+    }
+
     return new SwapInput({
-      ...(input.hin && { hin: BigInt(input.hin) }),
+      hin: hinToUse,
       sourceWalletPublicKey: input.sourceWalletPublicKey,
       sourceWalletAddress: input.sourceWalletAddress,
       txRef: input.txRef,
@@ -159,8 +167,8 @@ export default function SectionGetPaymentAddress({ client }: { client: BrokerCli
       title="Swap"
       form={
         <div className="flex flex-col gap-2">
-          <FormField label="HIN (optional - uses client option if not provided)" error={errors.hin}>
-            <input type="number" className="input" placeholder="Leave empty to use client HIN" {...register('hin')} />
+          <FormField label="HIN (required - defaults to client option if not provided)" error={errors.hin}>
+            <input type="number" className="input" placeholder="Uses client HIN if empty" {...register('hin')} />
           </FormField>
 
           <div className="py-4 px-4 -mx-4 flex flex-col gap-2 bg-gray-100">
