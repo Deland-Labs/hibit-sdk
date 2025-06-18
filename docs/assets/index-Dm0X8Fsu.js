@@ -3400,7 +3400,7 @@ Error generating stack: ` +
   var da = 0,
     ht = null,
     Mt = null,
-    Wt = null,
+    Zt = null,
     iu = !1,
     qi = !1,
     Xa = !1,
@@ -3435,7 +3435,7 @@ Error generating stack: ` +
   function Fh(e) {
     _.H = wn;
     var t = Mt !== null && Mt.next !== null;
-    if (((da = 0), (Wt = Mt = ht = null), (iu = !1), (Ts = 0), (Hi = null), t)) throw Error(s(300));
+    if (((da = 0), (Zt = Mt = ht = null), (iu = !1), (Ts = 0), (Hi = null), t)) throw Error(s(300));
     e === null || nr || ((e = e.dependencies), e !== null && mu(e) && (nr = !0));
   }
   function jh(e, t, i, l) {
@@ -3443,7 +3443,7 @@ Error generating stack: ` +
     var o = 0;
     do {
       if ((qi && (Hi = null), (Ts = 0), (qi = !1), 25 <= o)) throw Error(s(301));
-      if (((o += 1), (Wt = Mt = null), e.updateQueue != null)) {
+      if (((o += 1), (Zt = Mt = null), e.updateQueue != null)) {
         var x = e.updateQueue;
         (x.lastEffect = null), (x.events = null), (x.stores = null), x.memoCache != null && (x.memoCache.index = 0);
       }
@@ -3476,19 +3476,19 @@ Error generating stack: ` +
       }
       iu = !1;
     }
-    (da = 0), (Wt = Mt = ht = null), (qi = !1), (Ts = su = 0), (Hi = null);
+    (da = 0), (Zt = Mt = ht = null), (qi = !1), (Ts = su = 0), (Hi = null);
   }
   function Cr() {
     var e = { memoizedState: null, baseState: null, baseQueue: null, queue: null, next: null };
-    return Wt === null ? (ht.memoizedState = Wt = e) : (Wt = Wt.next = e), Wt;
+    return Zt === null ? (ht.memoizedState = Zt = e) : (Zt = Zt.next = e), Zt;
   }
-  function Zt() {
+  function Qt() {
     if (Mt === null) {
       var e = ht.alternate;
       e = e !== null ? e.memoizedState : null;
     } else e = Mt.next;
-    var t = Wt === null ? ht.memoizedState : Wt.next;
-    if (t !== null) (Wt = t), (Mt = e);
+    var t = Zt === null ? ht.memoizedState : Zt.next;
+    if (t !== null) (Zt = t), (Mt = e);
     else {
       if (e === null) throw ht.alternate === null ? Error(s(467)) : Error(s(310));
       (Mt = e),
@@ -3499,9 +3499,9 @@ Error generating stack: ` +
           queue: Mt.queue,
           next: null
         }),
-        Wt === null ? (ht.memoizedState = Wt = e) : (Wt = Wt.next = e);
+        Zt === null ? (ht.memoizedState = Zt = e) : (Zt = Zt.next = e);
     }
-    return Wt;
+    return Zt;
   }
   var lu;
   lu = function () {
@@ -3514,7 +3514,7 @@ Error generating stack: ` +
       Hi === null && (Hi = []),
       (e = Bh(Hi, e, t)),
       (t = ht),
-      (Wt === null ? t.memoizedState : Wt.next) === null &&
+      (Zt === null ? t.memoizedState : Zt.next) === null &&
         ((t = t.alternate), (_.H = t === null || t.memoizedState === null ? Wa : ha)),
       e
     );
@@ -3557,7 +3557,7 @@ Error generating stack: ` +
     return typeof t == 'function' ? t(e) : t;
   }
   function ou(e) {
-    var t = Zt();
+    var t = Qt();
     return ec(t, Mt, e);
   }
   function ec(e, t, i) {
@@ -3633,7 +3633,7 @@ Error generating stack: ` +
     return o === null && (l.lanes = 0), [e.memoizedState, l.dispatch];
   }
   function tc(e) {
-    var t = Zt(),
+    var t = Qt(),
       i = t.queue;
     if (i === null) throw Error(s(311));
     i.lastRenderedReducer = e;
@@ -3654,7 +3654,7 @@ Error generating stack: ` +
   }
   function Ih(e, t, i) {
     var l = ht,
-      o = Zt(),
+      o = Qt(),
       x = Bt;
     if (x) {
       if (i === void 0) throw Error(s(407));
@@ -3665,7 +3665,7 @@ Error generating stack: ` +
       (N && ((o.memoizedState = i), (nr = !0)),
       (o = o.queue),
       ac(Hh.bind(null, l, o, e), [e]),
-      o.getSnapshot !== t || N || (Wt !== null && Wt.memoizedState.tag & 1))
+      o.getSnapshot !== t || N || (Zt !== null && Zt.memoizedState.tag & 1))
     ) {
       if (((l.flags |= 2048), Li(9, qh.bind(null, l, o, i, t), { destroy: void 0 }, null), It === null))
         throw Error(s(349));
@@ -3859,14 +3859,14 @@ Error generating stack: ` +
     );
   }
   function Wh(e) {
-    var t = Zt();
+    var t = Qt();
     return Zh(t, Mt, e);
   }
   function Zh(e, t, i) {
     (t = ec(e, t, Yh)[0]),
       (e = ou(Un)[0]),
       (t = typeof t == 'object' && t !== null && typeof t.then == 'function' ? Os(t) : t);
-    var l = Zt(),
+    var l = Qt(),
       o = l.queue,
       x = o.dispatch;
     return (
@@ -3877,10 +3877,10 @@ Error generating stack: ` +
     e.action = t;
   }
   function Qh(e) {
-    var t = Zt(),
+    var t = Qt(),
       i = Mt;
     if (i !== null) return Zh(t, i, e);
-    Zt(), (t = t.memoizedState), (i = Zt());
+    Qt(), (t = t.memoizedState), (i = Qt());
     var l = i.queue.dispatch;
     return (i.memoizedState = e), [t, l, !1];
   }
@@ -3895,14 +3895,14 @@ Error generating stack: ` +
     );
   }
   function Jh() {
-    return Zt().memoizedState;
+    return Qt().memoizedState;
   }
   function cu(e, t, i, l) {
     var o = Cr();
     (ht.flags |= e), (o.memoizedState = Li(1 | t, i, { destroy: void 0 }, l === void 0 ? null : l));
   }
   function fu(e, t, i, l) {
-    var o = Zt();
+    var o = Qt();
     l = l === void 0 ? null : l;
     var x = o.memoizedState.inst;
     Mt !== null && l !== null && Yo(l, Mt.memoizedState.deps)
@@ -3943,13 +3943,13 @@ Error generating stack: ` +
   }
   function ic() {}
   function ix(e, t) {
-    var i = Zt();
+    var i = Qt();
     t = t === void 0 ? null : t;
     var l = i.memoizedState;
     return t !== null && Yo(t, l[1]) ? l[0] : ((i.memoizedState = [e, t]), e);
   }
   function sx(e, t) {
-    var i = Zt();
+    var i = Qt();
     t = t === void 0 ? null : t;
     var l = i.memoizedState;
     if (t !== null && Yo(t, l[1])) return l[0];
@@ -4045,10 +4045,10 @@ Error generating stack: ` +
     return pr(Qs);
   }
   function fx() {
-    return Zt().memoizedState;
+    return Qt().memoizedState;
   }
   function dx() {
-    return Zt().memoizedState;
+    return Qt().memoizedState;
   }
   function jv(e) {
     for (var t = e.return; t !== null; ) {
@@ -4271,12 +4271,12 @@ Error generating stack: ` +
     },
     useDebugValue: ic,
     useDeferredValue: function (e, t) {
-      var i = Zt();
+      var i = Qt();
       return lx(i, Mt.memoizedState, e, t);
     },
     useTransition: function () {
       var e = ou(Un)[0],
-        t = Zt().memoizedState;
+        t = Qt().memoizedState;
       return [typeof e == 'boolean' ? e : Os(e), t];
     },
     useSyncExternalStore: Ih,
@@ -4288,7 +4288,7 @@ Error generating stack: ` +
     (ha.useFormState = Wh),
     (ha.useActionState = Wh),
     (ha.useOptimistic = function (e, t) {
-      var i = Zt();
+      var i = Qt();
       return Vh(i, Mt, e, t);
     });
   var Za = {
@@ -4308,12 +4308,12 @@ Error generating stack: ` +
     },
     useDebugValue: ic,
     useDeferredValue: function (e, t) {
-      var i = Zt();
+      var i = Qt();
       return Mt === null ? sc(i, e, t) : lx(i, Mt.memoizedState, e, t);
     },
     useTransition: function () {
       var e = tc(Un)[0],
-        t = Zt().memoizedState;
+        t = Qt().memoizedState;
       return [typeof e == 'boolean' ? e : Os(e), t];
     },
     useSyncExternalStore: Ih,
@@ -4325,7 +4325,7 @@ Error generating stack: ` +
     (Za.useFormState = Qh),
     (Za.useActionState = Qh),
     (Za.useOptimistic = function (e, t) {
-      var i = Zt();
+      var i = Qt();
       return Mt !== null ? Vh(i, Mt, e, t) : ((i.baseState = e), [e, i.queue.dispatch]);
     });
   function cc(e, t, i, l) {
@@ -5960,7 +5960,7 @@ Error generating stack: ` +
       (e.stateNode = null),
       (e.updateQueue = null);
   }
-  var Qt = null,
+  var Jt = null,
     Ir = !1;
   function Vn(e, t, i) {
     for (i = i.child; i !== null; ) Xx(e, t, i), (i = i.sibling);
@@ -5978,41 +5978,41 @@ Error generating stack: ` +
         break;
       case 27:
         Gt || jr(i, t);
-        var l = Qt,
+        var l = Jt,
           o = Ir;
-        for (Qt = i.stateNode, Vn(e, t, i), i = i.stateNode, t = i.attributes; t.length; ) i.removeAttributeNode(t[0]);
-        fs(i), (Qt = l), (Ir = o);
+        for (Jt = i.stateNode, Vn(e, t, i), i = i.stateNode, t = i.attributes; t.length; ) i.removeAttributeNode(t[0]);
+        fs(i), (Jt = l), (Ir = o);
         break;
       case 5:
         Gt || jr(i, t);
       case 6:
-        o = Qt;
+        o = Jt;
         var x = Ir;
-        if (((Qt = null), Vn(e, t, i), (Qt = o), (Ir = x), Qt !== null))
+        if (((Jt = null), Vn(e, t, i), (Jt = o), (Ir = x), Jt !== null))
           if (Ir)
             try {
-              (e = Qt), (l = i.stateNode), e.nodeType === 8 ? e.parentNode.removeChild(l) : e.removeChild(l);
+              (e = Jt), (l = i.stateNode), e.nodeType === 8 ? e.parentNode.removeChild(l) : e.removeChild(l);
             } catch (N) {
               jt(i, t, N);
             }
           else
             try {
-              Qt.removeChild(i.stateNode);
+              Jt.removeChild(i.stateNode);
             } catch (N) {
               jt(i, t, N);
             }
         break;
       case 18:
-        Qt !== null &&
+        Jt !== null &&
           (Ir
-            ? ((t = Qt),
+            ? ((t = Jt),
               (i = i.stateNode),
               t.nodeType === 8 ? cf(t.parentNode, i) : t.nodeType === 1 && cf(t, i),
               rl(t))
-            : cf(Qt, i.stateNode));
+            : cf(Jt, i.stateNode));
         break;
       case 4:
-        (l = Qt), (o = Ir), (Qt = i.stateNode.containerInfo), (Ir = !0), Vn(e, t, i), (Qt = l), (Ir = o);
+        (l = Jt), (o = Ir), (Jt = i.stateNode.containerInfo), (Ir = !0), Vn(e, t, i), (Jt = l), (Ir = o);
         break;
       case 0:
       case 11:
@@ -6075,19 +6075,19 @@ Error generating stack: ` +
           switch ($.tag) {
             case 27:
             case 5:
-              (Qt = $.stateNode), (Ir = !1);
+              (Jt = $.stateNode), (Ir = !1);
               break e;
             case 3:
-              (Qt = $.stateNode.containerInfo), (Ir = !0);
+              (Jt = $.stateNode.containerInfo), (Ir = !0);
               break e;
             case 4:
-              (Qt = $.stateNode.containerInfo), (Ir = !0);
+              (Jt = $.stateNode.containerInfo), (Ir = !0);
               break e;
           }
           $ = $.return;
         }
-        if (Qt === null) throw Error(s(160));
-        Xx(x, N, o), (Qt = null), (Ir = !1), (x = o.alternate), x !== null && (x.return = null), (o.return = null);
+        if (Jt === null) throw Error(s(160));
+        Xx(x, N, o), (Jt = null), (Ir = !1), (x = o.alternate), x !== null && (x.return = null), (o.return = null);
       }
     if (t.subtreeFlags & 13878) for (t = t.child; t !== null; ) Zx(t, e), (t = t.sibling);
   }
@@ -13326,7 +13326,7 @@ var gn;
 (function (r) {
   (r.Mainnet = 'mainnet'), (r.Testnet = 'testnet');
 })(gn || (gn = {}));
-var Jt;
+var Xt;
 (function (r) {
   (r[(r.BtcEcdsa = 1e3)] = 'BtcEcdsa'),
     (r[(r.EvmEcdsa = 1001)] = 'EvmEcdsa'),
@@ -13335,7 +13335,7 @@ var Jt;
     (r[(r.SolanaEddsa = 2010)] = 'SolanaEddsa'),
     (r[(r.IcpEddsa = 2020)] = 'IcpEddsa'),
     (r[(r.KaspaSchnorr = 3010)] = 'KaspaSchnorr');
-})(Jt || (Jt = {}));
+})(Xt || (Xt = {}));
 var wm;
 (function (r) {
   (r[(r.Accepted = 0)] = 'Accepted'),
@@ -24496,13 +24496,13 @@ var Tl = (r) => r.type === 'checkbox',
   ui = (r) => r instanceof Date,
   wr = (r) => r == null;
 const ry = (r) => typeof r == 'object';
-var Xt = (r) => !wr(r) && !Array.isArray(r) && ry(r) && !ui(r),
-  ny = (r) => (Xt(r) && r.target ? (Tl(r.target) ? r.target.checked : r.target.value) : r),
+var Wt = (r) => !wr(r) && !Array.isArray(r) && ry(r) && !ui(r),
+  ny = (r) => (Wt(r) && r.target ? (Tl(r.target) ? r.target.checked : r.target.value) : r),
   rA = (r) => r.substring(0, r.search(/\.\d+(\.|$)/)) || r,
   ay = (r, n) => r.has(rA(n)),
   nA = (r) => {
     const n = r.constructor && r.constructor.prototype;
-    return Xt(n) && n.hasOwnProperty('isPrototypeOf');
+    return Wt(n) && n.hasOwnProperty('isPrototypeOf');
   },
   Bd = typeof window < 'u' && typeof window.HTMLElement < 'u' && typeof document < 'u';
 function Tr(r) {
@@ -24511,7 +24511,7 @@ function Tr(r) {
     s = typeof FileList < 'u' ? r instanceof FileList : !1;
   if (r instanceof Date) n = new Date(r);
   else if (r instanceof Set) n = new Set(r);
-  else if (!(Bd && (r instanceof Blob || s)) && (a || Xt(r)))
+  else if (!(Bd && (r instanceof Blob || s)) && (a || Wt(r)))
     if (((n = a ? [] : {}), !a && !nA(r))) n = r;
     else for (const u in r) r.hasOwnProperty(u) && (n[u] = Tr(r[u]));
   else return r;
@@ -24520,7 +24520,7 @@ function Tr(r) {
 var fo = (r) => (Array.isArray(r) ? r.filter(Boolean) : []),
   Yt = (r) => r === void 0,
   ze = (r, n, a) => {
-    if (!n || !Xt(r)) return a;
+    if (!n || !Wt(r)) return a;
     const s = fo(n.split(/[,[\].]+?/)).reduce((u, f) => (wr(u) ? u : u[f]), r);
     return Yt(s) || s === r ? (Yt(r[n]) ? a : r[n]) : s;
   },
@@ -24537,7 +24537,7 @@ var fo = (r) => (Array.isArray(r) ? r.filter(Boolean) : []),
       let p = a;
       if (s !== d) {
         const h = r[c];
-        p = Xt(h) || Array.isArray(h) ? h : isNaN(+u[s + 1]) ? {} : [];
+        p = Wt(h) || Array.isArray(h) ? h : isNaN(+u[s + 1]) ? {} : [];
       }
       if (c === '__proto__' || c === 'constructor' || c === 'prototype') return;
       (r[c] = p), (r = r[c]);
@@ -24568,7 +24568,7 @@ var sy = (r, n, a, s = !0) => {
       });
     return u;
   },
-  Or = (r) => Xt(r) && !Object.keys(r).length,
+  Or = (r) => Wt(r) && !Object.keys(r).length,
   ly = (r, n, a, s) => {
     a(r);
     const { name: u, ...f } = r;
@@ -24739,7 +24739,7 @@ const ml = (r, n, a, s) => {
         if (d.refs && d.refs[0] && n(d.refs[0], u) && !s) return !0;
         if (d.ref && n(d.ref, d.name) && !s) return !0;
         if (ml(c, n)) break;
-      } else if (Xt(c) && ml(c, n)) break;
+      } else if (Wt(c) && ml(c, n)) break;
     }
   }
 };
@@ -24781,7 +24781,7 @@ var dy = (r) =>
 function Xp(r, n, a = 'validate') {
   if (I0(r) || (Array.isArray(r) && r.every(I0)) || (ln(r) && !r)) return { type: a, message: I0(r) ? r : '', ref: n };
 }
-var ts = (r) => (Xt(r) && !Z0(r) ? r : { value: r, message: '' }),
+var ts = (r) => (Wt(r) && !Z0(r) ? r : { value: r, message: '' }),
   Wp = async (r, n, a, s, u, f) => {
     const {
         ref: d,
@@ -24859,7 +24859,7 @@ var ts = (r) => (Xt(r) && !Z0(r) ? r : { value: r, message: '' }),
         const U = await B(A, a),
           q = Xp(U, k);
         if (q && ((te[O] = { ...q, ...w(Qn.validate, q.message) }), !s)) return W(q.message), te;
-      } else if (Xt(B)) {
+      } else if (Wt(B)) {
         let U = {};
         for (const q in B) {
           if (!Or(U) && !s) break;
@@ -24886,7 +24886,7 @@ function rr(r, n) {
     s = a.length === 1 ? r : oA(r, a),
     u = a.length - 1,
     f = a[u];
-  return s && delete s[f], u !== 0 && ((Xt(s) && Or(s)) || (Array.isArray(s) && cA(s))) && rr(r, a.slice(0, -1)), r;
+  return s && delete s[f], u !== 0 && ((Wt(s) && Or(s)) || (Array.isArray(s) && cA(s))) && rr(r, a.slice(0, -1)), r;
 }
 var Kf = () => {
     let r = [];
@@ -24922,7 +24922,7 @@ function ka(r, n) {
     if (!s.includes(u)) return !1;
     if (u !== 'ref') {
       const d = n[u];
-      if ((ui(f) && ui(d)) || (Xt(f) && Xt(d)) || (Array.isArray(f) && Array.isArray(d)) ? !ka(f, d) : f !== d)
+      if ((ui(f) && ui(d)) || (Wt(f) && Wt(d)) || (Array.isArray(f) && Array.isArray(d)) ? !ka(f, d) : f !== d)
         return !1;
     }
   }
@@ -24937,18 +24937,18 @@ var hy = (r) => r.type === 'select-multiple',
   };
 function Q0(r, n = {}) {
   const a = Array.isArray(r);
-  if (Xt(r) || a)
+  if (Wt(r) || a)
     for (const s in r)
-      Array.isArray(r[s]) || (Xt(r[s]) && !xy(r[s]))
+      Array.isArray(r[s]) || (Wt(r[s]) && !xy(r[s]))
         ? ((n[s] = Array.isArray(r[s]) ? [] : {}), Q0(r[s], n[s]))
         : wr(r[s]) || (n[s] = !0);
   return n;
 }
 function my(r, n, a) {
   const s = Array.isArray(r);
-  if (Xt(r) || s)
+  if (Wt(r) || s)
     for (const u in r)
-      Array.isArray(r[u]) || (Xt(r[u]) && !xy(r[u]))
+      Array.isArray(r[u]) || (Wt(r[u]) && !xy(r[u]))
         ? Yt(n) || id(a[u])
           ? (a[u] = Array.isArray(r[u]) ? Q0(r[u], []) : { ...Q0(r[u]) })
           : my(r[u], wr(n) ? {} : n[u], a[u])
@@ -24978,14 +24978,14 @@ var dA = (r, n, a, s) => {
     }
     return { criteriaMode: a, names: [...r], fields: u, shouldUseNativeValidation: s };
   },
-  ol = (r) => (Yt(r) ? r : Z0(r) ? r.source : Xt(r) ? (Z0(r.value) ? r.value.source : r.value) : r);
+  ol = (r) => (Yt(r) ? r : Z0(r) ? r.source : Wt(r) ? (Z0(r.value) ? r.value.source : r.value) : r);
 const Zp = 'AsyncFunction';
 var hA = (r) =>
     !!r &&
     !!r.validate &&
     !!(
       (Nn(r.validate) && r.validate.constructor.name === Zp) ||
-      (Xt(r.validate) && Object.values(r.validate).find((n) => n.constructor.name === Zp))
+      (Wt(r.validate) && Object.values(r.validate).find((n) => n.constructor.name === Zp))
     ),
   xA = (r) => r.mount && (r.required || r.min || r.max || r.maxLength || r.minLength || r.pattern || r.validate);
 function Qp(r, n, a) {
@@ -25032,7 +25032,7 @@ function yA(r = {}) {
       disabled: n.disabled || !1
     },
     s = {},
-    u = Xt(n.defaultValues) || Xt(n.values) ? Tr(n.defaultValues || n.values) || {} : {},
+    u = Wt(n.defaultValues) || Wt(n.values) ? Tr(n.defaultValues || n.values) || {} : {},
     f = n.shouldUnregister ? {} : Tr(u),
     d = { action: !1, mount: !1, watch: !1 },
     c = { mount: new Set(), disabled: new Set(), unMount: new Set(), array: new Set(), watch: new Set() },
@@ -25216,7 +25216,7 @@ function yA(r = {}) {
         const Se = Z[ce],
           Ae = `${j}.${ce}`,
           Fe = ze(s, Ae);
-        (c.array.has(j) || Xt(Se) || (Fe && !Fe._f)) && !ui(Se) ? I(Ae, Se, re) : L(Ae, Se, re);
+        (c.array.has(j) || Wt(Se) || (Fe && !Fe._f)) && !ui(Se) ? I(Ae, Se, re) : L(Ae, Se, re);
       }
     },
     X = (j, Z, re = {}) => {
@@ -27664,7 +27664,7 @@ class Ol extends Oy {
         enumerable: !0,
         configurable: !0,
         writable: !0,
-        value: Jt.EvmEcdsa
+        value: Xt.EvmEcdsa
       });
   }
   async signMessage(n) {
@@ -27690,7 +27690,7 @@ class Rl extends Oy {
         enumerable: !0,
         configurable: !0,
         writable: !0,
-        value: Jt.KaspaSchnorr
+        value: Xt.KaspaSchnorr
       });
   }
   async signMessage(n) {
@@ -27859,7 +27859,7 @@ const n8 = [
     ]
   }
 ];
-function yn({ selectedChainIds: r, onChange: n, singleSelect: a = !1, placeholder: s }) {
+function a8({ selectedChainIds: r, onChange: n, singleSelect: a = !1, placeholder: s }) {
   const u = (d, c) => r.some((p) => p.chain.equals(d) && p.network.equals(c)),
     f = (d, c) => {
       const p = new xr(d, c);
@@ -27920,7 +27920,8 @@ function yn({ selectedChainIds: r, onChange: n, singleSelect: a = !1, placeholde
     ]
   });
 }
-function ja({ selectedAssetTypes: r, onChange: n, singleSelect: a }) {
+const yn = ae.memo(a8);
+function i8({ selectedAssetTypes: r, onChange: n, singleSelect: a }) {
   const s = (u) => {
     if (a) {
       n([u]);
@@ -27951,18 +27952,19 @@ function ja({ selectedAssetTypes: r, onChange: n, singleSelect: a }) {
       )
   });
 }
-const a8 = st({
-  chainIds: st().nullable(),
-  chainAssetTypes: st().nullable(),
-  limit: at()
-    .nullable()
-    .transform((r, n) => (n === '' ? null : r)),
-  offset: at()
-    .nullable()
-    .transform((r, n) => (n === '' ? null : r)),
-  orderBy: Ke()
-});
-function i8() {
+const ja = ae.memo(i8),
+  s8 = st({
+    chainIds: st().nullable(),
+    chainAssetTypes: st().nullable(),
+    limit: at()
+      .nullable()
+      .transform((r, n) => (n === '' ? null : r)),
+    offset: at()
+      .nullable()
+      .transform((r, n) => (n === '' ? null : r)),
+    orderBy: Ke()
+  });
+function l8() {
   const { client: r } = Nt(),
     [n, a] = ae.useState(!1),
     [s, u] = ae.useState(null),
@@ -27973,7 +27975,7 @@ function i8() {
       register: g,
       handleSubmit: m,
       formState: { errors: v }
-    } = wt({ resolver: At(a8) }),
+    } = wt({ resolver: At(s8) }),
     B = m(async (O) => {
       a(!0), u(null), d('');
       try {
@@ -28031,8 +28033,8 @@ function i8() {
     error: f
   });
 }
-const s8 = st({ assetId: Ke().optional(), tokenAddress: Ke().optional() });
-function l8() {
+const u8 = st({ assetId: Ke().optional(), tokenAddress: Ke().optional() });
+function o8() {
   const { client: r } = Nt(),
     [n, a] = ae.useState(!1),
     [s, u] = ae.useState(null),
@@ -28041,7 +28043,7 @@ function l8() {
       register: c,
       handleSubmit: p,
       formState: { errors: h }
-    } = wt({ resolver: At(s8) }),
+    } = wt({ resolver: At(u8) }),
     y = p(async (g) => {
       a(!0), u(null), d('');
       try {
@@ -28090,8 +28092,8 @@ function l8() {
     error: f
   });
 }
-const u8 = st({ assetId: Ke().optional() });
-function o8() {
+const c8 = st({ assetId: Ke().optional() });
+function f8() {
   const { client: r } = Nt(),
     [n, a] = ae.useState(!1),
     [s, u] = ae.useState(null),
@@ -28100,7 +28102,7 @@ function o8() {
       register: c,
       handleSubmit: p,
       formState: { errors: h }
-    } = wt({ resolver: At(u8) }),
+    } = wt({ resolver: At(c8) }),
     y = p(async (g) => {
       a(!0), u(null), d('');
       try {
@@ -28130,12 +28132,12 @@ function o8() {
         S.jsx('button', { className: 'btn', onClick: y, disabled: n, children: n ? 'Loading...' : 'Submit' })
       ]
     }),
-    result: s ? Object.fromEntries(s) : null,
+    result: s ? Object.fromEntries(Array.from(s.entries()).map(([g, m]) => [g, m.toString()])) : null,
     error: f
   });
 }
-const c8 = st({ rootAssetId: Ke().required('Root Asset ID is required'), chainIds: st().nullable() });
-function f8() {
+const d8 = st({ rootAssetId: Ke().required('Root Asset ID is required'), chainIds: st().nullable() });
+function h8() {
   const { client: r } = Nt(),
     [n, a] = ae.useState(!1),
     [s, u] = ae.useState(null),
@@ -28145,7 +28147,7 @@ function f8() {
       register: h,
       handleSubmit: y,
       formState: { errors: g }
-    } = wt({ resolver: At(c8) }),
+    } = wt({ resolver: At(d8) }),
     m = y(async (v) => {
       a(!0), u(null), d('');
       try {
@@ -28191,7 +28193,7 @@ function f8() {
     error: f
   });
 }
-const d8 = st({
+const x8 = st({
   chainIds: st().nullable(),
   chainAssetTypes: st().nullable(),
   baseAssetId: Ke(),
@@ -28204,7 +28206,7 @@ const d8 = st({
     .transform((r, n) => (n === '' ? null : r)),
   orderBy: Ke()
 });
-function h8() {
+function m8() {
   const { client: r } = Nt(),
     [n, a] = ae.useState(!1),
     [s, u] = ae.useState(null),
@@ -28215,7 +28217,7 @@ function h8() {
       register: g,
       handleSubmit: m,
       formState: { errors: v }
-    } = wt({ resolver: At(d8) }),
+    } = wt({ resolver: At(x8) }),
     B = m(async (O) => {
       a(!0), u(null), d('');
       try {
@@ -28285,8 +28287,8 @@ function h8() {
     error: f
   });
 }
-const x8 = st({ marketId: Ke().required() });
-function m8() {
+const p8 = st({ marketId: Ke().required() });
+function g8() {
   const { client: r } = Nt(),
     [n, a] = ae.useState(!1),
     [s, u] = ae.useState(null),
@@ -28295,7 +28297,7 @@ function m8() {
       register: c,
       handleSubmit: p,
       formState: { errors: h }
-    } = wt({ resolver: At(x8) }),
+    } = wt({ resolver: At(p8) }),
     y = p(async (g) => {
       a(!0), u(null), d('');
       try {
@@ -28326,8 +28328,8 @@ function m8() {
     error: f
   });
 }
-const p8 = st({ marketId: Ke(), chainIds: st().nullable(), chainAssetTypes: st().nullable() });
-function g8() {
+const y8 = st({ marketId: Ke(), chainIds: st().nullable(), chainAssetTypes: st().nullable() });
+function v8() {
   const { client: r } = Nt(),
     [n, a] = ae.useState(!1),
     [s, u] = ae.useState(null),
@@ -28338,7 +28340,7 @@ function g8() {
       register: g,
       handleSubmit: m,
       formState: { errors: v }
-    } = wt({ resolver: At(p8) }),
+    } = wt({ resolver: At(y8) }),
     B = m(async (O) => {
       a(!0), u(null), d('');
       try {
@@ -28384,8 +28386,8 @@ function g8() {
     error: f
   });
 }
-const y8 = st({ marketId: Ke(), chainIds: st().nullable(), chainAssetTypes: st().nullable() });
-function v8() {
+const b8 = st({ marketId: Ke(), chainIds: st().nullable(), chainAssetTypes: st().nullable() });
+function E8() {
   const { client: r } = Nt(),
     [n, a] = ae.useState(!1),
     [s, u] = ae.useState(null),
@@ -28396,7 +28398,7 @@ function v8() {
       register: g,
       handleSubmit: m,
       formState: { errors: v }
-    } = wt({ resolver: At(y8) }),
+    } = wt({ resolver: At(b8) }),
     B = m(async (O) => {
       a(!0), u(null), d('');
       try {
@@ -28445,8 +28447,8 @@ function v8() {
     error: f
   });
 }
-const b8 = st({ marketId: Ke() });
-function E8() {
+const S8 = st({ marketId: Ke() });
+function w8() {
   const { client: r } = Nt(),
     [n, a] = ae.useState(!1),
     [s, u] = ae.useState(null),
@@ -28455,7 +28457,7 @@ function E8() {
       register: c,
       handleSubmit: p,
       formState: { errors: h }
-    } = wt({ resolver: At(b8) }),
+    } = wt({ resolver: At(S8) }),
     y = p(async (g) => {
       a(!0), u(null), d('');
       try {
@@ -28485,7 +28487,7 @@ function E8() {
     error: f
   });
 }
-const S8 = st({
+const A8 = st({
   marketId: Ke().required(),
   tickSpace: at()
     .oneOf(
@@ -28502,7 +28504,7 @@ const S8 = st({
     .transform((r, n) => (n === '' ? null : r)),
   orderBy: Ke()
 });
-function w8() {
+function B8() {
   const { client: r } = Nt(),
     [n, a] = ae.useState(!1),
     [s, u] = ae.useState(null),
@@ -28512,7 +28514,7 @@ function w8() {
       control: p,
       handleSubmit: h,
       formState: { errors: y }
-    } = wt({ resolver: At(S8) }),
+    } = wt({ resolver: At(A8) }),
     g = h(async (m) => {
       a(!0), u(null), d('');
       try {
@@ -28599,7 +28601,7 @@ function w8() {
     error: f
   });
 }
-const A8 = st({
+const C8 = st({
   index: at()
     .oneOf(
       Object.keys(is)
@@ -28610,7 +28612,7 @@ const A8 = st({
   marketId: Ke().required(),
   limit: at().required().min(1).max(100)
 });
-function B8() {
+function _8() {
   const { client: r } = Nt(),
     [n, a] = ae.useState(!1),
     [s, u] = ae.useState(null),
@@ -28620,7 +28622,7 @@ function B8() {
       control: p,
       handleSubmit: h,
       formState: { errors: y }
-    } = wt({ defaultValues: { limit: 10 }, resolver: At(A8) }),
+    } = wt({ defaultValues: { limit: 10 }, resolver: At(C8) }),
     g = h(async (m) => {
       a(!0), u(null), d('');
       try {
@@ -28693,16 +28695,16 @@ function B8() {
   });
 }
 var L0 = { exports: {} },
-  C8 = L0.exports,
+  D8 = L0.exports,
   ug;
-function _8() {
+function N8() {
   return (
     ug ||
       ((ug = 1),
       (function (r, n) {
         (function (a, s) {
           r.exports = s();
-        })(C8, function () {
+        })(D8, function () {
           var a = 1e3,
             s = 6e4,
             u = 36e5,
@@ -29144,9 +29146,9 @@ function _8() {
     L0.exports
   );
 }
-var D8 = _8();
-const to = ls(D8),
-  N8 = st({
+var T8 = N8();
+const to = ls(T8),
+  O8 = st({
     marketId: Ke().required(),
     tradedAtStart: at()
       .nullable()
@@ -29162,7 +29164,7 @@ const to = ls(D8),
       .transform((r, n) => (n === '' ? null : r)),
     orderBy: Ke()
   });
-function T8() {
+function R8() {
   const { client: r } = Nt(),
     [n, a] = ae.useState(!1),
     [s, u] = ae.useState(null),
@@ -29172,7 +29174,7 @@ function T8() {
       control: p,
       handleSubmit: h,
       formState: { errors: y }
-    } = wt({ resolver: At(N8) }),
+    } = wt({ resolver: At(O8) }),
     g = h(async (m) => {
       a(!0), u(null), d('');
       try {
@@ -29261,7 +29263,7 @@ function T8() {
     error: f
   });
 }
-const O8 = st({
+const M8 = st({
   marketId: Ke().required(),
   orderSide: at()
     .oneOf(
@@ -29275,7 +29277,7 @@ const O8 = st({
   baseAssetDecimals: at().required(),
   quoteAssetDecimals: at().required()
 });
-function R8() {
+function k8() {
   const { client: r } = Nt(),
     [n, a] = ae.useState(!1),
     [s, u] = ae.useState(null),
@@ -29285,7 +29287,7 @@ function R8() {
       control: p,
       handleSubmit: h,
       formState: { errors: y }
-    } = wt({ resolver: At(O8) }),
+    } = wt({ resolver: At(M8) }),
     g = h(async (m) => {
       a(!0), u(null), d('');
       try {
@@ -29381,7 +29383,7 @@ function R8() {
     error: f
   });
 }
-const M8 = st({
+const F8 = st({
   marketId: Ke().required(),
   orderSide: at()
     .oneOf(
@@ -29407,7 +29409,7 @@ const M8 = st({
   baseAssetDecimals: at().required(),
   quoteAssetDecimals: at().required()
 });
-function k8() {
+function j8() {
   const { client: r } = Nt(),
     [n, a] = ae.useState(!1),
     [s, u] = ae.useState(null),
@@ -29417,7 +29419,7 @@ function k8() {
       control: p,
       handleSubmit: h,
       formState: { errors: y }
-    } = wt({ resolver: At(M8) }),
+    } = wt({ resolver: At(F8) }),
     g = h(async (m) => {
       a(!0), u(null), d('');
       try {
@@ -29559,7 +29561,7 @@ function k8() {
     error: f
   });
 }
-const F8 = st({
+const I8 = st({
   marketId: Ke().optional(),
   orderId: Ke().optional(),
   orderSide: at()
@@ -29571,7 +29573,7 @@ const F8 = st({
     .optional(),
   isCancelAll: Sy().optional()
 });
-function j8() {
+function U8() {
   const { client: r } = Nt(),
     [n, a] = ae.useState(!1),
     [s, u] = ae.useState(null),
@@ -29581,7 +29583,7 @@ function j8() {
       control: p,
       handleSubmit: h,
       formState: { errors: y }
-    } = wt({ resolver: At(F8) }),
+    } = wt({ resolver: At(I8) }),
     g = h(async (m) => {
       var O, T;
       a(!0), u(null), d('');
@@ -29689,7 +29691,7 @@ function j8() {
     error: f
   });
 }
-const I8 = st({
+const q8 = st({
   hin: Ke().required(),
   status: Ny(
     at()
@@ -29726,7 +29728,7 @@ const I8 = st({
     .transform((r, n) => (n === '' ? null : r)),
   orderBy: Ke()
 });
-function U8() {
+function H8() {
   const { client: r } = Nt(),
     [n, a] = ae.useState(!1),
     [s, u] = ae.useState(null),
@@ -29736,7 +29738,7 @@ function U8() {
       control: p,
       handleSubmit: h,
       formState: { errors: y }
-    } = wt({ resolver: At(I8) }),
+    } = wt({ resolver: At(q8) }),
     g = h(async (m) => {
       var v;
       a(!0), u(null), d('');
@@ -29949,14 +29951,14 @@ function U8() {
     error: f
   });
 }
-const q8 = st({ orderId: Ke(), clientOrderId: Ke(), txHash: Ke() }).test(
+const L8 = st({ orderId: Ke(), clientOrderId: Ke(), txHash: Ke() }).test(
   'exactly-one-identifier',
   'Exactly one of Order ID, Client Order ID, or Tx Hash must be provided',
   function (r) {
     return [!!r.orderId, !!r.clientOrderId, !!r.txHash].filter(Boolean).length === 1;
   }
 );
-function H8() {
+function z8() {
   const { client: r } = Nt(),
     [n, a] = ae.useState(!1),
     [s, u] = ae.useState(null),
@@ -29965,7 +29967,7 @@ function H8() {
       register: c,
       handleSubmit: p,
       formState: { errors: h }
-    } = wt({ resolver: At(q8) }),
+    } = wt({ resolver: At(L8) }),
     y = p(async (g) => {
       a(!0), u(null), d('');
       try {
@@ -30004,8 +30006,8 @@ function H8() {
     error: f
   });
 }
-const L8 = st({ orderId: Ke().required() });
-function z8() {
+const V8 = st({ orderId: Ke().required() });
+function G8() {
   const { client: r } = Nt(),
     [n, a] = ae.useState(!1),
     [s, u] = ae.useState(null),
@@ -30014,7 +30016,7 @@ function z8() {
       register: c,
       handleSubmit: p,
       formState: { errors: h }
-    } = wt({ resolver: At(L8) }),
+    } = wt({ resolver: At(V8) }),
     y = p(async (g) => {
       a(!0), u(null), d('');
       try {
@@ -30070,7 +30072,7 @@ var pl;
   (r.MetaMask = 'MetaMask'), (r.Kaspa = 'Kaspa');
 })(pl || (pl = {}));
 const Ry = ae.createContext(void 0);
-function V8({ children: r }) {
+function $8({ children: r }) {
   const [n, a] = ae.useState({
     isConnected: !1,
     walletType: null,
@@ -30212,12 +30214,12 @@ function Fl({ show: r, opacity: n = 0.9, blur: a = !0, backgroundColor: s = 'rgb
     ]
   });
 }
-const G8 = st({
+const P8 = st({
   chain: at().nullable(),
   publicKey: Ke(),
   signatureSchema: at().required('Signature schema is required')
 });
-function $8() {
+function K8() {
   const { client: r } = Nt(),
     [n, a] = ae.useState(!1),
     [s, u] = ae.useState(null),
@@ -30230,13 +30232,13 @@ function $8() {
       handleSubmit: O,
       formState: { errors: T },
       setValue: F
-    } = wt({ resolver: At(G8) });
+    } = wt({ resolver: At(P8) });
   ae.useEffect(() => {
     if (h && y && g) {
       let k, W;
       y === 'MetaMask'
-        ? ((k = Je.Ethereum), (W = Jt.EvmEcdsa), F('publicKey', ''))
-        : y === 'Kaspa' && ((k = Je.Kaspa), (W = Jt.KaspaSchnorr), m && F('publicKey', m)),
+        ? ((k = Je.Ethereum), (W = Xt.EvmEcdsa), F('publicKey', ''))
+        : y === 'Kaspa' && ((k = Je.Kaspa), (W = Xt.KaspaSchnorr), m && F('publicKey', m)),
         k && p(k),
         W !== void 0 && F('signatureSchema', W);
     }
@@ -30322,9 +30324,9 @@ function $8() {
                           ? 'Auto-filled from connected wallet'
                           : 'Will be auto-filled when wallet is connected'
                       }),
-                      Object.keys(Jt)
+                      Object.keys(Xt)
                         .filter((W) => isNaN(Number(W)))
-                        .map((W) => S.jsx('option', { value: Jt[W], children: W }, W))
+                        .map((W) => S.jsx('option', { value: Xt[W], children: W }, W))
                     ]
                   })
               })
@@ -30338,8 +30340,8 @@ function $8() {
     })
   });
 }
-const P8 = st({ publicKey: Ke(), address: Ke() });
-function K8() {
+const Y8 = st({ publicKey: Ke(), address: Ke() });
+function X8() {
   const { client: r, refreshHin: n } = Nt(),
     [a, s] = ae.useState(!1),
     [u, f] = ae.useState(null),
@@ -30352,7 +30354,7 @@ function K8() {
       handleSubmit: F,
       formState: { errors: A },
       setValue: k
-    } = wt({ resolver: At(P8) });
+    } = wt({ resolver: At(Y8) });
   ae.useEffect(() => {
     if (m && v && B) {
       let te;
@@ -30440,14 +30442,14 @@ function K8() {
     })
   });
 }
-const Y8 = st({
+const W8 = st({
   chain: st().nullable(),
   nonce: Ke().required('Nonce is required'),
   signatureSchema: at().required('Signature schema is required'),
   proxyPrivateKey: Ke().required('Proxy private key is required'),
   proxyPublicKey: Ke().required('Proxy public key is required')
 });
-function X8() {
+function Z8() {
   const { client: r } = Nt(),
     [n, a] = ae.useState(!1),
     [s, u] = ae.useState(null),
@@ -30461,13 +30463,13 @@ function X8() {
       handleSubmit: T,
       formState: { errors: F },
       setValue: A
-    } = wt({ resolver: At(Y8) });
+    } = wt({ resolver: At(W8) });
   ae.useEffect(() => {
     if (h && y) {
       let H, J;
       y === 'MetaMask'
-        ? ((H = Je.Ethereum), (J = Jt.EvmEcdsa))
-        : y === 'Kaspa' && ((H = Je.Kaspa), (J = Jt.KaspaSchnorr)),
+        ? ((H = Je.Ethereum), (J = Xt.EvmEcdsa))
+        : y === 'Kaspa' && ((H = Je.Kaspa), (J = Xt.KaspaSchnorr)),
         H && (p(H), A('chain', H)),
         J !== void 0 && A('signatureSchema', J);
     }
@@ -30575,9 +30577,9 @@ function X8() {
                 disabled: !0,
                 children: [
                   S.jsx('option', { value: '', children: 'Auto-filled from wallet type' }),
-                  Object.keys(Jt)
+                  Object.keys(Xt)
                     .filter((H) => isNaN(Number(H)))
-                    .map((H) => S.jsx('option', { value: Jt[H], children: H }, H))
+                    .map((H) => S.jsx('option', { value: Xt[H], children: H }, H))
                 ]
               })
             }),
@@ -30626,12 +30628,12 @@ function X8() {
     })
   });
 }
-const W8 = st({
+const Q8 = st({
   chain: st().nullable(),
   signatureSchema: at().required('Signature schema is required'),
   timestamp: at().required('Timestamp is required')
 });
-function Z8() {
+function J8() {
   const { client: r } = Nt(),
     [n, a] = ae.useState(!1),
     [s, u] = ae.useState(null),
@@ -30644,14 +30646,14 @@ function Z8() {
       handleSubmit: B,
       formState: { errors: O },
       setValue: T
-    } = wt({ resolver: At(W8) });
+    } = wt({ resolver: At(Q8) });
   ae.useEffect(() => {
     if (g && m && !c) {
       let A;
       m === 'MetaMask' ? (A = Je.Ethereum) : m === 'Kaspa' && (A = Je.Kaspa), A && (y(A), T('chain', A));
       let k;
-      if (m === 'MetaMask') k = Jt.EvmEcdsa;
-      else if (m === 'Kaspa') k = Jt.KaspaSchnorr;
+      if (m === 'MetaMask') k = Xt.EvmEcdsa;
+      else if (m === 'Kaspa') k = Xt.KaspaSchnorr;
       else return;
       T('signatureSchema', k), T('timestamp', Date.now()), p(!0);
     }
@@ -30701,9 +30703,9 @@ function Z8() {
                 disabled: !0,
                 children: [
                   S.jsx('option', { value: '', children: 'Auto-filled from wallet type' }),
-                  Object.keys(Jt)
+                  Object.keys(Xt)
                     .filter((A) => isNaN(Number(A)))
-                    .map((A) => S.jsx('option', { value: Jt[A], children: A }, A))
+                    .map((A) => S.jsx('option', { value: Xt[A], children: A }, A))
                 ]
               })
             }),
@@ -30728,8 +30730,8 @@ function Z8() {
     })
   });
 }
-const Q8 = st({ hin: Ke().optional(), assetId: Ke().optional() });
-function J8() {
+const e6 = st({ hin: Ke().optional(), assetId: Ke().optional() });
+function t6() {
   const { client: r } = Nt(),
     [n, a] = ae.useState(!1),
     [s, u] = ae.useState(null),
@@ -30738,7 +30740,7 @@ function J8() {
       register: c,
       handleSubmit: p,
       formState: { errors: h }
-    } = wt({ resolver: At(Q8) }),
+    } = wt({ resolver: At(e6) }),
     y = p(async (g) => {
       a(!0), u(null), d('');
       try {
@@ -30782,11 +30784,11 @@ function J8() {
       ]
     }),
     loading: n,
-    result: s,
+    result: s ? Object.fromEntries(Array.from(s.entries()).map(([g, m]) => [g, m.toString()])) : null,
     error: f
   });
 }
-const e6 = st({
+const r6 = st({
   nonce: Ke().required('Nonce is required'),
   chainId: st().nullable(),
   address: Ke().required('Address is required'),
@@ -30795,7 +30797,7 @@ const e6 = st({
   amount: at().required('Amount is required'),
   fee: at().nullable()
 });
-function t6() {
+function n6() {
   const { client: r } = Nt(),
     [n, a] = ae.useState(!1),
     [s, u] = ae.useState(null),
@@ -30814,7 +30816,7 @@ function t6() {
       watch: b,
       setError: _,
       clearErrors: w
-    } = wt({ resolver: At(e6) }),
+    } = wt({ resolver: At(r6) }),
     M = b('assetId'),
     U = b('amount');
   ae.useEffect(() => {
@@ -31073,8 +31075,8 @@ function t6() {
     })
   });
 }
-const r6 = st({ txHash: Ke().required() });
-function n6() {
+const a6 = st({ txHash: Ke().required() });
+function i6() {
   const { client: r } = Nt(),
     [n, a] = ae.useState(!1),
     [s, u] = ae.useState(null),
@@ -31083,7 +31085,7 @@ function n6() {
       register: c,
       handleSubmit: p,
       formState: { errors: h }
-    } = wt({ resolver: At(r6) }),
+    } = wt({ resolver: At(a6) }),
     y = p(async (g) => {
       a(!0), u(null), d('');
       try {
@@ -31114,8 +31116,8 @@ function n6() {
     error: f
   });
 }
-const a6 = st({ hin: Ke().optional() });
-function i6() {
+const s6 = st({ hin: Ke().optional() });
+function l6() {
   const { client: r } = Nt(),
     [n, a] = ae.useState(!1),
     [s, u] = ae.useState(null),
@@ -31124,7 +31126,7 @@ function i6() {
       register: c,
       handleSubmit: p,
       formState: { errors: h }
-    } = wt({ resolver: At(a6) }),
+    } = wt({ resolver: At(s6) }),
     y = p(async (g) => {
       a(!0), u(null), d('');
       try {
@@ -31159,12 +31161,12 @@ function i6() {
     error: f
   });
 }
-const s6 = st({
+const u6 = st({
   network: Ke().oneOf(Object.values(gn).map(String)).required(),
   hin: Ke().required(),
   proxyKey: Ke().required()
 });
-function l6({ defaultOptions: r }) {
+function o6({ defaultOptions: r }) {
   var W;
   const {
       isConnected: n,
@@ -31190,7 +31192,7 @@ function l6({ defaultOptions: r }) {
         hin: ((W = r.hin) == null ? void 0 : W.toString()) ?? '',
         proxyKey: r.proxyKey
       },
-      resolver: At(s6),
+      resolver: At(u6),
       mode: 'onChange'
     });
   ae.useEffect(() => {
@@ -31352,7 +31354,7 @@ function l6({ defaultOptions: r }) {
     })
   );
 }
-const u6 = st({
+const c6 = st({
   marketId: Ke().required('Market ID is required'),
   exactTokensType: at().required('Exact tokens type is required'),
   exactTokens: Ke().required('Exact tokens is required'),
@@ -31360,7 +31362,7 @@ const u6 = st({
   minOut: Ke(),
   minIn: Ke()
 });
-function o6() {
+function f6() {
   const { client: r } = Nt(),
     [n, a] = ae.useState(!1),
     [s, u] = ae.useState(null),
@@ -31369,7 +31371,7 @@ function o6() {
       register: c,
       handleSubmit: p,
       formState: { errors: h }
-    } = wt({ resolver: At(u6) }),
+    } = wt({ resolver: At(c6) }),
     y = p(async (g) => {
       a(!0), u(null), d('');
       try {
@@ -31475,7 +31477,7 @@ const og = {
     hin: BigInt(1e4),
     proxyKey: 'fa3e933f1788d7d56a20e078370f4c3b713ee0bcdb44392e4cfeaf524716d06a'
   },
-  c6 = () => {
+  d6 = () => {
     const [r, n] = ae.useState(null);
     return (
       ae.useEffect(() => {
@@ -31483,16 +31485,15 @@ const og = {
         a.setOptions(og), n(a);
       }, []),
       r
-        ? S.jsx(V8, {
+        ? S.jsx($8, {
             children: S.jsx(Jw, {
               client: r,
               children: S.jsxs('div', {
                 className: 'flex flex-col gap-6',
                 children: [
-                  S.jsx(l6, { defaultOptions: og }),
+                  S.jsx(o6, { defaultOptions: og }),
                   S.jsx(eA, {}),
                   S.jsx(tA, {}),
-                  S.jsx(i8, {}),
                   S.jsx(l8, {}),
                   S.jsx(o8, {}),
                   S.jsx(f8, {}),
@@ -31501,24 +31502,25 @@ const og = {
                   S.jsx(g8, {}),
                   S.jsx(v8, {}),
                   S.jsx(E8, {}),
-                  S.jsx(B8, {}),
                   S.jsx(w8, {}),
-                  S.jsx(T8, {}),
-                  S.jsx(o6, {}),
+                  S.jsx(_8, {}),
+                  S.jsx(B8, {}),
                   S.jsx(R8, {}),
+                  S.jsx(f6, {}),
                   S.jsx(k8, {}),
                   S.jsx(j8, {}),
                   S.jsx(U8, {}),
                   S.jsx(H8, {}),
                   S.jsx(z8, {}),
-                  S.jsx($8, {}),
+                  S.jsx(G8, {}),
                   S.jsx(K8, {}),
                   S.jsx(X8, {}),
                   S.jsx(Z8, {}),
                   S.jsx(J8, {}),
                   S.jsx(t6, {}),
                   S.jsx(n6, {}),
-                  S.jsx(i6, {})
+                  S.jsx(i6, {}),
+                  S.jsx(l6, {})
                 ]
               })
             })
@@ -31526,8 +31528,8 @@ const og = {
         : null
     );
   },
-  f6 = st({ network: Ke().oneOf(Object.values(gn).map(String)).required(), hin: Ke().required('HIN is required') });
-function d6({ client: r, defaultOptions: n }) {
+  h6 = st({ network: Ke().oneOf(Object.values(gn).map(String)).required(), hin: Ke().required('HIN is required') });
+function x6({ client: r, defaultOptions: n }) {
   var c;
   const {
       control: a,
@@ -31535,7 +31537,7 @@ function d6({ client: r, defaultOptions: n }) {
       formState: { errors: u, isValid: f }
     } = wt({
       defaultValues: { network: n.network, hin: ((c = n.hin) == null ? void 0 : c.toString()) || '' },
-      resolver: At(f6),
+      resolver: At(h6),
       mode: 'onChange'
     }),
     d = s();
@@ -31603,8 +31605,8 @@ function d6({ client: r, defaultOptions: n }) {
     })
   );
 }
-const h6 = st({ hin: Ke().optional(), chainId: Ke().required() });
-function x6({ client: r }) {
+const m6 = st({ hin: Ke().optional(), chainId: Ke().required() });
+function p6({ client: r }) {
   const [n, a] = ae.useState(!1),
     [s, u] = ae.useState(null),
     [f, d] = ae.useState(''),
@@ -31615,7 +31617,7 @@ function x6({ client: r }) {
       register: y,
       handleSubmit: g,
       formState: { errors: m }
-    } = wt({ resolver: At(h6) }),
+    } = wt({ resolver: At(m6) }),
     v = h('chainId'),
     B = g(async (O) => {
       a(!0), u(null), d('');
@@ -31664,7 +31666,7 @@ function x6({ client: r }) {
     error: f
   });
 }
-const m6 = st({
+const g6 = st({
   sourceChainId: Ke().required(),
   sourceAssetType: at().required(),
   sourceAsset: Ke(),
@@ -31673,7 +31675,7 @@ const m6 = st({
   targetAssetType: at().required(),
   targetAsset: Ke()
 });
-function p6({ client: r }) {
+function y6({ client: r }) {
   const [n, a] = ae.useState(!1),
     [s, u] = ae.useState(null),
     [f, d] = ae.useState(''),
@@ -31684,7 +31686,18 @@ function p6({ client: r }) {
       register: y,
       handleSubmit: g,
       formState: { errors: m }
-    } = wt({ resolver: At(m6) }),
+    } = wt({
+      resolver: At(g6),
+      defaultValues: {
+        sourceChainId: '',
+        sourceAssetType: void 0,
+        sourceAsset: '',
+        sourceVolume: '',
+        targetChainId: '',
+        targetAssetType: void 0,
+        targetAsset: ''
+      }
+    }),
     v = h('sourceChainId'),
     B = h('sourceAssetType'),
     O = h('targetChainId'),
@@ -31786,7 +31799,7 @@ function p6({ client: r }) {
     error: f
   });
 }
-const g6 = async (r) => {
+const v6 = async (r) => {
     try {
       await window.kasware.requestAccounts(),
         (await window.kasware.getNetwork()) !== r && (await window.kasware.switchNetwork(r));
@@ -31797,14 +31810,14 @@ const g6 = async (r) => {
       throw new Error('KasWare connect: ' + (n.message ?? JSON.stringify(n)));
     }
   },
-  y6 = async (r) => {
+  b6 = async (r) => {
     try {
       return `0x${await window.kasware.signMessage(r)}`;
     } catch (n) {
       throw new Error('KasWare sign: ' + (n.message ?? JSON.stringify(n)));
     }
   },
-  v6 = async (r, n) => {
+  E6 = async (r, n) => {
     try {
       if (!r || n <= 0) throw new Error('Invalid parameters');
       if (!(await window.kasware.getAccounts()).length) throw new Error('Wallet not connected.');
@@ -31817,7 +31830,7 @@ const g6 = async (r) => {
       throw new Error('KasWare transferKaspa: ' + (a.message ?? JSON.stringify(a)));
     }
   },
-  b6 = async (r, n, a) => {
+  S6 = async (r, n, a) => {
     try {
       if (!r || !a || n <= 0) throw new Error('Invalid parameters');
       if (!(await window.kasware.getAccounts()).length) throw new Error('Wallet not connected.');
@@ -31833,7 +31846,7 @@ const g6 = async (r) => {
       throw new Error('KasWare transferKrc20: ' + (s.message ?? JSON.stringify(s)));
     }
   },
-  E6 = st({
+  w6 = st({
     hin: Ke().optional(),
     sourceWalletPublicKey: Ke().required(),
     sourceWalletAddress: Ke().required(),
@@ -31852,7 +31865,7 @@ const g6 = async (r) => {
     signatureSchema: at().required(),
     signature: Ke().required()
   });
-function S6({ client: r }) {
+function A6({ client: r }) {
   const [n, a] = ae.useState(!1),
     [s, u] = ae.useState(null),
     [f, d] = ae.useState(''),
@@ -31864,7 +31877,28 @@ function S6({ client: r }) {
       register: g,
       handleSubmit: m,
       formState: { errors: v }
-    } = wt({ resolver: At(E6) }),
+    } = wt({
+      resolver: At(w6),
+      defaultValues: {
+        hin: '',
+        sourceWalletPublicKey: '',
+        sourceWalletAddress: '',
+        sourceChainId: '',
+        sourceAssetType: void 0,
+        sourceAsset: '',
+        paymentAddress: '',
+        sourceVolume: 0,
+        txRef: '',
+        targetChainId: '',
+        targetWalletAddress: '',
+        targetAssetType: void 0,
+        targetAsset: '',
+        targetVolume: 0,
+        targetVolumeMin: 0,
+        signatureSchema: Xt.KaspaSchnorr,
+        signature: ''
+      }
+    }),
     B = y(),
     O = ae.useMemo(() => {
       if (!B.sourceChainId) return !1;
@@ -31920,7 +31954,7 @@ function S6({ client: r }) {
     k = async () => {
       try {
         const H = r.getOptions().network,
-          { address: J, publicKey: b } = await g6(H === gn.Testnet ? 'kaspa_testnet_10' : 'kaspa_mainnet');
+          { address: J, publicKey: b } = await v6(H === gn.Testnet ? 'kaspa_testnet_10' : 'kaspa_mainnet');
         p('sourceWalletAddress', J),
           p('sourceWalletPublicKey', b),
           h('sourceWalletAddress'),
@@ -31935,11 +31969,11 @@ function S6({ client: r }) {
         if (B.sourceAssetType === oi.KRC20) {
           if (!B.paymentAddress || !B.sourceAsset || !B.sourceVolume)
             throw new Error('paymentAddress, sourceAsset and sourceVolume are required for KRC20 transfer');
-          H = await b6(B.paymentAddress, B.sourceVolume, B.sourceAsset);
+          H = await S6(B.paymentAddress, B.sourceVolume, B.sourceAsset);
         } else {
           if (!B.paymentAddress || !B.sourceVolume)
             throw new Error('paymentAddress and sourceVolume are required for KAS transfer');
-          H = await v6(B.paymentAddress, B.sourceVolume);
+          H = await E6(B.paymentAddress, B.sourceVolume);
         }
         p('txRef', H), h('txRef');
       } catch (H) {
@@ -31949,8 +31983,8 @@ function S6({ client: r }) {
     te = async () => {
       try {
         const J = T(B).toJson(),
-          b = await y6(J);
-        p('signature', b), p('signatureSchema', Jt.KaspaSchnorr), h('signature'), h('signatureSchema');
+          b = await b6(J);
+        p('signature', b), p('signatureSchema', Xt.KaspaSchnorr), h('signature'), h('signatureSchema');
       } catch (H) {
         alert(H.message ?? JSON.stringify(H));
       }
@@ -32099,7 +32133,7 @@ function S6({ client: r }) {
                 render: ({ field: H }) =>
                   S.jsx('div', {
                     className: 'flex items-center gap-3 flex-wrap',
-                    children: Object.keys(Jt)
+                    children: Object.keys(Xt)
                       .filter((J) => isNaN(Number(J)))
                       .map((J) =>
                         S.jsxs(
@@ -32111,9 +32145,9 @@ function S6({ client: r }) {
                               S.jsx('input', {
                                 name: 'swap-signatureSchema',
                                 type: 'radio',
-                                checked: H.value === Number(Jt[J]),
+                                checked: H.value === Number(Xt[J]),
                                 onChange: (b) => {
-                                  b.target.checked && H.onChange(Number(Jt[J]));
+                                  b.target.checked && H.onChange(Number(Xt[J]));
                                 }
                               })
                             ]
@@ -32155,8 +32189,8 @@ function S6({ client: r }) {
     error: f
   });
 }
-const w6 = st({ agentOrderId: Ke().required() });
-function A6({ client: r }) {
+const B6 = st({ agentOrderId: Ke().required() });
+function C6({ client: r }) {
   const [n, a] = ae.useState(!1),
     [s, u] = ae.useState(null),
     [f, d] = ae.useState(''),
@@ -32164,7 +32198,7 @@ function A6({ client: r }) {
       register: c,
       handleSubmit: p,
       formState: { errors: h }
-    } = wt({ resolver: At(w6) }),
+    } = wt({ resolver: At(B6) }),
     y = p(async (g) => {
       a(!0), u(null), d('');
       try {
@@ -32196,7 +32230,7 @@ function A6({ client: r }) {
   });
 }
 const cg = { network: gn.Testnet, hin: 10007n },
-  B6 = () => {
+  _6 = () => {
     const [r, n] = ae.useState(null);
     return (
       ae.useEffect(() => {
@@ -32207,17 +32241,17 @@ const cg = { network: gn.Testnet, hin: 10007n },
         ? S.jsxs('div', {
             className: 'flex flex-col gap-6',
             children: [
-              S.jsx(d6, { client: r, defaultOptions: cg }),
-              S.jsx(x6, { client: r }),
+              S.jsx(x6, { client: r, defaultOptions: cg }),
               S.jsx(p6, { client: r }),
-              S.jsx(S6, { client: r }),
-              S.jsx(A6, { client: r })
+              S.jsx(y6, { client: r }),
+              S.jsx(A6, { client: r }),
+              S.jsx(C6, { client: r })
             ]
           })
         : null
     );
   },
-  C6 = () =>
+  D6 = () =>
     S.jsxs('main', {
       className: 'container mx-auto h-full flex flex-col gap-6',
       children: [
@@ -32252,13 +32286,13 @@ const cg = { network: gn.Testnet, hin: 10007n },
           className: 'p-6 flex-1 overflow-auto',
           children: S.jsxs(G2, {
             children: [
-              S.jsx(ed, { path: '/', element: S.jsx(c6, {}) }),
-              S.jsx(ed, { path: '/broker', element: S.jsx(B6, {}) })
+              S.jsx(ed, { path: '/', element: S.jsx(d6, {}) }),
+              S.jsx(ed, { path: '/broker', element: S.jsx(_6, {}) })
             ]
           })
         })
       ]
     });
 Jb.createRoot(document.getElementById('root')).render(
-  S.jsx(Tt.StrictMode, { children: S.jsx(xE, { children: S.jsx(C6, {}) }) })
+  S.jsx(Tt.StrictMode, { children: S.jsx(xE, { children: S.jsx(D6, {}) }) })
 );

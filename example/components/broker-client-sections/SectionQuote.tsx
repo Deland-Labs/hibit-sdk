@@ -32,7 +32,16 @@ export default function SectionQuote({ client }: { client: BrokerClient }) {
     handleSubmit,
     formState: { errors }
   } = useForm({
-    resolver: yupResolver(schema)
+    resolver: yupResolver(schema),
+    defaultValues: {
+      sourceChainId: '',
+      sourceAssetType: undefined,
+      sourceAsset: '',
+      sourceVolume: '',
+      targetChainId: '',
+      targetAssetType: undefined,
+      targetAsset: ''
+    }
   });
   const selectedSourceChainId = watch('sourceChainId');
   const selectedSourceAssetType = watch('sourceAssetType');

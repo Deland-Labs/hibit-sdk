@@ -60,7 +60,9 @@ export default function SectionGetChainBalances() {
           </button>
         </div>
       }
-      result={result ? Object.fromEntries(result) : null}
+      result={
+        result ? Object.fromEntries(Array.from(result.entries()).map(([key, value]) => [key, value.toString()])) : null
+      }
       error={error}
     />
   );

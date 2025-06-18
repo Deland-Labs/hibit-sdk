@@ -44,7 +44,26 @@ export default function SectionGetPaymentAddress({ client }: { client: BrokerCli
     handleSubmit,
     formState: { errors }
   } = useForm({
-    resolver: yupResolver(schema)
+    resolver: yupResolver(schema),
+    defaultValues: {
+      hin: '',
+      sourceWalletPublicKey: '',
+      sourceWalletAddress: '',
+      sourceChainId: '',
+      sourceAssetType: undefined,
+      sourceAsset: '',
+      paymentAddress: '',
+      sourceVolume: 0,
+      txRef: '',
+      targetChainId: '',
+      targetWalletAddress: '',
+      targetAssetType: undefined,
+      targetAsset: '',
+      targetVolume: 0,
+      targetVolumeMin: 0,
+      signatureSchema: WalletSignatureSchema.KaspaSchnorr,
+      signature: ''
+    }
   });
   const values = watch();
 

@@ -1,4 +1,5 @@
 import { ChainAssetType } from '../../src';
+import { memo } from 'react';
 
 interface AssetTypeSelectorProps {
   selectedAssetTypes: number[];
@@ -6,7 +7,7 @@ interface AssetTypeSelectorProps {
   singleSelect?: boolean;
 }
 
-export default function AssetTypeSelector({ selectedAssetTypes, onChange, singleSelect }: AssetTypeSelectorProps) {
+function AssetTypeSelector({ selectedAssetTypes, onChange, singleSelect }: AssetTypeSelectorProps) {
   const handleAssetTypeChange = (type: number) => {
     if (singleSelect) {
       onChange([type]);
@@ -38,3 +39,5 @@ export default function AssetTypeSelector({ selectedAssetTypes, onChange, single
     </div>
   );
 }
+
+export default memo(AssetTypeSelector);
