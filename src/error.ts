@@ -28,4 +28,15 @@ export class HibitError extends Error {
   static throwRequiredWalletApiError(apiName: string) {
     throw new HibitError(`Wallet API is required: ${apiName}`);
   }
+
+  static throwInvalidParameterError(apiName: string, parameterName: string, message?: string) {
+    const errorMessage = message
+      ? `Invalid parameter '${parameterName}' in ${apiName}: ${message}`
+      : `Invalid parameter '${parameterName}' in ${apiName}`;
+    throw new HibitError(errorMessage);
+  }
+
+  static throwMissingRequiredParameterError(apiName: string, parameterName: string) {
+    throw new HibitError(`Missing required parameter '${parameterName}' in ${apiName}`);
+  }
 }

@@ -8,6 +8,7 @@ export default defineConfig(({ mode }) => {
   const isExample = mode === 'example';
 
   return {
+    base: isExample ? './' : '/',
     publicDir: isExample ? 'example/public' : 'public',
     plugins: [tailwindcss()],
     resolve: {
@@ -28,6 +29,7 @@ export default defineConfig(({ mode }) => {
             // the proper extensions will be added
             fileName: 'hibit-sdk'
           },
+      assetsDir: isExample ? 'assets' : 'assets',
       commonjsOptions: {
         transformMixedEsModules: true,
         include: [/node_modules/]
@@ -62,6 +64,11 @@ export default defineConfig(({ mode }) => {
     },
     server: {
       port: 3000
+    },
+    test: {
+      watch: false,
+      testTimeout: 10000,
+      environment: 'node'
     }
   };
 });

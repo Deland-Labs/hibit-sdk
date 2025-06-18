@@ -26,6 +26,7 @@ export interface IBrokerClient {
 
 export interface BrokerApiOptions {
   network: HibitNetwork;
+  hin?: bigint;
 }
 
 export class BrokerClient implements IBrokerClient {
@@ -45,7 +46,13 @@ export class BrokerClient implements IBrokerClient {
 
   async getPaymentAddress(input: GetPaymentAddressInput): Promise<string> {
     const apiName = 'getPaymentAddress';
-    const response = await getV1PaymentAddress(mapGetPaymentAddressInput(input));
+    this.validateGetPaymentAddressInput(apiName, input);
+
+    // Ensure hin is set (use provided hin or fallback to options hin)
+    const hinToUse = input.hin || this.ensureHin(apiName);
+    const inputWithHin = { ...input, hin: hinToUse };
+
+    const response = await getV1PaymentAddress(mapGetPaymentAddressInput(inputWithHin));
 
     this.ensureSuccess(apiName, response.data);
 
@@ -54,6 +61,8 @@ export class BrokerClient implements IBrokerClient {
 
   async quote(input: QuoteInput): Promise<QuoteResult> {
     const apiName = 'quote';
+    this.validateQuoteInput(apiName, input);
+
     const response = await getV1Quote(mapQuoteInput(input));
 
     this.ensureSuccess(apiName, response.data);
@@ -63,6 +72,13 @@ export class BrokerClient implements IBrokerClient {
 
   async swap(input: SwapInput): Promise<string> {
     const apiName = 'swap';
+    this.validateSwapInput(apiName, input);
+
+    // Ensure hin is set (use provided hin or fallback to options hin)
+    if (!input.hin) {
+      input.hin = this.ensureHin(apiName);
+    }
+
     const response = await postV1Swap(mapSwapInput(input));
 
     this.ensureSuccess(apiName, response.data);
@@ -71,7 +87,9 @@ export class BrokerClient implements IBrokerClient {
   }
 
   async getAgentOrder(orderId: string): Promise<AgentOrderData> {
-    const apiName = 'getOrder';
+    const apiName = 'getAgentOrder';
+    this.validateGetAgentOrderInput(apiName, orderId);
+
     const response = await getV1Order(mapGetAgentOrderInput(orderId));
 
     this.ensureSuccess(apiName, response.data);
@@ -83,6 +101,102 @@ export class BrokerClient implements IBrokerClient {
     if (response?.code !== 200) {
       HibitError.throwBadRequestError(apiName, response?.code, response?.message);
     }
+  }
+
+  private validateGetPaymentAddressInput(apiName: string, input: GetPaymentAddressInput) {
+    if (!input) {
+      HibitError.throwMissingRequiredParameterError(apiName, 'input');
+    }
+    // Use provided hin or fall back to options hin
+    if (!input.hin) {
+      this.ensureHin(apiName);
+    }
+    if (!input.chainId) {
+      HibitError.throwMissingRequiredParameterError(apiName, 'chainId');
+    }
+  }
+
+  private validateQuoteInput(apiName: string, input: QuoteInput) {
+    if (!input) {
+      HibitError.throwMissingRequiredParameterError(apiName, 'input');
+    }
+    if (!input.sourceChainId) {
+      HibitError.throwMissingRequiredParameterError(apiName, 'sourceChainId');
+    }
+    if (input.sourceAssetType === undefined || input.sourceAssetType === null) {
+      HibitError.throwMissingRequiredParameterError(apiName, 'sourceAssetType');
+    }
+    if (input.sourceVolume === undefined || input.sourceVolume === null) {
+      HibitError.throwMissingRequiredParameterError(apiName, 'sourceVolume');
+    }
+    if (input.sourceVolume <= 0n) {
+      HibitError.throwInvalidParameterError(apiName, 'sourceVolume', 'must be greater than 0');
+    }
+    if (input.targetAssetType === undefined || input.targetAssetType === null) {
+      HibitError.throwMissingRequiredParameterError(apiName, 'targetAssetType');
+    }
+  }
+
+  private validateSwapInput(apiName: string, input: SwapInput) {
+    if (!input) {
+      HibitError.throwMissingRequiredParameterError(apiName, 'input');
+    }
+    // Use provided hin or fall back to options hin
+    if (!input.hin) {
+      this.ensureHin(apiName);
+    }
+    if (!input.sourceWalletPublicKey) {
+      HibitError.throwMissingRequiredParameterError(apiName, 'sourceWalletPublicKey');
+    }
+    if (!input.sourceWalletAddress) {
+      HibitError.throwMissingRequiredParameterError(apiName, 'sourceWalletAddress');
+    }
+    if (!input.txRef) {
+      HibitError.throwMissingRequiredParameterError(apiName, 'txRef');
+    }
+    if (!input.sourceChainId) {
+      HibitError.throwMissingRequiredParameterError(apiName, 'sourceChainId');
+    }
+    if (input.sourceVolume === undefined || input.sourceVolume === null) {
+      HibitError.throwMissingRequiredParameterError(apiName, 'sourceVolume');
+    }
+    if (input.sourceVolume <= 0n) {
+      HibitError.throwInvalidParameterError(apiName, 'sourceVolume', 'must be greater than 0');
+    }
+    if (input.targetVolume === undefined || input.targetVolume === null) {
+      HibitError.throwMissingRequiredParameterError(apiName, 'targetVolume');
+    }
+    if (input.targetVolume <= 0n) {
+      HibitError.throwInvalidParameterError(apiName, 'targetVolume', 'must be greater than 0');
+    }
+    if (input.targetVolumeMin === undefined || input.targetVolumeMin === null) {
+      HibitError.throwMissingRequiredParameterError(apiName, 'targetVolumeMin');
+    }
+    if (input.targetVolumeMin <= 0n) {
+      HibitError.throwInvalidParameterError(apiName, 'targetVolumeMin', 'must be greater than 0');
+    }
+    if (input.targetVolumeMin > input.targetVolume) {
+      HibitError.throwInvalidParameterError(apiName, 'targetVolumeMin', 'cannot be greater than targetVolume');
+    }
+  }
+
+  private validateGetAgentOrderInput(apiName: string, orderId: string) {
+    if (!orderId) {
+      HibitError.throwMissingRequiredParameterError(apiName, 'orderId');
+    }
+    if (typeof orderId !== 'string') {
+      HibitError.throwInvalidParameterError(apiName, 'orderId', 'must be a string');
+    }
+    if (orderId.trim().length === 0) {
+      HibitError.throwInvalidParameterError(apiName, 'orderId', 'cannot be empty');
+    }
+  }
+
+  private ensureHin(apiName: string): bigint {
+    if (!this.options?.hin) {
+      HibitError.throwMissingRequiredParameterError(apiName, 'hin (please set it in broker client options)');
+    }
+    return this.options.hin!;
   }
 }
 

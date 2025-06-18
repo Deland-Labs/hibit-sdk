@@ -8,7 +8,8 @@ import { useEffect } from 'react';
 import { BrokerApiOptions, BrokerClient } from '../../../src/broker-client';
 
 const schema = object({
-  network: string().oneOf(Object.values(HibitNetwork).map(String)).required()
+  network: string().oneOf(Object.values(HibitNetwork).map(String)).required(),
+  hin: string().required('HIN is required')
 });
 
 export default function SectionSetBrokerClientOptions({
@@ -24,7 +25,8 @@ export default function SectionSetBrokerClientOptions({
     formState: { errors, isValid }
   } = useForm({
     defaultValues: {
-      network: defaultOptions.network
+      network: defaultOptions.network,
+      hin: defaultOptions.hin?.toString() || ''
     },
     resolver: yupResolver(schema),
     mode: 'onChange'
@@ -35,7 +37,8 @@ export default function SectionSetBrokerClientOptions({
   useEffect(() => {
     if (isValid) {
       client.setOptions({
-        network: formValues.network as HibitNetwork
+        network: formValues.network as HibitNetwork,
+        hin: formValues.hin ? BigInt(formValues.hin) : undefined
       });
     }
   }, [formValues, isValid, client]);
@@ -67,6 +70,21 @@ export default function SectionSetBrokerClientOptions({
                     </label>
                   ))}
                 </div>
+              )}
+            />
+          </FormField>
+
+          <FormField label="HIN" error={errors.hin} required>
+            <Controller
+              name="hin"
+              control={control}
+              render={({ field }) => (
+                <input
+                  type="text"
+                  placeholder="Enter HIN (e.g., 10007)"
+                  className="border rounded p-2 w-full"
+                  {...field}
+                />
               )}
             />
           </FormField>

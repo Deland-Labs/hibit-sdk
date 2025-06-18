@@ -8,7 +8,8 @@ import SectionSwap from '../components/broker-client-sections/SectionSwap';
 import SectionGetAgentOrder from '../components/broker-client-sections/SectionGetAgentOrder';
 
 const OPTIONS = {
-  network: HibitNetwork.Testnet
+  network: HibitNetwork.Testnet,
+  hin: 10007n
 };
 
 const BrokerClientPage: FC = () => {

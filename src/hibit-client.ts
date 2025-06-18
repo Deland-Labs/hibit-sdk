@@ -1,6 +1,7 @@
 import BigNumber from 'bignumber.js';
 import {
   AssetInfo,
+  AssetWithdrawFeeInfo,
   CancelSpotOrderInput,
   ChainInfo,
   DecimalOptions,
@@ -17,9 +18,11 @@ import {
   GetProxyKeyInput,
   GetRegisteredWalletInfoInput,
   GetWalletBalancesInput,
+  GetWithdrawFeeInfoInput,
   HexString,
   HibitApiResponse,
   HibitNetwork,
+  LimitOrderDetails,
   Market24HrTickerExtendInfo,
   Market24HrTickerInfo,
   MarketDepth,
@@ -33,6 +36,7 @@ import {
   RegisteredWalletInfo,
   ResetProxyKeyInput,
   SubmitSpotOrderInput,
+  SwapV2OrderDetails,
   Trade,
   TransactionType,
   TrySwapInput,
@@ -73,8 +77,6 @@ import {
 } from './openapi';
 import { mapChainInfo } from './types/chain';
 import {
-  AssetWithdrawFeeInfo,
-  GetWithdrawFeeInfoInput,
   mapAssetInfo,
   mapAssetWithdrawFeeInfo,
   mapGetAssetInput,
@@ -348,10 +350,10 @@ export interface IHibitClient {
   /**
    * Get the nonce.
    *
-   * @param {bigint} hin - The HIN (hibit chain identity number) of the wallet.
+   * @param {bigint} [hin] - The HIN of the wallet. If not provided, will use the HIN from client options.
    * @returns {Promise<bigint>} A promise that resolves to the nonce.
    */
-  getNonce(hin: bigint): Promise<bigint>;
+  getNonce(hin?: bigint): Promise<bigint>;
 
   /**
    * Try swap simulation to estimate swap results.
@@ -415,6 +417,7 @@ export class HibitClient implements IHibitClient {
 
   async getAssets(input: GetAssetsInput): Promise<PageResponse<AssetInfo>> {
     const apiName = 'getAssets';
+    this.validateGetAssetsInput(apiName, input);
     const response = await getV1Assets(mapGetAssetsInput(input));
 
     this.ensureSuccess(apiName, response.data);
@@ -427,6 +430,7 @@ export class HibitClient implements IHibitClient {
 
   async getAsset(input: GetAssetInput): Promise<AssetInfo[]> {
     const apiName = 'getAsset';
+    this.validateGetAssetInput(apiName, input);
     const response = await getV1Asset(mapGetAssetInput(input));
 
     this.ensureSuccess(apiName, response.data);
@@ -435,6 +439,7 @@ export class HibitClient implements IHibitClient {
 
   async getChainBalances(input: GetChainBalancesInput): Promise<Map<string, BigNumber>> {
     const apiName = 'getChainBalances';
+    this.validateGetChainBalancesInput(apiName, input);
     const response = await getV1ChainBalances(mapGetChainBalancesInput(input));
 
     this.ensureSuccess(apiName, response.data);
@@ -448,6 +453,7 @@ export class HibitClient implements IHibitClient {
 
   async getWithdrawFee(input: GetWithdrawFeeInfoInput): Promise<AssetWithdrawFeeInfo> {
     const apiName = 'getWithdrawFee';
+    this.validateGetWithdrawFeeInput(apiName, input);
     const response = await getV1AssetWithdrawalFee(mapGetWithdrawFeeInfoInput(input));
 
     this.ensureSuccess(apiName, response.data);
@@ -461,6 +467,7 @@ export class HibitClient implements IHibitClient {
 
   async getMarkets(input: GetMarketsInput): Promise<PageResponse<MarketInfo>> {
     const apiName = 'getMarkets';
+    this.validateGetMarketsInput(apiName, input);
     const response = await getV1Markets(mapGetMarketsInput(input));
 
     this.ensureSuccess(apiName, response.data);
@@ -473,6 +480,7 @@ export class HibitClient implements IHibitClient {
 
   async getMarket(marketId: bigint): Promise<MarketInfo> {
     const apiName = 'getMarket';
+    this.validateMarketId(apiName, marketId);
     const response = await getV1Market(mapGetMarketInput(marketId));
 
     this.ensureSuccess(apiName, response.data);
@@ -518,6 +526,7 @@ export class HibitClient implements IHibitClient {
 
   async getMarketDepth(input: GetMarketDepthInput): Promise<MarketDepth> {
     const apiName = 'getMarketDepth';
+    this.validateGetMarketDepthInput(apiName, input);
     const response = await getV1MarketDepth(mapGetMarketDepthInput(input));
 
     this.ensureSuccess(apiName, response.data);
@@ -527,6 +536,7 @@ export class HibitClient implements IHibitClient {
 
   async getMarketKline(input: GetMarketKlineInput): Promise<PageResponse<MarketKlineItem>> {
     const apiName = 'getMarketKline';
+    this.validateGetMarketKlineInput(apiName, input);
     const response = await getV1MarketKline(mapGetMarketKlineInput(input));
 
     this.ensureSuccess(apiName, response.data);
@@ -539,6 +549,7 @@ export class HibitClient implements IHibitClient {
 
   async getMarketTrade(input: GetMarketTradeInput): Promise<PageResponse<Trade>> {
     const apiName = 'getMarketTrade';
+    this.validateGetMarketTradeInput(apiName, input);
     const response = await getV1MarketTrade(mapGetMarketTradeInput(input));
 
     this.ensureSuccess(apiName, response.data);
@@ -554,9 +565,14 @@ export class HibitClient implements IHibitClient {
 
   async getOrders(input: GetOrdersInput): Promise<PageResponse<OrderInfo>> {
     const apiName = 'getOrders';
+    this.validateGetOrdersInput(apiName, input);
     this.ensureHIN(apiName);
 
-    const response = await getV1Orders(mapGetOrdersInput(input));
+    // Use input.hin if provided, otherwise use hin from options
+    const effectiveHin = input.hin ?? this.options.hin!;
+    const inputWithHin = { ...input, hin: effectiveHin };
+
+    const response = await getV1Orders(mapGetOrdersInput(inputWithHin));
     this.ensureSuccess(apiName, response.data);
 
     return {
@@ -567,14 +583,7 @@ export class HibitClient implements IHibitClient {
 
   async getOrder(input: GetOrderInput): Promise<OrderInfo> {
     const apiName = 'getOrder';
-
-    if (!validateGetOrderInput(input)) {
-      HibitError.throwBadRequestError(
-        apiName,
-        400,
-        'Must have exactly one of the following properties set: `OrderId`, `ClientOrderId`, or `TxHash`'
-      );
-    }
+    this.validateGetOrderInput(apiName, input);
 
     const response = await getV1Order(mapGetOrderInput(input));
 
@@ -585,6 +594,7 @@ export class HibitClient implements IHibitClient {
 
   async getOrderTrades(orderId: string): Promise<Array<OrderTradeRecord>> {
     const apiName = 'getOrderTrades';
+    this.validateOrderId(apiName, orderId);
     const response = await getV1OrderTrades(mapGetOrderTradesInput(orderId));
 
     this.ensureSuccess(apiName, response.data);
@@ -594,9 +604,10 @@ export class HibitClient implements IHibitClient {
 
   async submitSpotOrder(input: SubmitSpotOrderInput, decimalOptions: DecimalOptions, nonce?: number): Promise<void> {
     const apiName = 'submitSpotOrder';
+    this.validateSubmitSpotOrderInput(apiName, input, decimalOptions);
     this.ensurePrivateKey(apiName);
 
-    const nonceBigInt = nonce ? BigInt(nonce) : await this.getNonce(this.options.hin!);
+    const nonceBigInt = nonce ? BigInt(nonce) : await this.getNonce();
     const mappedInput = mapSubmitSpotOrderCborInput(input, decimalOptions);
     const tx = TransactionManager.createL2Transaction(
       TransactionType.CreateSpotOrder,
@@ -612,13 +623,14 @@ export class HibitClient implements IHibitClient {
 
   async cancelSpotOrder(input: CancelSpotOrderInput, nonce?: number): Promise<void> {
     const apiName = 'cancelSpotOrder';
+    this.validateCancelSpotOrderInput(apiName, input);
     this.ensurePrivateKey(apiName);
 
     if (input.isCancelAll === undefined || input.isCancelAll === null) {
       input.isCancelAll = false;
     }
 
-    const nonceBigInt = nonce ? BigInt(nonce) : await this.getNonce(this.options.hin!);
+    const nonceBigInt = nonce ? BigInt(nonce) : await this.getNonce();
     const mappedInput = mapCancelOrdersCborInput(input);
     const tx = TransactionManager.createL2Transaction(
       TransactionType.CancelSpotOrder,
@@ -636,6 +648,7 @@ export class HibitClient implements IHibitClient {
 
   async walletRegister(input: WalletRegisterInput): Promise<void> {
     const apiName = 'walletRegister';
+    this.validateWalletRegisterInput(apiName, input);
     this.ensureWalletApi(apiName);
 
     const message = this.walletApi!.generateWalletRegistrationMessage(input);
@@ -648,6 +661,7 @@ export class HibitClient implements IHibitClient {
 
   async getRegisteredWalletInfo(input: GetRegisteredWalletInfoInput): Promise<RegisteredWalletInfo> {
     const apiName = 'getRegisteredWalletInfo';
+    this.validateGetRegisteredWalletInfoInput(apiName, input);
     this.ensureWalletApi(apiName);
 
     const resp = await getV1WalletInfo(mapGetRegisteredWalletInfoInput(input));
@@ -659,6 +673,7 @@ export class HibitClient implements IHibitClient {
 
   async resetProxyKey(input: ResetProxyKeyInput): Promise<void> {
     const apiName = 'resetProxyKey';
+    this.validateResetProxyKeyInput(apiName, input);
     this.ensureWalletApi(apiName);
 
     const aseKey = await this.walletApi!.signMessage(PROXY_KEY_ENCRYPT_SOURCE_MSG);
@@ -673,6 +688,7 @@ export class HibitClient implements IHibitClient {
 
   async getProxyKeypair(input: GetProxyKeyInput): Promise<ProxyKeypair> {
     const apiName = 'getProxyKeypair';
+    this.validateGetProxyKeyInput(apiName, input);
     this.ensureWalletApi(apiName);
 
     const message = this.walletApi!.generateGetProxyKeyMessage(input, this.options.hin!);
@@ -687,7 +703,14 @@ export class HibitClient implements IHibitClient {
 
   async getWalletBalances(input: GetWalletBalancesInput): Promise<Map<string, BigNumber>> {
     const apiName = 'getWalletBalances';
-    const resp = await getV1WalletBalances(mapGetWalletBalancesInput(input));
+    this.validateGetWalletBalancesInput(apiName, input);
+    this.ensureHIN(apiName);
+
+    // Use input.hin if provided, otherwise use hin from options
+    const effectiveHin = input.hin ?? this.options.hin!;
+    const inputWithHin = { ...input, hin: effectiveHin };
+
+    const resp = await getV1WalletBalances(mapGetWalletBalancesInput(inputWithHin));
 
     this.ensureSuccess(apiName, resp.data);
 
@@ -700,6 +723,7 @@ export class HibitClient implements IHibitClient {
 
   async withdraw(input: WithdrawInput): Promise<void> {
     const apiName = 'withdraw';
+    this.validateWithdrawInput(apiName, input);
     this.ensureHIN(apiName);
     this.ensureWalletApi(apiName);
 
@@ -716,9 +740,13 @@ export class HibitClient implements IHibitClient {
     this.ensureSuccess(apiName, resp.data);
   }
 
-  async getNonce(hin: bigint): Promise<bigint> {
+  async getNonce(hin?: bigint): Promise<bigint> {
     const apiName = 'getNonce';
-    const response = await getV1WalletNonce(mapGetNonceInput(hin));
+    this.ensureHIN(apiName);
+
+    // Use provided hin if given, otherwise use hin from options
+    const effectiveHin = hin ?? this.options.hin!;
+    const response = await getV1WalletNonce(mapGetNonceInput(effectiveHin));
 
     this.ensureSuccess(apiName, response.data);
 
@@ -727,6 +755,7 @@ export class HibitClient implements IHibitClient {
 
   async trySwap(input: TrySwapInput): Promise<TrySwapResult> {
     const apiName = 'trySwap';
+    this.validateTrySwapInput(apiName, input);
     const resp = await postV1MarketTrySwap(mapTrySwapInput(input));
 
     this.ensureSuccess(apiName, resp.data);
@@ -736,6 +765,7 @@ export class HibitClient implements IHibitClient {
 
   async getWithdrawDetails(txHash: string): Promise<WithdrawDetailsInfo> {
     const apiName = 'getWithdrawDetails';
+    this.validateTxHash(apiName, txHash);
     const response = await getV1WithdrawDetails(mapGetWithdrawDetailsInput(txHash));
 
     this.ensureSuccess(apiName, response.data);
@@ -765,6 +795,411 @@ export class HibitClient implements IHibitClient {
   private ensureWalletApi(apiName: string) {
     if (!this.walletApi) {
       HibitError.throwRequiredWalletApiError(apiName);
+    }
+  }
+
+  private validateResetProxyKeyInput(apiName: string, input: ResetProxyKeyInput) {
+    if (!input) {
+      HibitError.throwMissingRequiredParameterError(apiName, 'input');
+    }
+    if (!input.chain) {
+      HibitError.throwMissingRequiredParameterError(apiName, 'chain');
+    }
+    if (input.nonce === undefined || input.nonce === null) {
+      HibitError.throwMissingRequiredParameterError(apiName, 'nonce');
+    }
+    if (!input.signatureSchema) {
+      HibitError.throwMissingRequiredParameterError(apiName, 'signatureSchema');
+    }
+    if (!input.proxyPrivateKey) {
+      HibitError.throwMissingRequiredParameterError(apiName, 'proxyPrivateKey');
+    }
+    if (!input.proxyPublicKey) {
+      HibitError.throwMissingRequiredParameterError(apiName, 'proxyPublicKey');
+    }
+  }
+
+  private validateGetProxyKeyInput(apiName: string, input: GetProxyKeyInput) {
+    if (!input) {
+      HibitError.throwMissingRequiredParameterError(apiName, 'input');
+    }
+    if (!input.chain) {
+      HibitError.throwMissingRequiredParameterError(apiName, 'chain');
+    }
+    if (!input.signatureSchema) {
+      HibitError.throwMissingRequiredParameterError(apiName, 'signatureSchema');
+    }
+    if (input.timestamp === undefined || input.timestamp === null) {
+      HibitError.throwMissingRequiredParameterError(apiName, 'timestamp');
+    }
+  }
+
+  private validateWalletRegisterInput(apiName: string, input: WalletRegisterInput) {
+    if (!input) {
+      HibitError.throwMissingRequiredParameterError(apiName, 'input');
+    }
+    if (!input.chain) {
+      HibitError.throwMissingRequiredParameterError(apiName, 'chain');
+    }
+    if (!input.signatureSchema) {
+      HibitError.throwMissingRequiredParameterError(apiName, 'signatureSchema');
+    }
+  }
+
+  private validateWithdrawInput(apiName: string, input: WithdrawInput) {
+    if (!input) {
+      HibitError.throwMissingRequiredParameterError(apiName, 'input');
+    }
+    if (!input.targetChain) {
+      HibitError.throwMissingRequiredParameterError(apiName, 'targetChain');
+    }
+    if (!input.targetChainNetwork) {
+      HibitError.throwMissingRequiredParameterError(apiName, 'targetChainNetwork');
+    }
+    if (input.nonce === undefined || input.nonce === null) {
+      HibitError.throwMissingRequiredParameterError(apiName, 'nonce');
+    }
+    if (!input.address) {
+      HibitError.throwMissingRequiredParameterError(apiName, 'address');
+    }
+    if (input.assetId === undefined || input.assetId === null) {
+      HibitError.throwMissingRequiredParameterError(apiName, 'assetId');
+    }
+    if (input.assetDecimals === undefined || input.assetDecimals === null) {
+      HibitError.throwMissingRequiredParameterError(apiName, 'assetDecimals');
+    }
+    if (input.amount === undefined || input.amount === null) {
+      HibitError.throwMissingRequiredParameterError(apiName, 'amount');
+    }
+    if (input.fee === undefined || input.fee === null) {
+      HibitError.throwMissingRequiredParameterError(apiName, 'fee');
+    }
+  }
+
+  private validateGetMarketDepthInput(apiName: string, input: GetMarketDepthInput) {
+    if (!input) {
+      HibitError.throwMissingRequiredParameterError(apiName, 'input');
+    }
+    if (input.marketId === undefined || input.marketId === null) {
+      HibitError.throwMissingRequiredParameterError(apiName, 'marketId');
+    }
+    if (input.index === undefined || input.index === null) {
+      HibitError.throwMissingRequiredParameterError(apiName, 'index');
+    }
+    if (input.limit !== undefined && input.limit !== null) {
+      if (input.limit < 1 || input.limit > 100) {
+        HibitError.throwInvalidParameterError(apiName, 'limit', 'must be between 1 and 100');
+      }
+    }
+  }
+
+  private validateGetMarketKlineInput(apiName: string, input: GetMarketKlineInput) {
+    if (!input) {
+      HibitError.throwMissingRequiredParameterError(apiName, 'input');
+    }
+    if (input.marketId === undefined || input.marketId === null) {
+      HibitError.throwMissingRequiredParameterError(apiName, 'marketId');
+    }
+    if (input.tickSpace === undefined || input.tickSpace === null) {
+      HibitError.throwMissingRequiredParameterError(apiName, 'tickSpace');
+    }
+    if (input.limit !== undefined && input.limit !== null) {
+      if (input.limit < 1 || input.limit > 500) {
+        HibitError.throwInvalidParameterError(apiName, 'limit', 'must be between 1 and 500');
+      }
+    }
+  }
+
+  private validateMarketId(apiName: string, marketId: bigint) {
+    if (marketId === undefined || marketId === null) {
+      HibitError.throwMissingRequiredParameterError(apiName, 'marketId');
+    }
+  }
+
+  private validateGetMarketTradeInput(apiName: string, input: GetMarketTradeInput) {
+    if (!input) {
+      HibitError.throwMissingRequiredParameterError(apiName, 'input');
+    }
+    if (input.marketId === undefined || input.marketId === null) {
+      HibitError.throwMissingRequiredParameterError(apiName, 'marketId');
+    }
+    if (input.limit !== undefined && input.limit !== null) {
+      if (input.limit < 1 || input.limit > 500) {
+        HibitError.throwInvalidParameterError(apiName, 'limit', 'must be between 1 and 500');
+      }
+    }
+  }
+
+  private validateGetOrdersInput(apiName: string, input: GetOrdersInput) {
+    if (!input) {
+      HibitError.throwMissingRequiredParameterError(apiName, 'input');
+    }
+    // Note: hin is optional - if not provided, client options.hin will be used
+    if (input.limit !== undefined && input.limit !== null) {
+      if (input.limit < 1 || input.limit > 500) {
+        HibitError.throwInvalidParameterError(apiName, 'limit', 'must be between 1 and 500');
+      }
+    }
+    if (input.offset !== undefined && input.offset !== null) {
+      if (input.offset < 0) {
+        HibitError.throwInvalidParameterError(apiName, 'offset', 'must be non-negative');
+      }
+    }
+  }
+
+  private validateGetOrderInput(apiName: string, input: GetOrderInput) {
+    if (!input) {
+      HibitError.throwMissingRequiredParameterError(apiName, 'input');
+    }
+    if (!validateGetOrderInput(input)) {
+      HibitError.throwInvalidParameterError(
+        apiName,
+        'identifiers',
+        'must have exactly one of the following properties set: orderId, clientOrderId, or txHash'
+      );
+    }
+  }
+
+  private validateOrderId(apiName: string, orderId: string) {
+    if (!orderId) {
+      HibitError.throwMissingRequiredParameterError(apiName, 'orderId');
+    }
+  }
+
+  private validateGetAssetsInput(apiName: string, input: GetAssetsInput) {
+    if (!input) {
+      HibitError.throwMissingRequiredParameterError(apiName, 'input');
+    }
+    if (input.limit !== undefined && input.limit !== null) {
+      if (input.limit < 1 || input.limit > 500) {
+        HibitError.throwInvalidParameterError(apiName, 'limit', 'must be between 1 and 500');
+      }
+    }
+    if (input.offset !== undefined && input.offset !== null) {
+      if (input.offset < 0) {
+        HibitError.throwInvalidParameterError(apiName, 'offset', 'must be non-negative');
+      }
+    }
+  }
+
+  private validateGetAssetInput(apiName: string, input: GetAssetInput) {
+    if (!input) {
+      HibitError.throwMissingRequiredParameterError(apiName, 'input');
+    }
+    // At least one of assetId or tokenAddress must be provided
+    if (!input.assetId && !input.tokenAddress) {
+      HibitError.throwInvalidParameterError(apiName, 'input', 'either assetId or tokenAddress must be provided');
+    }
+  }
+
+  private validateGetChainBalancesInput(apiName: string, input: GetChainBalancesInput) {
+    if (!input) {
+      HibitError.throwMissingRequiredParameterError(apiName, 'input');
+    }
+  }
+
+  private validateGetWithdrawFeeInput(apiName: string, input: GetWithdrawFeeInfoInput) {
+    if (!input) {
+      HibitError.throwMissingRequiredParameterError(apiName, 'input');
+    }
+    if (!input.rootAssetId) {
+      HibitError.throwMissingRequiredParameterError(apiName, 'rootAssetId');
+    }
+    if (!input.targetChain) {
+      HibitError.throwMissingRequiredParameterError(apiName, 'targetChain');
+    }
+  }
+
+  private validateGetMarketsInput(apiName: string, input: GetMarketsInput) {
+    if (!input) {
+      HibitError.throwMissingRequiredParameterError(apiName, 'input');
+    }
+    if (input.limit !== undefined && input.limit !== null) {
+      if (input.limit < 1 || input.limit > 500) {
+        HibitError.throwInvalidParameterError(apiName, 'limit', 'must be between 1 and 500');
+      }
+    }
+    if (input.offset !== undefined && input.offset !== null) {
+      if (input.offset < 0) {
+        HibitError.throwInvalidParameterError(apiName, 'offset', 'must be non-negative');
+      }
+    }
+  }
+
+  private validateSubmitSpotOrderInput(apiName: string, input: SubmitSpotOrderInput, decimalOptions: DecimalOptions) {
+    if (!input) {
+      HibitError.throwMissingRequiredParameterError(apiName, 'input');
+    }
+    if (!decimalOptions) {
+      HibitError.throwMissingRequiredParameterError(apiName, 'decimalOptions');
+    }
+    if (!input.marketId) {
+      HibitError.throwMissingRequiredParameterError(apiName, 'marketId');
+    }
+    if (!input.orderCategory) {
+      HibitError.throwMissingRequiredParameterError(apiName, 'orderCategory');
+    }
+
+    // At least one of limitOrderDetails or swapV2OrderDetails must be provided, but not both
+    if (!input.limitOrderDetails && !input.swapV2OrderDetails) {
+      HibitError.throwInvalidParameterError(
+        apiName,
+        'input',
+        'either limitOrderDetails or swapV2OrderDetails must be provided'
+      );
+    }
+    if (input.limitOrderDetails && input.swapV2OrderDetails) {
+      HibitError.throwInvalidParameterError(
+        apiName,
+        'input',
+        'limitOrderDetails and swapV2OrderDetails cannot both be provided'
+      );
+    }
+
+    // Validate limitOrderDetails if provided
+    if (input.limitOrderDetails) {
+      this.validateLimitOrderDetails(apiName, input.limitOrderDetails);
+    }
+
+    // Validate swapV2OrderDetails if provided
+    if (input.swapV2OrderDetails) {
+      this.validateSwapV2OrderDetails(apiName, input.swapV2OrderDetails);
+    }
+  }
+
+  private validateLimitOrderDetails(apiName: string, details: LimitOrderDetails) {
+    if (!details.orderSide) {
+      HibitError.throwMissingRequiredParameterError(apiName, 'limitOrderDetails.orderSide');
+    }
+    if (details.price === undefined || details.price === null) {
+      HibitError.throwMissingRequiredParameterError(apiName, 'limitOrderDetails.price');
+    }
+    if (details.price <= 0) {
+      HibitError.throwInvalidParameterError(apiName, 'limitOrderDetails.price', 'must be greater than 0');
+    }
+    if (details.volume === undefined || details.volume === null) {
+      HibitError.throwMissingRequiredParameterError(apiName, 'limitOrderDetails.volume');
+    }
+    if (details.volume <= 0) {
+      HibitError.throwInvalidParameterError(apiName, 'limitOrderDetails.volume', 'must be greater than 0');
+    }
+  }
+
+  private validateSwapV2OrderDetails(apiName: string, details: SwapV2OrderDetails) {
+    if (!details.orderSide) {
+      HibitError.throwMissingRequiredParameterError(apiName, 'swapV2OrderDetails.orderSide');
+    }
+    if (details.exactTokens === undefined || details.exactTokens === null) {
+      HibitError.throwMissingRequiredParameterError(apiName, 'swapV2OrderDetails.exactTokens');
+    }
+    if (details.exactTokens <= 0) {
+      HibitError.throwInvalidParameterError(apiName, 'swapV2OrderDetails.exactTokens', 'must be greater than 0');
+    }
+    if (details.exactTokensType === undefined || details.exactTokensType === null) {
+      HibitError.throwMissingRequiredParameterError(apiName, 'swapV2OrderDetails.exactTokensType');
+    }
+
+    // Validate optional slippage protection parameters if provided
+    if (details.minOut !== undefined && details.minOut !== null && details.minOut <= 0) {
+      HibitError.throwInvalidParameterError(apiName, 'swapV2OrderDetails.minOut', 'must be greater than 0');
+    }
+    if (details.maxIn !== undefined && details.maxIn !== null && details.maxIn <= 0) {
+      HibitError.throwInvalidParameterError(apiName, 'swapV2OrderDetails.maxIn', 'must be greater than 0');
+    }
+  }
+
+  private validateCancelSpotOrderInput(apiName: string, input: CancelSpotOrderInput) {
+    if (!input) {
+      HibitError.throwMissingRequiredParameterError(apiName, 'input');
+    }
+
+    // Scenario 1: Cancel by order ID
+    if (input.orderId !== undefined) {
+      if (typeof input.orderId !== 'string' || input.orderId.trim() === '') {
+        HibitError.throwInvalidParameterError(apiName, 'orderId', 'must be a non-empty string');
+      }
+      // When orderId is provided, other parameters should not be used
+      return;
+    }
+
+    // Scenario 2 & 3: Cancel by market (requires marketId)
+    if (!input.marketId) {
+      HibitError.throwInvalidParameterError(
+        apiName,
+        'input',
+        'either orderId must be provided, or marketId must be provided for market-based cancellation'
+      );
+    }
+
+    // Scenario 2: Cancel by market ID and side
+    if (input.orderSide && !input.isCancelAll) {
+      // Valid scenario: cancel orders by market and side
+      return;
+    }
+
+    // Scenario 3: Cancel all orders in market
+    if (input.isCancelAll) {
+      // When isCancelAll is true, orderSide should not be specified
+      if (input.orderSide) {
+        HibitError.throwInvalidParameterError(
+          apiName,
+          'input',
+          'orderSide should not be specified when isCancelAll is true'
+        );
+      }
+      return;
+    }
+
+    // If marketId is provided but neither orderSide nor isCancelAll is specified
+    HibitError.throwInvalidParameterError(
+      apiName,
+      'input',
+      'when marketId is provided, either orderSide must be specified (to cancel by side) or isCancelAll must be true (to cancel all orders)'
+    );
+  }
+
+  private validateGetRegisteredWalletInfoInput(apiName: string, input: GetRegisteredWalletInfoInput) {
+    if (!input) {
+      HibitError.throwMissingRequiredParameterError(apiName, 'input');
+    }
+    if (!input.chain) {
+      HibitError.throwMissingRequiredParameterError(apiName, 'chain');
+    }
+    if (!input.publicKey && !input.address) {
+      HibitError.throwInvalidParameterError(apiName, 'input', 'either publicKey or address must be provided');
+    }
+  }
+
+  private validateGetWalletBalancesInput(apiName: string, input: GetWalletBalancesInput) {
+    if (!input) {
+      HibitError.throwMissingRequiredParameterError(apiName, 'input');
+    }
+  }
+
+  private validateTrySwapInput(apiName: string, input: TrySwapInput) {
+    if (!input) {
+      HibitError.throwMissingRequiredParameterError(apiName, 'input');
+    }
+    if (!input.marketId) {
+      HibitError.throwMissingRequiredParameterError(apiName, 'marketId');
+    }
+    if (!input.side) {
+      HibitError.throwMissingRequiredParameterError(apiName, 'side');
+    }
+    if (!input.exactTokensType) {
+      HibitError.throwMissingRequiredParameterError(apiName, 'exactTokensType');
+    }
+    if (input.exactTokens === undefined || input.exactTokens === null) {
+      HibitError.throwMissingRequiredParameterError(apiName, 'exactTokens');
+    }
+    if (input.exactTokens <= 0) {
+      HibitError.throwInvalidParameterError(apiName, 'exactTokens', 'must be greater than 0');
+    }
+  }
+
+  private validateTxHash(apiName: string, txHash: string) {
+    if (!txHash) {
+      HibitError.throwMissingRequiredParameterError(apiName, 'txHash');
     }
   }
 }

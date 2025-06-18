@@ -7,7 +7,7 @@ import FormField from '../FormField';
 import { useClientContext } from '../../context/ClientContext';
 
 const schema = object({
-  hin: string().required()
+  hin: string().optional()
 });
 
 export default function SectionGetNonce() {
@@ -29,8 +29,9 @@ export default function SectionGetNonce() {
     setResult(null);
     setError('');
     try {
-      const req = BigInt(input.hin);
-      setResult(await client.getNonce(req));
+      // If HIN is provided, use it; otherwise use default from client options
+      const hin = input.hin ? BigInt(input.hin) : undefined;
+      setResult(await client.getNonce(hin));
     } catch (e: any) {
       setError(e.message ?? JSON.stringify(e));
     } finally {
@@ -43,8 +44,13 @@ export default function SectionGetNonce() {
       title="GetNonce"
       form={
         <div className="flex flex-col gap-2">
-          <FormField label="HIN(Hibit chain identity number)" error={errors.hin} required>
-            <input type="number" className="input" {...register('hin')} />
+          <FormField label="HIN (optional - uses client default if empty)" error={errors.hin}>
+            <input
+              type="number"
+              className="input"
+              {...register('hin')}
+              placeholder="Leave empty to use client default HIN"
+            />
           </FormField>
           <button className="btn" onClick={submit} disabled={loading}>
             {loading ? 'Loading...' : 'Submit'}

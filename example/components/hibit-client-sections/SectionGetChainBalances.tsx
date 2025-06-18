@@ -9,7 +9,7 @@ import BigNumber from 'bignumber.js';
 import { useClientContext } from '../../context/ClientContext';
 
 const schema = object({
-  assetId: string()
+  assetId: string().optional()
 });
 
 export default function SectionGetChainBalances() {

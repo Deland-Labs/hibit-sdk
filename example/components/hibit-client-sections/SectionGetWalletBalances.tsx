@@ -9,8 +9,8 @@ import BigNumber from 'bignumber.js';
 import { useClientContext } from '../../context/ClientContext';
 
 const schema = object({
-  hin: string().required(),
-  assetId: string()
+  hin: string().optional(),
+  assetId: string().optional()
 });
 
 export default function SectionGetWalletBalances() {
@@ -33,7 +33,7 @@ export default function SectionGetWalletBalances() {
     setError('');
     try {
       const req: GetWalletBalancesInput = {
-        hin: BigInt(input.hin),
+        hin: input.hin ? BigInt(input.hin) : undefined,
         assetId: input.assetId ? BigInt(input.assetId) : undefined
       };
       const res = await client.getWalletBalances(req);
@@ -50,11 +50,23 @@ export default function SectionGetWalletBalances() {
       title="GetWalletBalances"
       form={
         <div className="flex flex-col gap-2">
-          <FormField label="HIN(Hibit chain identity number)" error={errors.hin} required>
-            <input type="number" className="input" {...register('hin')} pattern="[0-9]*" />
+          <FormField label="HIN (optional - uses client default if empty)" error={errors.hin}>
+            <input
+              type="number"
+              className="input"
+              {...register('hin')}
+              pattern="[0-9]*"
+              placeholder="Leave empty to use client default HIN"
+            />
           </FormField>
-          <FormField label="AssetId" error={errors.assetId}>
-            <input type="number" className="input" {...register('assetId')} pattern="[0-9]*" />
+          <FormField label="AssetId (optional)" error={errors.assetId}>
+            <input
+              type="number"
+              className="input"
+              {...register('assetId')}
+              pattern="[0-9]*"
+              placeholder="Leave empty to get all assets"
+            />
           </FormField>
           <button className="btn" onClick={submit} disabled={loading}>
             {loading ? 'Loading...' : 'Submit'}

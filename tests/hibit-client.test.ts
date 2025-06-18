@@ -38,7 +38,7 @@ describe('Hibit Client Test', () => {
 
     it('should get asset', async () => {
       const asset = await hibitClient.getAsset({
-        assetId: '10000'
+        assetId: 10000n
       });
       expect(asset).toBeInstanceOf(Array);
     });
@@ -47,6 +47,14 @@ describe('Hibit Client Test', () => {
       const balances = await hibitClient.getChainBalances({
         assetId: '10000'
       });
+      expect(balances).toBeInstanceOf(Map);
+      balances.forEach((balance) => {
+        expect(balance).toBeInstanceOf(BigNumber);
+      });
+    });
+
+    it('should get chain balances without assetId', async () => {
+      const balances = await hibitClient.getChainBalances({});
       expect(balances).toBeInstanceOf(Map);
       balances.forEach((balance) => {
         expect(balance).toBeInstanceOf(BigNumber);
@@ -145,13 +153,8 @@ describe('Hibit Client Test', () => {
     //     ).resolves.not.toThrow();
     //   });
 
-    it('should throw error when hin is not provided in options', async () => {
-      await expect(hibitClient.getOrders({} as any)).rejects.toThrow();
-    });
-
     it('should get orders list', async () => {
       const orders = await hibitClient.getOrders({
-        hin: options.hin,
         limit: 10,
         offset: 0
       });
@@ -190,8 +193,14 @@ describe('Hibit Client Test', () => {
   });
 
   describe('Wallet API Tests', () => {
-    it('should get wallet nonce', async () => {
+    it('should get wallet nonce with explicit hin', async () => {
       const nonce = await hibitClient.getNonce(options.hin);
+      expect(nonce).toBeTypeOf('bigint');
+      expect(nonce).toBeGreaterThanOrEqual(0n);
+    });
+
+    it('should get wallet nonce without providing hin', async () => {
+      const nonce = await hibitClient.getNonce();
       expect(nonce).toBeTypeOf('bigint');
       expect(nonce).toBeGreaterThanOrEqual(0n);
     });
@@ -200,6 +209,14 @@ describe('Hibit Client Test', () => {
       const balances = await hibitClient.getWalletBalances({
         hin: options.hin
       });
+      expect(balances).toBeInstanceOf(Map);
+      balances.forEach((balance) => {
+        expect(balance).toBeInstanceOf(BigNumber);
+      });
+    });
+
+    it('should get wallet balances without providing hin', async () => {
+      const balances = await hibitClient.getWalletBalances({});
       expect(balances).toBeInstanceOf(Map);
       balances.forEach((balance) => {
         expect(balance).toBeInstanceOf(BigNumber);
