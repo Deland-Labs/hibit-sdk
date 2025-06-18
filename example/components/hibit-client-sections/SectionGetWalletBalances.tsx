@@ -74,7 +74,9 @@ export default function SectionGetWalletBalances() {
         </div>
       }
       loading={loading}
-      result={result}
+      result={
+        result ? Object.fromEntries(Array.from(result.entries()).map(([key, value]) => [key, value.toString()])) : null
+      }
       error={error}
     />
   );

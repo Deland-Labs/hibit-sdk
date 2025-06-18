@@ -1,5 +1,6 @@
 import { Chain, ChainId, ChainNetwork } from '../../src';
 import { chainNetworkMap } from '../utils/chainUtils';
+import { memo } from 'react';
 
 interface ChainIdSelectorProps {
   selectedChainIds: ChainId[];
@@ -14,12 +15,7 @@ interface ChainIdSelectorProps {
   placeholder?: string;
 }
 
-export default function ChainIdSelector({
-  selectedChainIds,
-  onChange,
-  singleSelect = false,
-  placeholder
-}: ChainIdSelectorProps) {
+function ChainIdSelector({ selectedChainIds, onChange, singleSelect = false, placeholder }: ChainIdSelectorProps) {
   const isChainIdSelected = (chain: Chain, network: ChainNetwork) => {
     return selectedChainIds.some((chainId) => chainId.chain.equals(chain) && chainId.network.equals(network));
   };
@@ -75,3 +71,5 @@ export default function ChainIdSelector({
     </div>
   );
 }
+
+export default memo(ChainIdSelector);
