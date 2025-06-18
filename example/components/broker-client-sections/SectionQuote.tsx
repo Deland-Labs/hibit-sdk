@@ -1,4 +1,4 @@
-import { ChainId, QuoteInput, QuoteResult } from '../../../src';
+import { ChainId, QuoteInput, QuoteResult, HibitNetwork } from '../../../src';
 import Section from '../Section';
 import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
@@ -20,7 +20,12 @@ const schema = object({
   targetAsset: string()
 });
 
-export default function SectionQuote({ client }: { client: BrokerClient }) {
+interface SectionQuoteProps {
+  client: BrokerClient;
+  hibitNetwork?: HibitNetwork;
+}
+
+export default function SectionQuote({ client, hibitNetwork }: SectionQuoteProps) {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<QuoteResult | null>(null);
   const [error, setError] = useState<string>('');
@@ -115,6 +120,7 @@ export default function SectionQuote({ client }: { client: BrokerClient }) {
                 setValue('sourceChainId', ids[0]?.toString() ?? '');
                 trigger('sourceChainId');
               }}
+              hibitNetwork={hibitNetwork}
             />
           </FormField>
           <FormField label="Source Asset Type" error={errors.sourceAssetType} required>
@@ -158,6 +164,7 @@ export default function SectionQuote({ client }: { client: BrokerClient }) {
                 setValue('targetChainId', ids[0]?.toString() ?? '');
                 trigger('targetChainId');
               }}
+              hibitNetwork={hibitNetwork}
             />
           </FormField>
           <FormField label="Target Asset Type" error={errors.targetAssetType} required>

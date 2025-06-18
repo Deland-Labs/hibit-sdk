@@ -1,4 +1,4 @@
-import { AssetInfo, ChainId, GetAssetsInput, PageResponse } from '../../../src';
+import { AssetInfo, ChainId, GetAssetsInput, PageResponse, HibitNetwork } from '../../../src';
 import Section from '../Section';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -21,7 +21,11 @@ const schema = object({
   orderBy: string()
 });
 
-export default function SectionGetAssets() {
+interface SectionGetAssetsProps {
+  hibitNetwork?: HibitNetwork;
+}
+
+export default function SectionGetAssets({ hibitNetwork }: SectionGetAssetsProps = {}) {
   const { client } = useClientContext();
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<PageResponse<AssetInfo> | null>(null);
@@ -63,7 +67,11 @@ export default function SectionGetAssets() {
       form={
         <div className="flex flex-col gap-2">
           <FormField label="ChainIds" labelDesc="select multiple chains" error={errors.chainIds}>
-            <ChainIdSelector selectedChainIds={selectedChainIds} onChange={setSelectedChainIds} />
+            <ChainIdSelector
+              selectedChainIds={selectedChainIds}
+              onChange={setSelectedChainIds}
+              hibitNetwork={hibitNetwork}
+            />
           </FormField>
           <FormField label="ChainAssetTypes" labelDesc="select multiple types" error={errors.chainAssetTypes}>
             <AssetTypeSelector selectedAssetTypes={selectedAssetTypes} onChange={setSelectedAssetTypes} />

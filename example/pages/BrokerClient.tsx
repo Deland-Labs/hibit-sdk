@@ -14,6 +14,7 @@ const OPTIONS = {
 
 const BrokerClientPage: FC = () => {
   const [client, setClient] = useState<BrokerClient | null>(null);
+  const [currentNetwork, setCurrentNetwork] = useState<HibitNetwork>(OPTIONS.network);
 
   useEffect(() => {
     const client = new BrokerClient();
@@ -21,16 +22,21 @@ const BrokerClientPage: FC = () => {
     setClient(client);
   }, []);
 
+  // Add a callback to update the current network when client options change
+  const handleNetworkChange = (newNetwork: HibitNetwork) => {
+    setCurrentNetwork(newNetwork);
+  };
+
   if (!client) {
     return null;
   }
 
   return (
     <div className="flex flex-col gap-6">
-      <SectionSetBrokerClientOptions client={client} defaultOptions={OPTIONS} />
-      <SectionGetPaymentAddress client={client} />
-      <SectionQuote client={client} />
-      <SectionSwap client={client} />
+      <SectionSetBrokerClientOptions client={client} defaultOptions={OPTIONS} onNetworkChange={handleNetworkChange} />
+      <SectionGetPaymentAddress client={client} hibitNetwork={currentNetwork} />
+      <SectionQuote client={client} hibitNetwork={currentNetwork} />
+      <SectionSwap client={client} hibitNetwork={currentNetwork} />
       <SectionGetAgentOrder client={client} />
     </div>
   );

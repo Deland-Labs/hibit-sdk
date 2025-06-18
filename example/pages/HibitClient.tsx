@@ -33,12 +33,61 @@ import SectionSetHibitClientOptions from '../components/hibit-client-sections/Se
 import { WalletConnectionProvider } from '../context/WalletConnectionContext';
 import { ClientProvider } from '../context/ClientContext';
 import SectionTrySwap from '../components/hibit-client-sections/SectionTrySwap';
+import { useClientContext } from '../context/ClientContext';
 
 const OPTIONS = {
   network: HibitNetwork.Testnet,
   hin: BigInt(10000),
   proxyKey: 'fa3e933f1788d7d56a20e078370f4c3b713ee0bcdb44392e4cfeaf524716d06a'
 };
+
+// Inner component that has access to the ClientContext
+function HibitClientContent() {
+  const { hibitNetwork } = useClientContext();
+
+  return (
+    <div className="flex flex-col gap-6">
+      <SectionSetHibitClientOptions defaultOptions={OPTIONS} />
+
+      {/* Basic APIs */}
+      <SectionGetTimestamp />
+      <SectionGetChains />
+      <SectionGetAssets hibitNetwork={hibitNetwork} />
+      <SectionGetAsset />
+      <SectionGetChainBalances />
+      <SectionGetWithdrawFee hibitNetwork={hibitNetwork} />
+
+      {/* Market APIs */}
+      <SectionGetMarkets hibitNetwork={hibitNetwork} />
+      <SectionGetMarket />
+      <SectionGetMarkets24HrTicker hibitNetwork={hibitNetwork} />
+      <SectionGetMarkets24HrTickerExtended hibitNetwork={hibitNetwork} />
+      <SectionGetMarketsSwapInfo />
+      <SectionGetMarketDepth />
+      <SectionGetMarketKline />
+      <SectionGetMarketTrade />
+      <SectionTrySwap />
+
+      {/* Order APIs */}
+      <SectionSubmitSpotOrderLimit />
+      <SectionSubmitSpotOrderSwapV2 />
+      <SectionCancelSpotOrder />
+      <SectionGetOrders />
+      <SectionGetOrder />
+      <SectionGetOrderTrades />
+
+      {/* Wallet APIs */}
+      <SectionWalletRegister />
+      <SectionGetRegisteredWalletInfo />
+      <SectionResetProxyKey />
+      <SectionGetProxyKeypair />
+      <SectionGetWalletBalances />
+      <SectionWithdraw hibitNetwork={hibitNetwork} />
+      <SectionGetWithdrawDetails />
+      <SectionGetNonce />
+    </div>
+  );
+}
 
 const HibitClientPage: FC = () => {
   const [client, setClient] = useState<HibitClient | null>(null);
@@ -56,46 +105,7 @@ const HibitClientPage: FC = () => {
   return (
     <WalletConnectionProvider>
       <ClientProvider client={client}>
-        <div className="flex flex-col gap-6">
-          <SectionSetHibitClientOptions defaultOptions={OPTIONS} />
-
-          {/* Basic APIs */}
-          <SectionGetTimestamp />
-          <SectionGetChains />
-          <SectionGetAssets />
-          <SectionGetAsset />
-          <SectionGetChainBalances />
-          <SectionGetWithdrawFee />
-
-          {/* Market APIs */}
-          <SectionGetMarkets />
-          <SectionGetMarket />
-          <SectionGetMarkets24HrTicker />
-          <SectionGetMarkets24HrTickerExtended />
-          <SectionGetMarketsSwapInfo />
-          <SectionGetMarketDepth />
-          <SectionGetMarketKline />
-          <SectionGetMarketTrade />
-          <SectionTrySwap />
-
-          {/* Order APIs */}
-          <SectionSubmitSpotOrderLimit />
-          <SectionSubmitSpotOrderSwapV2 />
-          <SectionCancelSpotOrder />
-          <SectionGetOrders />
-          <SectionGetOrder />
-          <SectionGetOrderTrades />
-
-          {/* Wallet APIs */}
-          <SectionWalletRegister />
-          <SectionGetRegisteredWalletInfo />
-          <SectionResetProxyKey />
-          <SectionGetProxyKeypair />
-          <SectionGetWalletBalances />
-          <SectionWithdraw />
-          <SectionGetWithdrawDetails />
-          <SectionGetNonce />
-        </div>
+        <HibitClientContent />
       </ClientProvider>
     </WalletConnectionProvider>
   );

@@ -13,6 +13,7 @@ import { MetaMaskWalletApi, KaswareWalletApi } from '../../../src/wallet-api';
 import { useClientContext } from '../../context/ClientContext';
 import ChainIdSelector from '../ChainIdSelector';
 import { BigNumber } from 'bignumber.js';
+import { HibitNetwork } from '../../../src';
 
 const schema = object({
   nonce: string().required('Nonce is required'),
@@ -24,7 +25,11 @@ const schema = object({
   fee: number().nullable()
 });
 
-export default function SectionWithdraw() {
+interface SectionWithdrawProps {
+  hibitNetwork?: HibitNetwork;
+}
+
+export default function SectionWithdraw({ hibitNetwork }: SectionWithdrawProps = {}) {
   const { client } = useClientContext();
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<any>(null);
@@ -261,6 +266,7 @@ export default function SectionWithdraw() {
                   onChange={(chainIds) => setSelectedChainId(chainIds[0])}
                   singleSelect={true}
                   placeholder="Please select target chain"
+                  hibitNetwork={hibitNetwork}
                 />
               </FormField>
               <FormField label="Address" error={errors.address} required>

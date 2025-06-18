@@ -12,13 +12,17 @@ const schema = object({
   hin: string().required('HIN is required')
 });
 
-export default function SectionSetBrokerClientOptions({
-  client,
-  defaultOptions
-}: {
+interface SectionSetBrokerClientOptionsProps {
   client: BrokerClient;
   defaultOptions: BrokerApiOptions;
-}) {
+  onNetworkChange?: (network: HibitNetwork) => void;
+}
+
+export default function SectionSetBrokerClientOptions({
+  client,
+  defaultOptions,
+  onNetworkChange
+}: SectionSetBrokerClientOptionsProps) {
   const {
     control,
     watch,
@@ -36,12 +40,15 @@ export default function SectionSetBrokerClientOptions({
 
   useEffect(() => {
     if (isValid) {
+      const newNetwork = formValues.network as HibitNetwork;
       client.setOptions({
-        network: formValues.network as HibitNetwork,
+        network: newNetwork,
         hin: formValues.hin ? BigInt(formValues.hin) : undefined
       });
+      // Notify parent component about network change
+      onNetworkChange?.(newNetwork);
     }
-  }, [formValues, isValid, client]);
+  }, [formValues, isValid, client, onNetworkChange]);
 
   return (
     <Section
