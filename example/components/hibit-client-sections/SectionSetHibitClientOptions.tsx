@@ -61,8 +61,9 @@ export default function SectionSetHibitClientOptions({ defaultOptions }: { defau
 
   useEffect(() => {
     if (isValid && formValues.hin && formValues.proxyKey && !isUpdatingFromContext.current) {
+      const newNetwork = formValues.network as HibitNetwork;
       client.setOptions({
-        network: formValues.network as HibitNetwork,
+        network: newNetwork,
         hin: BigInt(formValues.hin),
         proxyKey: formValues.proxyKey
       });

@@ -1,4 +1,4 @@
-import { GetMarket24HrTickerInput, Market24HrTickerExtendInfo, ChainId } from '../../../src';
+import { GetMarket24HrTickerInput, Market24HrTickerExtendInfo, ChainId, HibitNetwork } from '../../../src';
 import Section from '../Section';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -15,7 +15,13 @@ const schema = object({
   chainAssetTypes: object().nullable()
 });
 
-export default function SectionGetMarkets24HrTickerExtended() {
+interface SectionGetMarkets24HrTickerExtendedProps {
+  hibitNetwork?: HibitNetwork;
+}
+
+export default function SectionGetMarkets24HrTickerExtended({
+  hibitNetwork
+}: SectionGetMarkets24HrTickerExtendedProps = {}) {
   const { client } = useClientContext();
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<Market24HrTickerExtendInfo[] | null>(null);
@@ -58,7 +64,11 @@ export default function SectionGetMarkets24HrTickerExtended() {
             <input type="number" className="input" {...register('marketId')} placeholder="Optional market ID" />
           </FormField>
           <FormField label="Chain IDs" labelDesc="select multiple chains">
-            <ChainIdSelector selectedChainIds={selectedChainIds} onChange={setSelectedChainIds} />
+            <ChainIdSelector
+              selectedChainIds={selectedChainIds}
+              onChange={setSelectedChainIds}
+              hibitNetwork={hibitNetwork}
+            />
           </FormField>
           <FormField label="Chain Asset Types" labelDesc="select multiple types">
             <AssetTypeSelector selectedAssetTypes={selectedAssetTypes} onChange={setSelectedAssetTypes} />

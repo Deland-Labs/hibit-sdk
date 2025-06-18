@@ -31,7 +31,7 @@ const schema = object({
   signature: string().required()
 });
 
-export default function SectionGetPaymentAddress({ client }: { client: BrokerClient }) {
+export default function SectionSwap({ client, hibitNetwork }: { client: BrokerClient; hibitNetwork?: HibitNetwork }) {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<string | null>(null);
   const [error, setError] = useState<string>('');
@@ -289,6 +289,7 @@ export default function SectionGetPaymentAddress({ client }: { client: BrokerCli
             <ChainIdSelector
               singleSelect
               name="sourceChainId"
+              hibitNetwork={hibitNetwork}
               selectedChainIds={values.sourceChainId ? [ChainId.fromString(values.sourceChainId)] : []}
               onChange={(ids) => {
                 setValue('sourceChainId', ids[0]?.toString() ?? '');
@@ -345,6 +346,7 @@ export default function SectionGetPaymentAddress({ client }: { client: BrokerCli
             <ChainIdSelector
               singleSelect
               name="targetChainId"
+              hibitNetwork={hibitNetwork}
               selectedChainIds={values.targetChainId ? [ChainId.fromString(values.targetChainId)] : []}
               onChange={(ids) => {
                 setValue('targetChainId', ids[0]?.toString() ?? '');

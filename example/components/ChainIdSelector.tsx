@@ -1,6 +1,6 @@
-import { Chain, ChainId, ChainNetwork } from '../../src';
-import { chainNetworkMap } from '../utils/chainUtils';
-import { memo } from 'react';
+import { Chain, ChainId, ChainNetwork, HibitNetwork } from '../../src';
+import { getFilteredChainNetworkMap } from '../utils/chainUtils';
+import { memo, useMemo } from 'react';
 
 interface ChainIdSelectorProps {
   selectedChainIds: ChainId[];
@@ -17,6 +17,10 @@ interface ChainIdSelectorProps {
    * Unique name for radio button group (required when singleSelect is true)
    */
   name?: string;
+  /**
+   * Filter networks based on HibitNetwork (mainnet/testnet)
+   */
+  hibitNetwork?: HibitNetwork;
 }
 
 function ChainIdSelector({
@@ -24,8 +28,13 @@ function ChainIdSelector({
   onChange,
   singleSelect = false,
   placeholder,
-  name
+  name,
+  hibitNetwork
 }: ChainIdSelectorProps) {
+  const filteredChainNetworkMap = useMemo(() => {
+    return getFilteredChainNetworkMap(hibitNetwork);
+  }, [hibitNetwork]);
+
   const isChainIdSelected = (chain: Chain, network: ChainNetwork) => {
     return selectedChainIds.some((chainId) => chainId.chain.equals(chain) && chainId.network.equals(network));
   };
@@ -52,7 +61,7 @@ function ChainIdSelector({
     <div className="flex flex-col">
       {placeholder && selectedChainIds.length === 0 && <div className="text-gray-500 text-sm mb-2">{placeholder}</div>}
       <div className="flex flex-col gap-1 max-h-80 overflow-y-auto p-2 border rounded">
-        {chainNetworkMap.map((chainItem) => (
+        {filteredChainNetworkMap.map((chainItem) => (
           <div key={chainItem.chain.toString()}>
             <div className="font-bold mt-1">{chainItem.name}</div>
             <div className="ml-4">

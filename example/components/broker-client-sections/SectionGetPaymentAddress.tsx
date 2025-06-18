@@ -1,4 +1,4 @@
-import { ChainId, GetPaymentAddressInput } from '../../../src';
+import { ChainId, GetPaymentAddressInput, HibitNetwork } from '../../../src';
 import Section from '../Section';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -13,7 +13,12 @@ const schema = object({
   chainId: string().required()
 });
 
-export default function SectionGetPaymentAddress({ client }: { client: BrokerClient }) {
+interface SectionGetPaymentAddressProps {
+  client: BrokerClient;
+  hibitNetwork?: HibitNetwork;
+}
+
+export default function SectionGetPaymentAddress({ client, hibitNetwork }: SectionGetPaymentAddressProps) {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<string | null>(null);
   const [error, setError] = useState<string>('');
@@ -63,6 +68,7 @@ export default function SectionGetPaymentAddress({ client }: { client: BrokerCli
                 setValue('chainId', ids[0]?.toString() ?? '');
                 trigger('chainId');
               }}
+              hibitNetwork={hibitNetwork}
             />
           </FormField>
           <button className="btn" onClick={submit} disabled={loading}>

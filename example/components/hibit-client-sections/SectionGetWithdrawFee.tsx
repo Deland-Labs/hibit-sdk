@@ -1,4 +1,4 @@
-import { AssetWithdrawFeeInfo, GetWithdrawFeeInfoInput, ChainId } from '../../../src';
+import { AssetWithdrawFeeInfo, GetWithdrawFeeInfoInput, ChainId, HibitNetwork } from '../../../src';
 import Section from '../Section';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -13,7 +13,11 @@ const schema = object({
   chainIds: object().nullable()
 });
 
-export default function SectionGetWithdrawFee() {
+interface SectionGetWithdrawFeeProps {
+  hibitNetwork?: HibitNetwork;
+}
+
+export default function SectionGetWithdrawFee({ hibitNetwork }: SectionGetWithdrawFeeProps = {}) {
   const { client } = useClientContext();
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<AssetWithdrawFeeInfo | null>(null);
@@ -66,6 +70,7 @@ export default function SectionGetWithdrawFee() {
               onChange={setSelectedChainIds}
               singleSelect={true}
               placeholder="Select a target chain"
+              hibitNetwork={hibitNetwork}
             />
           </FormField>
           <button className="btn" onClick={submit} disabled={loading}>
