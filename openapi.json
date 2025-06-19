@@ -12,7 +12,6 @@
       "url": "https://openapi.hibit.app"
     }
   ],
-
   "paths": {
     "/v1/timestamp": {
       "get": {
@@ -3554,17 +3553,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[Ex3.Exchange.IActors.EmptyResultBody, Ex3.Exchange.IActors.Models, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[Ex3.Exchange.OpenApi.AppServices.SubmitOrderResult, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[Ex3.Exchange.IActors.EmptyResultBody, Ex3.Exchange.IActors.Models, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[Ex3.Exchange.OpenApi.AppServices.SubmitOrderResult, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[Ex3.Exchange.IActors.EmptyResultBody, Ex3.Exchange.IActors.Models, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+                  "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[Ex3.Exchange.OpenApi.AppServices.SubmitOrderResult, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
                 }
               }
             }
@@ -5271,7 +5270,8 @@
             "type": "string"
           },
           "token": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "originChainTxHash": {
             "type": "string",
@@ -5511,6 +5511,23 @@
           },
           "data": {
             "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.ProxyKeyResult"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Ex3.Exchange.OpenApi.Abstraction.OpenApiResult`1[[Ex3.Exchange.OpenApi.AppServices.SubmitOrderResult, Ex3.Exchange.OpenApi.AppServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/Ex3.Exchange.OpenApi.AppServices.SubmitOrderResult"
           }
         },
         "additionalProperties": false
@@ -5904,6 +5921,16 @@
           "decimalPlaces": {
             "type": "string",
             "description": "decimals"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Ex3.Exchange.OpenApi.AppServices.SubmitOrderResult": {
+        "type": "object",
+        "properties": {
+          "txHash": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false

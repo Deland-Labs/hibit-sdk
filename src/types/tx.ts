@@ -98,12 +98,46 @@ export class Transaction {
    * @param {Uint8Array} payload - Encoded transaction payload
    * @param {Version} version - The transaction version, defaults to V0
    */
-  constructor(type: TransactionType, from: bigint, nonce: bigint, payload: Uint8Array, version: Version = Version.V0) {
+  constructor(type: TransactionType, from: bigint, nonce: bigint, payload: Uint8Array, version?: Version);
+
+  /**
+   * Creates a new Transaction instance from an OriginWalletTransaction.
+   * The message from the OriginWalletTransaction will be converted to bytes and used as payload.
+   *
+   * @param {TransactionType} type - The type of transaction
+   * @param {bigint} from - The sender's wallet ID
+   * @param {bigint} nonce - Transaction sequence number
+   * @param {OriginWalletTransaction} originWalletTx - The origin wallet transaction containing the message
+   * @param {Version} version - The transaction version, defaults to V0
+   */
+  constructor(
+    type: TransactionType,
+    from: bigint,
+    nonce: bigint,
+    originWalletTx: OriginWalletTransaction,
+    version?: Version
+  );
+
+  constructor(
+    type: TransactionType,
+    from: bigint,
+    nonce: bigint,
+    payloadOrOriginWalletTx: Uint8Array | OriginWalletTransaction,
+    version: Version = Version.V0
+  ) {
     this.version = version;
     this.type = type;
     this.from = from;
     this.nonce = nonce;
-    this.payload = payload;
+
+    // Check if the parameter is an OriginWalletTransaction
+    if (payloadOrOriginWalletTx instanceof OriginWalletTransaction) {
+      // Convert the message string to bytes as payload
+      this.payload = Buffer.from(payloadOrOriginWalletTx.message, 'utf8');
+    } else {
+      // Use the provided payload directly
+      this.payload = payloadOrOriginWalletTx;
+    }
   }
 
   /**

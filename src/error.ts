@@ -39,4 +39,10 @@ export class HibitError extends Error {
   static throwMissingRequiredParameterError(apiName: string, parameterName: string) {
     throw new HibitError(`Missing required parameter '${parameterName}' in ${apiName}`);
   }
+
+  static throwTransactionHashMismatchError(apiName: string, localHash: string, serverHash: string) {
+    throw new HibitError(
+      `Transaction hash mismatch in ${apiName}: local hash ${localHash} does not match server hash ${serverHash}`
+    );
+  }
 }
