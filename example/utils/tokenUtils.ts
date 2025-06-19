@@ -29,8 +29,10 @@ export const getTokenInfo = async (
     if (assetType === 11) {
       // ChainAssetType.KRC20 = 11
       if (!assetAddress) return null;
+      console.log('[DEBUG] Getting KRC20 decimals for:', assetAddress);
       const { getKrc20Decimals } = await import('./kasware-wallet');
       const decimals = await getKrc20Decimals(assetAddress);
+      console.log('[DEBUG] KRC20 decimals result:', decimals);
       return {
         decimals,
         symbol: assetAddress.toUpperCase()
