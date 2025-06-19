@@ -8,8 +8,7 @@ import FormField from '../FormField';
 import ChainIdSelector from '../ChainIdSelector';
 import { BrokerClient } from '../../../src/broker-client';
 import AssetTypeSelector from '../AssetTypeSelector';
-import { connect, sign, transferKaspa, transferKrc20 } from '../../utils/kasware-wallet';
-import { getTokenInfo, calculateActualAmount } from '../../utils/evm-wallet';
+import { getTokenInfo, calculateActualAmount } from '../../utils/tokenUtils';
 
 const schema = object({
   hin: string().optional(),
@@ -217,6 +216,7 @@ export default function SectionSwap({ client, hibitNetwork }: { client: BrokerCl
   const connectKasware = async () => {
     try {
       const network = client.getOptions().network;
+      const { connect } = await import('../../utils/kasware-wallet');
       const { address, publicKey } = await connect(
         network === HibitNetwork.Testnet ? 'kaspa_testnet_10' : 'kaspa_mainnet'
       );
@@ -232,6 +232,7 @@ export default function SectionSwap({ client, hibitNetwork }: { client: BrokerCl
   const transferByKasware = async () => {
     try {
       let txRef = '';
+      const { transferKrc20, transferKaspa } = await import('../../utils/kasware-wallet');
       if (values.sourceAssetType === ChainAssetType.KRC20) {
         if (!values.paymentAddress || !values.sourceAsset || !values.sourceVolume) {
           throw new Error('paymentAddress, sourceAsset and sourceVolume are required for KRC20 transfer');
@@ -254,6 +255,7 @@ export default function SectionSwap({ client, hibitNetwork }: { client: BrokerCl
     try {
       const req = getInputReq(values);
       const message = req.toJson();
+      const { sign } = await import('../../utils/kasware-wallet');
       const signature = await sign(message);
       setValue('signature', signature);
       setValue('signatureSchema', WalletSignatureSchema.KaspaSchnorr);
