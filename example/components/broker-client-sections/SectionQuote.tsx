@@ -8,7 +8,7 @@ import FormField from '../FormField';
 import ChainIdSelector from '../ChainIdSelector';
 import { BrokerClient } from '../../../src/broker-client';
 import AssetTypeSelector from '../AssetTypeSelector';
-import { getTokenInfo, calculateActualAmount } from '../../utils/evm-wallet';
+import { getTokenInfo, calculateActualAmount } from '../../utils/tokenUtils';
 
 const schema = object({
   sourceChainId: string().required(),
