@@ -186,7 +186,7 @@ export type Ex3ExchangeOpenApiAbstractionDtosWithdrawDetailsOutput = {
   chain?: string;
   network?: string;
   assetType?: string;
-  token?: string;
+  token?: string | null;
   originChainTxHash?: string | null;
   /**
    * BigInt
@@ -287,6 +287,13 @@ export type Ex3ExchangeOpenApiAbstractionOpenApiResult1Ex3ExchangeOpenApiAppServ
     code?: number;
     message?: string | null;
     data?: Ex3ExchangeOpenApiAppServicesProxyKeyResult;
+  };
+
+export type Ex3ExchangeOpenApiAbstractionOpenApiResult1Ex3ExchangeOpenApiAppServicesSubmitOrderResult_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null =
+  {
+    code?: number;
+    message?: string | null;
+    data?: Ex3ExchangeOpenApiAppServicesSubmitOrderResult;
   };
 
 export type Ex3ExchangeOpenApiAbstractionOpenApiResult1Ex3ExchangeOpenApiAppServicesSystemInfo_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null =
@@ -495,6 +502,10 @@ export type Ex3ExchangeOpenApiAppServicesSubAssetInfoDto = {
    * decimals
    */
   decimalPlaces: string;
+};
+
+export type Ex3ExchangeOpenApiAppServicesSubmitOrderResult = {
+  txHash?: string | null;
 };
 
 /**
@@ -1717,7 +1728,7 @@ export type PostV1TxSubmitSpotOrderResponses = {
   /**
    * OK
    */
-  200: Ex3ExchangeOpenApiAbstractionOpenApiResult1Ex3ExchangeIActorsEmptyResultBody_Ex3ExchangeIActorsModels_Version_1000_Culture_neutral_PublicKeyToken_null;
+  200: Ex3ExchangeOpenApiAbstractionOpenApiResult1Ex3ExchangeOpenApiAppServicesSubmitOrderResult_Ex3ExchangeOpenApiAppServices_Version_1000_Culture_neutral_PublicKeyToken_null;
 };
 
 export type PostV1TxSubmitSpotOrderResponse = PostV1TxSubmitSpotOrderResponses[keyof PostV1TxSubmitSpotOrderResponses];

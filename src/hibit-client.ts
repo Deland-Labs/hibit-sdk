@@ -112,7 +112,7 @@ import {
   validateGetOrderInput
 } from './types/order';
 import { TransactionManager } from './tx-manager';
-import { mapTransactionToApiRequest, OriginWalletTransaction } from './types/tx';
+import { mapTransactionToApiRequest, OriginWalletTransaction, Transaction } from './types/tx';
 import {
   mapGetNonceInput,
   mapGetProxyKeyOutput,
@@ -258,9 +258,9 @@ export interface IHibitClient {
    * @param {SubmitSpotOrderInput} input - The input parameters for creating a spot order.
    * @param {DecimalOptions} decimalOptions - Required, the decimal options for the base and quote assets.
    * @param {number} nonce - Optional, the nonce to use for the transaction, if not provided, the nonce will be fetched automatically.
-   * @returns {Promise<void>} A promise that resolves when the spot order is created.
+   * @returns {Promise<string>} A promise that resolves to the transaction hash when the spot order is created.
    */
-  submitSpotOrder(input: SubmitSpotOrderInput, decimalOptions: DecimalOptions, nonce?: number): Promise<void>;
+  submitSpotOrder(input: SubmitSpotOrderInput, decimalOptions: DecimalOptions, nonce?: number): Promise<string>;
 
   /**
    * Cancel a spot order.
@@ -343,9 +343,9 @@ export interface IHibitClient {
    * Withdraw assets from the Hibit platform.
    *
    * @param {WithdrawInput} input - The input parameters for the withdrawal.
-   * @returns {Promise<void>} A promise that resolves when the withdrawal is successfully initiated.
+   * @returns {Promise<string>} A promise that resolves to the transaction hash when the withdrawal is successfully initiated.
    */
-  withdraw(input: WithdrawInput): Promise<void>;
+  withdraw(input: WithdrawInput): Promise<string>;
 
   /**
    * Get the nonce.
@@ -602,7 +602,7 @@ export class HibitClient implements IHibitClient {
     return response.data!.data!.map((trade) => mapOrderTradeRecord(trade));
   }
 
-  async submitSpotOrder(input: SubmitSpotOrderInput, decimalOptions: DecimalOptions, nonce?: number): Promise<void> {
+  async submitSpotOrder(input: SubmitSpotOrderInput, decimalOptions: DecimalOptions, nonce?: number): Promise<string> {
     const apiName = 'submitSpotOrder';
     this.validateSubmitSpotOrderInput(apiName, input, decimalOptions);
     this.ensurePrivateKey(apiName);
@@ -619,6 +619,20 @@ export class HibitClient implements IHibitClient {
     const resp = await postV1TxSubmitSpotOrder(mapTransactionToApiRequest(signedTx));
 
     this.ensureSuccess(apiName, resp.data);
+
+    // Get the local transaction hash
+    const localTxHash = Buffer.from(signedTx.hash()).toString('hex');
+
+    // Get the server transaction hash from the response
+    const serverTxHash = resp.data?.data?.txHash;
+
+    // Compare the transaction hashes to ensure they match
+    if (serverTxHash && serverTxHash !== localTxHash) {
+      HibitError.throwTransactionHashMismatchError(apiName, localTxHash, serverTxHash);
+    }
+
+    // Return the transaction hash
+    return localTxHash;
   }
 
   async cancelSpotOrder(input: CancelSpotOrderInput, nonce?: number): Promise<void> {
@@ -721,7 +735,7 @@ export class HibitClient implements IHibitClient {
     return result;
   }
 
-  async withdraw(input: WithdrawInput): Promise<void> {
+  async withdraw(input: WithdrawInput): Promise<string> {
     const apiName = 'withdraw';
     this.validateWithdrawInput(apiName, input);
     this.ensureHIN(apiName);
@@ -735,9 +749,32 @@ export class HibitClient implements IHibitClient {
       input.targetChainNetwork,
       signature
     );
+
+    // Create Transaction from OriginWalletTransaction to get the transaction hash
+    const transaction = new Transaction(
+      TransactionType.Withdraw,
+      this.options.hin!,
+      input.nonce, // Use the nonce from WithdrawInput
+      originWalletRequest
+    );
+
+    // Get the transaction hash from our Transaction
+    const localTxHash = Buffer.from(transaction.hash()).toString('hex');
+
     const resp = await postV1Withdraw(mapToGetProxyKeyApiRequest(originWalletRequest));
 
     this.ensureSuccess(apiName, resp.data);
+
+    // Get the transaction hash from the API response
+    const apiTxHash = resp.data?.data?.txHash || '';
+
+    // Verify that the transaction hashes match
+    if (apiTxHash && apiTxHash !== localTxHash) {
+      HibitError.throwTransactionHashMismatchError(apiName, localTxHash, apiTxHash);
+    }
+
+    // Return the verified transaction hash
+    return apiTxHash;
   }
 
   async getNonce(hin?: bigint): Promise<bigint> {

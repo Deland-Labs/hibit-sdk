@@ -32,7 +32,7 @@ interface SectionWithdrawProps {
 export default function SectionWithdraw({ hibitNetwork }: SectionWithdrawProps = {}) {
   const { client } = useClientContext();
   const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState<any>(null);
+  const [result, setResult] = useState<{ success: boolean; message?: string; txHash?: string } | null>(null);
   const [error, setErrorState] = useState<string>('');
   const [loadingNonce, setLoadingNonce] = useState(false);
   const [loadingAssetDecimals, setLoadingAssetDecimals] = useState(false);
@@ -225,8 +225,8 @@ export default function SectionWithdraw({ hibitNetwork }: SectionWithdrawProps =
         fee: input.fee!
       };
 
-      await client.withdraw(req);
-      setResult({ success: true, message: 'Withdrawal initiated successfully' });
+      const txHash = await client.withdraw(req);
+      setResult({ success: true, message: 'Withdrawal initiated successfully', txHash });
     } catch (e: any) {
       setErrorState(e.message ?? JSON.stringify(e));
     } finally {
@@ -336,6 +336,11 @@ export default function SectionWithdraw({ hibitNetwork }: SectionWithdrawProps =
         }
         result={result}
         error={error}
+        successMessage={
+          result?.success && result?.txHash
+            ? `Withdrawal initiated successfully! Transaction Hash: ${result.txHash}`
+            : undefined
+        }
       />
     </div>
   );

@@ -37,7 +37,7 @@ const schema = object({
 export default function SectionSubmitSpotOrderSwapV2() {
   const { client } = useClientContext();
   const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState<boolean | null>(null);
+  const [result, setResult] = useState<{ success: boolean; txHash?: string } | null>(null);
   const [error, setError] = useState<string>('');
 
   const {
@@ -69,11 +69,11 @@ export default function SectionSubmitSpotOrderSwapV2() {
         baseAssetDecimals: input.baseAssetDecimals,
         quoteAssetDecimals: input.quoteAssetDecimals
       };
-      await client.submitSpotOrder(req, decimalOptions);
-      setResult(true);
+      const txHash = await client.submitSpotOrder(req, decimalOptions);
+      setResult({ success: true, txHash });
     } catch (e: any) {
       setError(e.message ?? JSON.stringify(e));
-      setResult(false);
+      setResult({ success: false });
     } finally {
       setLoading(false);
     }
@@ -166,6 +166,11 @@ export default function SectionSubmitSpotOrderSwapV2() {
       loading={loading}
       result={result}
       error={error}
+      successMessage={
+        result?.success && result?.txHash
+          ? `Order submitted successfully! Transaction Hash: ${result.txHash}`
+          : undefined
+      }
     />
   );
 }
