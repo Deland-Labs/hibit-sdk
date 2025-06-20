@@ -18,6 +18,11 @@ export class Chain {
   value: bigint;
 
   /**
+   * Supported chain values
+   */
+  static SUPPORTED_VALUES = [0n, 60n, 501n, 223n, 607n, 195n, 111111n];
+
+  /**
    * Creates a new Chain instance
    * @param value - The chain identifier as a bigint
    * @throws Error if the chain value is not supported
@@ -134,32 +139,41 @@ export class ChainNetwork {
    * @throws Error if the network value is not supported
    */
   static supportedValues = [
-    0n,
-    2n,
-    3n, // Bitcoin and Kaspa networks
-    0x1n,
-    0x2n,
-    0x3n,
-    0x3e9n, // Special network values that might come from API
-    0xaa36a7n,
-    0x38n,
-    0x61n,
-    0x2105n,
-    0x14a34n,
-    0xa86an,
-    0xa869n, // EVM networks
-    0x82750n,
-    0x8274fn,
-    0x310c5n,
-    0x3106an,
-    0xfen,
-    0x134daedn,
-    0x14bn,
-    0xba93n,
-    0xba9304n, // More EVM networks
-    0x2b6653dcn,
-    0x94a9059en,
-    0xcd8690dcn // TRON networks
+    // Bitcoin and Kaspa networks
+    0n, // Kaspa mainnet
+    2n, // Bitcoin testnet
+    3n, // Bitcoin regtest
+
+    // Solana networks
+    0x1n, // Solana devnet
+    0x2n, // Solana testnet
+    0x3n, // Solana mainnet
+
+    // Special network values (may come from API)
+    0x3e9n,
+
+    // EVM networks
+    0xaa36a7n, // Ethereum Sepolia
+    0x38n, // BSC mainnet
+    0x61n, // BSC testnet
+    0x2105n, // Base mainnet
+    0x14a34n, // Base Sepolia
+    0xa86an, // Avalanche C-Chain
+    0xa869n, // Avalanche Fuji
+    0x82750n, // Scroll mainnet
+    0x8274fn, // Scroll Sepolia
+    0x310c5n, // Bitlayer mainnet
+    0x3106an, // Bitlayer testnet
+    0xfen, // Swan mainnet
+    0x134daedn, // Swan testnet
+    0x14bn, // Panta
+    0xba93n, // NeoX mainnet
+    0xba9304n, // NeoX testnet
+
+    // TRON networks
+    0x2b6653dcn, // TRON mainnet
+    0x94a9059en, // TRON Shasta
+    0xcd8690dcn // TRON Nile
   ];
 
   constructor(value: bigint) {
@@ -298,20 +312,17 @@ export class ChainId {
   }
 
   static fromString(chainId: string): ChainId {
+    // Unified format validation
     if (!chainId || !chainId.includes('_')) {
       throw new Error(`Invalid chainId format: ${chainId}. Expected format: "chain_network"`);
     }
 
     const parts = chainId.split('_');
-    if (parts.length !== 2) {
+    if (parts.length !== 2 || !parts[0] || !parts[1]) {
       throw new Error(`Invalid chainId format: ${chainId}. Expected format: "chain_network"`);
     }
 
     const [chain, network] = parts;
-    if (!chain || !network) {
-      throw new Error(`Invalid chainId format: ${chainId}. Expected format: "chain_network"`);
-    }
-
     const chainObj = Chain.fromString(chain);
     const networkObj = ChainNetwork.fromString(network);
 
