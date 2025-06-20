@@ -84,6 +84,22 @@ export default function SectionQuote({ client, hibitNetwork }: SectionQuoteProps
     calculateSourceActualAmount();
   }, [values.sourceChainId, values.sourceAssetType, values.sourceAsset, values.sourceVolume]);
 
+  // Clear source asset when native asset type is selected
+  useEffect(() => {
+    if (selectedSourceAssetType === 0) {
+      // Native asset type
+      setValue('sourceAsset', '');
+    }
+  }, [selectedSourceAssetType, setValue]);
+
+  // Clear target asset when native asset type is selected
+  useEffect(() => {
+    if (selectedTargetAssetType === 0) {
+      // Native asset type
+      setValue('targetAsset', '');
+    }
+  }, [selectedTargetAssetType, setValue]);
+
   const submit = handleSubmit(async (input) => {
     setLoading(true);
     setResult(null);

@@ -78,6 +78,22 @@ export default function SectionSwap({ client, hibitNetwork }: { client: BrokerCl
   });
   const values = watch();
 
+  // Clear source asset when native asset type is selected
+  useEffect(() => {
+    if (values.sourceAssetType === 0) {
+      // Native asset type
+      setValue('sourceAsset', '');
+    }
+  }, [values.sourceAssetType, setValue]);
+
+  // Clear target asset when native asset type is selected
+  useEffect(() => {
+    if (values.targetAssetType === 0) {
+      // Native asset type
+      setValue('targetAsset', '');
+    }
+  }, [values.targetAssetType, setValue]);
+
   const kaswareTransferable = useMemo(() => {
     if (!values.sourceChainId) {
       return false;

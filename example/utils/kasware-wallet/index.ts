@@ -98,12 +98,58 @@ export const transferKrc20 = async (toAddress: string, originalAmount: number, t
 };
 
 export const getKrc20Decimals = async (tokenAddress: string): Promise<number> => {
+  // Known KRC20 token decimals mapping
+  const KRC20_DECIMALS_MAP: Record<string, number> = {
+    HITZ: 8,
+    NACHO: 8,
+    KAS: 8
+    // Add more known tokens here
+  };
+
   try {
+    console.log('[DEBUG] getKrc20Decimals called with:', tokenAddress);
+    console.log('[DEBUG] window.kasware exists:', !!window.kasware);
+
+    if (!window.kasware) {
+      console.log('[DEBUG] Kasware not available, using fallback decimals');
+      return KRC20_DECIMALS_MAP[tokenAddress.toUpperCase()] || 8;
+    }
+
+    // Check if wallet is connected by trying to get accounts
+    try {
+      const accounts = await window.kasware.getAccounts();
+      console.log('[DEBUG] Kasware accounts:', accounts);
+      if (!accounts || accounts.length === 0) {
+        console.log('[DEBUG] Kasware not connected, using fallback decimals');
+        return KRC20_DECIMALS_MAP[tokenAddress.toUpperCase()] || 8;
+      }
+    } catch (connectError) {
+      console.log('[DEBUG] Failed to check Kasware connection, using fallback decimals:', connectError);
+      return KRC20_DECIMALS_MAP[tokenAddress.toUpperCase()] || 8;
+    }
+
     const balanceRes: GetKrc20BalanceResponse = await window.kasware.getKRC20Balance();
+    console.log('[DEBUG] KRC20 balance response:', balanceRes);
+
     const tickBalance = balanceRes.find((item) => item.tick.toUpperCase() === tokenAddress.toUpperCase());
-    return tickBalance ? Number(tickBalance.dec) : 0;
+    console.log('[DEBUG] Found tick balance:', tickBalance);
+
+    if (tickBalance) {
+      const result = Number(tickBalance.dec);
+      console.log('[DEBUG] Got decimals from wallet:', result);
+      return result;
+    } else {
+      // Token not found in wallet, use fallback
+      const fallbackDecimals = KRC20_DECIMALS_MAP[tokenAddress.toUpperCase()] || 8;
+      console.log('[DEBUG] Token not found in wallet, using fallback decimals:', fallbackDecimals);
+      return fallbackDecimals;
+    }
   } catch (e: any) {
     console.warn('Failed to get KRC20 decimals:', e);
-    return 0;
+    console.error('[DEBUG] Error details:', e);
+    // Always fallback to known decimals or 8
+    const fallbackDecimals = KRC20_DECIMALS_MAP[tokenAddress.toUpperCase()] || 8;
+    console.log('[DEBUG] Using fallback decimals due to error:', fallbackDecimals);
+    return fallbackDecimals;
   }
 };
