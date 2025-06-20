@@ -133,37 +133,38 @@ export class ChainNetwork {
    * @param value - The network identifier as a bigint
    * @throws Error if the network value is not supported
    */
+  static supportedValues = [
+    0n,
+    2n,
+    3n, // Bitcoin and Kaspa networks
+    0x1n,
+    0x2n,
+    0x3n,
+    0x3e9n, // Special network values that might come from API
+    0xaa36a7n,
+    0x38n,
+    0x61n,
+    0x2105n,
+    0x14a34n,
+    0xa86an,
+    0xa869n, // EVM networks
+    0x82750n,
+    0x8274fn,
+    0x310c5n,
+    0x3106an,
+    0xfen,
+    0x134daedn,
+    0x14bn,
+    0xba93n,
+    0xba9304n, // More EVM networks
+    0x2b6653dcn,
+    0x94a9059en,
+    0xcd8690dcn // TRON networks
+  ];
+
   constructor(value: bigint) {
     // Check if the value is one of the supported networks
-    const supportedValues = [
-      0n,
-      2n,
-      3n, // Bitcoin and Kaspa networks
-      0x1n,
-      0x2n,
-      0x3n,
-      0x3e9n, // Special network values that might come from API
-      0xaa36a7n,
-      0x38n,
-      0x61n,
-      0x2105n,
-      0x14a34n,
-      0xa86an,
-      0xa869n, // EVM networks
-      0x82750n,
-      0x8274fn,
-      0x310c5n,
-      0x3106an,
-      0xfen,
-      0x134daedn,
-      0x14bn,
-      0xba93n,
-      0xba9304n, // More EVM networks
-      0x2b6653dcn,
-      0x94a9059en,
-      0xcd8690dcn // TRON networks
-    ];
-    if (!supportedValues.includes(value)) {
+    if (!ChainNetwork.supportedValues.includes(value)) {
       throw new Error(`Unsupported network value: ${value}. Please use one of the predefined ChainNetwork constants.`);
     }
     this.value = value;
