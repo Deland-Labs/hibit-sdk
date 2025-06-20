@@ -20,8 +20,14 @@ export class Chain {
   /**
    * Creates a new Chain instance
    * @param value - The chain identifier as a bigint
+   * @throws Error if the chain value is not supported
    */
   constructor(value: bigint) {
+    // Check if the value is one of the supported chains
+    const supportedValues = [0n, 60n, 501n, 223n, 607n, 195n, 111111n];
+    if (!supportedValues.includes(value)) {
+      throw new Error(`Unsupported chain value: ${value}. Supported chains: ${supportedValues.join(', ')}`);
+    }
     this.value = value;
   }
 
@@ -44,6 +50,7 @@ export class Chain {
    * Creates a Chain instance from a string value
    * @param value - The chain identifier as a string
    * @returns A new Chain instance or null if value is empty
+   * @throws Error if the chain value is not supported
    *
    * @example
    * ```typescript
@@ -125,18 +132,43 @@ export class ChainNetwork {
   /**
    * Creates a new ChainNetwork instance
    * @param value - The network identifier as a bigint
+   * @throws Error if the network value is not supported
    */
   constructor(value: bigint) {
+    // Check if the value is one of the supported networks
+    const supportedValues = [
+      0n,
+      2n,
+      3n, // Bitcoin and Kaspa networks
+      0x1n,
+      0x2n,
+      0x3n,
+      0x3e9n, // Special network values that might come from API
+      0xaa36a7n,
+      0x38n,
+      0x61n,
+      0x2105n,
+      0x14a34n,
+      0xa86an,
+      0xa869n, // EVM networks
+      0x82750n,
+      0x8274fn,
+      0x310c5n,
+      0x3106an,
+      0xfen,
+      0x134daedn,
+      0x14bn,
+      0xba93n,
+      0xba9304n, // More EVM networks
+      0x2b6653dcn,
+      0x94a9059en,
+      0xcd8690dcn // TRON networks
+    ];
+    if (!supportedValues.includes(value)) {
+      throw new Error(`Unsupported network value: ${value}. Please use one of the predefined ChainNetwork constants.`);
+    }
     this.value = value;
   }
-
-  // Special Networks
-  /** Any network identifier */
-  static AnyNetwork = new ChainNetwork(-1n);
-  /** Main network identifier */
-  static MainNet = new ChainNetwork(1n);
-  /** Test network identifier */
-  static TestNet = new ChainNetwork(0n);
 
   // Bitcoin Networks
   /** Bitcoin mainnet network */
@@ -218,6 +250,7 @@ export class ChainNetwork {
    * Creates a ChainNetwork instance from a string value
    * @param value - The network identifier as a string
    * @returns A new ChainNetwork instance or null if value is empty
+   * @throws Error if the network value is not supported
    */
   static fromString(value: string): ChainNetwork | null {
     if (!value) {
@@ -268,7 +301,17 @@ export class ChainId {
     if (!chainId || !chainId.includes('_')) {
       throw new Error(`Invalid chainId format: ${chainId}. Expected format: "chain_network"`);
     }
-    const [chain, network] = chainId.split('_');
+
+    const parts = chainId.split('_');
+    if (parts.length !== 2) {
+      throw new Error(`Invalid chainId format: ${chainId}. Expected format: "chain_network"`);
+    }
+
+    const [chain, network] = parts;
+    if (!chain || !network) {
+      throw new Error(`Invalid chainId format: ${chainId}. Expected format: "chain_network"`);
+    }
+
     const chainObj = Chain.fromString(chain);
     const networkObj = ChainNetwork.fromString(network);
 
