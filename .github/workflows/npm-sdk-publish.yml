@@ -15,6 +15,12 @@ jobs:
           node-version: 22
           registry-url: https://registry.npmjs.org/
           cache: yarn
+
+      - name: Enable Corepack and prepare Yarn
+        run: |
+          corepack enable
+          corepack prepare yarn@4.9.2 --activate
+
       - run: |
           rm -f .npmrc
           npm config set "${REGISTRY}:_authToken" "${{ secrets.NPM_PACKAGE_TOKEN }}"
