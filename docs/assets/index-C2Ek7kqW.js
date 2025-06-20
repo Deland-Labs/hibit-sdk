@@ -1,4 +1,4 @@
-import { B as w } from './index-BFNIYgDS.js';
+import { B as w } from './index-J9qbee1J.js';
 const f = async (a) => {
     try {
       await window.kasware.requestAccounts(),
