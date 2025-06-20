@@ -31,7 +31,7 @@ describe('Transaction Constructor Tests', () => {
       const originWalletTx = new OriginWalletTransaction(
         Chain.Kaspa,
         'Test message for transaction',
-        ChainNetwork.MainNet,
+        ChainNetwork.KaspaMainNet,
         'test-signature'
       );
 

@@ -18,6 +18,11 @@ jobs:
         with:
           node-version: '22'
 
+      - name: Enable Corepack and prepare Yarn
+        run: |
+          corepack enable
+          corepack prepare yarn@4.9.2 --activate
+
       - name: Install dependencies
         run: yarn install
 

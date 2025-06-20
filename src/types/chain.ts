@@ -18,10 +18,20 @@ export class Chain {
   value: bigint;
 
   /**
+   * Supported chain values
+   */
+  static SUPPORTED_VALUES = [0n, 60n, 501n, 223n, 607n, 195n, 111111n];
+
+  /**
    * Creates a new Chain instance
    * @param value - The chain identifier as a bigint
+   * @throws Error if the chain value is not supported
    */
   constructor(value: bigint) {
+    // Check if the value is one of the supported chains
+    if (!Chain.SUPPORTED_VALUES.includes(value)) {
+      throw new Error(`Unsupported chain value: ${value}. Supported chains: ${Chain.SUPPORTED_VALUES.join(', ')}`);
+    }
     this.value = value;
   }
 
@@ -44,6 +54,7 @@ export class Chain {
    * Creates a Chain instance from a string value
    * @param value - The chain identifier as a string
    * @returns A new Chain instance or null if value is empty
+   * @throws Error if the chain value is not supported
    *
    * @example
    * ```typescript
@@ -125,18 +136,53 @@ export class ChainNetwork {
   /**
    * Creates a new ChainNetwork instance
    * @param value - The network identifier as a bigint
+   * @throws Error if the network value is not supported
    */
+  static supportedValues = [
+    // Bitcoin and Kaspa networks
+    0n, // Kaspa mainnet
+    2n, // Bitcoin testnet
+    3n, // Bitcoin regtest
+
+    // Solana networks
+    0x1n, // Solana devnet
+    0x2n, // Solana testnet
+    0x3n, // Solana mainnet
+
+    // Special network values (may come from API)
+    0x3e9n,
+
+    // EVM networks
+    0xaa36a7n, // Ethereum Sepolia
+    0x38n, // BSC mainnet
+    0x61n, // BSC testnet
+    0x2105n, // Base mainnet
+    0x14a34n, // Base Sepolia
+    0xa86an, // Avalanche C-Chain
+    0xa869n, // Avalanche Fuji
+    0x82750n, // Scroll mainnet
+    0x8274fn, // Scroll Sepolia
+    0x310c5n, // Bitlayer mainnet
+    0x3106an, // Bitlayer testnet
+    0xfen, // Swan mainnet
+    0x134daedn, // Swan testnet
+    0x14bn, // Panta
+    0xba93n, // NeoX mainnet
+    0xba9304n, // NeoX testnet
+
+    // TRON networks
+    0x2b6653dcn, // TRON mainnet
+    0x94a9059en, // TRON Shasta
+    0xcd8690dcn // TRON Nile
+  ];
+
   constructor(value: bigint) {
+    // Check if the value is one of the supported networks
+    if (!ChainNetwork.supportedValues.includes(value)) {
+      throw new Error(`Unsupported network value: ${value}. Please use one of the predefined ChainNetwork constants.`);
+    }
     this.value = value;
   }
-
-  // Special Networks
-  /** Any network identifier */
-  static AnyNetwork = new ChainNetwork(-1n);
-  /** Main network identifier */
-  static MainNet = new ChainNetwork(1n);
-  /** Test network identifier */
-  static TestNet = new ChainNetwork(0n);
 
   // Bitcoin Networks
   /** Bitcoin mainnet network */
@@ -218,6 +264,7 @@ export class ChainNetwork {
    * Creates a ChainNetwork instance from a string value
    * @param value - The network identifier as a string
    * @returns A new ChainNetwork instance or null if value is empty
+   * @throws Error if the network value is not supported
    */
   static fromString(value: string): ChainNetwork | null {
     if (!value) {
@@ -265,10 +312,17 @@ export class ChainId {
   }
 
   static fromString(chainId: string): ChainId {
+    // Unified format validation
     if (!chainId || !chainId.includes('_')) {
       throw new Error(`Invalid chainId format: ${chainId}. Expected format: "chain_network"`);
     }
-    const [chain, network] = chainId.split('_');
+
+    const parts = chainId.split('_');
+    if (parts.length !== 2 || !parts[0] || !parts[1]) {
+      throw new Error(`Invalid chainId format: ${chainId}. Expected format: "chain_network"`);
+    }
+
+    const [chain, network] = parts;
     const chainObj = Chain.fromString(chain);
     const networkObj = ChainNetwork.fromString(network);
 
