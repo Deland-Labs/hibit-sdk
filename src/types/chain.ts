@@ -24,9 +24,8 @@ export class Chain {
    */
   constructor(value: bigint) {
     // Check if the value is one of the supported chains
-    const supportedValues = [0n, 60n, 501n, 223n, 607n, 195n, 111111n];
-    if (!supportedValues.includes(value)) {
-      throw new Error(`Unsupported chain value: ${value}. Supported chains: ${supportedValues.join(', ')}`);
+    if (!Chain.SUPPORTED_VALUES.includes(value)) {
+      throw new Error(`Unsupported chain value: ${value}. Supported chains: ${Chain.SUPPORTED_VALUES.join(', ')}`);
     }
     this.value = value;
   }
