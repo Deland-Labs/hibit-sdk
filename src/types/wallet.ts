@@ -5,7 +5,6 @@ import {
   PostV1WalletRegisterData,
   GetV1WalletInfoData,
   Ex3ExchangeOpenApiAppServicesWalletRegistrationInfo,
-  PostV1ProxyKeyData,
   Ex3ExchangeOpenApiAppServicesProxyKeyResult
 } from '../openapi';
 import { Chain } from './chain';

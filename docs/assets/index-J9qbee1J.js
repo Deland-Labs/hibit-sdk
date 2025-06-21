@@ -31811,7 +31811,7 @@ const M6 = 'modulepreload',
           mg[y] = !0;
           const g = y.endsWith('.css'),
             x = g ? '[rel="stylesheet"]' : '';
-          if (!!s)
+          if (s)
             for (let R = c.length - 1; R >= 0; R--) {
               const T = c[R];
               if (T.href === y && (!g || T.rel === 'stylesheet')) return;

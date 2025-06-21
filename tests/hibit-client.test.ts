@@ -277,7 +277,9 @@ describe('Hibit Client Test', () => {
           const originWalletTx = new OriginWalletTransaction(chain, message, chainNetwork, signature);
           const transaction = new Transaction(TransactionType.Withdraw, userId, nonce, originWalletTx);
           txHash = Buffer.from(transaction.hash()).toString('hex');
-        } catch {}
+        } catch {
+          // ignore error, txHash fallback handled below
+        }
         if (!txHash || txHash.length !== 64) txHash = 'a'.repeat(64);
         // Return txHash inside data.data to match client expectation
         return Promise.resolve({
