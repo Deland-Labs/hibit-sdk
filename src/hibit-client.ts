@@ -708,7 +708,7 @@ export class HibitClient implements IHibitClient {
     const message = this.walletApi!.generateGetProxyKeyMessage(input, this.options.hin!);
     const signature = await this.walletApi!.signMessage(message);
     const originWalletRequest = new OriginWalletTransaction(input.chain, message, undefined, signature);
-    const resp = await postV1ProxyKey(mapToGetProxyKeyApiRequest(originWalletRequest));
+    const resp = await postV1ProxyKey(mapToWalletRequest(originWalletRequest));
 
     this.ensureSuccess(apiName, resp.data);
 
