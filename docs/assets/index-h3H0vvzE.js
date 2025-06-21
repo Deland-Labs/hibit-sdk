@@ -1,4 +1,4 @@
-import { E as e } from './index-J9qbee1J.js';
+import { E as e } from './index-CPnpntKd.js';
 const n = async (t) => {
   try {
     if (!window.ethereum) throw new Error('MetaMask not found');

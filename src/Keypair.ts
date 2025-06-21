@@ -108,6 +108,9 @@ export class Keypair {
    * @returns The signature with recovery ID as Uint8Array
    */
   sign(data: Uint8Array): Uint8Array {
+    if (!(data instanceof Uint8Array) || data.length === 0) {
+      throw new Error('Data to sign must be a non-empty Uint8Array');
+    }
     const signature = secp.sign(data, Buffer.from(this.privateKey, 'hex'));
     // Include recovery ID with the signature
     return Buffer.concat([signature.toCompactRawBytes(), Buffer.from([signature.recovery])]);

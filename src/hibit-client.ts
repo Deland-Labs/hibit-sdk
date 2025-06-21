@@ -119,8 +119,8 @@ import {
   mapGetRegisteredWalletInfoInput,
   mapGetRegisteredWalletInfoOutput,
   mapGetWalletBalancesInput,
-  mapToGetProxyKeyApiRequest,
-  mapToWalletRegisterApiRequest
+  mapToWalletRegisterApiRequest,
+  mapToWalletRequest
 } from './types/wallet';
 import { mapGetWithdrawDetailsInput, mapWithdrawDetailsInfo } from './types/withdraw';
 import { client } from './openapi/client.gen';
@@ -761,7 +761,7 @@ export class HibitClient implements IHibitClient {
     // Get the transaction hash from our Transaction
     const localTxHash = Buffer.from(transaction.hash()).toString('hex');
 
-    const resp = await postV1Withdraw(mapToGetProxyKeyApiRequest(originWalletRequest));
+    const resp = await postV1Withdraw(mapToWalletRequest(originWalletRequest));
 
     this.ensureSuccess(apiName, resp.data);
 
@@ -839,7 +839,7 @@ export class HibitClient implements IHibitClient {
     if (!input) {
       HibitError.throwMissingRequiredParameterError(apiName, 'input');
     }
-    if (!input.chain) {
+    if (input.chain === undefined || input.chain === null) {
       HibitError.throwMissingRequiredParameterError(apiName, 'chain');
     }
     if (input.nonce === undefined || input.nonce === null) {
@@ -860,7 +860,7 @@ export class HibitClient implements IHibitClient {
     if (!input) {
       HibitError.throwMissingRequiredParameterError(apiName, 'input');
     }
-    if (!input.chain) {
+    if (input.chain === undefined || input.chain === null) {
       HibitError.throwMissingRequiredParameterError(apiName, 'chain');
     }
     if (!input.signatureSchema) {
@@ -875,7 +875,7 @@ export class HibitClient implements IHibitClient {
     if (!input) {
       HibitError.throwMissingRequiredParameterError(apiName, 'input');
     }
-    if (!input.chain) {
+    if (input.chain === undefined || input.chain === null) {
       HibitError.throwMissingRequiredParameterError(apiName, 'chain');
     }
     if (!input.signatureSchema) {
@@ -887,10 +887,10 @@ export class HibitClient implements IHibitClient {
     if (!input) {
       HibitError.throwMissingRequiredParameterError(apiName, 'input');
     }
-    if (!input.targetChain) {
+    if (input.targetChain === undefined || input.targetChain === null) {
       HibitError.throwMissingRequiredParameterError(apiName, 'targetChain');
     }
-    if (!input.targetChainNetwork) {
+    if (input.targetChainNetwork === undefined || input.targetChainNetwork === null) {
       HibitError.throwMissingRequiredParameterError(apiName, 'targetChainNetwork');
     }
     if (input.nonce === undefined || input.nonce === null) {
@@ -1042,7 +1042,7 @@ export class HibitClient implements IHibitClient {
     if (!input.rootAssetId) {
       HibitError.throwMissingRequiredParameterError(apiName, 'rootAssetId');
     }
-    if (!input.targetChain) {
+    if (input.targetChain === undefined || input.targetChain === null) {
       HibitError.throwMissingRequiredParameterError(apiName, 'targetChain');
     }
   }
@@ -1073,7 +1073,7 @@ export class HibitClient implements IHibitClient {
     if (!input.marketId) {
       HibitError.throwMissingRequiredParameterError(apiName, 'marketId');
     }
-    if (!input.orderCategory) {
+    if (input.orderCategory === undefined || input.orderCategory === null) {
       HibitError.throwMissingRequiredParameterError(apiName, 'orderCategory');
     }
 
@@ -1199,7 +1199,7 @@ export class HibitClient implements IHibitClient {
     if (!input) {
       HibitError.throwMissingRequiredParameterError(apiName, 'input');
     }
-    if (!input.chain) {
+    if (input.chain === undefined || input.chain === null) {
       HibitError.throwMissingRequiredParameterError(apiName, 'chain');
     }
     if (!input.publicKey && !input.address) {
