@@ -47,4 +47,50 @@ describe('Keypair', () => {
     const keypair = new Keypair(privateKey);
     expect(keypair.publicKey).toBe(publicKey);
   });
+
+  // === Additional edge and error case tests ===
+  it('should encrypt and decrypt private key directly', () => {
+    const privateKey = Keypair.generate().getPrivateKey();
+    const password = 'test_password';
+    const encrypted = Keypair.encryptPrivateKey(privateKey, password);
+    const decrypted = (Keypair as any).decryptPrivateKey(encrypted, password);
+    expect(decrypted).toBe(privateKey);
+  });
+
+  it('should throw when decrypting with wrong password', () => {
+    const privateKey = Keypair.generate().getPrivateKey();
+    const password = 'test_password';
+    const encrypted = Keypair.encryptPrivateKey(privateKey, password);
+    expect(() => (Keypair as any).decryptPrivateKey(encrypted, 'wrong')).toThrow();
+  });
+
+  it('should throw when decrypting invalid encrypted data', () => {
+    const password = 'test_password';
+    expect(() => (Keypair as any).decryptPrivateKey('deadbeef', password)).toThrow();
+    expect(() => (Keypair as any).decryptPrivateKey('', password)).toThrow();
+  });
+
+  it('should throw when getPublicKey with invalid private key', () => {
+    expect(() => Keypair.getPublicKey('1234')).toThrow();
+    expect(() =>
+      Keypair.getPublicKey('zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz')
+    ).toThrow();
+  });
+
+  it('should throw when constructing Keypair with invalid private key', () => {
+    expect(() => new Keypair('1234')).toThrow();
+    expect(() => new Keypair('')).toThrow();
+    expect(() => new Keypair('nothexstring')).toThrow();
+  });
+
+  it('should throw when sign with empty data', () => {
+    const keypair = Keypair.generate();
+    expect(() => keypair.sign(new Uint8Array([]))).toThrow();
+  });
+
+  it('should throw when sign with non-Uint8Array', () => {
+    const keypair = Keypair.generate();
+    // @ts-expect-error: purposely passing wrong type to test error handling
+    expect(() => keypair.sign('not a buffer')).toThrow();
+  });
 });

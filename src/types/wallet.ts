@@ -157,12 +157,14 @@ export function mapToWalletRegisterApiRequest(
 }
 
 /**
- * Maps a wallet transaction to the format required for the proxy key API request.
+ * Maps a wallet transaction to the format required for wallet-related API requests (register, proxy key, withdraw, etc).
  *
  * @param originTx - The original wallet transaction containing chain, network, message, and signature data
- * @returns An object formatted as required by the proxy key API endpoint
+ * @returns An object formatted as required by the wallet-related API endpoints
  */
-export function mapToGetProxyKeyApiRequest(originTx: OriginWalletTransaction): Options<PostV1ProxyKeyData, boolean> {
+export function mapToWalletRequest(originTx: OriginWalletTransaction): {
+  body: { chain: string; message: string; signature: string };
+} {
   return {
     body: {
       chain: originTx.chain.toString(),
