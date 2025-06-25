@@ -676,7 +676,6 @@ export class HibitClient implements IHibitClient {
   async getRegisteredWalletInfo(input: GetRegisteredWalletInfoInput): Promise<RegisteredWalletInfo> {
     const apiName = 'getRegisteredWalletInfo';
     this.validateGetRegisteredWalletInfoInput(apiName, input);
-    this.ensureWalletApi(apiName);
 
     const resp = await getV1WalletInfo(mapGetRegisteredWalletInfoInput(input));
 
