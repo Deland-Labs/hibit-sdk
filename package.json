@@ -50,7 +50,7 @@
     "@eslint/compat": "^1.2.7",
     "@eslint/eslintrc": "^3.3.0",
     "@eslint/js": "^9.21.0",
-    "@hey-api/openapi-ts": "^0.64.4",
+    "@hey-api/openapi-ts": "^0.77.0",
     "@hookform/resolvers": "^4.1.2",
     "@rollup/plugin-typescript": "^12.1.2",
     "@tailwindcss/vite": "^4.0.8",
