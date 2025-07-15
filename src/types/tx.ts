@@ -132,7 +132,8 @@ export class Transaction {
 
     // Check if the parameter is an OriginWalletTransaction
     if (payloadOrOriginWalletTx instanceof OriginWalletTransaction) {
-      // Convert the message string to bytes as payload
+      // IMPORTANT: Always use the full message as payload for hash calculation
+      // The backend expects the complete message, not the formatted payload
       this.payload = Buffer.from(payloadOrOriginWalletTx.message, 'utf8');
     } else {
       // Use the provided payload directly
@@ -147,6 +148,7 @@ export class Transaction {
    * @returns {Uint8Array} The encoded transaction data bytes
    */
   toTxDataBytes(): Uint8Array {
+    // Using BigNumber as originally implemented - this was verified to work
     const txData = [
       this.version,
       BigNumber(this.type),
@@ -154,7 +156,46 @@ export class Transaction {
       BigNumber(this.nonce.toString()),
       this.payload
     ];
-    return cbor.encode(txData);
+
+    // Debug logging for transaction hash calculation
+    if (typeof process !== 'undefined' && process.env?.NODE_ENV === 'test') {
+      console.log('=== Transaction toTxDataBytes Debug (BigNumber Approach) ===');
+      console.log('Raw txData array (using BigNumber):');
+      console.log('  version:', this.version, '(type:', typeof this.version, ')');
+      console.log('  type:', this.type, 'as BigNumber:', BigNumber(this.type).toString());
+      console.log('  from:', this.from.toString(), 'as BigNumber:', BigNumber(this.from.toString()).toString());
+      console.log('  nonce:', this.nonce.toString(), 'as BigNumber:', BigNumber(this.nonce.toString()).toString());
+      console.log('  payload length:', this.payload.length, 'bytes');
+      console.log('  payload (hex):', Buffer.from(this.payload).toString('hex'));
+      console.log('  payload (utf8):', Buffer.from(this.payload).toString('utf8'));
+      console.log(
+        'txData array structure:',
+        JSON.stringify(
+          txData.map((item, index) => {
+            if (item instanceof BigNumber) {
+              return `[${index}] BigNumber(${item.toString()})`;
+            } else if (item instanceof Uint8Array) {
+              return `[${index}] Uint8Array(${item.length} bytes)`;
+            } else {
+              return `[${index}] ${typeof item}(${item})`;
+            }
+          }),
+          null,
+          2
+        )
+      );
+    }
+
+    const encoded = cbor.encode(txData);
+
+    if (typeof process !== 'undefined' && process.env?.NODE_ENV === 'test') {
+      console.log('CBOR encoded result:');
+      console.log('  length:', encoded.length, 'bytes');
+      console.log('  hex:', Buffer.from(encoded).toString('hex'));
+      console.log('=== End Debug ===\n');
+    }
+
+    return encoded;
   }
 
   /**

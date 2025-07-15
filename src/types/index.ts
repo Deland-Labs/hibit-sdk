@@ -7,7 +7,6 @@ export * from './order';
 export * from './wallet';
 export * from './withdraw';
 export * from './broker';
-export * from './broker';
 export * from './tx';
 
 export type HibitApiResponse = { code?: number; message?: string | null };
